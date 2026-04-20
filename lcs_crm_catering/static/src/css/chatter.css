@@ -15,9 +15,21 @@
     max-width: 80% !important;
 }
 
-/* Remove max-width limit on the sheet itself */
+/* Form sheet: full width when no aside chatter */
+.o_form_sheet_bg:not(:has(+ .o-mail-Form-chatter.o-aside)) {
+    max-width: 100% !important;
+}
+
+/* Remove max-width limit on the sheet itself — always full width */
 .o_form_sheet_bg .o_form_sheet {
     max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Override default content area max-width */
+.o_action_manager .o_form_view .o_form_sheet_bg {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
 }
 
 /* Chatter when not aside (below form) */
