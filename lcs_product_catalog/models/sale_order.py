@@ -160,6 +160,32 @@ class SaleOrder(models.Model):
                 })
                 seq += 1
 
+                # Add per-piece add-on line if:
+                # - dish has a per-piece price, AND
+                # - the main line is NOT already per-piece
+                if set_line.price_per_piece and actual_size != 'per_piece':
+                    addon_desc = '  ↳ Add-on (per piece)'
+                    if set_line.code:
+                        addon_desc = '  ↳ %s Add-on (per piece)' % set_line.code
+                    self.env['sale.order.line'].create({
+                        'order_id': self.id,
+                        'product_id': product_variant.id,
+                        'name': addon_desc,
+                        'product_uom_qty': 0,
+                        'price_unit': 0,
+                        'full_price': set_line.price_per_piece,
+                        'is_set_line': True,
+                        'is_addon_piece': True,
+                        'dish_selected': False,
+                        'set_product_id': line.product_id.id,
+                        'catering_set_id': catering_set.id,
+                        'set_unit': 'Per piece',
+                        'set_line_code': set_line.code,
+                        'per_piece_price': set_line.price_per_piece,
+                        'sequence': seq,
+                    })
+                    seq += 1
+
             # Set the original set line qty to 1, price to 0 (container)
             line.write({'product_uom_qty': 1, 'price_unit': 0})
 
