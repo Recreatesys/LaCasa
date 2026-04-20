@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Banquet Add-on Service Products -->
+    <record id="addon_oj_softdrink" model="product.template">
+        <field name="name">Orange Juice &amp; Soft Drinks
+橙汁及汽水</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">30</field>
+        <field name="description">per guest</field>
+    </record>
+    <record id="addon_waiter_4h" model="product.template">
+        <field name="name">Waiter Service (4 hours)
+侍應服務 (4小時)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">1000</field>
+        <field name="description">per waiter</field>
+    </record>
+    <record id="addon_waiter_extra_prebook" model="product.template">
+        <field name="name">Waiter Extra Hour (Pre-booked)
+侍應加鐘 (預約)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">250</field>
+        <field name="description">per waiter per hour</field>
+    </record>
+    <record id="addon_waiter_extra_onsite" model="product.template">
+        <field name="name">Waiter Extra Hour (On-site)
+侍應超時</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">300</field>
+        <field name="description">per waiter per hour</field>
+    </record>
+    <record id="addon_splitting" model="product.template">
+        <field name="name">Splitting Service
+分碟服務</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">50</field>
+        <field name="description">per guest</field>
+    </record>
+    <record id="addon_round_table" model="product.template">
+        <field name="name">Round Table Rental (with tablecloth)
+圓桌租借(連枱布)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">550</field>
+        <field name="description">per table</field>
+    </record>
+    <record id="addon_delivery_banquet" model="product.template">
+        <field name="name">Round-trip Delivery (Banquet)
+來回運費</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">2000</field>
+        <field name="description">per trip</field>
+    </record>
+
+    <!-- Extra dishes for Chinese Banquet (not in Master) -->
+    <record id="dish_extra_cb_01" model="product.template">
+        <field name="name">Roast Suckling Pig with Black Caviar
+珠璣映琵琶 (金脆乳豬配黑魚籽)</field>
+        <field name="categ_id" ref="lcs_product_catalog.cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_cb_02" model="product.template">
+        <field name="name">Exquisite Jade Platter (Sea Cucumber, Braised Abalone, Braised Winter Melon &amp; Pumpkin)
+珍餚韻玉盤(碧綠海蔘、紅燒鮑魚、燴冬瓜及燴南瓜)</field>
+        <field name="categ_id" ref="lcs_product_catalog.cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_cb_03" model="product.template">
+        <field name="name">Stuffed Japanese Crab Claw with Shrimp Paste
+百花釀日本蟹拑</field>
+        <field name="categ_id" ref="lcs_product_catalog.cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_cb_04" model="product.template">
+        <field name="name">Stewed Gum Tragacanth with Almond Juice
+霜燕杏雨盞(杏汁燉雪燕)</field>
+        <field name="categ_id" ref="lcs_product_catalog.cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_cb_05" model="product.template">
+        <field name="name">Slow-cooked Royal Chicken in Conpoy Sauce
+瑤柱貴妃雞</field>
+        <field name="categ_id" ref="lcs_product_catalog.cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_cb_06" model="product.template">
+        <field name="name">Garlic and Black Pepper Beef Cubes
+香蒜黑椒牛柳粒</field>
+        <field name="categ_id" ref="lcs_product_catalog.cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- Banquet-Style Joyful Gathering Set Menu -->
+    <record id="product_cb_set_a" model="product.template">
+        <field name="name">Banquet-Style Joyful Gathering Set Menu
+酒席式歡聚套餐</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">5800</field>
+    </record>
+
+    <record id="cb_set_a" model="lcs.catering.set">
+        <field name="name">Banquet-Style Joyful Gathering Set Menu</field>
+        <field name="product_id" ref="product_cb_set_a"/>
+        <field name="recommendation">Includes: Chinese Tea, Serving plates, teapot, cups &amp; basic tableware set, 4 hours chef service</field>
+    </record>
+
+    <record id="cb_set_a_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_020"/>
+        <field name="section">Salad / Appetizer</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_010"/>
+        <field name="section">Salad / Appetizer</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_153"/>
+        <field name="section">Noodles</field>
+        <field name="sequence">30</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_104"/>
+        <field name="section">Main Dish 1</field>
+        <field name="sequence">40</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_124"/>
+        <field name="section">Main Dish 2</field>
+        <field name="sequence">50</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_125"/>
+        <field name="section">Main Dish 3</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_07" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_113"/>
+        <field name="section">Main Dish 4</field>
+        <field name="sequence">70</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_08" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_097"/>
+        <field name="section">Main Dish 5</field>
+        <field name="sequence">80</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_09" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_134"/>
+        <field name="section">Vegetable</field>
+        <field name="sequence">90</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_10" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_154"/>
+        <field name="section">Rice</field>
+        <field name="sequence">100</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_11" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_185"/>
+        <field name="section">Dessert</field>
+        <field name="sequence">110</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_a_line_12" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_133"/>
+        <field name="section">Fruit</field>
+        <field name="sequence">120</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+    <!-- Banquet-Style Grand Feast Set Menu -->
+    <record id="product_cb_set_b" model="product.template">
+        <field name="name">Banquet-Style Grand Feast Set Menu
+酒席式極盛套餐</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">7200</field>
+    </record>
+
+    <record id="cb_set_b" model="lcs.catering.set">
+        <field name="name">Banquet-Style Grand Feast Set Menu</field>
+        <field name="product_id" ref="product_cb_set_b"/>
+        <field name="recommendation">Includes: Chinese Tea, Serving plates, teapot, cups &amp; basic tableware set, 4 hours chef service</field>
+    </record>
+
+    <record id="cb_set_b_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_020"/>
+        <field name="section">Salad / Appetizer</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_013"/>
+        <field name="section">Soup</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_155"/>
+        <field name="section">Noodles</field>
+        <field name="sequence">30</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_126"/>
+        <field name="section">Main Dish 1</field>
+        <field name="sequence">40</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_120"/>
+        <field name="section">Main Dish 2</field>
+        <field name="sequence">50</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_023"/>
+        <field name="section">Main Dish 3</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_07" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_097"/>
+        <field name="section">Main Dish 4</field>
+        <field name="sequence">70</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_08" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_135"/>
+        <field name="section">Main Dish 5</field>
+        <field name="sequence">80</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_09" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_113"/>
+        <field name="section">Main Dish 6</field>
+        <field name="sequence">90</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_10" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_156"/>
+        <field name="section">Main Dish 7</field>
+        <field name="sequence">100</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_11" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_186"/>
+        <field name="section">Dessert</field>
+        <field name="sequence">110</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_b_line_12" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_133"/>
+        <field name="section">Fruit</field>
+        <field name="sequence">120</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+    <!-- Exquisite Six-Course Imperial Banquet (Plated Service) -->
+    <record id="product_cb_set_c" model="product.template">
+        <field name="name">Exquisite Six-Course Imperial Banquet (Plated Service)
+尊萃六道菜御宴 (位上服務)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">880</field>
+    </record>
+
+    <record id="cb_set_c" model="lcs.catering.set">
+        <field name="name">Exquisite Six-Course Imperial Banquet (Plated Service)</field>
+        <field name="product_id" ref="product_cb_set_c"/>
+        <field name="recommendation">Includes: Chinese Tea, Serving plates, teapot, cups &amp; basic tableware set, 4 hours chef service</field>
+    </record>
+
+    <record id="cb_set_c_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_c"/>
+        <field name="product_id" ref="dish_extra_cb_01"/>
+        <field name="section">Appetizer</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_c_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_c"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_013"/>
+        <field name="section">Soup</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_c_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_c"/>
+        <field name="product_id" ref="dish_extra_cb_02"/>
+        <field name="section">Platter</field>
+        <field name="sequence">30</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_c_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_c"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_113"/>
+        <field name="section">Main Dish</field>
+        <field name="sequence">40</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_c_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_c"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_155"/>
+        <field name="section">Noodles</field>
+        <field name="sequence">50</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cb_set_c_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="cb_set_c"/>
+        <field name="product_id" ref="dish_extra_cb_04"/>
+        <field name="section">Dessert</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+</odoo>

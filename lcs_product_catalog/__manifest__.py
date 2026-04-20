@@ -9,6 +9,7 @@
         'security/ir.model.access.csv',
         'data/master_dishes.xml',
         'data/mix_match_set.xml',
+        'data/chinese_banquet_sets.xml',
         'views/catering_set_views.xml',
         'views/sale_order_views.xml',
     ],
