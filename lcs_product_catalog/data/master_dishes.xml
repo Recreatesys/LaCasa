@@ -30,11 +30,11 @@
         <field name="parent_id" ref="cat_lcs_dishes"/>
     </record>
     <record id="cat_rice_pasta" model="product.category">
-        <field name="name">G. Rice & Pasta</field>
+        <field name="name">G. Rice &amp; Pasta</field>
         <field name="parent_id" ref="cat_lcs_dishes"/>
     </record>
     <record id="cat_dessert" model="product.category">
-        <field name="name">H. Sweet Canapes & Dessert</field>
+        <field name="name">H. Sweet Canapes &amp; Dessert</field>
         <field name="parent_id" ref="cat_lcs_dishes"/>
     </record>
 
