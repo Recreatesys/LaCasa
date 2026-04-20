@@ -10,6 +10,7 @@
         'data/master_dishes.xml',
         'data/mix_match_set.xml',
         'data/chinese_banquet_sets.xml',
+        'data/canapes_only_set.xml',
         'views/catering_set_views.xml',
         'views/sale_order_views.xml',
     ],

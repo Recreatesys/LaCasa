@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="product_canapes_only" model="product.template">
+        <field name="name">Canapes Only
+自選一口小食</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">0</field>
+    </record>
+
+    <record id="set_canapes_only" model="lcs.catering.set">
+        <field name="name">Canapes Only 自選一口小食</field>
+        <field name="product_id" ref="product_canapes_only"/>
+        <field name="recommendation">Pick your canapes. Each L tray = 20 pcs. Per-piece add-on always available.</field>
+    </record>
+
+    <record id="size_rule_co_1" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="size_group">canapes</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">14</field>
+        <field name="size">per_piece</field>
+    </record>
+    <record id="size_rule_co_2" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="size_group">canapes</field>
+        <field name="min_guests">15</field>
+        <field name="max_guests">0</field>
+        <field name="size">l_tray</field>
+    </record>
+
+    <record id="co_line_001" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_030"/>
+        <field name="code">WC01</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">10</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_002" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_032"/>
+        <field name="code">WC02</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">20</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_003" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_034"/>
+        <field name="code">WC03</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">30</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_004" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_042"/>
+        <field name="code">WC04</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">40</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_005" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_036"/>
+        <field name="code">WC05</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">50</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_006" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_037"/>
+        <field name="code">WC06</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">60</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_007" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_029"/>
+        <field name="code">WC07</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">70</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_008" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_031"/>
+        <field name="code">WC08</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">80</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_009" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_044"/>
+        <field name="code">WC09</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">90</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_010" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_045"/>
+        <field name="code">WC10</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">100</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_011" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_035"/>
+        <field name="code">WC11</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">110</field>
+        <field name="price_per_piece">21.0</field>
+        <field name="price_l_tray">420.0</field>
+    </record>
+    <record id="co_line_012" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_033"/>
+        <field name="code">WC12</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">120</field>
+        <field name="price_per_piece">22.5</field>
+        <field name="price_l_tray">450.0</field>
+    </record>
+    <record id="co_line_013" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_043"/>
+        <field name="code">WC13</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">130</field>
+        <field name="price_per_piece">22.5</field>
+        <field name="price_l_tray">450.0</field>
+    </record>
+    <record id="co_line_014" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_038"/>
+        <field name="code">WC14</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">140</field>
+        <field name="price_per_piece">24.0</field>
+        <field name="price_l_tray">480.0</field>
+    </record>
+    <record id="co_line_015" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_046"/>
+        <field name="code">WC15</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">150</field>
+        <field name="price_per_piece">24.0</field>
+        <field name="price_l_tray">480.0</field>
+    </record>
+    <record id="co_line_016" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_047"/>
+        <field name="code">WC16</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">160</field>
+        <field name="price_per_piece">29.0</field>
+        <field name="price_l_tray">580.0</field>
+    </record>
+    <record id="co_line_017" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_039"/>
+        <field name="code">WC17</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">170</field>
+        <field name="price_per_piece">30.0</field>
+        <field name="price_l_tray">600.0</field>
+    </record>
+    <record id="co_line_018" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_040"/>
+        <field name="code">WC18</field>
+        <field name="section">Cold Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">180</field>
+        <field name="price_per_piece">42.0</field>
+        <field name="price_l_tray">840.0</field>
+    </record>
+    <record id="co_line_019" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_049"/>
+        <field name="code">HC01</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">190</field>
+        <field name="price_per_piece">15.0</field>
+        <field name="price_l_tray">300.0</field>
+    </record>
+    <record id="co_line_020" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_050"/>
+        <field name="code">HC02</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">200</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_021" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_051"/>
+        <field name="code">HC03</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">210</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_022" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_052"/>
+        <field name="code">HC04</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">220</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_023" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_053"/>
+        <field name="code">HC05</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">230</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_024" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_054"/>
+        <field name="code">HC06</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">240</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_025" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_055"/>
+        <field name="code">HC07</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">250</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_026" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_056"/>
+        <field name="code">HC08</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">260</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_027" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_057"/>
+        <field name="code">HC09</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">270</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_028" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_058"/>
+        <field name="code">HC10</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">280</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_029" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_060"/>
+        <field name="code">HC11</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">290</field>
+        <field name="price_per_piece">20.0</field>
+        <field name="price_l_tray">400.0</field>
+    </record>
+    <record id="co_line_030" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_059"/>
+        <field name="code">HC12</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">300</field>
+        <field name="price_per_piece">21.0</field>
+        <field name="price_l_tray">420.0</field>
+    </record>
+    <record id="co_line_031" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_061"/>
+        <field name="code">HC13</field>
+        <field name="section">Warm Canapes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">310</field>
+        <field name="price_per_piece">24.0</field>
+        <field name="price_l_tray">480.0</field>
+    </record>
+    <record id="co_line_032" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_069"/>
+        <field name="code">VC01</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">320</field>
+        <field name="price_per_piece">13.0</field>
+        <field name="price_l_tray">260.0</field>
+    </record>
+    <record id="co_line_033" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_079"/>
+        <field name="code">VC02</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">330</field>
+        <field name="price_per_piece">14.0</field>
+        <field name="price_l_tray">280.0</field>
+    </record>
+    <record id="co_line_034" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_070"/>
+        <field name="code">VC03</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">340</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_035" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_072"/>
+        <field name="code">VC04</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">350</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_036" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_073"/>
+        <field name="code">VC05</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">360</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_037" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_074"/>
+        <field name="code">VC06</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">370</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_038" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_075"/>
+        <field name="code">VC07</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">380</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_039" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_076"/>
+        <field name="code">VC08</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">390</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_040" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_077"/>
+        <field name="code">VC09</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">400</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_041" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_083"/>
+        <field name="code">VC10</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">410</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_042" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_082"/>
+        <field name="code">VC11</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">420</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_043" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_078"/>
+        <field name="code">VC12</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">430</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_044" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_080"/>
+        <field name="code">VC13</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">440</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_045" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_081"/>
+        <field name="code">VC14</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">450</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_046" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_071"/>
+        <field name="code">VC15</field>
+        <field name="section">Vegetarian-Friendly Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">460</field>
+        <field name="price_per_piece">21.0</field>
+        <field name="price_l_tray">420.0</field>
+    </record>
+    <record id="co_line_047" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_085"/>
+        <field name="code">AC01</field>
+        <field name="section">Asian Fusion Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">470</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_048" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_086"/>
+        <field name="code">AC02</field>
+        <field name="section">Asian Fusion Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">480</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_049" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_113"/>
+        <field name="code">AC03</field>
+        <field name="section">Asian Fusion Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">490</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_050" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_088"/>
+        <field name="code">AC04</field>
+        <field name="section">Asian Fusion Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">500</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_051" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_089"/>
+        <field name="code">AC05</field>
+        <field name="section">Asian Fusion Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">510</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_052" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_090"/>
+        <field name="code">AC06</field>
+        <field name="section">Asian Fusion Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">520</field>
+        <field name="price_per_piece">20.0</field>
+        <field name="price_l_tray">400.0</field>
+    </record>
+    <record id="co_line_053" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_091"/>
+        <field name="code">AC07</field>
+        <field name="section">Asian Fusion Capanes</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">530</field>
+        <field name="price_per_piece">35.0</field>
+        <field name="price_l_tray">700.0</field>
+    </record>
+    <record id="co_line_054" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_158"/>
+        <field name="code">SC01</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">540</field>
+        <field name="price_per_piece">16.0</field>
+        <field name="price_l_tray">320.0</field>
+    </record>
+    <record id="co_line_055" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_160"/>
+        <field name="code">SC02</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">550</field>
+        <field name="price_per_piece">16.0</field>
+        <field name="price_l_tray">320.0</field>
+    </record>
+    <record id="co_line_056" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_163"/>
+        <field name="code">SC03</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">560</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_057" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_164"/>
+        <field name="code">SC04</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">570</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_058" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_182"/>
+        <field name="code">SC05</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">580</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_059" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_174"/>
+        <field name="code">SC06</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">590</field>
+        <field name="price_per_piece">18.0</field>
+        <field name="price_l_tray">360.0</field>
+    </record>
+    <record id="co_line_060" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_159"/>
+        <field name="code">SC07</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">600</field>
+        <field name="price_per_piece">18.5</field>
+        <field name="price_l_tray">370.0</field>
+    </record>
+    <record id="co_line_061" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_162"/>
+        <field name="code">SC08</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">610</field>
+        <field name="price_per_piece">18.5</field>
+        <field name="price_l_tray">370.0</field>
+    </record>
+    <record id="co_line_062" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_161"/>
+        <field name="code">SC09</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">620</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_063" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_165"/>
+        <field name="code">SC10</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">630</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_064" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_179"/>
+        <field name="code">SC11</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">640</field>
+        <field name="price_per_piece">19.0</field>
+        <field name="price_l_tray">380.0</field>
+    </record>
+    <record id="co_line_065" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_166"/>
+        <field name="code">SC12</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">650</field>
+        <field name="price_per_piece">20.0</field>
+        <field name="price_l_tray">400.0</field>
+    </record>
+    <record id="co_line_066" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_167"/>
+        <field name="code">SC13</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">660</field>
+        <field name="price_per_piece">24.0</field>
+        <field name="price_l_tray">480.0</field>
+    </record>
+    <record id="co_line_067" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_168"/>
+        <field name="code">SC14</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">670</field>
+        <field name="price_per_piece">24.0</field>
+        <field name="price_l_tray">480.0</field>
+    </record>
+    <record id="co_line_068" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_169"/>
+        <field name="code">SC15</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">680</field>
+        <field name="price_per_piece">24.0</field>
+        <field name="price_l_tray">480.0</field>
+    </record>
+    <record id="co_line_069" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_170"/>
+        <field name="code">SC16</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">690</field>
+        <field name="price_per_piece">24.0</field>
+        <field name="price_l_tray">480.0</field>
+    </record>
+    <record id="co_line_070" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_171"/>
+        <field name="code">SC17</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">700</field>
+        <field name="price_per_piece">24.0</field>
+        <field name="price_l_tray">480.0</field>
+    </record>
+    <record id="co_line_071" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_172"/>
+        <field name="code">SC18</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">710</field>
+        <field name="price_per_piece">25.0</field>
+        <field name="price_l_tray">500.0</field>
+    </record>
+    <record id="co_line_072" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_183"/>
+        <field name="code">SC19</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">720</field>
+        <field name="price_per_piece">25.0</field>
+        <field name="price_l_tray">500.0</field>
+    </record>
+    <record id="co_line_073" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_175"/>
+        <field name="code">SC20</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">730</field>
+        <field name="price_per_piece">25.0</field>
+        <field name="price_l_tray">500.0</field>
+    </record>
+    <record id="co_line_074" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_184"/>
+        <field name="code">SC21</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">740</field>
+        <field name="price_per_piece">29.0</field>
+        <field name="price_l_tray">580.0</field>
+    </record>
+    <record id="co_line_075" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canapes_only"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_177"/>
+        <field name="code">SC22</field>
+        <field name="section">Sweet Canapes &amp; Dessert</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">750</field>
+        <field name="price_per_piece">30.0</field>
+    </record>
+
+</odoo>
