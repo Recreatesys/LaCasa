@@ -176,16 +176,34 @@ class EventOrder(models.Model):
 
     @api.model
     def _prepare_eo_lines_from_so(self, so):
-        """Prepare EO line values from SO lines."""
+        """Prepare EO line values from SO lines.
+
+        If the SO line has eo_qty/eo_unit from a catering set, use those.
+        Otherwise fall back to product-level kitchen_ratio.
+        Only include lines that are selected (dish_selected) or non-set lines.
+        """
         lines = []
         for sol in so.order_line.filtered(lambda l: not l.display_type):
+            # Skip unselected set lines
+            if hasattr(sol, 'is_set_line') and sol.is_set_line and not sol.dish_selected:
+                continue
+
             product = sol.product_id
-            kitchen_ratio = product.kitchen_ratio or 1.0
+
+            # Use set-level EO qty/unit if available
+            if hasattr(sol, 'eo_qty') and sol.eo_qty:
+                kitchen_qty = sol.eo_qty
+                kitchen_uom = sol.eo_unit or ''
+            else:
+                kitchen_ratio = product.kitchen_ratio or 1.0
+                kitchen_qty = sol.product_uom_qty / kitchen_ratio if kitchen_ratio else sol.product_uom_qty
+                kitchen_uom = product.kitchen_uom or product.uom_id.name
+
             lines.append({
                 'product_id': product.id,
                 'description': sol.name,
                 'so_qty': sol.product_uom_qty,
-                'kitchen_qty': sol.product_uom_qty / kitchen_ratio if kitchen_ratio else sol.product_uom_qty,
-                'kitchen_uom': product.kitchen_uom or product.uom_id.name,
+                'kitchen_qty': kitchen_qty,
+                'kitchen_uom': kitchen_uom,
             })
         return lines

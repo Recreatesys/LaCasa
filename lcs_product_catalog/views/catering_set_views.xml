@@ -28,7 +28,11 @@
                                     <field name="sequence" widget="handle"/>
                                     <field name="product_id"/>
                                     <field name="category_id" readonly="1"/>
-                                    <field name="unit_price"/>
+                                    <field name="qty" string="Qty"/>
+                                    <field name="unit" string="Unit"/>
+                                    <field name="unit_price" string="Unit Price"/>
+                                    <field name="eo_qty" string="EO Qty"/>
+                                    <field name="eo_unit" string="EO Unit"/>
                                     <field name="description"/>
                                 </list>
                             </field>

@@ -47,7 +47,16 @@ class CateringSetLine(models.Model):
         related='product_id.categ_id', store=True,
     )
     sequence = fields.Integer(default=10)
+
+    # Customer-facing (quotation / invoice)
+    qty = fields.Float(string='Qty', digits='Product Unit of Measure', default=1.0)
+    unit = fields.Char(string='Unit', help='e.g. pax, portion, set, pc')
     unit_price = fields.Float(string='Unit Price', digits='Product Price')
+
+    # Kitchen-facing (EO)
+    eo_qty = fields.Float(string='EO Qty', digits='Product Unit of Measure')
+    eo_unit = fields.Char(string='EO Unit', help='e.g. tray, litre, box, pan')
+
     description = fields.Char(
         string='Description',
         help='Override description for this dish in this set',

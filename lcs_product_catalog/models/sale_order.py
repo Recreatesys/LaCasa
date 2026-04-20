@@ -20,6 +20,9 @@ class SaleOrderLine(models.Model):
     catering_set_id = fields.Many2one(
         'lcs.catering.set', string='Catering Set',
     )
+    set_unit = fields.Char(string='Set Unit', help='Customer-facing unit from set config')
+    eo_qty = fields.Float(string='EO Qty', digits='Product Unit of Measure')
+    eo_unit = fields.Char(string='EO Unit', help='Kitchen-facing unit from set config')
 
     @api.onchange('product_id')
     def _onchange_product_id_expand_set(self):
@@ -85,12 +88,15 @@ class SaleOrder(models.Model):
                     'order_id': self.id,
                     'product_id': product_variant.id,
                     'name': set_line.description or product_variant.display_name,
-                    'product_uom_qty': 0,  # 0 until selected
+                    'product_uom_qty': set_line.qty,
                     'price_unit': set_line.unit_price,
                     'is_set_line': True,
                     'dish_selected': False,
                     'set_product_id': line.product_id.id,
                     'catering_set_id': catering_set.id,
+                    'set_unit': set_line.unit,
+                    'eo_qty': set_line.eo_qty,
+                    'eo_unit': set_line.eo_unit,
                     'sequence': seq,
                 })
                 seq += 1

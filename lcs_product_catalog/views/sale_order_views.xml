@@ -17,13 +17,18 @@
                         invisible="state != 'draft'"/>
             </xpath>
 
-            <!-- Add dish_selected checkbox to SO line list -->
+            <!-- Add dish_selected checkbox and unit fields to SO line list -->
             <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="before">
                 <field name="is_set_line" column_invisible="1"/>
                 <field name="dish_selected" string="Pick"
                        readonly="not is_set_line"/>
                 <field name="set_product_id" column_invisible="1"/>
                 <field name="catering_set_id" column_invisible="1"/>
+            </xpath>
+
+            <!-- Add set_unit after product_uom_qty -->
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="after">
+                <field name="set_unit" string="Unit" readonly="1"/>
             </xpath>
         </field>
     </record>
