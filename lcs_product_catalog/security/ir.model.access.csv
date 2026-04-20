@@ -5,5 +5,7 @@ access_catering_set_line_user,lcs.catering.set.line user,model_lcs_catering_set_
 access_catering_set_line_manager,lcs.catering.set.line manager,model_lcs_catering_set_line,base.group_system,1,1,1,1
 access_catering_set_rule_user,lcs.catering.set.rule user,model_lcs_catering_set_rule,base.group_user,1,1,1,0
 access_catering_set_rule_manager,lcs.catering.set.rule manager,model_lcs_catering_set_rule,base.group_system,1,1,1,1
+access_catering_set_size_rule_user,lcs.catering.set.size.rule user,model_lcs_catering_set_size_rule,base.group_user,1,1,1,0
+access_catering_set_size_rule_manager,lcs.catering.set.size.rule manager,model_lcs_catering_set_size_rule,base.group_system,1,1,1,1
 access_catering_set_ratio_tier_user,lcs.catering.set.ratio.tier user,model_lcs_catering_set_ratio_tier,base.group_user,1,1,1,0
 access_catering_set_ratio_tier_manager,lcs.catering.set.ratio.tier manager,model_lcs_catering_set_ratio_tier,base.group_system,1,1,1,1

@@ -9,7 +9,7 @@
             <form string="Catering Set">
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name" placeholder="e.g. Western Buffet"/></h1>
+                        <h1><field name="name" placeholder="e.g. Mix &amp; Match"/></h1>
                     </div>
                     <group>
                         <group>
@@ -19,23 +19,42 @@
                         </group>
                         <group>
                             <field name="description"/>
+                            <field name="recommendation"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Available Dishes" name="dishes">
+                        <page string="Dishes &amp; Pricing" name="dishes">
                             <field name="line_ids">
                                 <list editable="bottom">
                                     <field name="sequence" widget="handle"/>
+                                    <field name="section"/>
+                                    <field name="code"/>
                                     <field name="product_id"/>
-                                    <field name="category_id" readonly="1"/>
-                                    <field name="qty" string="Qty"/>
-                                    <field name="unit" string="Unit"/>
-                                    <field name="unit_price" string="Unit Price"/>
+                                    <field name="size_group"/>
+                                    <field name="price_per_piece" string="Per pc"/>
+                                    <field name="price_pn_1_1" string="1/1 PN"/>
+                                    <field name="price_pn_1_2" string="1/2 PN"/>
+                                    <field name="price_s_tray" string="S"/>
+                                    <field name="price_m_tray" string="M"/>
+                                    <field name="price_l_tray" string="L"/>
+                                    <field name="price_xl_tray" string="XL"/>
                                     <field name="eo_qty" string="EO Qty"/>
                                     <field name="eo_unit" string="EO Unit"/>
-                                    <field name="description"/>
+                                    <field name="remark"/>
                                 </list>
                             </field>
+                        </page>
+                        <page string="Size Rules" name="size_rules">
+                            <group string="Auto-size selection based on guest count">
+                                <field name="size_rule_ids" nolabel="1">
+                                    <list editable="bottom">
+                                        <field name="size_group"/>
+                                        <field name="min_guests"/>
+                                        <field name="max_guests"/>
+                                        <field name="size"/>
+                                    </list>
+                                </field>
+                            </group>
                         </page>
                         <page string="Selection Rules" name="rules">
                             <field name="rule_ids">
@@ -73,6 +92,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="product_id"/>
+                <field name="recommendation"/>
                 <field name="active"/>
             </list>
         </field>

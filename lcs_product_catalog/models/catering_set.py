@@ -1,6 +1,19 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
+SIZE_KEYS = ['per_piece', 'pn_1_1', 'pn_1_2', 's_tray', 'm_tray', 'l_tray', 'xl_tray']
+SIZE_LABELS = {
+    'per_piece': 'Per piece',
+    'pn_1_1': '1/1 PN',
+    'pn_1_2': '1/2 PN',
+    's_tray': 'S tray',
+    'm_tray': 'M tray',
+    'l_tray': 'L tray',
+    'xl_tray': 'XL tray',
+}
+# Ordered from smallest to largest for fallback logic
+SIZE_ORDER = ['per_piece', 'pn_1_2', 's_tray', 'm_tray', 'l_tray', 'xl_tray', 'pn_1_1']
+
 
 class CateringSet(models.Model):
     _name = 'lcs.catering.set'
@@ -16,6 +29,10 @@ class CateringSet(models.Model):
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
     description = fields.Text(string='Description')
+    recommendation = fields.Text(
+        string='Recommended Selection',
+        help='Internal remark shown to users, e.g. "2 appetizer + 2 snack + 3 main + 1 veg + 1-2 dessert"',
+    )
     line_ids = fields.One2many(
         'lcs.catering.set.line', 'set_id', string='Available Dishes',
     )
@@ -25,42 +42,110 @@ class CateringSet(models.Model):
         'lcs.catering.set.rule', 'set_id', string='Selection Rules',
     )
 
+    # Size auto-selection rules (guest count → size per category group)
+    size_rule_ids = fields.One2many(
+        'lcs.catering.set.size.rule', 'set_id', string='Size Rules',
+    )
+
     # Kitchen ratio tiers
     ratio_tier_ids = fields.One2many(
         'lcs.catering.set.ratio.tier', 'set_id', string='Kitchen Ratio Tiers',
     )
 
+    def get_auto_size(self, guest_count, size_group):
+        """Determine the auto-selected size based on guest count and size group.
+
+        Args:
+            guest_count: number of guests
+            size_group: e.g. 'salad_main', 'pasta_rice', 'canapes'
+
+        Returns:
+            size key string (e.g. 'l_tray', 'per_piece') or False
+        """
+        self.ensure_one()
+        for rule in self.size_rule_ids.filtered(lambda r: r.size_group == size_group):
+            max_g = rule.max_guests or 99999
+            if rule.min_guests <= guest_count <= max_g:
+                return rule.size
+        return False
+
 
 class CateringSetLine(models.Model):
     _name = 'lcs.catering.set.line'
     _description = 'Catering Set Dish Line'
-    _order = 'category_id, sequence, id'
+    _order = 'section, sequence, id'
 
     set_id = fields.Many2one(
         'lcs.catering.set', string='Set', required=True, ondelete='cascade',
     )
+    code = fields.Char(string='Code', help='e.g. A01, WC03, E08')
     product_id = fields.Many2one(
-        'product.product', string='Dish', required=True,
+        'product.product', string='Dish',
     )
     category_id = fields.Many2one(
         'product.category', string='Category',
         related='product_id.categ_id', store=True,
     )
+    section = fields.Char(
+        string='Section',
+        help='Section header, e.g. "Salad / Soup", "Cold Canapes"',
+    )
+    size_group = fields.Selection([
+        ('salad_main', 'Salad & Main'),
+        ('pasta_rice', 'Pasta & Rice'),
+        ('canapes', 'Canapes / Snack / Dessert'),
+    ], string='Size Group', default='salad_main',
+        help='Determines which auto-size rule applies')
     sequence = fields.Integer(default=10)
+    remark = fields.Char(string='Remark')
 
-    # Customer-facing (quotation / invoice)
+    # Multi-size pricing (HK$)
+    price_per_piece = fields.Float(string='Per piece', digits='Product Price')
+    price_pn_1_1 = fields.Float(string='1/1 PN', digits='Product Price')
+    price_pn_1_2 = fields.Float(string='1/2 PN', digits='Product Price')
+    price_s_tray = fields.Float(string='S tray', digits='Product Price')
+    price_m_tray = fields.Float(string='M tray', digits='Product Price')
+    price_l_tray = fields.Float(string='L tray', digits='Product Price')
+    price_xl_tray = fields.Float(string='XL tray', digits='Product Price')
+
+    # Customer-facing (set after auto-size resolution)
     qty = fields.Float(string='Qty', digits='Product Unit of Measure', default=1.0)
-    unit = fields.Char(string='Unit', help='e.g. pax, portion, set, pc')
+    unit = fields.Char(string='Unit')
     unit_price = fields.Float(string='Unit Price', digits='Product Price')
 
     # Kitchen-facing (EO)
     eo_qty = fields.Float(string='EO Qty', digits='Product Unit of Measure')
-    eo_unit = fields.Char(string='EO Unit', help='e.g. tray, litre, box, pan')
+    eo_unit = fields.Char(string='EO Unit')
 
     description = fields.Char(
         string='Description',
         help='Override description for this dish in this set',
     )
+
+    def get_price_for_size(self, size_key):
+        """Get the price for a specific size. Returns (price, size_key) or fallback."""
+        self.ensure_one()
+        price = getattr(self, 'price_%s' % size_key, 0)
+        if price:
+            return price, size_key
+
+        # Fallback: find next available size (go larger first, then smaller)
+        idx = SIZE_ORDER.index(size_key) if size_key in SIZE_ORDER else 0
+        # Try larger sizes first
+        for i in range(idx + 1, len(SIZE_ORDER)):
+            p = getattr(self, 'price_%s' % SIZE_ORDER[i], 0)
+            if p:
+                return p, SIZE_ORDER[i]
+        # Then try smaller sizes
+        for i in range(idx - 1, -1, -1):
+            p = getattr(self, 'price_%s' % SIZE_ORDER[i], 0)
+            if p:
+                return p, SIZE_ORDER[i]
+        return 0, size_key
+
+    @property
+    def has_per_piece_price(self):
+        return bool(self.price_per_piece)
 
 
 class CateringSetRule(models.Model):
@@ -72,7 +157,7 @@ class CateringSetRule(models.Model):
     )
     category_id = fields.Many2one(
         'product.category', string='Category',
-        help='Which dish category this rule applies to (e.g. A. Salad / Soup)',
+        help='Which dish category this rule applies to',
     )
     max_selection = fields.Integer(
         string='Max Selection',
@@ -85,6 +170,32 @@ class CateringSetRule(models.Model):
     )
 
 
+class CateringSetSizeRule(models.Model):
+    _name = 'lcs.catering.set.size.rule'
+    _description = 'Size Auto-Selection Rule'
+    _order = 'size_group, min_guests'
+
+    set_id = fields.Many2one(
+        'lcs.catering.set', string='Set', required=True, ondelete='cascade',
+    )
+    size_group = fields.Selection([
+        ('salad_main', 'Salad & Main'),
+        ('pasta_rice', 'Pasta & Rice'),
+        ('canapes', 'Canapes / Snack / Dessert'),
+    ], string='Size Group', required=True)
+    min_guests = fields.Integer(string='Min Guests', required=True)
+    max_guests = fields.Integer(string='Max Guests', help='0 = no upper limit', default=0)
+    size = fields.Selection([
+        ('per_piece', 'Per piece'),
+        ('pn_1_1', '1/1 PN'),
+        ('pn_1_2', '1/2 PN'),
+        ('s_tray', 'S tray'),
+        ('m_tray', 'M tray'),
+        ('l_tray', 'L tray'),
+        ('xl_tray', 'XL tray'),
+    ], string='Auto Size', required=True)
+
+
 class CateringSetRatioTier(models.Model):
     _name = 'lcs.catering.set.ratio.tier'
     _description = 'Kitchen Ratio Tier (per guest count range)'
@@ -94,22 +205,9 @@ class CateringSetRatioTier(models.Model):
     )
     category_id = fields.Many2one(
         'product.category', string='Dish Category',
-        help='Which dish category this ratio applies to',
     )
     min_guests = fields.Integer(string='Min Guests', required=True)
-    max_guests = fields.Integer(
-        string='Max Guests',
-        help='0 = no upper limit',
-        default=0,
-    )
-    kitchen_unit = fields.Char(
-        string='Kitchen Unit',
-        help='e.g. tray, litre, pcs',
-    )
-    ratio = fields.Float(
-        string='Guests per Unit',
-        help='Number of guests served by 1 kitchen unit. '
-             'E.g. 16 means 1 tray serves 16 guests.',
-        default=1.0,
-    )
-    notes = fields.Char(string='Notes', help='e.g. "1/2 GN tray x 2"')
+    max_guests = fields.Integer(string='Max Guests', default=0)
+    kitchen_unit = fields.Char(string='Kitchen Unit')
+    ratio = fields.Float(string='Guests per Unit', default=1.0)
+    notes = fields.Char(string='Notes')

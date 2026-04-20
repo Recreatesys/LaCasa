@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Add Expand Sets button and dish_selected column to SO form -->
     <record id="sale_order_view_form_inherit_lcs_catalog" model="ir.ui.view">
         <field name="name">sale.order.form.inherit.lcs.catalog</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- Add Expand Sets button in header -->
+            <!-- Add Expand Sets button -->
             <xpath expr="//field[@name='order_line']" position="before">
                 <button name="action_expand_sets"
                         string="Expand Sets"
@@ -17,18 +16,24 @@
                         invisible="state != 'draft'"/>
             </xpath>
 
-            <!-- Add dish_selected checkbox and unit fields to SO line list -->
+            <!-- Add set fields to SO line list -->
             <xpath expr="//field[@name='order_line']//list//field[@name='product_id']" position="before">
                 <field name="is_set_line" column_invisible="1"/>
+                <field name="is_addon_piece" column_invisible="1"/>
                 <field name="dish_selected" string="Pick"
                        readonly="not is_set_line"/>
+                <field name="set_line_code" string="Code" readonly="1"
+                       optional="show"/>
                 <field name="set_product_id" column_invisible="1"/>
                 <field name="catering_set_id" column_invisible="1"/>
             </xpath>
 
-            <!-- Add set_unit after product_uom_qty -->
+            <!-- Add set_unit and per_piece_price after product_uom_qty -->
             <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="after">
-                <field name="set_unit" string="Unit" readonly="1"/>
+                <field name="set_unit" string="Unit" readonly="1"
+                       optional="show"/>
+                <field name="per_piece_price" string="Per pc $" readonly="1"
+                       optional="hide"/>
             </xpath>
         </field>
     </record>
