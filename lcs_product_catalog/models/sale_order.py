@@ -33,6 +33,19 @@ class SaleOrderLine(models.Model):
         string='Per Piece Price',
         help='Price per piece for add-on ordering',
     )
+    full_price = fields.Float(
+        string='Full Price',
+        help='Stored full price — applied when dish is selected, zeroed when not',
+    )
+
+    @api.onchange('dish_selected')
+    def _onchange_dish_selected(self):
+        """Set price to full_price when selected, 0 when not."""
+        if self.is_set_line:
+            if self.dish_selected:
+                self.price_unit = self.full_price
+            else:
+                self.price_unit = 0
 
     @api.onchange('product_id')
     def _onchange_product_id_expand_set(self):
@@ -121,13 +134,14 @@ class SaleOrder(models.Model):
                 if set_line.code:
                     desc = '%s %s' % (set_line.code, desc)
 
-                # Main line (auto-sized)
+                # Main line (auto-sized, price=0 until selected)
                 self.env['sale.order.line'].create({
                     'order_id': self.id,
                     'product_id': product_variant.id,
                     'name': desc,
                     'product_uom_qty': set_line.qty or 1,
-                    'price_unit': price,
+                    'price_unit': 0,
+                    'full_price': price,
                     'is_set_line': True,
                     'dish_selected': False,
                     'set_product_id': line.product_id.id,

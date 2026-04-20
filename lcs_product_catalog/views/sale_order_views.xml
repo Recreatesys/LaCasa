@@ -32,6 +32,8 @@
             <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="after">
                 <field name="set_unit" string="Unit" readonly="1"
                        optional="show"/>
+                <field name="full_price" string="Set Price" readonly="1"
+                       optional="show"/>
                 <field name="per_piece_price" string="Per pc $" readonly="1"
                        optional="hide"/>
             </xpath>
