@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ==================== FORM VIEW ==================== -->
+    <record id="lcs_event_order_view_form" model="ir.ui.view">
+        <field name="name">lcs.event.order.form</field>
+        <field name="model">lcs.event.order</field>
+        <field name="arch" type="xml">
+            <form string="Event Order">
+                <header>
+                    <button name="action_acknowledge_change"
+                            string="Acknowledge Change"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not has_unacknowledged_change"/>
+                    <field name="payment_status" widget="badge"
+                           decoration-success="payment_status == 'paid'"
+                           decoration-danger="payment_status == 'unpaid'"
+                           decoration-muted="payment_status == 'cancelled'"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(lcs_event_order.lcs_event_order_action)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-file-text-o"
+                                invisible="1"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <div class="alert alert-warning"
+                         invisible="not has_unacknowledged_change">
+                        <strong>This Event Order has been updated!</strong>
+                        <field name="change_summary" readonly="1"/>
+                        <br/>
+                        <span>Changed on: <field name="last_change_date" readonly="1" widget="datetime"/></span>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sale_order_id" readonly="1"/>
+                            <field name="partner_id"/>
+                            <field name="brand"/>
+                            <field name="event_date"/>
+                            <field name="delivery_time" widget="float_time"/>
+                        </group>
+                        <group>
+                            <field name="service_format"/>
+                            <field name="service_type"/>
+                            <field name="delivery_type"/>
+                            <field name="guest_count"/>
+                        </group>
+                    </group>
+                    <group string="Delivery Address">
+                        <group>
+                            <field name="event_street"/>
+                            <field name="event_street2"/>
+                            <field name="event_country_id"/>
+                        </group>
+                        <group>
+                            <field name="event_remark"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines" name="order_lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="so_qty" readonly="1"/>
+                                    <field name="kitchen_qty"/>
+                                    <field name="kitchen_uom"/>
+                                    <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Version History" name="version_history">
+                            <group>
+                                <group>
+                                    <field name="version"/>
+                                    <field name="last_change_date"/>
+                                    <field name="change_summary"/>
+                                </group>
+                                <group>
+                                    <field name="change_acknowledged"/>
+                                    <field name="acknowledged_by"/>
+                                    <field name="acknowledged_date"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ==================== LIST VIEW ==================== -->
+    <record id="lcs_event_order_view_list" model="ir.ui.view">
+        <field name="name">lcs.event.order.list</field>
+        <field name="model">lcs.event.order</field>
+        <field name="arch" type="xml">
+            <list string="Event Orders"
+                  decoration-warning="has_unacknowledged_change"
+                  decoration-muted="payment_status == 'cancelled'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="brand"/>
+                <field name="event_date"/>
+                <field name="delivery_time" widget="float_time"/>
+                <field name="service_format"/>
+                <field name="service_type"/>
+                <field name="delivery_type"/>
+                <field name="guest_count"/>
+                <field name="version"/>
+                <field name="payment_status" widget="badge"
+                       decoration-success="payment_status == 'paid'"
+                       decoration-danger="payment_status == 'unpaid'"
+                       decoration-muted="payment_status == 'cancelled'"/>
+                <field name="has_unacknowledged_change" invisible="1"/>
+                <field name="change_acknowledged" string="Ack"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ==================== KANBAN VIEW ==================== -->
+    <record id="lcs_event_order_view_kanban" model="ir.ui.view">
+        <field name="name">lcs.event.order.kanban</field>
+        <field name="model">lcs.event.order</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" default_group_by="event_date">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="brand"/>
+                <field name="event_date"/>
+                <field name="service_format"/>
+                <field name="service_type"/>
+                <field name="guest_count"/>
+                <field name="payment_status"/>
+                <field name="has_unacknowledged_change"/>
+                <field name="version"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex justify-content-between">
+                            <strong><field name="name"/></strong>
+                            <span t-if="record.has_unacknowledged_change.raw_value"
+                                  class="badge text-bg-warning">Updated</span>
+                        </div>
+                        <div>
+                            <field name="partner_id"/>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span><field name="event_date"/></span>
+                            <span><field name="guest_count"/> guests</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span><field name="service_format"/></span>
+                            <field name="payment_status" widget="badge"
+                                   decoration-success="payment_status == 'paid'"
+                                   decoration-danger="payment_status == 'unpaid'"
+                                   decoration-muted="payment_status == 'cancelled'"/>
+                        </div>
+                        <div t-if="record.version.raw_value > 1" class="text-muted small">
+                            v<field name="version"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ==================== SEARCH VIEW ==================== -->
+    <record id="lcs_event_order_view_search" model="ir.ui.view">
+        <field name="name">lcs.event.order.search</field>
+        <field name="model">lcs.event.order</field>
+        <field name="arch" type="xml">
+            <search string="Event Orders">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="sale_order_id"/>
+                <separator/>
+                <filter name="filter_unpaid" string="Unpaid"
+                        domain="[('payment_status', '=', 'unpaid')]"/>
+                <filter name="filter_paid" string="Paid"
+                        domain="[('payment_status', '=', 'paid')]"/>
+                <filter name="filter_cancelled" string="Cancelled"
+                        domain="[('payment_status', '=', 'cancelled')]"/>
+                <separator/>
+                <filter name="filter_unacknowledged" string="Unacknowledged Changes"
+                        domain="[('has_unacknowledged_change', '=', True)]"/>
+                <separator/>
+                <filter name="filter_today" string="Today"
+                        domain="[('event_date', '=', context_today().strftime('%%Y-%%m-%%d'))]"/>
+                <filter name="filter_this_week" string="This Week"
+                        domain="[('event_date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%%Y-%%m-%%d')),
+                                 ('event_date', '&lt;', (context_today() + datetime.timedelta(days=7-context_today().weekday())).strftime('%%Y-%%m-%%d'))]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="groupby_event_date" string="Event Date"
+                            context="{'group_by': 'event_date'}"/>
+                    <filter name="groupby_brand" string="Brand"
+                            context="{'group_by': 'brand'}"/>
+                    <filter name="groupby_service_format" string="Service Format"
+                            context="{'group_by': 'service_format'}"/>
+                    <filter name="groupby_service_type" string="Service Type"
+                            context="{'group_by': 'service_type'}"/>
+                    <filter name="groupby_payment_status" string="Payment Status"
+                            context="{'group_by': 'payment_status'}"/>
+                    <filter name="groupby_partner" string="Customer"
+                            context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ==================== ACTION ==================== -->
+    <record id="lcs_event_order_action" model="ir.actions.act_window">
+        <field name="name">Event Orders</field>
+        <field name="res_model">lcs.event.order</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="lcs_event_order_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Event Orders yet
+            </p>
+            <p>
+                Event Orders are automatically created when a Sales Order is confirmed.
+            </p>
+        </field>
+    </record>
+
+</odoo>

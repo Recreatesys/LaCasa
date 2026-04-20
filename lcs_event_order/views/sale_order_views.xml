@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add EO smart button to Sales Order form -->
+    <record id="sale_order_view_form_inherit_lcs_eo" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.lcs.eo</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_event_orders"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-cutlery"
+                        invisible="event_order_count == 0">
+                    <field name="event_order_count" widget="statinfo" string="Event Orders"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add Monthly Statement wizard under Accounting > Reporting -->
+    <menuitem id="menu_monthly_statement"
+              name="Monthly Statement"
+              parent="account.menu_finance_reports"
+              action="lcs_monthly_statement.action_monthly_statement_wizard"
+              sequence="100"/>
+
+</odoo>

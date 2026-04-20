@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- PAGE 1: Invoice / Quotation Summary                          -->
+    <!-- ============================================================ -->
+    <template id="report_invoice_lcs" inherit_id="account.report_invoice_document" primary="True">
+        <xpath expr="." position="replace">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.partner_id.lang"/>
+                    <t t-call="lcs_crm_catering.report_invoice_lcs_document" t-lang="lang"/>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="report_invoice_lcs_document">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o"/>
+            <div class="page" style="font-family: Arial, sans-serif; font-size: 12px;">
+
+                <!-- Company Header -->
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"
+                             style="max-height: 60px; margin-right: 15px;" alt="Logo"/>
+                    </div>
+                    <div>
+                        <span t-field="o.company_id.partner_id.name"/><br/>
+                        <span t-field="o.company_id.partner_id.street"/>
+                        <t t-if="o.company_id.partner_id.street2">, <span t-field="o.company_id.partner_id.street2"/></t><br/>
+                        <t t-if="o.company_id.phone">Tel: <span t-field="o.company_id.phone"/></t>
+                        <t t-if="o.company_id.partner_id.fax"> FAX: <span t-field="o.company_id.partner_id.fax"/></t><br/>
+                        <t t-if="o.company_id.email">Email: <span t-field="o.company_id.email"/></t>
+                    </div>
+                </div>
+
+                <!-- Title -->
+                <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 15px;">
+                    <t t-if="o.move_type == 'out_invoice'">Invoice</t>
+                    <t t-elif="o.move_type == 'out_refund'">Credit Note</t>
+                    <t t-else="">Document</t>
+                </h1>
+
+                <!-- Reference and Dates -->
+                <table style="width: 100%; margin-bottom: 15px;">
+                    <tr>
+                        <td style="width: 50%;">
+                            <strong>Ref Number:</strong> <span t-field="o.name"/>
+                        </td>
+                        <td style="text-align: right;">
+                            <strong>Invoice Date:</strong> <span t-field="o.invoice_date" t-options='{"format": "d/MMM/yyyy"}'/><br/>
+                            <strong>Payment Due Date:</strong> <span t-field="o.invoice_date_due" t-options='{"format": "d/MMM/yyyy"}'/>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Customer Info -->
+                <div style="margin-bottom: 15px;">
+                    <span t-field="o.partner_id.name" style="font-size: 14px;"/><br/>
+                    <t t-if="o.partner_id.street"><span t-field="o.partner_id.street"/><br/></t>
+                    <t t-if="o.partner_id.street2"><span t-field="o.partner_id.street2"/><br/></t>
+                    <t t-if="o.attention_to_id">
+                        Attn: <span t-field="o.attention_to_id.name"/><br/>
+                    </t>
+                    <!-- Catering service description -->
+                    <t t-if="o.delivery_type or o.commitment_date">
+                        Catering service on
+                        <t t-if="o.commitment_date">
+                            <span t-field="o.commitment_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
+                        </t>
+                    </t>
+                </div>
+
+                <!-- Service Summary Table (Page 1) -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #000;">
+                            <th style="text-align: left; padding: 5px;">Service Description</th>
+                            <th style="text-align: right; padding: 5px;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px 5px; vertical-align: top;">
+                                <t t-if="o.delivery_type">
+                                    <span t-field="o.delivery_type"/><br/>
+                                </t>
+                                <span style="color: #666;">Details please refer to Appendix</span>
+                            </td>
+                            <td style="text-align: right; padding: 10px 5px;">
+                                HK$<span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": False}'/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Payment Method Terms -->
+                <div style="margin-bottom: 15px; font-size: 11px;">
+                    <strong>Payment Method:</strong><br/>
+                    1. By Bank Transfer / By Cheque:<br/>
+                    <span style="margin-left: 15px;">Please send us the receipt copy once the payment is done.</span><br/>
+                    <span style="margin-left: 15px;">Bank: Bank of East Asia</span><br/>
+                    <span style="margin-left: 15px;">Payee name: La Casa Management Company Ltd</span><br/>
+                    <span style="margin-left: 15px;">A/C no: 015-187-68-00209-0</span><br/>
+                    <br/>
+                    2. Through FPS:<br/>
+                    <span style="margin-left: 15px;">Account name: La Casa Management Company Ltd</span><br/>
+                    <span style="margin-left: 15px;">FPS ID: 165112806</span><br/>
+                    <br/>
+                    *all bank charges shall be paid by customers
+                </div>
+
+                <!-- Reschedule Terms -->
+                <div style="margin-bottom: 20px; font-size: 11px;">
+                    <strong>Reschedule:</strong><br/>
+                    1. More than or equal to 7-day notice*, the catering service can be rescheduled to later dates within 3 months <u>without extra charge</u>;<br/>
+                    2. less than 7-day notice*: 30% of the total invoice amount:<br/>
+                    3. less than 4-day notice*: 50% of the total invoice amount;<br/>
+                    4. less than 2-day notice*: 100% of the total invoice amount.<br/>
+                    <br/>
+                    - Food Delivery / catering service will not be provided if Typhoon Signal No. 8 or above or Black Rainstorm Signal is hoisted or under 'extreme condition. The delivery can be resumed within four hours after Typhoon Signal No. 8 or above or black rainstorm warning is lowered, depends on the traffic condition. The delivery can also be rescheduled on next day <u>without extra charge</u> OR later dates within 3 month with extra charge of 50% of the total invoice amount.<br/>
+                    <br/>
+                    *Day of notice here refers to working days, that means Mon-Fri, except Sat, Sun &amp; Public Holidays
+                </div>
+
+                <!-- Total -->
+                <table style="width: 100%; margin-bottom: 20px;">
+                    <tr>
+                        <td style="text-align: right; padding: 5px; border-top: 1px solid #000;">
+                            <strong>Total:</strong>
+                        </td>
+                        <td style="text-align: right; padding: 5px; border-top: 1px solid #000; width: 120px;">
+                            <strong>HK$<span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": False}'/></strong>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Thank you -->
+                <div style="text-align: center; margin-top: 30px;">
+                    <strong>Thank You for Your Business!</strong>
+                </div>
+
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- PAGE 2+: Appendix (Detail Lines)                             -->
+            <!-- ============================================================ -->
+            <div class="page" style="font-family: Arial, sans-serif; font-size: 12px; page-break-before: always;">
+
+                <!-- Company Header (repeated) -->
+                <div style="margin-bottom: 20px;">
+                    <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"
+                         style="max-height: 60px;" alt="Logo"/>
+                </div>
+
+                <!-- Delivery Details -->
+                <table style="width: 100%; margin-bottom: 20px;">
+                    <tr>
+                        <td style="width: 150px;"><strong>Ref Number:</strong></td>
+                        <td><span t-field="o.name"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Delivery Date:</strong></td>
+                        <td>
+                            <t t-if="o.commitment_date">
+                                <span t-field="o.commitment_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr t-if="o.delivery_time">
+                        <td><strong>Delivery Time:</strong></td>
+                        <td><span t-field="o.delivery_time" widget="float_time"/></td>
+                    </tr>
+                    <tr t-if="o.partner_shipping_id">
+                        <td><strong>Delivery Address:</strong></td>
+                        <td>
+                            <span t-field="o.partner_shipping_id.street"/>
+                            <t t-if="o.partner_shipping_id.street2">, <span t-field="o.partner_shipping_id.street2"/></t>
+                        </td>
+                    </tr>
+                    <tr t-if="o.attention_to_id">
+                        <td><strong>Contact Person:</strong></td>
+                        <td><span t-field="o.attention_to_id.name"/></td>
+                    </tr>
+                    <tr t-if="o.attention_to_id and o.attention_to_id.phone">
+                        <td><strong>Contact Number:</strong></td>
+                        <td><span t-field="o.attention_to_id.phone"/></td>
+                    </tr>
+                </table>
+
+                <!-- Detail Product Lines -->
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #000;">
+                            <th style="text-align: left; padding: 5px;">Dish Name</th>
+                            <th style="text-align: right; padding: 5px;">Unit Price</th>
+                            <th style="text-align: right; padding: 5px;">Qty</th>
+                            <th style="text-align: right; padding: 5px;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Delivery type header row -->
+                        <tr t-if="o.delivery_type" style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 5px; font-weight: bold;">
+                                <span t-field="o.delivery_type"/>
+                            </td>
+                            <td style="text-align: right; padding: 5px;">-</td>
+                            <td style="text-align: right; padding: 5px;">-</td>
+                            <td style="text-align: right; padding: 5px;">-</td>
+                        </tr>
+                        <!-- Product lines -->
+                        <t t-foreach="o.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 5px;">
+                                    <span t-field="line.name"/>
+                                </td>
+                                <td style="text-align: right; padding: 5px;">
+                                    HK$<span t-field="line.price_unit"/>
+                                </td>
+                                <td style="text-align: right; padding: 5px;">
+                                    <span t-field="line.quantity"/>
+                                </td>
+                                <td style="text-align: right; padding: 5px;">
+                                    HK$<span t-field="line.price_subtotal"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfoot>
+                        <tr style="border-top: 1px solid #000;">
+                            <td colspan="3" style="text-align: right; padding: 5px;"><strong>Total</strong></td>
+                            <td style="text-align: right; padding: 5px;">
+                                <strong>HK$<span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": False}'/></strong>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+
+        </t>
+    </template>
+
+    <!-- Register the report action -->
+    <record id="action_report_invoice_lcs" model="ir.actions.report">
+        <field name="name">LCS Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lcs_crm_catering.report_invoice_lcs_document</field>
+        <field name="report_file">lcs_crm_catering.report_invoice_lcs_document</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

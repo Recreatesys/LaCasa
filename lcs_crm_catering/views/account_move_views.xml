@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_move_form_inherit_lcs" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.lcs</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add attention_to, delivery time, call van in the header left group -->
+            <xpath expr="//group[@id='header_left_group']" position="inside">
+                <field name="attention_to_id"
+                       domain="[('parent_id', '=', partner_id)]"/>
+                <field name="delivery_time" widget="float_time"/>
+                <field name="call_van"/>
+            </xpath>
+
+            <!-- Add catering details before invoice lines -->
+            <xpath expr="//field[@name='invoice_line_ids']" position="before">
+                <group string="Catering Details">
+                    <group>
+                        <field name="brand"/>
+                        <field name="service_format"/>
+                        <field name="service_type"/>
+                        <field name="delivery_type"/>
+                    </group>
+                    <group>
+                        <field name="guest_count"/>
+                        <field name="payment_method"/>
+                        <field name="event_remark"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

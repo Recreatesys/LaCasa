@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_form_inherit_lcs_eo" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.lcs.eo</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_general']" position="after">
+                <group string="Kitchen Settings">
+                    <field name="kitchen_uom"/>
+                    <field name="kitchen_ratio"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

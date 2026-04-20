@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top-level app menu -->
+    <menuitem id="menu_lcs_event_order_root"
+              name="Event Orders"
+              web_icon="lcs_event_order,static/description/icon.png"
+              sequence="25"/>
+
+    <!-- Sub menus -->
+    <menuitem id="menu_lcs_event_order_main"
+              name="Event Orders"
+              parent="menu_lcs_event_order_root"
+              sequence="10"/>
+
+    <menuitem id="menu_lcs_event_order_all"
+              name="All Event Orders"
+              parent="menu_lcs_event_order_main"
+              action="lcs_event_order_action"
+              sequence="10"/>
+
+</odoo>

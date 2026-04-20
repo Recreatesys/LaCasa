@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_monthly_statement_document">
+        <t t-call="web.basic_layout">
+            <t t-set="wizard" t-value="docs[0]"/>
+            <t t-set="invoices" t-value="wizard._get_invoices()"/>
+            <t t-set="ref_number" t-value="wizard._get_reference_number()"/>
+            <t t-set="month_year" t-value="wizard._get_month_year_str()"/>
+
+            <!-- ==================== PAGE 1: MONTHLY STATEMENT SUMMARY ==================== -->
+            <div class="page" style="font-family: Arial, sans-serif; font-size: 12px;">
+
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <div>
+                        <img t-if="wizard.env.company.logo"
+                             t-att-src="image_data_uri(wizard.env.company.logo)"
+                             style="max-height: 60px;" alt="Logo"/>
+                    </div>
+                    <h1 style="font-size: 28px; font-weight: bold;">MONTHLY STATEMENT</h1>
+                </div>
+
+                <!-- Company info -->
+                <div style="margin-bottom: 15px;">
+                    <span t-field="wizard.env.company.partner_id.name"/><br/>
+                    <span t-field="wizard.env.company.partner_id.street"/>
+                    <t t-if="wizard.env.company.partner_id.street2">, <span t-field="wizard.env.company.partner_id.street2"/></t><br/>
+                    <t t-if="wizard.env.company.phone">Tel: <span t-field="wizard.env.company.phone"/></t>
+                    <t t-if="wizard.env.company.partner_id.fax"> FAX: <span t-field="wizard.env.company.partner_id.fax"/></t><br/>
+                    <t t-if="wizard.env.company.email">Email: <span t-field="wizard.env.company.email"/></t>
+                </div>
+
+                <!-- Reference number -->
+                <div style="text-align: right; margin-bottom: 15px;">
+                    Reference No: <span t-esc="ref_number"/>
+                </div>
+
+                <!-- Customer info -->
+                <div style="margin-bottom: 15px;">
+                    <t t-set="last_invoice" t-value="invoices[-1] if invoices else False"/>
+                    Date: <span t-if="last_invoice" t-field="last_invoice.invoice_date" t-options='{"format": "d MMM yyyy"}'/><br/>
+                    <span t-field="wizard.partner_id.name"/><br/>
+                    <t t-if="wizard.partner_id.street"><span t-field="wizard.partner_id.street"/><br/></t>
+                    <t t-if="wizard.partner_id.street2"><span t-field="wizard.partner_id.street2"/><br/></t>
+                    <t t-if="last_invoice and last_invoice.attention_to_id">
+                        Attn: <span t-field="last_invoice.attention_to_id.name"/><br/>
+                    </t>
+                    Re: Catering Service in <span t-esc="month_year"/>
+                </div>
+
+                <!-- Summary Table -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #000;">
+                            <th style="text-align: left; padding: 5px;">Date</th>
+                            <th style="text-align: left; padding: 5px;">Week</th>
+                            <th style="text-align: left; padding: 5px;">Reference</th>
+                            <th style="text-align: right; padding: 5px;">Balance HK$</th>
+                            <th style="text-align: left; padding: 5px;">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="invoices" t-as="inv">
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 5px;">
+                                    <span t-field="inv.invoice_date" t-options='{"format": "d/M/yyyy"}'/>
+                                </td>
+                                <td style="padding: 5px;">
+                                    <span t-esc="inv.invoice_date.strftime('%a')"/>
+                                </td>
+                                <td style="padding: 5px;">
+                                    <span t-field="inv.name"/>
+                                </td>
+                                <td style="text-align: right; padding: 5px;">
+                                    <span t-esc="'{:,.0f}'.format(inv.amount_total)"/>
+                                </td>
+                                <td style="padding: 5px;"></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfoot>
+                        <tr style="border-top: 2px solid #000;">
+                            <td colspan="3" style="text-align: right; padding: 5px;"><strong>Total:</strong></td>
+                            <td style="text-align: right; padding: 5px;">
+                                <strong><span t-esc="'{:,.0f}'.format(sum(invoices.mapped('amount_total')))"/></strong>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- Payment Method -->
+                <div style="margin-top: 40px; font-size: 11px;">
+                    <strong>Payment Method:</strong><br/>
+                    By Bank Transfer:<br/>
+                    Please send us the receipt copy once the payment is done.<br/>
+                    Following please find the bank details:-<br/>
+                    Bank: Bank of East Asia<br/>
+                    Payee name: La Casa Management Company Ltd<br/>
+                    A/C no: 015-187-68-00209-0<br/>
+                    <br/>
+                    *all bank charges should be paid by customers
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <strong>THANK YOU for your business!</strong>
+                </div>
+
+            </div>
+
+            <!-- ==================== PAGE 2+: INDIVIDUAL DELIVERY DETAILS ==================== -->
+            <t t-foreach="invoices" t-as="inv">
+                <div class="page" style="font-family: Arial, sans-serif; font-size: 12px; page-break-before: always;">
+
+                    <!-- Header -->
+                    <div style="margin-bottom: 15px;">
+                        <span t-field="wizard.partner_id.shortname"/> Menu - <span t-esc="month_year"/>
+                    </div>
+
+                    <!-- Delivery date heading -->
+                    <h3 style="margin-bottom: 10px;">
+                        <span t-field="inv.invoice_date" t-options='{"format": "MMM d"}'/>
+                        (<span t-esc="inv.invoice_date.strftime('%a')"/>)
+                    </h3>
+
+                    <!-- Line items table -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #000;">
+                                <th style="text-align: left; padding: 5px;">Item Description</th>
+                                <th style="text-align: right; padding: 5px;">Qty</th>
+                                <th style="text-align: right; padding: 5px;">Unit Price</th>
+                                <th style="text-align: right; padding: 5px;">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="inv.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 5px;">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td style="text-align: right; padding: 5px;">
+                                        <span t-esc="int(line.quantity)"/>
+                                    </td>
+                                    <td style="text-align: right; padding: 5px;">
+                                        HK$<span t-esc="'{:,.0f}'.format(line.price_unit)"/>
+                                    </td>
+                                    <td style="text-align: right; padding: 5px;">
+                                        HK$<span t-esc="'{:,.0f}'.format(line.price_subtotal)"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr style="border-top: 1px solid #000;">
+                                <td colspan="3" style="text-align: right; padding: 5px;"><strong>Total:</strong></td>
+                                <td style="text-align: right; padding: 5px;">
+                                    <strong>HK$<span t-esc="'{:,.0f}'.format(inv.amount_total)"/></strong>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </t>
+
+        </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="action_report_monthly_statement" model="ir.actions.report">
+        <field name="name">Monthly Statement</field>
+        <field name="model">lcs.monthly.statement.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lcs_monthly_statement.report_monthly_statement_document</field>
+        <field name="report_file">lcs_monthly_statement.report_monthly_statement_document</field>
+    </record>
+
+</odoo>

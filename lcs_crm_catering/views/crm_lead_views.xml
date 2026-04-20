@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="crm_lead_view_form_inherit_lcs" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.lcs</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add catering fields before the notebook (after partner/salesperson groups) -->
+            <xpath expr="//notebook" position="before">
+                <group string="Catering Details">
+                    <group>
+                        <field name="brand"/>
+                        <field name="client_type"/>
+                        <field name="service_format"/>
+                        <field name="service_type"/>
+                        <field name="delivery_type"/>
+                    </group>
+                    <group>
+                        <field name="event_date"/>
+                        <field name="guest_count"/>
+                    </group>
+                </group>
+                <group string="Event / Delivery Address">
+                    <group>
+                        <field name="event_street" string="Street"/>
+                        <field name="event_street2" string="Street 2"/>
+                        <field name="event_country_id" string="Country"/>
+                    </group>
+                    <group>
+                        <field name="event_remark"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

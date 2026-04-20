@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_event_order_user,lcs.event.order user,model_lcs_event_order,base.group_user,1,1,1,0
+access_event_order_manager,lcs.event.order manager,model_lcs_event_order,base.group_system,1,1,1,1
+access_event_order_line_user,lcs.event.order.line user,model_lcs_event_order_line,base.group_user,1,1,1,0
+access_event_order_line_manager,lcs.event.order.line manager,model_lcs_event_order_line,base.group_system,1,1,1,1

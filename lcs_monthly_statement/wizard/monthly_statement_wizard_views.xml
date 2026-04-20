@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_monthly_statement_wizard_form" model="ir.ui.view">
+        <field name="name">lcs.monthly.statement.wizard.form</field>
+        <field name="model">lcs.monthly.statement.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Monthly Statement">
+                <group>
+                    <field name="partner_id"/>
+                    <field name="brand"/>
+                    <field name="month"/>
+                    <field name="year"/>
+                </group>
+                <footer>
+                    <button name="action_generate_statement"
+                            string="Generate Statement"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monthly_statement_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Monthly Statement</field>
+        <field name="res_model">lcs.monthly.statement.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

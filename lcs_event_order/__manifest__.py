@@ -1,0 +1,20 @@
+{
+    'name': 'LCS Event Order',
+    'version': '19.0.1.0.0',
+    'category': 'Operations',
+    'summary': 'Event Orders for kitchen — auto-created from confirmed Sales Orders',
+    'author': 'Recreatesys',
+    'depends': ['sale', 'lcs_crm_catering'],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/sequence.xml',
+        'views/event_order_views.xml',
+        'views/product_views.xml',
+        'views/sale_order_views.xml',
+        'views/menu.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}
