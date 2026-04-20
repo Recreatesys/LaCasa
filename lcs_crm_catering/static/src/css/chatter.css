@@ -1,4 +1,14 @@
 .o-mail-Form-chatter {
     max-width: 20% !important;
     flex: 0 0 20% !important;
+    margin-left: auto !important;
+}
+
+.o_form_sheet_bg {
+    flex: 1 1 auto !important;
+    max-width: 80% !important;
+}
+
+.o_form_sheet_bg .o_form_sheet {
+    max-width: 100% !important;
 }
