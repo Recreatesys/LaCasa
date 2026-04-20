@@ -26,7 +26,17 @@
                         <field name="delivery_type"/>
                     </group>
                     <group>
-                        <field name="guest_count"/>
+                        <label for="guest_count"/>
+                        <div class="d-flex align-items-center gap-2">
+                            <field name="guest_count" nolabel="1" class="oe_inline"/>
+                            <button name="action_reload_sets"
+                                    string="Reload Sets"
+                                    type="object"
+                                    class="btn-link btn-sm p-0"
+                                    icon="fa-refresh"
+                                    invisible="state != 'draft'"
+                                    confirm="This will recalculate all set lines based on the new guest count. Unselected dishes will be reset. Continue?"/>
+                        </div>
                         <field name="payment_method"/>
                         <field name="event_remark"/>
                     </group>

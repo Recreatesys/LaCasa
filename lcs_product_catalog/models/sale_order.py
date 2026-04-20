@@ -71,6 +71,56 @@ class SaleOrderLine(models.Model):
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    def action_reload_sets(self):
+        """Remove all existing set lines and re-expand with current guest count."""
+        self.ensure_one()
+        # Remember which dishes were selected
+        selected = {}
+        for line in self.order_line.filtered(lambda l: l.is_set_line and l.dish_selected):
+            key = (line.set_product_id.id, line.product_id.id, line.is_addon_piece)
+            selected[key] = line.product_uom_qty
+
+        # Remove all set-generated lines (set lines + section/note headers)
+        set_lines = self.order_line.filtered(
+            lambda l: l.is_set_line
+            or (l.display_type and l.set_product_id)
+        )
+        # Also remove section/note lines created by expansion
+        # These don't have set_product_id, so find them by sequence proximity
+        all_set_product_ids = self.order_line.filtered(
+            lambda l: l.is_set_line
+        ).mapped('set_product_id')
+
+        lines_to_remove = self.order_line.filtered(lambda l: l.is_set_line)
+        # Also remove display_type lines that were created for sets
+        for line in self.order_line.filtered(lambda l: l.display_type):
+            # Check if this is a set section/note by name patterns
+            if line.name and ('──' in line.name or '↳' in line.name or line.name.startswith('💡')):
+                lines_to_remove |= line
+            # Check if it's a section that matches a set section name
+            if line.display_type == 'line_section':
+                for set_line in self.order_line.filtered(lambda l: l.is_set_line):
+                    if set_line.catering_set_id:
+                        sections = set_line.catering_set_id.line_ids.mapped('section')
+                        if line.name in sections:
+                            lines_to_remove |= line
+                            break
+
+        lines_to_remove.unlink()
+
+        # Re-expand
+        self.action_expand_sets()
+
+        # Restore selections
+        for line in self.order_line.filtered(lambda l: l.is_set_line):
+            key = (line.set_product_id.id, line.product_id.id, line.is_addon_piece)
+            if key in selected:
+                line.write({
+                    'dish_selected': True,
+                    'price_unit': line.full_price,
+                    'product_uom_qty': selected[key] if line.is_addon_piece else line.product_uom_qty,
+                })
+
     def action_expand_sets(self):
         """Expand all set products in the SO into individual dish lines."""
         self.ensure_one()
