@@ -1,14 +1,26 @@
-.o-mail-Form-chatter {
+/* Chatter: 20% width, pinned to right */
+.o-mail-Form-chatter.o-aside {
+    width: 20% !important;
+    min-width: 20% !important;
     max-width: 20% !important;
     flex: 0 0 20% !important;
-    margin-left: auto !important;
+    position: sticky !important;
+    top: 0;
+    right: 0;
 }
 
-.o_form_sheet_bg {
-    flex: 1 1 auto !important;
+/* Form sheet: take remaining 80% */
+.o_form_sheet_bg:has(+ .o-mail-Form-chatter.o-aside) {
+    flex: 1 1 80% !important;
     max-width: 80% !important;
 }
 
+/* Remove max-width limit on the sheet itself */
 .o_form_sheet_bg .o_form_sheet {
+    max-width: 100% !important;
+}
+
+/* Chatter when not aside (below form) */
+.o-mail-Form-chatter:not(.o-aside) {
     max-width: 100% !important;
 }
