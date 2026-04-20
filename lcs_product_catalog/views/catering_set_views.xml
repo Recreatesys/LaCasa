@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ==================== SET FORM VIEW ==================== -->
+    <record id="lcs_catering_set_view_form" model="ir.ui.view">
+        <field name="name">lcs.catering.set.form</field>
+        <field name="model">lcs.catering.set</field>
+        <field name="arch" type="xml">
+            <form string="Catering Set">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. Western Buffet"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Available Dishes" name="dishes">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id"/>
+                                    <field name="category_id" readonly="1"/>
+                                    <field name="unit_price"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Selection Rules" name="rules">
+                            <field name="rule_ids">
+                                <list editable="bottom">
+                                    <field name="category_id"/>
+                                    <field name="max_selection"/>
+                                    <field name="label"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Kitchen Ratio Tiers" name="ratios">
+                            <field name="ratio_tier_ids">
+                                <list editable="bottom">
+                                    <field name="category_id"/>
+                                    <field name="min_guests"/>
+                                    <field name="max_guests"/>
+                                    <field name="kitchen_unit"/>
+                                    <field name="ratio"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ==================== SET LIST VIEW ==================== -->
+    <record id="lcs_catering_set_view_list" model="ir.ui.view">
+        <field name="name">lcs.catering.set.list</field>
+        <field name="model">lcs.catering.set</field>
+        <field name="arch" type="xml">
+            <list string="Catering Sets">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ==================== ACTION ==================== -->
+    <record id="lcs_catering_set_action" model="ir.actions.act_window">
+        <field name="name">Catering Sets</field>
+        <field name="res_model">lcs.catering.set</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ==================== MENU ==================== -->
+    <menuitem id="menu_lcs_catering_set"
+              name="Catering Sets"
+              parent="sale.sale_menu_root"
+              action="lcs_catering_set_action"
+              sequence="50"/>
+
+</odoo>

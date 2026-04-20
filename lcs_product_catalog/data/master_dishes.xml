@@ -1,0 +1,1536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Product Categories -->
+    <record id="cat_lcs_dishes" model="product.category">
+        <field name="name">LCS Dishes</field>
+    </record>
+    <record id="cat_salad_soup" model="product.category">
+        <field name="name">A. Salad / Soup</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_appetizer" model="product.category">
+        <field name="name">B. Appetizer</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_party_snack" model="product.category">
+        <field name="name">C. Party Snack</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_canapes" model="product.category">
+        <field name="name">D. Canapes (1-2 bite sized)</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_main_dishes" model="product.category">
+        <field name="name">E. Main Dishes</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_vegetables_fruits" model="product.category">
+        <field name="name">F. Vegetables / Fresh Fruits</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_rice_pasta" model="product.category">
+        <field name="name">G. Rice & Pasta</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_dessert" model="product.category">
+        <field name="name">H. Sweet Canapes & Dessert</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+
+    <!-- Dishes -->
+    <record id="dish_001" model="product.template">
+        <field name="name">Chicken, Apple, Walnut &amp; Cranberry Romaine Salad</field>
+        <field name="description">雞肉蘋果合桃金巴利羅馬生菜沙律</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_002" model="product.template">
+        <field name="name">Roasted Pumpkin, Mushroom, Red Onion &amp; Lentils Salad (V)</field>
+        <field name="description">烤南瓜沙律(配野菌、紅洋蔥及蘭度豆) (素)</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_003" model="product.template">
+        <field name="name">Smoked Salmon, Bacon and Egg Caesar Salad Served with Croutons &amp; Parmesan Cheese</field>
+        <field name="description">煙三文魚煙肉蛋凱撒沙律(配麵包粒及巴馬臣芝士)</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_004" model="product.template">
+        <field name="name">Thai Shrimp Pomelo Salad</field>
+        <field name="description">泰式蝦柚子沙律</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_005" model="product.template">
+        <field name="name">Grilled Prawn, Spicy Salami &amp; Avocado Salad with Lemon Dressing (Cherry Tomato, Green Olive &amp; Pine Nut)</field>
+        <field name="description">大蝦辣肉腸牛油果沙律配檸檬醬(含車厘茄、水欖及松子仁)</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_006" model="product.template">
+        <field name="name">Japanese Tomato &amp; Cucumber Salad (V)</field>
+        <field name="description">日式蕃茄青瓜沙律 (V)</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_007" model="product.template">
+        <field name="name">Chicken &amp; Apple Salad</field>
+        <field name="description">雞肉蘋果沙律</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_008" model="product.template">
+        <field name="name">Chickpea, Sweet-Corn, Bell Pepper &amp; Quinoa Salad</field>
+        <field name="description">雞心豆粟米甜椒藜麥沙律</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_009" model="product.template">
+        <field name="name">Orange, French Bean &amp; Red Beetroot Salad with Pine Nuts</field>
+        <field name="description">香橙法邊豆紅菜頭松子仁沙律</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_010" model="product.template">
+        <field name="name">Assorted Seafood in Dried Scallop Soup</field>
+        <field name="description">海皇瑤柱羹</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_011" model="product.template">
+        <field name="name">Assorted Seafood Soup</field>
+        <field name="description">海皇羮</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_012" model="product.template">
+        <field name="name">Truffle Wild Mushroom Cream Soup</field>
+        <field name="description">黑松露野菌忌廉湯</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_013" model="product.template">
+        <field name="name">Chicken Soup with Conpoy, Conch &amp; Fish Maw</field>
+        <field name="description">瑤柱花膠螺肉燉雞湯</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_014" model="product.template">
+        <field name="name">Chinese Appetizer Platter: Beetroot with Lemon Sauce, Mouth-Watering Chicken, Beef Shank in Chinese Marinade Sauce, Braised Spare Ribs with Sweetened Vinegar</field>
+        <field name="description">中式小食拼盤
+檸⾹紅菜頭、惹味⼝⽔雞、古法滷⽔⽜𦟌、甜蜜糖醋排⻣</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_015" model="product.template">
+        <field name="name">Parma Ham &amp; Melon with Rocket</field>
+        <field name="description">意大利風乾火腿哈蜜瓜</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_016" model="product.template">
+        <field name="name">Italian King Prawn Seafood Salad with Lemon, Parsley &amp; Olive
+(King Prawn, Hokkaido Scallop, Blue Mussel &amp; Squid)</field>
+        <field name="description">意大利凍大蝦海鮮沙律配檸檬汁、香芹及水欖(大蝦、帶子、青口及魷魚)</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_017" model="product.template">
+        <field name="name">Crab Meat, Avocado &amp; Tomato Stack (12pcs)</field>
+        <field name="description">蟹肉牛油果蕃茄塔 (12 件)</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_018" model="product.template">
+        <field name="name">Assorted Cold Cut &amp; Cheese Platter</field>
+        <field name="description">意式冷肉芝士拼盤</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_019" model="product.template">
+        <field name="name">Cold Cut Platter</field>
+        <field name="description">意式冷肉拼盤</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_020" model="product.template">
+        <field name="name">Appetizer Platter - Marinated Beef Shank in Chinese Rose Wine, Beetroot with Lemon Sauce, Cucumber with Black Fungus</field>
+        <field name="description">玉食三寶: 玫瑰露牛𦟌、檸香紅菜頭、涼拌青瓜木耳</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_021" model="product.template">
+        <field name="name">Thai Snack Platter (Satay Chicken Skewer, Thai Fish Cake &amp; Curry Samosa) (12 pcs each)</field>
+        <field name="description">泰式小食拼盤 (沙嗲雞串、泰式魚餅及咖哩角) (每款12件)</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_022" model="product.template">
+        <field name="name">Truffle Dace Fish Ball</field>
+        <field name="description">黃金黑松露鯪魚球</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_023" model="product.template">
+        <field name="name">Deep-fried Crab Claws</field>
+        <field name="description">酥炸蟹鉗 (日本蟹拑+ 蝦膠)</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_024" model="product.template">
+        <field name="name">Finger Sandwich Platter (Ham &amp; Cheese, Egg Salad)</field>
+        <field name="description">手指三文治拼盤 (火腿芝士及蛋沙律)</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_025" model="product.template">
+        <field name="name">Steamed Beef Ball</field>
+        <field name="description">牛肉球</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_026" model="product.template">
+        <field name="name">Pork Siu Mai with Crab Roe</field>
+        <field name="description">蟹籽豬肉燒賣</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_027" model="product.template">
+        <field name="name">Wings &amp; Drumstick Platter (Buffalo (Wing), Honey(Wing) &amp; Deep-fried(Drumstick) (15 pcs each, total 45 pcs)</field>
+        <field name="description">三重滋味雞拼盤（水牛城雞翼、蜜糖雞翼及脆炸雞搥 (每款15件, 共45件)</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_028" model="product.template">
+        <field name="name">Cold Canapes</field>
+        <field name="description">冷盤小食</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_029" model="product.template">
+        <field name="name">Turkey Ham &amp; Asparagus Roll</field>
+        <field name="description">火雞火腿露筍卷</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_030" model="product.template">
+        <field name="name">Pastrami, Pickle &amp; Asparagus Roll with Honey Mustard</field>
+        <field name="description">黑椒煙燻牛肉露筍卷配蜜糖芥末</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_031" model="product.template">
+        <field name="name">Spicy Chorizo, Black Olive &amp; Cheddar Cheese Skewer</field>
+        <field name="description">辣肉腸黑水欖車打芝士串</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_032" model="product.template">
+        <field name="name">Seared Tuna with Sesame &amp; Yuzu Kosho</field>
+        <field name="description">輕煎吞拿魚黑白芝麻伴柚子胡椒</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_033" model="product.template">
+        <field name="name">Smoked Salmon Rose &amp; Dill on Cucumber</field>
+        <field name="description">煙三文魚玫瑰配刁草青瓜</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_034" model="product.template">
+        <field name="name">Cream Cheese Tart with Caviar</field>
+        <field name="description">法式黑魚籽忌廉芝士撻</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_035" model="product.template">
+        <field name="name">Crab Meat Tart with Caviar</field>
+        <field name="description">黑魚籽蟹肉撻</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_036" model="product.template">
+        <field name="name">Parma Ham &amp; Truffle Mushroom Roll</field>
+        <field name="description">意大利風乾火腿黑松露野菌卷</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_037" model="product.template">
+        <field name="name">Prawn Salad Vol-au-vent</field>
+        <field name="description">蝦沙律酥皮盒</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_038" model="product.template">
+        <field name="name">Prawn Cocktail with Champagne Jelly</field>
+        <field name="description">蝦咯嗲配香檳啫喱</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_039" model="product.template">
+        <field name="name">Foie Gras Mousse with Pistachio &amp; Cranberry Sauce on Toast</field>
+        <field name="description">鵝肝醬多士配開心果及金巴利醬</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_040" model="product.template">
+        <field name="name">Seared Hokkaido Sashimi Scallop with Carrot Puree &amp; Bacon Bits</field>
+        <field name="description">輕煎刺身帶子配甘筍蓉及煙肉碎</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_041" model="product.template">
+        <field name="name">Mini Egg Salad Asparagus Tart (V)</field>
+        <field name="description">迷你蛋沙律蘆筍撻 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_042" model="product.template">
+        <field name="name">Caviar Blinis with Cream Cheese</field>
+        <field name="description">黑魚籽布利尼薄餅配忌廉芝士</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_043" model="product.template">
+        <field name="name">Cream Cheese Gaufres with Smoked Salmon &amp; Salmon Roe</field>
+        <field name="description">法式忌廉芝士窩夫配煙三文魚及三文魚籽</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_044" model="product.template">
+        <field name="name">Crab-Stuffed Celery Logs</field>
+        <field name="description">蟹肉釀西芹條</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_045" model="product.template">
+        <field name="name">Salmon Roe Blinis with Honey Wasabi</field>
+        <field name="description">三文魚籽布利尼薄餅配蜜糖日式芥辣</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_046" model="product.template">
+        <field name="name">Parma Ham with Raspberry Macaron</field>
+        <field name="description">意大利風乾火腿配紅桑子馬卡龍</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_047" model="product.template">
+        <field name="name">Prawn with Avocado &amp; Mango Salsa</field>
+        <field name="description">牛油果芒果莎莎醬凍蝦杯</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_048" model="product.template">
+        <field name="name">Warm Canapes</field>
+        <field name="description">熱盤小食</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_049" model="product.template">
+        <field name="name">Chicken &amp; Bell Pepper Skewer</field>
+        <field name="description">雞肉甜椒串</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_050" model="product.template">
+        <field name="name">Bacon Wrapped Sausage</field>
+        <field name="description">脆煙肉腸仔卷</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_051" model="product.template">
+        <field name="name">Mini Sausage Puff</field>
+        <field name="description">迷你雞肉腸酥皮卷</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_052" model="product.template">
+        <field name="name">Mini Salami Pizza</field>
+        <field name="description">迷你辣肉腸比薩</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_053" model="product.template">
+        <field name="name">Bacon &amp; Potato Cake with Truffle Paste</field>
+        <field name="description">煙肉薯仔批配松露醬</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_054" model="product.template">
+        <field name="name">Baked Mac &amp; Cheese Cube with Bacon</field>
+        <field name="description">煙肉芝士焗通心粉方塊</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_055" model="product.template">
+        <field name="name">Spicy Chorizo &amp; Pineapple Skewer</field>
+        <field name="description">西班牙辣肉腸菠蘿串</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_056" model="product.template">
+        <field name="name">Chicken Karaage with Pistachio &amp; Mustard Mayo</field>
+        <field name="description">唐揚炸雞配開心果芥末</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_057" model="product.template">
+        <field name="name">Smoked Salmon &amp; Asparagus Frittata</field>
+        <field name="description">煙三文魚露筍意式蛋批</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_058" model="product.template">
+        <field name="name">Smoked Duck Breast with Horseradish Cream on Toast</field>
+        <field name="description">煙鴨胸配辣根忌廉多士</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_059" model="product.template">
+        <field name="name">Grill Prawn &amp; Chorizo Skewer</field>
+        <field name="description">燒大蝦配西班牙辣肉腸串</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_060" model="product.template">
+        <field name="name">Grill Prawn Skewer with Cajun</field>
+        <field name="description">香辣奇津香料燒大蝦</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_061" model="product.template">
+        <field name="name">Mini Charcoal Angus Beef Burger</field>
+        <field name="description">型格迷你灰碳安格斯漢堡</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_062" model="product.template">
+        <field name="name">Mini Hawaii Pizza</field>
+        <field name="description">迷你夏威夷比薩</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_063" model="product.template">
+        <field name="name">Thai Chicken Satay Skewer</field>
+        <field name="description">泰式沙嗲雞肉串</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_064" model="product.template">
+        <field name="name">Thai Fish Cake with Sweet &amp; Sour Sauce</field>
+        <field name="description">泰式魚餅配酸甜醬</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_065" model="product.template">
+        <field name="name">Signature Barbecue Sauce Chicken Wings</field>
+        <field name="description">招牌燒烤醬雞翼</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_066" model="product.template">
+        <field name="name">Mini Roasted Chicken Rainbow Burger</field>
+        <field name="description">迷你燒雞繽紛漢堡</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_067" model="product.template">
+        <field name="name">Mini Rainbow Angus Beef Burger</field>
+        <field name="description">迷你繽紛安格斯漢堡</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_068" model="product.template">
+        <field name="name">Vegetarian-Friendly Capanes</field>
+        <field name="description">素食之選小食</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_069" model="product.template">
+        <field name="name">Mini Cucumber &amp; Cream Cheese Sandwich (v)</field>
+        <field name="description">迷你⻘⽠忌廉芝⼠三⽂治 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_070" model="product.template">
+        <field name="name">Caprese Skewer (v)</field>
+        <field name="description">水牛芝士車厘茄串 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_071" model="product.template">
+        <field name="name">Brie Cheese &amp; Dry Cranberry on Toast (v)</field>
+        <field name="description">比爾芝士多士配金巴利 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_072" model="product.template">
+        <field name="name">Curry Samosa (v)</field>
+        <field name="description">馬來咖哩角 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_073" model="product.template">
+        <field name="name">Vegetable Spring Roll (v)</field>
+        <field name="description">馬來雜菜春卷 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_074" model="product.template">
+        <field name="name">Teriyaki Tempeh (v)</field>
+        <field name="description">照燒芝麻天貝 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_075" model="product.template">
+        <field name="name">Ratatouille Tart (v)</field>
+        <field name="description">普羅旺斯燉菜撻 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_076" model="product.template">
+        <field name="name">Truffle Wild Mushroom Vol-au-vent (v)</field>
+        <field name="description">黑松露野菌酥皮盒 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_077" model="product.template">
+        <field name="name">Roasted Bell Pepper &amp; Pine Nut Vol-au-vent with Pesto (v)</field>
+        <field name="description">香草松子仁甜椒酥皮盒配意大利青醬( 素 )</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_078" model="product.template">
+        <field name="name">Pumpkin, Beetroot &amp; Feta Cheese Tart (v)</field>
+        <field name="description">南瓜紅菜頭菲達芝士撻 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_079" model="product.template">
+        <field name="name">Hummus &amp; Cucumber Bites (V)</field>
+        <field name="description">一口青瓜配鷹嘴豆醬 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_080" model="product.template">
+        <field name="name">Taco Cups with Avocado &amp; Sweet Corn (V)</field>
+        <field name="description">粟米牛油果墨西哥夾餅杯 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_081" model="product.template">
+        <field name="name">Veggie Cups with Hummus (V)</field>
+        <field name="description">蔬菜杯配鷹嘴豆醬 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_082" model="product.template">
+        <field name="name">Mini Margarita Pizza (v)</field>
+        <field name="description">迷你瑪格麗特(蕃茄芝士)比薩 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_083" model="product.template">
+        <field name="name">Truffle Egg Salad &amp; Asparagus Tart (v)</field>
+        <field name="description">黑松露蛋沙律露筍撻 (素)</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_084" model="product.template">
+        <field name="name">Asian Fusion Capanes</field>
+        <field name="description">亞洲風味</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_085" model="product.template">
+        <field name="name">Pork Belly &amp; Cucumber Roll</field>
+        <field name="description">蒜泥白肉翡翠卷</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_086" model="product.template">
+        <field name="name">Beef Shank in Chinese Marinade Sauce &amp; Beetroot Skewer with Lemon Sauce</field>
+        <field name="description">滷⽔⽜𦟌檸⾹紅菜頭串</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_087" model="product.template">
+        <field name="name">Diced Beef Tenderloin in Black Pepper Sauce with Garlic</field>
+        <field name="description">香蒜黑椒牛柳粒</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_088" model="product.template">
+        <field name="name">Mini Kimchi Pork Belly Burger</field>
+        <field name="description">迷你泡菜豬腩漢堡</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_089" model="product.template">
+        <field name="name">Curry Crab Meat Vol-au-vent</field>
+        <field name="description">咖哩蟹肉酥皮盒</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_090" model="product.template">
+        <field name="name">Mini Sesame Prawn Toast</field>
+        <field name="description">迷你芝麻蝦多士</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_091" model="product.template">
+        <field name="name">Abalone &amp; Truffle Wild Mushroom Vol-au-vent</field>
+        <field name="description">鮑魚野菌酥皮盒</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_092" model="product.template">
+        <field name="name">Chicken</field>
+        <field name="description">雞</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_093" model="product.template">
+        <field name="name">Roasted Chicken with Rosemary Sauce</field>
+        <field name="description">原隻燒雞配露絲瑪利汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_094" model="product.template">
+        <field name="name">Braised Chicken with Mushroom Cream Sauce</field>
+        <field name="description">野菌忌廉燴雞</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_095" model="product.template">
+        <field name="name">Steamed Chicken with Ginger and Scallion</field>
+        <field name="description">薑蔥霸皇雞
+L: 1 pc, 1/1 PN: 2.5 pcs</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_096" model="product.template">
+        <field name="name">Sweet &amp; Sour Chicken with Lychee</field>
+        <field name="description">荔枝咕嚕雞球</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_097" model="product.template">
+        <field name="name">Poached Royal Chicken with Conpoy</field>
+        <field name="description">瑤柱貴妃雞</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_098" model="product.template">
+        <field name="name">Pork</field>
+        <field name="description">豬</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_099" model="product.template">
+        <field name="name">Slow Cooked US Pork Loin with Porcini Mushroom Sauce</field>
+        <field name="description">燒美國豬柳配牛肝菌醬
+(S:10pcs / M: 15 pcs / L:30pcs / XL: 45pcs</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_100" model="product.template">
+        <field name="name">Braised Pork Belly with Beetroot</field>
+        <field name="description">紅菜頭豬腩肉</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_101" model="product.template">
+        <field name="name">Meat Lover Platter: Roasted Baby Pork Ribs and Sausage Platter (Pork &amp; Beef) with BBQ Sauce</field>
+        <field name="description">大啖肉拼盤：燒豬仔骨拼傳統德國肉腸(含豬及牛肉)配燒烤醬
+豬仔骨: L: 半份 (8-10支) / XL: 一份 (12-16支)</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_102" model="product.template">
+        <field name="name">Spanish Suckling Pig</field>
+        <field name="description">原隻西班牙乳豬</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_103" model="product.template">
+        <field name="name">German Sausage with Italian Meat Ball ( Pork &amp; Beef)</field>
+        <field name="description">德國大肉腸火併意式肉丸((含豬及牛肉)</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_104" model="product.template">
+        <field name="name">Sweet &amp; Sour Pork with Lychee</field>
+        <field name="description">五彩荔枝咕嚕肉</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_105" model="product.template">
+        <field name="name">Beef / Lamb</field>
+        <field name="description">牛 / 羊</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_106" model="product.template">
+        <field name="name">Italian Meatball (Pork &amp; Beef) with Cherry Tomato Sauce</field>
+        <field name="description">意式肉丸(含豬及牛肉)配車厘茄汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_107" model="product.template">
+        <field name="name">Braised Angus Beef Cheek with Red Wine</field>
+        <field name="description">紅酒燴安格斯牛臉頰 (approx. 25g per piece)</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_108" model="product.template">
+        <field name="name">Roasted US Beef Sirloin with Gravy</field>
+        <field name="description">燒美國西冷配燒汁 (approx.25g per piece)</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_109" model="product.template">
+        <field name="name">Roasted US Beef Sirloin with Port Wine Sauce</field>
+        <field name="description">燒美國西冷配砵酒燒汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_110" model="product.template">
+        <field name="name">Roasted Rack of Lamb with Rosemary Sauce</field>
+        <field name="description">燒羊架配露絲瑪利汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_111" model="product.template">
+        <field name="name">Japanese Beef Curry with Garlic Bread</field>
+        <field name="description">日式咖喱牛肉配蒜蓉包</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_112" model="product.template">
+        <field name="name">Stir-fried Broccoli &amp; Wild Mushroom with Beef</field>
+        <field name="description">西蘭花野菌炒牛肉</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_113" model="product.template">
+        <field name="name">Diced Beef Tenderloin in Black Pepper Sauce with Garlic</field>
+        <field name="description">香蒜黑椒牛柳粒</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_114" model="product.template">
+        <field name="name">Seafood</field>
+        <field name="description">海鮮</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_115" model="product.template">
+        <field name="name">Mussel with White Wine, Chili, Basil &amp; Cherry Tomato served w/ Garlic Bread</field>
+        <field name="description">白酒煮藍青口配蒜蓉多士</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_116" model="product.template">
+        <field name="name">Dry Braised Prawns with Chili Sauce</field>
+        <field name="description">⼲燒明蝦球</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_117" model="product.template">
+        <field name="name">Pan-fried Halibut Fillet with Wild Mushroom Cream Sauce</field>
+        <field name="description">香煎比目魚柳配野菌忌廉汁 (approx.40g per piece)</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_118" model="product.template">
+        <field name="name">Pan-fried Halibut with Lemon Caper Sauce</field>
+        <field name="description">香煎比目魚柳配檸檬水瓜榴汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_119" model="product.template">
+        <field name="name">Stir-fried Grouper with Broccoli</field>
+        <field name="description">碧綠炒斑球</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_120" model="product.template">
+        <field name="name">Stir-fried Scallop with Broccoli</field>
+        <field name="description">西蘭花炒帶⼦</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_121" model="product.template">
+        <field name="name">Pan-fried Grouper Fillet with Wild Mushroom Cream Sauce</field>
+        <field name="description">香煎石斑柳配野菌忌廉汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_122" model="product.template">
+        <field name="name">Deep-fried Fish Fillet with Potato Wedges</field>
+        <field name="description">炸魚柳配脆薯角</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_123" model="product.template">
+        <field name="name">Stir-fried Garoupa Fillet in Typhoon Shelter Style</field>
+        <field name="description">蒜爆避風塘炒斑球</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_124" model="product.template">
+        <field name="name">Braised Abalone with Shitake Mushroom and Broccoli</field>
+        <field name="description">蠔皇花菇西蘭花燴鮑魚</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_125" model="product.template">
+        <field name="name">Stir-Fried Coral Mussel &amp; Cuttlefish Slices with Sesonal Greens</field>
+        <field name="description">碧綠珊瑚蚌花姿片</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_126" model="product.template">
+        <field name="name">Braised Sea Cucumber &amp; Goose Web with Shiitake Mushroom and Seasonal Greens</field>
+        <field name="description">碧綠海蔘鵝掌燴花菇</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_127" model="product.template">
+        <field name="name">Grilled Mixed Vegetables (Broccoli, Cauliflower, Eggplant, Zucchini, Bell Pepper, Cherry Tomato) (V)</field>
+        <field name="description">意式扒雜菜(西蘭花、椰菜花 、茄子、意瓜、甜椒及車厘茄) (素)</field>
+        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_128" model="product.template">
+        <field name="name">Cheesy Vegetable Bake (V)</field>
+        <field name="description">芝士焗田園雜菜 (素)</field>
+        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_129" model="product.template">
+        <field name="name">Shanghai Cabbage in Cream Sauce with Crispy Parma Ham</field>
+        <field name="description">奶油津白配意大利風乾火腿</field>
+        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_130" model="product.template">
+        <field name="name">Grilled Portobello &amp; Mixed Vegetables with Herbs &amp; Garlic (V)</field>
+        <field name="description">香草蒜片燒大啡菇及雜菜 (素)</field>
+        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_131" model="product.template">
+        <field name="name">Sauteed Mushroom &amp; Broccoli with Garlic (V)</field>
+        <field name="description">香蒜西蘭花炒野菌 (素)</field>
+        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_132" model="product.template">
+        <field name="name">Japanese Stir-fried Mixed Vegetables (v)</field>
+        <field name="description">日式醬油炒雜菜 (素)</field>
+        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_133" model="product.template">
+        <field name="name">Fresh Fruit Platter (V)</field>
+        <field name="description">鮮雜果拼盤 (素)</field>
+        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_134" model="product.template">
+        <field name="name">Poached Vegetable and Bean Curd Sheet in Fish Soup</field>
+        <field name="description">鮮魚湯鮮腐竹浸翠苗</field>
+        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_135" model="product.template">
+        <field name="name">Mushrooms Medley (Winter Melon Braised with Yellow Fungus, Elm Fungus, and Wild Mushrooms (V)</field>
+        <field name="description">白玉珍菌 (冬瓜燴黃耳、榆耳及野菌)(素)</field>
+        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_136" model="product.template">
+        <field name="name">Garlicky Greek Spaghetti (V)</field>
+        <field name="description">香蒜水欖辣椒車厘茄香草意大利粉 (素)</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_137" model="product.template">
+        <field name="name">Wild Mushroom Steamed Rice (V)</field>
+        <field name="description">香菇素飯 (素)</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_138" model="product.template">
+        <field name="name">Braised E-fu Noodles with Wild Mushroom &amp; Abalone Sauce</field>
+        <field name="description">鮑汁野菌炆伊麵</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_139" model="product.template">
+        <field name="name">Fried Rice with Dried Scallop and Egg White</field>
+        <field name="description">瑤柱蛋白炒飯</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_140" model="product.template">
+        <field name="name">Roasted Pumpkin &amp; Chicken Barley Risotto</field>
+        <field name="description">燒南瓜雞肉燴薏米</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_141" model="product.template">
+        <field name="name">Spaghetti with Italian Meatball (Pork &amp; Beef)  &amp; Cherry Tomato Sauce</field>
+        <field name="description">意式肉丸(含豬及牛肉)車厘茄意大利粉</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_142" model="product.template">
+        <field name="name">Crab Meat &amp; Egg White Fried Rice</field>
+        <field name="description">蟹肉蛋白炒飯</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_143" model="product.template">
+        <field name="name">Lasagna alla Bolognese</field>
+        <field name="description">意式肉醬(牛)千層麵</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_144" model="product.template">
+        <field name="name">Penne alla Bolognese</field>
+        <field name="description">意式肉醬(牛)長通粉</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_145" model="product.template">
+        <field name="name">Linguini with Smoked Salmon, Zucchini &amp; Dill Cream Sauce</field>
+        <field name="description">煙三文魚意大利青瓜香草忌廉扁意粉</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_146" model="product.template">
+        <field name="name">Spaghetti with Seafood, Cherry Tomato &amp; Pesto Sauce</field>
+        <field name="description">海鮮意大利粉配車厘茄及意大利青醬</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_147" model="product.template">
+        <field name="name">Prawn &amp; Truffle Mushroom Fried Rice</field>
+        <field name="description">黑松露大蝦炒飯</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_148" model="product.template">
+        <field name="name">Penne with Wild Mushroom &amp; Pesto</field>
+        <field name="description">香草野菌長通粉</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_149" model="product.template">
+        <field name="name">Spaghetti Aglio e Olio with Grilled Chicken</field>
+        <field name="description">香蒜辣椒雞肉意大利粉</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_150" model="product.template">
+        <field name="name">Thai Pineapple &amp; Seafood Fried Rice</field>
+        <field name="description">泰式菠蘿海鮮炒飯</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_151" model="product.template">
+        <field name="name">Baked Portobello Mushroom Rice with Porcini Cream Sauce (V)</field>
+        <field name="description">大啡菇焗飯配牛肝菌汁 (素)</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_152" model="product.template">
+        <field name="name">Truffle &amp; Wild Mushroom Fried Rice</field>
+        <field name="description">黑松露野菌炒飯</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_153" model="product.template">
+        <field name="name">Braised Prawn with E-fu Noodles</field>
+        <field name="description">金湯大蝦伊麵</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_154" model="product.template">
+        <field name="name">Fried Rice with Prawn, Sakura Shrimp and Conpoy in XO Sauce</field>
+        <field name="description">XO醬櫻花蝦瑤柱蝦仁炒飯</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_155" model="product.template">
+        <field name="name">Braised Lobster with E-fu Noodle</field>
+        <field name="description">金湯龍蝦伊麵</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_156" model="product.template">
+        <field name="name">Braised Rice with Whole Abalone in Rich Sauce</field>
+        <field name="description">原隻鮑魚燴飯</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_157" model="product.template">
+        <field name="name">Sweet Canapes</field>
+        <field name="description">甜點小食</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_158" model="product.template">
+        <field name="name">Mini Apple Crumble Tart (v)</field>
+        <field name="description">一口蘋果脆脆撻 (素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_159" model="product.template">
+        <field name="name">Mini New York Cheese Cake with Strawberry &amp; Pistachio</field>
+        <field name="description">一口紐約芝士蛋糕配士多啤梨及開心果碎</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_160" model="product.template">
+        <field name="name">Mini Blueberry Cheese Cake with Pistachio</field>
+        <field name="description">一口藍莓芝士蛋糕配開心果碎</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_161" model="product.template">
+        <field name="name">Rainbow Assorted Puffs (v)</field>
+        <field name="description">幻彩忌廉泡芙 (素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_162" model="product.template">
+        <field name="name">Mini Chocolate &amp; Almond Brownie with Passion Plant (v)</field>
+        <field name="description">一口朱古力杏仁布朗尼配龍珠果 (素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_163" model="product.template">
+        <field name="name">Mini Purple Sweet Potato Tart (v)</field>
+        <field name="description">一口紫薯撻 (素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_164" model="product.template">
+        <field name="name">Mini Coconut Milk &amp; Red Bean Pudding Cup</field>
+        <field name="description">迷你椰汁紅豆布甸杯</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_165" model="product.template">
+        <field name="name">Mini Osmanthus Jelly Cup</field>
+        <field name="description">迷你桂花糕杯</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_166" model="product.template">
+        <field name="name">Assorted Macaron Platter (v)</field>
+        <field name="description">法式馬卡龍拼盤 (素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_167" model="product.template">
+        <field name="name">Mini Chocolate Mousse Cup with Pistachio &amp; Granola</field>
+        <field name="description">朱古力慕絲杯配開心果脆燕麥</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_168" model="product.template">
+        <field name="name">Mini Mango Mousse Cup</field>
+        <field name="description">迷你芒果慕絲杯</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_169" model="product.template">
+        <field name="name">Mini Tiramisu Cup</field>
+        <field name="description">迷你提拉米蘇杯</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_170" model="product.template">
+        <field name="name">Mini Panna Cotta Cup</field>
+        <field name="description">迷你意大利奶凍杯</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_171" model="product.template">
+        <field name="name">Mini Chestnut Tart (v)</field>
+        <field name="description">一口栗子撻 (素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_172" model="product.template">
+        <field name="name">Mini Strawberry Mousse Cup</field>
+        <field name="description">迷你士多啤梨慕絲杯</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_173" model="product.template">
+        <field name="name">Mini Fruit Tart</field>
+        <field name="description">迷你田園雜果撻</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_174" model="product.template">
+        <field name="name">Rocky Road Cake</field>
+        <field name="description">石板街蛋糕</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_175" model="product.template">
+        <field name="name">Chocolate Layer Cake</field>
+        <field name="description">三層朱古力蛋糕</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_176" model="product.template">
+        <field name="name">Desserts</field>
+        <field name="description">甜品</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_177" model="product.template">
+        <field name="name">Stewed Peach Gum with Red Date &amp; Snow Fungus(V)</field>
+        <field name="description">冰糖雪耳紅棗燉桃膠(素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_178" model="product.template">
+        <field name="name">Mini Chocolate Tart with Brandy Raisins</field>
+        <field name="description">迷你朱古力撻配白蘭地提子乾</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_179" model="product.template">
+        <field name="name">Assorted Cheese Cake Platter</field>
+        <field name="description">意式芝士蛋糕拼盤</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_180" model="product.template">
+        <field name="name">Dessert Platter</field>
+        <field name="description">甜品拼盤</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_181" model="product.template">
+        <field name="name">Coconut Panna Cotta with Gum Tragacanth</field>
+        <field name="description">椰汁布甸配雪燕</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_182" model="product.template">
+        <field name="name">Mixed Berries Blinis with Custard Cream (V)</field>
+        <field name="description">雜莓布利尼薄餅配吉士打醬 (素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_183" model="product.template">
+        <field name="name">Mini Opera Cake with Golden Chocolate Shards (V)</field>
+        <field name="description">迷你歌劇院蛋糕配黃金朱古力脆脆 (素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_184" model="product.template">
+        <field name="name">Raspberry Chocolate Cup (V)</field>
+        <field name="description">紅桑子比利時朱古力脆皮杯 (素)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_185" model="product.template">
+        <field name="name">Stewed Peach Gum with Dried Longan &amp; Red Date</field>
+        <field name="description">桃膠桂圓紅棗糖水</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_186" model="product.template">
+        <field name="name">Stewed Gum Tragacanth with Coconut Milk</field>
+        <field name="description">椰汁燉雪燕</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+</odoo>

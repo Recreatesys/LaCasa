@@ -1,0 +1,1718 @@
+[
+  {
+    "name_en": "Chicken, Apple, Walnut & Cranberry Romaine Salad",
+    "name_zh": "雞肉蘋果合桃金巴利羅馬生菜沙律",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "corporate_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Roasted Pumpkin, Mushroom, Red Onion & Lentils Salad (V)",
+    "name_zh": "烤南瓜沙律(配野菌、紅洋蔥及蘭度豆) (素)",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Smoked Salmon, Bacon and Egg Caesar Salad Served with Croutons & Parmesan Cheese",
+    "name_zh": "煙三文魚煙肉蛋凱撒沙律(配麵包粒及巴馬臣芝士)",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "corporate_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Thai Shrimp Pomelo Salad",
+    "name_zh": "泰式蝦柚子沙律",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "alacarte",
+      "junk_menu",
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Grilled Prawn, Spicy Salami & Avocado Salad with Lemon Dressing (Cherry Tomato, Green Olive & Pine Nut)",
+    "name_zh": "大蝦辣肉腸牛油果沙律配檸檬醬(含車厘茄、水欖及松子仁)",
+    "category": "A. Salad / Soup",
+    "sets": []
+  },
+  {
+    "name_en": "Japanese Tomato & Cucumber Salad (V)",
+    "name_zh": "日式蕃茄青瓜沙律 (V)",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "mix_match_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Chicken & Apple Salad",
+    "name_zh": "雞肉蘋果沙律",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "mix_match_party"
+    ]
+  },
+  {
+    "name_en": "Chickpea, Sweet-Corn, Bell Pepper & Quinoa Salad",
+    "name_zh": "雞心豆粟米甜椒藜麥沙律",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "mix_match_party"
+    ]
+  },
+  {
+    "name_en": "Orange, French Bean & Red Beetroot Salad with Pine Nuts",
+    "name_zh": "香橙法邊豆紅菜頭松子仁沙律",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Assorted Seafood in Dried Scallop Soup",
+    "name_zh": "海皇瑤柱羹",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "alacarte",
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Assorted Seafood Soup",
+    "name_zh": "海皇羮",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Truffle Wild Mushroom Cream Soup",
+    "name_zh": "黑松露野菌忌廉湯",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "alacarte",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Chicken Soup with Conpoy, Conch & Fish Maw",
+    "name_zh": "瑤柱花膠螺肉燉雞湯",
+    "category": "A. Salad / Soup",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Chinese Appetizer Platter: Beetroot with Lemon Sauce, Mouth-Watering Chicken, Beef Shank in Chinese Marinade Sauce, Braised Spare Ribs with Sweetened Vinegar",
+    "name_zh": "中式小食拼盤\n檸⾹紅菜頭、惹味⼝⽔雞、古法滷⽔⽜𦟌、甜蜜糖醋排⻣",
+    "category": "B. Appetizer",
+    "sets": [
+      "alacarte"
+    ]
+  },
+  {
+    "name_en": "Parma Ham & Melon with Rocket",
+    "name_zh": "意大利風乾火腿哈蜜瓜",
+    "category": "B. Appetizer",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "mix_match_party",
+      "corporate_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Italian King Prawn Seafood Salad with Lemon, Parsley & Olive\n(King Prawn, Hokkaido Scallop, Blue Mussel & Squid)",
+    "name_zh": "意大利凍大蝦海鮮沙律配檸檬汁、香芹及水欖(大蝦、帶子、青口及魷魚)",
+    "category": "B. Appetizer",
+    "sets": [
+      "alacarte",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Crab Meat, Avocado & Tomato Stack (12pcs)",
+    "name_zh": "蟹肉牛油果蕃茄塔 (12 件)",
+    "category": "B. Appetizer",
+    "sets": [
+      "alacarte"
+    ]
+  },
+  {
+    "name_en": "Assorted Cold Cut & Cheese Platter",
+    "name_zh": "意式冷肉芝士拼盤",
+    "category": "B. Appetizer",
+    "sets": [
+      "alacarte",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Cold Cut Platter",
+    "name_zh": "意式冷肉拼盤",
+    "category": "B. Appetizer",
+    "sets": [
+      "mix_match_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Appetizer Platter - Marinated Beef Shank in Chinese Rose Wine, Beetroot with Lemon Sauce, Cucumber with Black Fungus",
+    "name_zh": "玉食三寶: 玫瑰露牛𦟌、檸香紅菜頭、涼拌青瓜木耳",
+    "category": "B. Appetizer",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Thai Snack Platter (Satay Chicken Skewer, Thai Fish Cake & Curry Samosa) (12 pcs each)",
+    "name_zh": "泰式小食拼盤 (沙嗲雞串、泰式魚餅及咖哩角) (每款12件)",
+    "category": "C. Party Snack",
+    "sets": [
+      "alacarte",
+      "chinese_buffet",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Truffle Dace Fish Ball",
+    "name_zh": "黃金黑松露鯪魚球",
+    "category": "C. Party Snack",
+    "sets": [
+      "alacarte",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Deep-fried Crab Claws",
+    "name_zh": "酥炸蟹鉗 (日本蟹拑+ 蝦膠)",
+    "category": "C. Party Snack",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet",
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Finger Sandwich Platter (Ham & Cheese, Egg Salad)",
+    "name_zh": "手指三文治拼盤 (火腿芝士及蛋沙律)",
+    "category": "C. Party Snack",
+    "sets": [
+      "mix_match_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Steamed Beef Ball",
+    "name_zh": "牛肉球",
+    "category": "C. Party Snack",
+    "sets": [
+      "alacarte",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Pork Siu Mai with Crab Roe",
+    "name_zh": "蟹籽豬肉燒賣",
+    "category": "C. Party Snack",
+    "sets": [
+      "alacarte",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Wings & Drumstick Platter (Buffalo (Wing), Honey(Wing) & Deep-fried(Drumstick) (15 pcs each, total 45 pcs)",
+    "name_zh": "三重滋味雞拼盤（水牛城雞翼、蜜糖雞翼及脆炸雞搥 (每款15件, 共45件)",
+    "category": "C. Party Snack",
+    "sets": [
+      "alacarte",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Cold Canapes",
+    "name_zh": "冷盤小食",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": []
+  },
+  {
+    "name_en": "Turkey Ham & Asparagus Roll",
+    "name_zh": "火雞火腿露筍卷",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Pastrami, Pickle & Asparagus Roll with Honey Mustard",
+    "name_zh": "黑椒煙燻牛肉露筍卷配蜜糖芥末",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Spicy Chorizo, Black Olive & Cheddar Cheese Skewer",
+    "name_zh": "辣肉腸黑水欖車打芝士串",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Seared Tuna with Sesame & Yuzu Kosho",
+    "name_zh": "輕煎吞拿魚黑白芝麻伴柚子胡椒",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "chinese_buffet",
+      "grand_opening",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Smoked Salmon Rose & Dill on Cucumber",
+    "name_zh": "煙三文魚玫瑰配刁草青瓜",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Cream Cheese Tart with Caviar",
+    "name_zh": "法式黑魚籽忌廉芝士撻",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Crab Meat Tart with Caviar",
+    "name_zh": "黑魚籽蟹肉撻",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "chinese_buffet",
+      "corporate_party",
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Parma Ham & Truffle Mushroom Roll",
+    "name_zh": "意大利風乾火腿黑松露野菌卷",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "junk_menu",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Prawn Salad Vol-au-vent",
+    "name_zh": "蝦沙律酥皮盒",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "junk_menu",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Prawn Cocktail with Champagne Jelly",
+    "name_zh": "蝦咯嗲配香檳啫喱",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Foie Gras Mousse with Pistachio & Cranberry Sauce on Toast",
+    "name_zh": "鵝肝醬多士配開心果及金巴利醬",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "corporate_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Seared Hokkaido Sashimi Scallop with Carrot Puree & Bacon Bits",
+    "name_zh": "輕煎刺身帶子配甘筍蓉及煙肉碎",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "chinese_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Mini Egg Salad Asparagus Tart (V)",
+    "name_zh": "迷你蛋沙律蘆筍撻 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Caviar Blinis with Cream Cheese",
+    "name_zh": "黑魚籽布利尼薄餅配忌廉芝士",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Cream Cheese Gaufres with Smoked Salmon & Salmon Roe",
+    "name_zh": "法式忌廉芝士窩夫配煙三文魚及三文魚籽",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Crab-Stuffed Celery Logs",
+    "name_zh": "蟹肉釀西芹條",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Salmon Roe Blinis with Honey Wasabi",
+    "name_zh": "三文魚籽布利尼薄餅配蜜糖日式芥辣",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Parma Ham with Raspberry Macaron",
+    "name_zh": "意大利風乾火腿配紅桑子馬卡龍",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Prawn with Avocado & Mango Salsa",
+    "name_zh": "牛油果芒果莎莎醬凍蝦杯",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Warm Canapes",
+    "name_zh": "熱盤小食",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": []
+  },
+  {
+    "name_en": "Chicken & Bell Pepper Skewer",
+    "name_zh": "雞肉甜椒串",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Bacon Wrapped Sausage",
+    "name_zh": "脆煙肉腸仔卷",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Mini Sausage Puff",
+    "name_zh": "迷你雞肉腸酥皮卷",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Mini Salami Pizza",
+    "name_zh": "迷你辣肉腸比薩",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Bacon & Potato Cake with Truffle Paste",
+    "name_zh": "煙肉薯仔批配松露醬",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Baked Mac & Cheese Cube with Bacon",
+    "name_zh": "煙肉芝士焗通心粉方塊",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Spicy Chorizo & Pineapple Skewer",
+    "name_zh": "西班牙辣肉腸菠蘿串",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Chicken Karaage with Pistachio & Mustard Mayo",
+    "name_zh": "唐揚炸雞配開心果芥末",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Smoked Salmon & Asparagus Frittata",
+    "name_zh": "煙三文魚露筍意式蛋批",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Smoked Duck Breast with Horseradish Cream on Toast",
+    "name_zh": "煙鴨胸配辣根忌廉多士",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Grill Prawn & Chorizo Skewer",
+    "name_zh": "燒大蝦配西班牙辣肉腸串",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Grill Prawn Skewer with Cajun",
+    "name_zh": "香辣奇津香料燒大蝦",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "mix_match_party"
+    ]
+  },
+  {
+    "name_en": "Mini Charcoal Angus Beef Burger",
+    "name_zh": "型格迷你灰碳安格斯漢堡",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "chinese_buffet",
+      "mix_match_party",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Mini Hawaii Pizza",
+    "name_zh": "迷你夏威夷比薩",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "mix_match_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Thai Chicken Satay Skewer",
+    "name_zh": "泰式沙嗲雞肉串",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "mix_match_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Thai Fish Cake with Sweet & Sour Sauce",
+    "name_zh": "泰式魚餅配酸甜醬",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "mix_match_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Signature Barbecue Sauce Chicken Wings",
+    "name_zh": "招牌燒烤醬雞翼",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Mini Roasted Chicken Rainbow Burger",
+    "name_zh": "迷你燒雞繽紛漢堡",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Mini Rainbow Angus Beef Burger",
+    "name_zh": "迷你繽紛安格斯漢堡",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "grand_opening"
+    ]
+  },
+  {
+    "name_en": "Vegetarian-Friendly Capanes",
+    "name_zh": "素食之選小食",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": []
+  },
+  {
+    "name_en": "Mini Cucumber & Cream Cheese Sandwich (v)",
+    "name_zh": "迷你⻘⽠忌廉芝⼠三⽂治 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Caprese Skewer (v)",
+    "name_zh": "水牛芝士車厘茄串 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "grand_opening",
+      "junk_menu",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Brie Cheese & Dry Cranberry on Toast (v)",
+    "name_zh": "比爾芝士多士配金巴利 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Curry Samosa (v)",
+    "name_zh": "馬來咖哩角 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Vegetable Spring Roll (v)",
+    "name_zh": "馬來雜菜春卷 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Teriyaki Tempeh (v)",
+    "name_zh": "照燒芝麻天貝 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Ratatouille Tart (v)",
+    "name_zh": "普羅旺斯燉菜撻 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "grand_opening"
+    ]
+  },
+  {
+    "name_en": "Truffle Wild Mushroom Vol-au-vent (v)",
+    "name_zh": "黑松露野菌酥皮盒 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "chinese_buffet",
+      "grand_opening",
+      "mix_match_party",
+      "junk_menu",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Roasted Bell Pepper & Pine Nut Vol-au-vent with Pesto (v)",
+    "name_zh": "香草松子仁甜椒酥皮盒配意大利青醬( 素 )",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Pumpkin, Beetroot & Feta Cheese Tart (v)",
+    "name_zh": "南瓜紅菜頭菲達芝士撻 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Hummus & Cucumber Bites (V)",
+    "name_zh": "一口青瓜配鷹嘴豆醬 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Taco Cups with Avocado & Sweet Corn (V)",
+    "name_zh": "粟米牛油果墨西哥夾餅杯 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Veggie Cups with Hummus (V)",
+    "name_zh": "蔬菜杯配鷹嘴豆醬 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Mini Margarita Pizza (v)",
+    "name_zh": "迷你瑪格麗特(蕃茄芝士)比薩 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Truffle Egg Salad & Asparagus Tart (v)",
+    "name_zh": "黑松露蛋沙律露筍撻 (素)",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "grand_opening"
+    ]
+  },
+  {
+    "name_en": "Asian Fusion Capanes",
+    "name_zh": "亞洲風味",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": []
+  },
+  {
+    "name_en": "Pork Belly & Cucumber Roll",
+    "name_zh": "蒜泥白肉翡翠卷",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "chinese_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Beef Shank in Chinese Marinade Sauce & Beetroot Skewer with Lemon Sauce",
+    "name_zh": "滷⽔⽜𦟌檸⾹紅菜頭串",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Diced Beef Tenderloin in Black Pepper Sauce with Garlic",
+    "name_zh": "香蒜黑椒牛柳粒",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Mini Kimchi Pork Belly Burger",
+    "name_zh": "迷你泡菜豬腩漢堡",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Curry Crab Meat Vol-au-vent",
+    "name_zh": "咖哩蟹肉酥皮盒",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Mini Sesame Prawn Toast",
+    "name_zh": "迷你芝麻蝦多士",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "chinese_buffet",
+      "grand_opening"
+    ]
+  },
+  {
+    "name_en": "Abalone & Truffle Wild Mushroom Vol-au-vent",
+    "name_zh": "鮑魚野菌酥皮盒",
+    "category": "D. Canapes (1-2 bite sized)",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "chinese_buffet",
+      "family_set",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Chicken",
+    "name_zh": "雞",
+    "category": "E. Main Dishes",
+    "sets": []
+  },
+  {
+    "name_en": "Roasted Chicken with Rosemary Sauce",
+    "name_zh": "原隻燒雞配露絲瑪利汁",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet",
+      "mix_match_party",
+      "corporate_party",
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Braised Chicken with Mushroom Cream Sauce",
+    "name_zh": "野菌忌廉燴雞",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte"
+    ]
+  },
+  {
+    "name_en": "Steamed Chicken with Ginger and Scallion",
+    "name_zh": "薑蔥霸皇雞\nL: 1 pc, 1/1 PN: 2.5 pcs",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "chinese_buffet",
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Sweet & Sour Chicken with Lychee",
+    "name_zh": "荔枝咕嚕雞球",
+    "category": "E. Main Dishes",
+    "sets": [
+      "mix_match_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Poached Royal Chicken with Conpoy",
+    "name_zh": "瑤柱貴妃雞",
+    "category": "E. Main Dishes",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Pork",
+    "name_zh": "豬",
+    "category": "E. Main Dishes",
+    "sets": []
+  },
+  {
+    "name_en": "Slow Cooked US Pork Loin with Porcini Mushroom Sauce",
+    "name_zh": "燒美國豬柳配牛肝菌醬\n(S:10pcs / M: 15 pcs / L:30pcs / XL: 45pcs",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Braised Pork Belly with Beetroot",
+    "name_zh": "紅菜頭豬腩肉",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte"
+    ]
+  },
+  {
+    "name_en": "Meat Lover Platter: Roasted Baby Pork Ribs and Sausage Platter (Pork & Beef) with BBQ Sauce",
+    "name_zh": "大啖肉拼盤：燒豬仔骨拼傳統德國肉腸(含豬及牛肉)配燒烤醬\n豬仔骨: L: 半份 (8-10支) / XL: 一份 (12-16支)",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet",
+      "mix_match_party",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Spanish Suckling Pig",
+    "name_zh": "原隻西班牙乳豬",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "German Sausage with Italian Meat Ball ( Pork & Beef)",
+    "name_zh": "德國大肉腸火併意式肉丸((含豬及牛肉)",
+    "category": "E. Main Dishes",
+    "sets": [
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Sweet & Sour Pork with Lychee",
+    "name_zh": "五彩荔枝咕嚕肉",
+    "category": "E. Main Dishes",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Beef / Lamb",
+    "name_zh": "牛 / 羊",
+    "category": "E. Main Dishes",
+    "sets": []
+  },
+  {
+    "name_en": "Italian Meatball (Pork & Beef) with Cherry Tomato Sauce",
+    "name_zh": "意式肉丸(含豬及牛肉)配車厘茄汁",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Braised Angus Beef Cheek with Red Wine",
+    "name_zh": "紅酒燴安格斯牛臉頰 (approx. 25g per piece)",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Roasted US Beef Sirloin with Gravy",
+    "name_zh": "燒美國西冷配燒汁 (approx.25g per piece)",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Roasted US Beef Sirloin with Port Wine Sauce",
+    "name_zh": "燒美國西冷配砵酒燒汁",
+    "category": "E. Main Dishes",
+    "sets": [
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Roasted Rack of Lamb with Rosemary Sauce",
+    "name_zh": "燒羊架配露絲瑪利汁",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Japanese Beef Curry with Garlic Bread",
+    "name_zh": "日式咖喱牛肉配蒜蓉包",
+    "category": "E. Main Dishes",
+    "sets": [
+      "mix_match_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Stir-fried Broccoli & Wild Mushroom with Beef",
+    "name_zh": "西蘭花野菌炒牛肉",
+    "category": "E. Main Dishes",
+    "sets": [
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Diced Beef Tenderloin in Black Pepper Sauce with Garlic",
+    "name_zh": "香蒜黑椒牛柳粒",
+    "category": "E. Main Dishes",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Seafood",
+    "name_zh": "海鮮",
+    "category": "E. Main Dishes",
+    "sets": []
+  },
+  {
+    "name_en": "Mussel with White Wine, Chili, Basil & Cherry Tomato served w/ Garlic Bread",
+    "name_zh": "白酒煮藍青口配蒜蓉多士",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Dry Braised Prawns with Chili Sauce",
+    "name_zh": "⼲燒明蝦球",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte"
+    ]
+  },
+  {
+    "name_en": "Pan-fried Halibut Fillet with Wild Mushroom Cream Sauce",
+    "name_zh": "香煎比目魚柳配野菌忌廉汁 (approx.40g per piece)",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte"
+    ]
+  },
+  {
+    "name_en": "Pan-fried Halibut with Lemon Caper Sauce",
+    "name_zh": "香煎比目魚柳配檸檬水瓜榴汁",
+    "category": "E. Main Dishes",
+    "sets": [
+      "western_buffet",
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Stir-fried Grouper with Broccoli",
+    "name_zh": "碧綠炒斑球",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Stir-fried Scallop with Broccoli",
+    "name_zh": "西蘭花炒帶⼦",
+    "category": "E. Main Dishes",
+    "sets": [
+      "alacarte",
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Pan-fried Grouper Fillet with Wild Mushroom Cream Sauce",
+    "name_zh": "香煎石斑柳配野菌忌廉汁",
+    "category": "E. Main Dishes",
+    "sets": [
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Deep-fried Fish Fillet with Potato Wedges",
+    "name_zh": "炸魚柳配脆薯角",
+    "category": "E. Main Dishes",
+    "sets": [
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Stir-fried Garoupa Fillet in Typhoon Shelter Style",
+    "name_zh": "蒜爆避風塘炒斑球",
+    "category": "E. Main Dishes",
+    "sets": [
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Braised Abalone with Shitake Mushroom and Broccoli",
+    "name_zh": "蠔皇花菇西蘭花燴鮑魚",
+    "category": "E. Main Dishes",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Stir-Fried Coral Mussel & Cuttlefish Slices with Sesonal Greens",
+    "name_zh": "碧綠珊瑚蚌花姿片",
+    "category": "E. Main Dishes",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Braised Sea Cucumber & Goose Web with Shiitake Mushroom and Seasonal Greens",
+    "name_zh": "碧綠海蔘鵝掌燴花菇",
+    "category": "E. Main Dishes",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Grilled Mixed Vegetables (Broccoli, Cauliflower, Eggplant, Zucchini, Bell Pepper, Cherry Tomato) (V)",
+    "name_zh": "意式扒雜菜(西蘭花、椰菜花 、茄子、意瓜、甜椒及車厘茄) (素)",
+    "category": "F. Vegetables / Fresh Fruits",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Cheesy Vegetable Bake (V)",
+    "name_zh": "芝士焗田園雜菜 (素)",
+    "category": "F. Vegetables / Fresh Fruits",
+    "sets": [
+      "alacarte",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Shanghai Cabbage in Cream Sauce with Crispy Parma Ham",
+    "name_zh": "奶油津白配意大利風乾火腿",
+    "category": "F. Vegetables / Fresh Fruits",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Grilled Portobello & Mixed Vegetables with Herbs & Garlic (V)",
+    "name_zh": "香草蒜片燒大啡菇及雜菜 (素)",
+    "category": "F. Vegetables / Fresh Fruits",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Sauteed Mushroom & Broccoli with Garlic (V)",
+    "name_zh": "香蒜西蘭花炒野菌 (素)",
+    "category": "F. Vegetables / Fresh Fruits",
+    "sets": [
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Japanese Stir-fried Mixed Vegetables (v)",
+    "name_zh": "日式醬油炒雜菜 (素)",
+    "category": "F. Vegetables / Fresh Fruits",
+    "sets": [
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Fresh Fruit Platter (V)",
+    "name_zh": "鮮雜果拼盤 (素)",
+    "category": "F. Vegetables / Fresh Fruits",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet",
+      "mix_match_party",
+      "junk_menu",
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Poached Vegetable and Bean Curd Sheet in Fish Soup",
+    "name_zh": "鮮魚湯鮮腐竹浸翠苗",
+    "category": "F. Vegetables / Fresh Fruits",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Mushrooms Medley (Winter Melon Braised with Yellow Fungus, Elm Fungus, and Wild Mushrooms (V)",
+    "name_zh": "白玉珍菌 (冬瓜燴黃耳、榆耳及野菌)(素)",
+    "category": "F. Vegetables / Fresh Fruits",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Garlicky Greek Spaghetti (V)",
+    "name_zh": "香蒜水欖辣椒車厘茄香草意大利粉 (素)",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet",
+      "junk_menu",
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Wild Mushroom Steamed Rice (V)",
+    "name_zh": "香菇素飯 (素)",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Braised E-fu Noodles with Wild Mushroom & Abalone Sauce",
+    "name_zh": "鮑汁野菌炆伊麵",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Fried Rice with Dried Scallop and Egg White",
+    "name_zh": "瑤柱蛋白炒飯",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "mix_match_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Roasted Pumpkin & Chicken Barley Risotto",
+    "name_zh": "燒南瓜雞肉燴薏米",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Spaghetti with Italian Meatball (Pork & Beef)  & Cherry Tomato Sauce",
+    "name_zh": "意式肉丸(含豬及牛肉)車厘茄意大利粉",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte"
+    ]
+  },
+  {
+    "name_en": "Crab Meat & Egg White Fried Rice",
+    "name_zh": "蟹肉蛋白炒飯",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Lasagna alla Bolognese",
+    "name_zh": "意式肉醬(牛)千層麵",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte"
+    ]
+  },
+  {
+    "name_en": "Penne alla Bolognese",
+    "name_zh": "意式肉醬(牛)長通粉",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Linguini with Smoked Salmon, Zucchini & Dill Cream Sauce",
+    "name_zh": "煙三文魚意大利青瓜香草忌廉扁意粉",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "chinese_buffet",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Spaghetti with Seafood, Cherry Tomato & Pesto Sauce",
+    "name_zh": "海鮮意大利粉配車厘茄及意大利青醬",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "alacarte",
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Prawn & Truffle Mushroom Fried Rice",
+    "name_zh": "黑松露大蝦炒飯",
+    "category": "G. Rice & Pasta",
+    "sets": []
+  },
+  {
+    "name_en": "Penne with Wild Mushroom & Pesto",
+    "name_zh": "香草野菌長通粉",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "mix_match_party"
+    ]
+  },
+  {
+    "name_en": "Spaghetti Aglio e Olio with Grilled Chicken",
+    "name_zh": "香蒜辣椒雞肉意大利粉",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "mix_match_party"
+    ]
+  },
+  {
+    "name_en": "Thai Pineapple & Seafood Fried Rice",
+    "name_zh": "泰式菠蘿海鮮炒飯",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "mix_match_party"
+    ]
+  },
+  {
+    "name_en": "Baked Portobello Mushroom Rice with Porcini Cream Sauce (V)",
+    "name_zh": "大啡菇焗飯配牛肝菌汁 (素)",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Truffle & Wild Mushroom Fried Rice",
+    "name_zh": "黑松露野菌炒飯",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Braised Prawn with E-fu Noodles",
+    "name_zh": "金湯大蝦伊麵",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Fried Rice with Prawn, Sakura Shrimp and Conpoy in XO Sauce",
+    "name_zh": "XO醬櫻花蝦瑤柱蝦仁炒飯",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Braised Lobster with E-fu Noodle",
+    "name_zh": "金湯龍蝦伊麵",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Braised Rice with Whole Abalone in Rich Sauce",
+    "name_zh": "原隻鮑魚燴飯",
+    "category": "G. Rice & Pasta",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Sweet Canapes",
+    "name_zh": "甜點小食",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Mini Apple Crumble Tart (v)",
+    "name_zh": "一口蘋果脆脆撻 (素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Mini New York Cheese Cake with Strawberry & Pistachio",
+    "name_zh": "一口紐約芝士蛋糕配士多啤梨及開心果碎",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Mini Blueberry Cheese Cake with Pistachio",
+    "name_zh": "一口藍莓芝士蛋糕配開心果碎",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Rainbow Assorted Puffs (v)",
+    "name_zh": "幻彩忌廉泡芙 (素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Mini Chocolate & Almond Brownie with Passion Plant (v)",
+    "name_zh": "一口朱古力杏仁布朗尼配龍珠果 (素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "grand_opening",
+      "mix_match_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Mini Purple Sweet Potato Tart (v)",
+    "name_zh": "一口紫薯撻 (素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "chinese_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Mini Coconut Milk & Red Bean Pudding Cup",
+    "name_zh": "迷你椰汁紅豆布甸杯",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "chinese_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Mini Osmanthus Jelly Cup",
+    "name_zh": "迷你桂花糕杯",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Assorted Macaron Platter (v)",
+    "name_zh": "法式馬卡龍拼盤 (素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Mini Chocolate Mousse Cup with Pistachio & Granola",
+    "name_zh": "朱古力慕絲杯配開心果脆燕麥",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Mini Mango Mousse Cup",
+    "name_zh": "迷你芒果慕絲杯",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Mini Tiramisu Cup",
+    "name_zh": "迷你提拉米蘇杯",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "grand_opening"
+    ]
+  },
+  {
+    "name_en": "Mini Panna Cotta Cup",
+    "name_zh": "迷你意大利奶凍杯",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet"
+    ]
+  },
+  {
+    "name_en": "Mini Chestnut Tart (v)",
+    "name_zh": "一口栗子撻 (素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party"
+    ]
+  },
+  {
+    "name_en": "Mini Strawberry Mousse Cup",
+    "name_zh": "迷你士多啤梨慕絲杯",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte"
+    ]
+  },
+  {
+    "name_en": "Mini Fruit Tart",
+    "name_zh": "迷你田園雜果撻",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "grand_opening"
+    ]
+  },
+  {
+    "name_en": "Rocky Road Cake",
+    "name_zh": "石板街蛋糕",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "junk_menu"
+    ]
+  },
+  {
+    "name_en": "Chocolate Layer Cake",
+    "name_zh": "三層朱古力蛋糕",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Desserts",
+    "name_zh": "甜品",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": []
+  },
+  {
+    "name_en": "Stewed Peach Gum with Red Date & Snow Fungus(V)",
+    "name_zh": "冰糖雪耳紅棗燉桃膠(素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "chinese_buffet"
+    ]
+  },
+  {
+    "name_en": "Mini Chocolate Tart with Brandy Raisins",
+    "name_zh": "迷你朱古力撻配白蘭地提子乾",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Assorted Cheese Cake Platter",
+    "name_zh": "意式芝士蛋糕拼盤",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "western_buffet",
+      "chinese_buffet",
+      "mix_match_party",
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Dessert Platter",
+    "name_zh": "甜品拼盤",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "corporate_party"
+    ]
+  },
+  {
+    "name_en": "Coconut Panna Cotta with Gum Tragacanth",
+    "name_zh": "椰汁布甸配雪燕",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "family_set"
+    ]
+  },
+  {
+    "name_en": "Mixed Berries Blinis with Custard Cream (V)",
+    "name_zh": "雜莓布利尼薄餅配吉士打醬 (素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Mini Opera Cake with Golden Chocolate Shards (V)",
+    "name_zh": "迷你歌劇院蛋糕配黃金朱古力脆脆 (素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "western_buffet",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Raspberry Chocolate Cup (V)",
+    "name_zh": "紅桑子比利時朱古力脆皮杯 (素)",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "alacarte",
+      "cocktail_party",
+      "canape_box"
+    ]
+  },
+  {
+    "name_en": "Stewed Peach Gum with Dried Longan & Red Date",
+    "name_zh": "桃膠桂圓紅棗糖水",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "chinese_banquet"
+    ]
+  },
+  {
+    "name_en": "Stewed Gum Tragacanth with Coconut Milk",
+    "name_zh": "椰汁燉雪燕",
+    "category": "H. Sweet Canapes & Dessert",
+    "sets": [
+      "chinese_banquet"
+    ]
+  }
+]
