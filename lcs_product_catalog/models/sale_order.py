@@ -134,12 +134,17 @@ class SaleOrder(models.Model):
                 if set_line.code:
                     desc = '%s %s' % (set_line.code, desc)
 
+                # Qty: if per piece, default to guest count
+                qty = set_line.qty or 1
+                if actual_size == 'per_piece' and guest_count:
+                    qty = guest_count
+
                 # Main line (auto-sized, price=0 until selected)
                 self.env['sale.order.line'].create({
                     'order_id': self.id,
                     'product_id': product_variant.id,
                     'name': desc,
-                    'product_uom_qty': set_line.qty or 1,
+                    'product_uom_qty': qty,
                     'price_unit': 0,
                     'full_price': price,
                     'is_set_line': True,
