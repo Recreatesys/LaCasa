@@ -188,25 +188,20 @@
                         domain="[('has_unacknowledged_change', '=', True)]"/>
                 <separator/>
                 <filter name="filter_today" string="Today"
-                        domain="[('event_date', '=', context_today().strftime('%%Y-%%m-%%d'))]"/>
-                <filter name="filter_this_week" string="This Week"
-                        domain="[('event_date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%%Y-%%m-%%d')),
-                                 ('event_date', '&lt;', (context_today() + datetime.timedelta(days=7-context_today().weekday())).strftime('%%Y-%%m-%%d'))]"/>
+                        domain="[('event_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
                 <separator/>
-                <group expand="0" string="Group By">
-                    <filter name="groupby_event_date" string="Event Date"
-                            context="{'group_by': 'event_date'}"/>
-                    <filter name="groupby_brand" string="Brand"
-                            context="{'group_by': 'brand'}"/>
-                    <filter name="groupby_service_format" string="Service Format"
-                            context="{'group_by': 'service_format'}"/>
-                    <filter name="groupby_service_type" string="Service Type"
-                            context="{'group_by': 'service_type'}"/>
-                    <filter name="groupby_payment_status" string="Payment Status"
-                            context="{'group_by': 'payment_status'}"/>
-                    <filter name="groupby_partner" string="Customer"
-                            context="{'group_by': 'partner_id'}"/>
-                </group>
+                <filter name="groupby_event_date" string="Event Date"
+                        context="{'group_by': 'event_date'}"/>
+                <filter name="groupby_brand" string="Brand"
+                        context="{'group_by': 'brand'}"/>
+                <filter name="groupby_service_format" string="Service Format"
+                        context="{'group_by': 'service_format'}"/>
+                <filter name="groupby_service_type" string="Service Type"
+                        context="{'group_by': 'service_type'}"/>
+                <filter name="groupby_payment_status" string="Payment Status"
+                        context="{'group_by': 'payment_status'}"/>
+                <filter name="groupby_partner" string="Customer"
+                        context="{'group_by': 'partner_id'}"/>
             </search>
         </field>
     </record>
