@@ -6,14 +6,21 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- Add Expand Sets button -->
+            <!-- Add Expand Sets and Reload Sets buttons -->
             <xpath expr="//field[@name='order_line']" position="before">
                 <button name="action_expand_sets"
                         string="Expand Sets"
                         type="object"
-                        class="btn-secondary mb-2"
+                        class="btn-secondary mb-2 me-2"
                         icon="fa-cutlery"
                         invisible="state != 'draft'"/>
+                <button name="action_reload_sets"
+                        string="Reload Sets (Update Guest Count)"
+                        type="object"
+                        class="btn-link mb-2"
+                        icon="fa-refresh"
+                        invisible="state != 'draft'"
+                        confirm="This will recalculate all set lines based on the current guest count. Your dish selections will be preserved. Continue?"/>
             </xpath>
 
             <!-- Add set fields to SO line list -->
