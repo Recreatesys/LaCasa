@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- NEW DISH PRODUCTS (13 dishes not in master/western buffet)   -->
+    <!-- ============================================================ -->
+
+    <record id="dish_cb_01" model="product.template">
+        <field name="name">Smoked Pork Knuckle with Jelly Fish
+海蜇燻蹄</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_02" model="product.template">
+        <field name="name">Shredded Chicken Salad with Sesame Sauce
+手撕雞配胡麻醬沙律</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_03" model="product.template">
+        <field name="name">Corn &amp; Fish Maw Thick Soup
+粟米魚肚羮</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_04" model="product.template">
+        <field name="name">Auspicious Appetizer Platter (Marinated Beef Shank in Chinese Rose Wine &amp; Smoked Pork Knuckle with Jelly Fish)
+前菜拼盤 (玫瑰露牛展拼海蜇燻蹄)</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_05" model="product.template">
+        <field name="name">Shrimp Dumpling
+蝦餃</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_06" model="product.template">
+        <field name="name">Charcoal Custard Lava Buns
+黑金流沙包</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_07" model="product.template">
+        <field name="name">Peking Duck Spring Roll
+北京填鴨春卷</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_08" model="product.template">
+        <field name="name">Mini Sichuan Chicken Burger
+川式烤雞迷你漢堡</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_09" model="product.template">
+        <field name="name">Stir-fried Sea Cucumber &amp; Coral Mussel with Trio Bell Pepper &amp; Sakura Shrimp XO Sauce
+櫻花蝦XO醬彩椒炒海蔘珊瑚蚌</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_10" model="product.template">
+        <field name="name">Sticky Rice with Chinese Jinhua Ham &amp; Chinese Sausage
+金腿臘味糯米飯</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_11" model="product.template">
+        <field name="name">Egg Fried Rice with Black Truffle &amp; Pine Nut
+黑松露松子仁蛋炒飯</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_12" model="product.template">
+        <field name="name">Braised E-fu Noodles with Crab Meat
+蟹肉燴伊麵</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_cb_13" model="product.template">
+        <field name="name">Longevity Peach Bun
+壽桃</field>
+        <field name="categ_id" ref="cat_dessert"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SET PRODUCT                                                  -->
+    <!-- ============================================================ -->
+
+    <record id="product_chinese_buffet" model="product.template">
+        <field name="name">Corporate Chinese Buffet
+中式自助餐</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">0</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- CATERING SET: Corporate Chinese Buffet                       -->
+    <!-- ============================================================ -->
+
+    <record id="set_chinese_buffet" model="lcs.catering.set">
+        <field name="name">Corporate Chinese Buffet 中式自助餐</field>
+        <field name="product_id" ref="product_chinese_buffet"/>
+        <field name="recommendation">Per-head buffet for 50+ persons. HK$398/person base.
+Pick the "Buffet Package Fee" line first, then choose:
+A. 2 Salad/Appetizer, B. 3 Party Snacks (40 pcs each), C. 3 Main Courses,
+D. 1 Vegetable, E. 2 Rice/Noodles, F. 3 Desserts (30 pcs each).
+Items marked with surcharge add to the base price per person.
+Standard drinks included. Upgrade to Deluxe (+$60/person) for wine &amp; beer.
+Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
+7 working days advance order required.</field>
+    </record>
+
+    <!-- Size Rules: all per-person (per_piece) for buffet -->
+    <record id="chb_size_1" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="size_group">salad_main</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">per_piece</field>
+    </record>
+    <record id="chb_size_2" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="size_group">pasta_rice</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">per_piece</field>
+    </record>
+    <record id="chb_size_3" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="size_group">canapes</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">per_piece</field>
+    </record>
+
+    <!-- Selection Rules -->
+    <record id="chb_rule_a" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="max_selection">2</field>
+        <field name="label">A. Salad / Appetizer — Choose 2</field>
+    </record>
+    <record id="chb_rule_b" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="max_selection">3</field>
+        <field name="label">B. Party Snack — Choose 3 (40 pcs/cups each)</field>
+    </record>
+    <record id="chb_rule_c" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="max_selection">3</field>
+        <field name="label">C. Main Course — Choose 3</field>
+    </record>
+    <record id="chb_rule_d" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="max_selection">1</field>
+        <field name="label">D. Vegetable Dish — Choose 1</field>
+    </record>
+    <record id="chb_rule_e" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="max_selection">2</field>
+        <field name="label">E. Rice &amp; Noodles — Choose 2</field>
+    </record>
+    <record id="chb_rule_f" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="max_selection">3</field>
+        <field name="label">F. Dessert — Choose 3 (30 pcs each)</field>
+    </record>
+
+    <!-- Kitchen Ratio Tiers (same as Western Buffet — from Buffet Portion Calc) -->
+    <record id="chb_ratio_salad_50" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_salad_soup"/>
+        <field name="min_guests">50</field>
+        <field name="max_guests">64</field>
+        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="ratio">16</field>
+        <field name="notes">2 trays = 6 lb</field>
+    </record>
+    <record id="chb_ratio_salad_65" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_salad_soup"/>
+        <field name="min_guests">65</field>
+        <field name="max_guests">95</field>
+        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="ratio">16</field>
+        <field name="notes">3 trays = 9 lb</field>
+    </record>
+    <record id="chb_ratio_salad_96" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_salad_soup"/>
+        <field name="min_guests">96</field>
+        <field name="max_guests">165</field>
+        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="ratio">16</field>
+        <field name="notes">4-5 trays = 12-15 lb</field>
+    </record>
+    <record id="chb_ratio_snack" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_party_snack"/>
+        <field name="min_guests">50</field>
+        <field name="max_guests">0</field>
+        <field name="kitchen_unit">pcs</field>
+        <field name="ratio">0.77</field>
+        <field name="notes">1.3 pcs per person; 40 pcs per choice for 50 pax</field>
+    </record>
+    <record id="chb_ratio_main_50" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_main_dishes"/>
+        <field name="min_guests">50</field>
+        <field name="max_guests">99</field>
+        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="ratio">25</field>
+        <field name="notes">1 tray per 25 pax = 5 lb</field>
+    </record>
+    <record id="chb_ratio_main_100" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_main_dishes"/>
+        <field name="min_guests">100</field>
+        <field name="max_guests">149</field>
+        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="ratio">28</field>
+        <field name="notes">Deduct 10% at 100+ pax</field>
+    </record>
+    <record id="chb_ratio_main_150" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_main_dishes"/>
+        <field name="min_guests">150</field>
+        <field name="max_guests">0</field>
+        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="ratio">29</field>
+        <field name="notes">Deduct 15% at 150+ pax</field>
+    </record>
+    <record id="chb_ratio_veg" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_vegetables_fruits"/>
+        <field name="min_guests">50</field>
+        <field name="max_guests">0</field>
+        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="ratio">32</field>
+        <field name="notes">1 tray per 32 pax = 4 lb</field>
+    </record>
+    <record id="chb_ratio_starch" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_rice_pasta"/>
+        <field name="min_guests">50</field>
+        <field name="max_guests">0</field>
+        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="ratio">16</field>
+        <field name="notes">1 tray per 16 pax = 5 lb</field>
+    </record>
+    <record id="chb_ratio_dessert" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="category_id" ref="cat_dessert"/>
+        <field name="min_guests">50</field>
+        <field name="max_guests">0</field>
+        <field name="kitchen_unit">pcs</field>
+        <field name="ratio">1.67</field>
+        <field name="notes">0.6 pcs per person per item; 30 pcs for 50 pax</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SET LINES                                                    -->
+    <!-- ============================================================ -->
+
+    <!-- ── Package Fee ── -->
+    <record id="chb_line_fee" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_buffet_base_fee'))]" model="product.product"/>
+        <field name="section">── Package Fee ──</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">1</field>
+        <field name="price_per_piece">398</field>
+        <field name="description">Base buffet package fee (per person)</field>
+    </record>
+
+    <!-- ── A. Salad / Appetizer (Choose 2) ── -->
+    <record id="chb_line_a01" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_01'))]" model="product.product"/>
+        <field name="code">A01</field>
+        <field name="section">A. Salad / Appetizer 沙律/前菜 (Choose 2)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">10</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_a02" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_02'))]" model="product.product"/>
+        <field name="code">A02</field>
+        <field name="section">A. Salad / Appetizer 沙律/前菜 (Choose 2)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">20</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_a03" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_wb_01'))]" model="product.product"/>
+        <field name="code">A03</field>
+        <field name="section">A. Salad / Appetizer 沙律/前菜 (Choose 2)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">30</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_a04" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_002'))]" model="product.product"/>
+        <field name="code">A04</field>
+        <field name="section">A. Salad / Appetizer 沙律/前菜 (Choose 2)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">40</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_a05" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_03'))]" model="product.product"/>
+        <field name="code">A05</field>
+        <field name="section">A. Salad / Appetizer 沙律/前菜 (Choose 2)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">50</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_a06" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_133'))]" model="product.product"/>
+        <field name="code">A06</field>
+        <field name="section">A. Salad / Appetizer 沙律/前菜 (Choose 2)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">60</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_a07" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_04'))]" model="product.product"/>
+        <field name="code">A07</field>
+        <field name="section">A. Salad / Appetizer 沙律/前菜 (Choose 2)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">70</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+    <record id="chb_line_a08" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_013'))]" model="product.product"/>
+        <field name="code">A08</field>
+        <field name="section">A. Salad / Appetizer 沙律/前菜 (Choose 2)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">80</field>
+        <field name="price_per_piece">25</field>
+        <field name="remark">+HK$25 per person</field>
+    </record>
+
+    <!-- ── B. Party Snack (Choose 3, 40 pcs each) ── -->
+    <record id="chb_line_b01" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_026'))]" model="product.product"/>
+        <field name="code">B01</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">110</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b02" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_05'))]" model="product.product"/>
+        <field name="code">B02</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">120</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b03" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_025'))]" model="product.product"/>
+        <field name="code">B03</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">130</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b04" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_06'))]" model="product.product"/>
+        <field name="code">B04</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">140</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b05" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_021'))]" model="product.product"/>
+        <field name="code">B05</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">150</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b06" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_076'))]" model="product.product"/>
+        <field name="code">B06</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">160</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b07" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_022'))]" model="product.product"/>
+        <field name="code">B07</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">170</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b08" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_032'))]" model="product.product"/>
+        <field name="code">B08</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">180</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b09" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_085'))]" model="product.product"/>
+        <field name="code">B09</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">190</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b10" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_07'))]" model="product.product"/>
+        <field name="code">B10</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">200</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b11" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_090'))]" model="product.product"/>
+        <field name="code">B11</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">210</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b12" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_08'))]" model="product.product"/>
+        <field name="code">B12</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">220</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b13" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_035'))]" model="product.product"/>
+        <field name="code">B13</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">230</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b14" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_061'))]" model="product.product"/>
+        <field name="code">B14</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">240</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_b15" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_091'))]" model="product.product"/>
+        <field name="code">B15</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">250</field>
+        <field name="price_per_piece">20</field>
+        <field name="remark">+HK$20 per person</field>
+    </record>
+    <record id="chb_line_b16" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_040'))]" model="product.product"/>
+        <field name="code">B16</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">260</field>
+        <field name="price_per_piece">20</field>
+        <field name="remark">+HK$20 per person</field>
+    </record>
+    <record id="chb_line_b17" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_023'))]" model="product.product"/>
+        <field name="code">B17</field>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">270</field>
+        <field name="price_per_piece">30</field>
+        <field name="remark">+HK$30 per person</field>
+    </record>
+
+    <!-- ── C. Main Course (Choose 3) ── -->
+    <record id="chb_line_c01" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_095'))]" model="product.product"/>
+        <field name="code">C01</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">280</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_c02" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_wb_09'))]" model="product.product"/>
+        <field name="code">C02</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">290</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_c03" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_09'))]" model="product.product"/>
+        <field name="code">C03</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">300</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_c04" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_101'))]" model="product.product"/>
+        <field name="code">C04</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">310</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_c05" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_wb_06'))]" model="product.product"/>
+        <field name="code">C05</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">320</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_c06" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_wb_07'))]" model="product.product"/>
+        <field name="code">C06</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">330</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_c07" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_wb_08'))]" model="product.product"/>
+        <field name="code">C07</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">340</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_c08" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_093'))]" model="product.product"/>
+        <field name="code">C08</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">350</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_c09" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_119'))]" model="product.product"/>
+        <field name="code">C09</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">360</field>
+        <field name="price_per_piece">30</field>
+        <field name="remark">+HK$30 per person</field>
+    </record>
+    <record id="chb_line_c10" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_124'))]" model="product.product"/>
+        <field name="code">C10</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">370</field>
+        <field name="price_per_piece">30</field>
+        <field name="remark">+HK$30 per person</field>
+    </record>
+    <record id="chb_line_c11" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_102'))]" model="product.product"/>
+        <field name="code">C11</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">380</field>
+        <field name="price_per_piece">30</field>
+        <field name="remark">+HK$30 per person</field>
+    </record>
+    <record id="chb_line_c12" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_108'))]" model="product.product"/>
+        <field name="code">C12</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">390</field>
+        <field name="price_per_piece">30</field>
+        <field name="remark">+HK$30 per person</field>
+    </record>
+    <record id="chb_line_c13" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_155'))]" model="product.product"/>
+        <field name="code">C13</field>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">400</field>
+        <field name="price_per_piece">80</field>
+        <field name="remark">+HK$80 per person</field>
+    </record>
+
+    <!-- ── D. Vegetable Dish (Choose 1) ── -->
+    <record id="chb_line_d01" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_129'))]" model="product.product"/>
+        <field name="code">D01</field>
+        <field name="section">D. Vegetable Dish 蔬菜 (Choose 1)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">420</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_d02" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_130'))]" model="product.product"/>
+        <field name="code">D02</field>
+        <field name="section">D. Vegetable Dish 蔬菜 (Choose 1)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">430</field>
+        <field name="price_per_piece">0</field>
+    </record>
+
+    <!-- ── E. Rice & Noodles (Choose 2) ── -->
+    <record id="chb_line_e01" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_10'))]" model="product.product"/>
+        <field name="code">E01</field>
+        <field name="section">E. Rice &amp; Noodles 飯麵 (Choose 2)</field>
+        <field name="size_group">pasta_rice</field>
+        <field name="sequence">460</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_e02" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_11'))]" model="product.product"/>
+        <field name="code">E02</field>
+        <field name="section">E. Rice &amp; Noodles 飯麵 (Choose 2)</field>
+        <field name="size_group">pasta_rice</field>
+        <field name="sequence">470</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_e03" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_138'))]" model="product.product"/>
+        <field name="code">E03</field>
+        <field name="section">E. Rice &amp; Noodles 飯麵 (Choose 2)</field>
+        <field name="size_group">pasta_rice</field>
+        <field name="sequence">480</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_e04" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_137'))]" model="product.product"/>
+        <field name="code">E04</field>
+        <field name="section">E. Rice &amp; Noodles 飯麵 (Choose 2)</field>
+        <field name="size_group">pasta_rice</field>
+        <field name="sequence">490</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_e05" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_136'))]" model="product.product"/>
+        <field name="code">E05</field>
+        <field name="section">E. Rice &amp; Noodles 飯麵 (Choose 2)</field>
+        <field name="size_group">pasta_rice</field>
+        <field name="sequence">500</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_e06" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_145'))]" model="product.product"/>
+        <field name="code">E06</field>
+        <field name="section">E. Rice &amp; Noodles 飯麵 (Choose 2)</field>
+        <field name="size_group">pasta_rice</field>
+        <field name="sequence">510</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_e07" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_12'))]" model="product.product"/>
+        <field name="code">E07</field>
+        <field name="section">E. Rice &amp; Noodles 飯麵 (Choose 2)</field>
+        <field name="size_group">pasta_rice</field>
+        <field name="sequence">520</field>
+        <field name="price_per_piece">20</field>
+        <field name="remark">+HK$20 per person</field>
+    </record>
+
+    <!-- ── F. Dessert (Choose 3, 30 pcs each) ── -->
+    <record id="chb_line_f01" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_177'))]" model="product.product"/>
+        <field name="code">F01</field>
+        <field name="section">F. Dessert 甜品 (Choose 3, 30 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">540</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_f02" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_163'))]" model="product.product"/>
+        <field name="code">F02</field>
+        <field name="section">F. Dessert 甜品 (Choose 3, 30 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">550</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_f03" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_164'))]" model="product.product"/>
+        <field name="code">F03</field>
+        <field name="section">F. Dessert 甜品 (Choose 3, 30 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">560</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_f04" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cb_13'))]" model="product.product"/>
+        <field name="code">F04</field>
+        <field name="section">F. Dessert 甜品 (Choose 3, 30 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">570</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_f05" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_166'))]" model="product.product"/>
+        <field name="code">F05</field>
+        <field name="section">F. Dessert 甜品 (Choose 3, 30 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">580</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="chb_line_f06" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_179'))]" model="product.product"/>
+        <field name="code">F06</field>
+        <field name="section">F. Dessert 甜品 (Choose 3, 30 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">590</field>
+        <field name="price_per_piece">0</field>
+    </record>
+
+    <!-- ── Add-on Services ── -->
+    <record id="chb_line_drink" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_drink_deluxe_upgrade'))]" model="product.product"/>
+        <field name="section">── Add-on Services 附加服務 ──</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">700</field>
+        <field name="price_per_piece">60</field>
+        <field name="description">Deluxe Drink Package (+$60/person): adds House Wine &amp; Beer</field>
+    </record>
+    <record id="chb_line_corkage" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_chinese_buffet"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_corkage'))]" model="product.product"/>
+        <field name="section">── Add-on Services 附加服務 ──</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">710</field>
+        <field name="price_per_piece">30</field>
+        <field name="description">Corkage Fee ($30/person, client's own wine only)</field>
+    </record>
+
+</odoo>
