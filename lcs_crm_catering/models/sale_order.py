@@ -17,6 +17,21 @@ PAYMENT_METHOD_SELECTION = [
     ('monthly', 'Monthly'),
 ]
 
+CALL_VAN_SELECTION = [
+    ('ah_yuen', '阿源'),
+    ('no_need', 'No need'),
+    ('event_team', 'Arranged by event team'),
+    ('man_zai', '文仔'),
+    ('lalamove', 'Lalamove'),
+    ('hang_gor', '恆哥'),
+    ('self_deliver', '自己送'),
+    ('roy', 'Roy'),
+    ('lik_pak', '力柏'),
+    ('self_pickup', 'Self Pick-up'),
+    ('dat', '達'),
+    ('fu_gor', '虎哥'),
+]
+
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -39,7 +54,7 @@ class SaleOrder(models.Model):
         string='Attention To',
         help='Contact person for this order',
     )
-    call_van = fields.Char(string='Call Van')
+    call_van = fields.Selection(CALL_VAN_SELECTION, string='Call Van')
     delivery_time = fields.Float(string='Delivery Time')
 
     @api.onchange('partner_id')

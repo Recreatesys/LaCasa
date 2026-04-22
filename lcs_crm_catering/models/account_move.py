@@ -5,7 +5,7 @@ from odoo.addons.lcs_crm_catering.models.crm_lead import (
     SERVICE_FORMAT_SELECTION,
     SERVICE_TYPE_SELECTION,
 )
-from odoo.addons.lcs_crm_catering.models.sale_order import PAYMENT_METHOD_SELECTION
+from odoo.addons.lcs_crm_catering.models.sale_order import CALL_VAN_SELECTION, PAYMENT_METHOD_SELECTION
 
 
 class AccountMove(models.Model):
@@ -16,7 +16,7 @@ class AccountMove(models.Model):
         'res.partner',
         string='Attention To',
     )
-    call_van = fields.Char(string='Call Van')
+    call_van = fields.Selection(CALL_VAN_SELECTION, string='Call Van')
     delivery_time = fields.Float(string='Delivery Time')
     event_date = fields.Date(string='Event / Delivery Date')
     event_street = fields.Char(string='Delivery Street')
