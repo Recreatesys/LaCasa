@@ -38,8 +38,7 @@
                         <span t-field="o.company_id.partner_id.name"/><br/>
                         <span t-field="o.company_id.partner_id.street"/>
                         <t t-if="o.company_id.partner_id.street2">, <span t-field="o.company_id.partner_id.street2"/></t><br/>
-                        <t t-if="o.company_id.phone">Tel: <span t-field="o.company_id.phone"/></t>
-                        <t t-if="o.company_id.partner_id.fax"> FAX: <span t-field="o.company_id.partner_id.fax"/></t><br/>
+                        <t t-if="o.company_id.phone">Tel: <span t-field="o.company_id.phone"/></t><br/>
                         <t t-if="o.company_id.email">Email: <span t-field="o.company_id.email"/></t>
                     </div>
                 </div>
