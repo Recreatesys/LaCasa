@@ -72,10 +72,10 @@
                         Attn: <span t-field="o.attention_to_id.name"/><br/>
                     </t>
                     <!-- Catering service description -->
-                    <t t-if="o.delivery_type or o.commitment_date">
+                    <t t-if="o.delivery_type or o.event_date">
                         Catering service on
-                        <t t-if="o.commitment_date">
-                            <span t-field="o.commitment_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
+                        <t t-if="o.event_date">
+                            <span t-field="o.event_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
                         </t>
                     </t>
                 </div>
@@ -168,23 +168,21 @@
                         <td style="width: 150px;"><strong>Ref Number:</strong></td>
                         <td><span t-field="o.name"/></td>
                     </tr>
-                    <tr>
+                    <tr t-if="o.event_date">
                         <td><strong>Delivery Date:</strong></td>
                         <td>
-                            <t t-if="o.commitment_date">
-                                <span t-field="o.commitment_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
-                            </t>
+                            <span t-field="o.event_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
                         </td>
                     </tr>
                     <tr t-if="o.delivery_time">
                         <td><strong>Delivery Time:</strong></td>
                         <td><span t-field="o.delivery_time" widget="float_time"/></td>
                     </tr>
-                    <tr t-if="o.partner_shipping_id">
+                    <tr t-if="o.event_street">
                         <td><strong>Delivery Address:</strong></td>
                         <td>
-                            <span t-field="o.partner_shipping_id.street"/>
-                            <t t-if="o.partner_shipping_id.street2">, <span t-field="o.partner_shipping_id.street2"/></t>
+                            <span t-field="o.event_street"/>
+                            <t t-if="o.event_street2">, <span t-field="o.event_street2"/></t>
                         </td>
                     </tr>
                     <tr t-if="o.attention_to_id">
