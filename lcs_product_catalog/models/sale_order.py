@@ -189,6 +189,28 @@ class SaleOrder(models.Model):
                 if actual_size == 'per_piece' and guest_count:
                     qty = guest_count
 
+                # Look up ratio tier for SO/EO unit conversion
+                eo_qty = set_line.eo_qty
+                eo_unit = set_line.eo_unit
+                category_id = product_variant.categ_id.id
+                ratio_tier = catering_set.get_ratio_tier(
+                    guest_count, category_id
+                ) if guest_count else False
+
+                if ratio_tier and ratio_tier.invoice_unit:
+                    # Calculate SO qty from ratio tier
+                    import math
+                    if ratio_tier.ratio and ratio_tier.ratio > 0:
+                        tray_count = math.ceil(
+                            guest_count / ratio_tier.ratio
+                        )
+                        qty = tray_count
+                        size_label = ratio_tier.invoice_unit
+                    # Calculate EO qty from conversion factor
+                    if ratio_tier.conversion_factor:
+                        eo_qty = qty * ratio_tier.conversion_factor
+                        eo_unit = ratio_tier.kitchen_unit
+
                 # Main line (auto-sized, price=0 until selected)
                 self.env['sale.order.line'].create({
                     'order_id': self.id,
@@ -203,8 +225,8 @@ class SaleOrder(models.Model):
                     'catering_set_id': catering_set.id,
                     'set_unit': size_label,
                     'set_line_code': set_line.code,
-                    'eo_qty': set_line.eo_qty,
-                    'eo_unit': set_line.eo_unit,
+                    'eo_qty': eo_qty,
+                    'eo_unit': eo_unit,
                     'per_piece_price': set_line.price_per_piece or 0,
                     'sequence': seq,
                 })

@@ -71,8 +71,10 @@
                                     <field name="category_id"/>
                                     <field name="min_guests"/>
                                     <field name="max_guests"/>
-                                    <field name="kitchen_unit"/>
-                                    <field name="ratio"/>
+                                    <field name="invoice_unit" string="SO/Invoice Unit"/>
+                                    <field name="kitchen_unit" string="EO Unit"/>
+                                    <field name="ratio" string="Guests/Unit"/>
+                                    <field name="conversion_factor" string="EO/Invoice"/>
                                     <field name="notes"/>
                                 </list>
                             </field>

@@ -201,8 +201,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_salad_soup"/>
         <field name="min_guests">50</field>
         <field name="max_guests">64</field>
-        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="invoice_unit">1/2 GN tray</field>
+        <field name="kitchen_unit">lb</field>
         <field name="ratio">16</field>
+        <field name="conversion_factor">3.0</field>
         <field name="notes">2 trays = 6 lb</field>
     </record>
     <record id="chb_ratio_salad_65" model="lcs.catering.set.ratio.tier">
@@ -210,8 +212,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_salad_soup"/>
         <field name="min_guests">65</field>
         <field name="max_guests">95</field>
-        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="invoice_unit">1/2 GN tray</field>
+        <field name="kitchen_unit">lb</field>
         <field name="ratio">16</field>
+        <field name="conversion_factor">3.0</field>
         <field name="notes">3 trays = 9 lb</field>
     </record>
     <record id="chb_ratio_salad_96" model="lcs.catering.set.ratio.tier">
@@ -219,8 +223,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_salad_soup"/>
         <field name="min_guests">96</field>
         <field name="max_guests">165</field>
-        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="invoice_unit">1/2 GN tray</field>
+        <field name="kitchen_unit">lb</field>
         <field name="ratio">16</field>
+        <field name="conversion_factor">3.0</field>
         <field name="notes">4-5 trays = 12-15 lb</field>
     </record>
     <record id="chb_ratio_snack" model="lcs.catering.set.ratio.tier">
@@ -228,8 +234,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_party_snack"/>
         <field name="min_guests">50</field>
         <field name="max_guests">0</field>
+        <field name="invoice_unit">pcs</field>
         <field name="kitchen_unit">pcs</field>
         <field name="ratio">0.77</field>
+        <field name="conversion_factor">1.0</field>
         <field name="notes">1.3 pcs per person; 40 pcs per choice for 50 pax</field>
     </record>
     <record id="chb_ratio_main_50" model="lcs.catering.set.ratio.tier">
@@ -237,8 +245,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_main_dishes"/>
         <field name="min_guests">50</field>
         <field name="max_guests">99</field>
-        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="invoice_unit">1/2 GN tray</field>
+        <field name="kitchen_unit">lb</field>
         <field name="ratio">25</field>
+        <field name="conversion_factor">5.0</field>
         <field name="notes">1 tray per 25 pax = 5 lb</field>
     </record>
     <record id="chb_ratio_main_100" model="lcs.catering.set.ratio.tier">
@@ -246,8 +256,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_main_dishes"/>
         <field name="min_guests">100</field>
         <field name="max_guests">149</field>
-        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="invoice_unit">1/2 GN tray</field>
+        <field name="kitchen_unit">lb</field>
         <field name="ratio">28</field>
+        <field name="conversion_factor">5.0</field>
         <field name="notes">Deduct 10% at 100+ pax</field>
     </record>
     <record id="chb_ratio_main_150" model="lcs.catering.set.ratio.tier">
@@ -255,8 +267,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_main_dishes"/>
         <field name="min_guests">150</field>
         <field name="max_guests">0</field>
-        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="invoice_unit">1/2 GN tray</field>
+        <field name="kitchen_unit">lb</field>
         <field name="ratio">29</field>
+        <field name="conversion_factor">5.0</field>
         <field name="notes">Deduct 15% at 150+ pax</field>
     </record>
     <record id="chb_ratio_veg" model="lcs.catering.set.ratio.tier">
@@ -264,8 +278,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_vegetables_fruits"/>
         <field name="min_guests">50</field>
         <field name="max_guests">0</field>
-        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="invoice_unit">1/2 GN tray</field>
+        <field name="kitchen_unit">lb</field>
         <field name="ratio">32</field>
+        <field name="conversion_factor">4.0</field>
         <field name="notes">1 tray per 32 pax = 4 lb</field>
     </record>
     <record id="chb_ratio_starch" model="lcs.catering.set.ratio.tier">
@@ -273,8 +289,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_rice_pasta"/>
         <field name="min_guests">50</field>
         <field name="max_guests">0</field>
-        <field name="kitchen_unit">1/2 GN tray</field>
+        <field name="invoice_unit">1/2 GN tray</field>
+        <field name="kitchen_unit">lb</field>
         <field name="ratio">16</field>
+        <field name="conversion_factor">5.0</field>
         <field name="notes">1 tray per 16 pax = 5 lb</field>
     </record>
     <record id="chb_ratio_dessert" model="lcs.catering.set.ratio.tier">
@@ -282,8 +300,10 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="category_id" ref="cat_dessert"/>
         <field name="min_guests">50</field>
         <field name="max_guests">0</field>
+        <field name="invoice_unit">pcs</field>
         <field name="kitchen_unit">pcs</field>
         <field name="ratio">1.67</field>
+        <field name="conversion_factor">1.0</field>
         <field name="notes">0.6 pcs per person per item; 30 pcs for 50 pax</field>
     </record>
 

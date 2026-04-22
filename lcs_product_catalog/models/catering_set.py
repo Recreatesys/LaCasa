@@ -52,6 +52,18 @@ class CateringSet(models.Model):
         'lcs.catering.set.ratio.tier', 'set_id', string='Kitchen Ratio Tiers',
     )
 
+    def get_ratio_tier(self, guest_count, category_id):
+        """Find the matching ratio tier for a guest count and dish category.
+
+        Returns the ratio tier record or False.
+        """
+        self.ensure_one()
+        for tier in self.ratio_tier_ids.filtered(lambda t: t.category_id.id == category_id):
+            max_g = tier.max_guests or 99999
+            if tier.min_guests <= guest_count <= max_g:
+                return tier
+        return False
+
     def get_auto_size(self, guest_count, size_group):
         """Determine the auto-selected size based on guest count and size group.
 
@@ -199,6 +211,7 @@ class CateringSetSizeRule(models.Model):
 class CateringSetRatioTier(models.Model):
     _name = 'lcs.catering.set.ratio.tier'
     _description = 'Kitchen Ratio Tier (per guest count range)'
+    _order = 'category_id, min_guests'
 
     set_id = fields.Many2one(
         'lcs.catering.set', string='Set', required=True, ondelete='cascade',
@@ -208,6 +221,20 @@ class CateringSetRatioTier(models.Model):
     )
     min_guests = fields.Integer(string='Min Guests', required=True)
     max_guests = fields.Integer(string='Max Guests', default=0)
-    kitchen_unit = fields.Char(string='Kitchen Unit')
-    ratio = fields.Float(string='Guests per Unit', default=1.0)
+    invoice_unit = fields.Char(
+        string='SO/Invoice Unit',
+        help='Unit shown on quotation/invoice, e.g. "1/2 GN tray", "pcs"',
+    )
+    kitchen_unit = fields.Char(
+        string='EO Unit',
+        help='Unit shown on Event Order for kitchen, e.g. "lb", "pcs"',
+    )
+    ratio = fields.Float(
+        string='Guests per Invoice Unit', default=1.0,
+        help='Number of guests served by 1 invoice unit. E.g. 16 means 1 tray per 16 pax.',
+    )
+    conversion_factor = fields.Float(
+        string='EO per Invoice Unit', default=1.0,
+        help='How many EO units per 1 invoice unit. E.g. 3.0 means 1 tray = 3 lb.',
+    )
     notes = fields.Char(string='Notes')
