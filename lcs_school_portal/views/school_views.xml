@@ -7,8 +7,21 @@
         <field name="model">lcs.school</field>
         <field name="arch" type="xml">
             <form string="School">
+                <header>
+                    <button name="action_load_hk_public_holidays"
+                            string="Load HK Public Holidays"
+                            type="object"
+                            class="btn-primary"
+                            help="Bulk-add HK statutory holidays for this and next year"/>
+                </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object"
+                                name="action_view_calendar" icon="fa-calendar">
+                            <field name="calendar_entry_count" widget="statinfo"
+                                   string="Calendar"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1><field name="name" placeholder="School Name"/></h1>

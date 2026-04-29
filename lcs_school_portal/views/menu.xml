@@ -12,6 +12,12 @@
               action="lcs_student_action"
               sequence="10"/>
 
+    <menuitem id="menu_lcs_school_portal_calendar"
+              name="School Calendar"
+              parent="menu_lcs_school_portal_root"
+              action="lcs_school_calendar_entry_action"
+              sequence="20"/>
+
     <menuitem id="menu_lcs_school_portal_config"
               name="Configuration"
               parent="menu_lcs_school_portal_root"

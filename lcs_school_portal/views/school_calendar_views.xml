@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ==================== CALENDAR view ==================== -->
+    <record id="lcs_school_calendar_entry_view_calendar" model="ir.ui.view">
+        <field name="name">lcs.school.calendar.entry.calendar</field>
+        <field name="model">lcs.school.calendar.entry</field>
+        <field name="arch" type="xml">
+            <calendar string="School Calendar" date_start="date" date_stop="date_end"
+                      color="color" mode="month">
+                <field name="name"/>
+                <field name="day_type"/>
+                <field name="school_id" filters="1"/>
+                <field name="class_company_id" filters="1"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- ==================== LIST view ==================== -->
+    <record id="lcs_school_calendar_entry_view_list" model="ir.ui.view">
+        <field name="name">lcs.school.calendar.entry.list</field>
+        <field name="model">lcs.school.calendar.entry</field>
+        <field name="arch" type="xml">
+            <list string="Calendar Entries"
+                  decoration-danger="day_type == 'public_holiday'"
+                  decoration-warning="day_type == 'exam'"
+                  decoration-info="day_type == 'school_holiday'"
+                  decoration-success="day_type == 'special_open'">
+                <field name="date"/>
+                <field name="date_end" optional="hide"/>
+                <field name="name"/>
+                <field name="day_type"/>
+                <field name="school_id"/>
+                <field name="class_company_id" optional="show"/>
+                <field name="is_open" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ==================== FORM view ==================== -->
+    <record id="lcs_school_calendar_entry_view_form" model="ir.ui.view">
+        <field name="name">lcs.school.calendar.entry.form</field>
+        <field name="model">lcs.school.calendar.entry</field>
+        <field name="arch" type="xml">
+            <form string="Calendar Entry">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Christmas Day, Mid-term Exam"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="date_end"/>
+                            <field name="day_type"/>
+                            <field name="is_open" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="school_id"/>
+                            <field name="class_company_id"
+                                   help="Leave blank for school-wide. Class-level overrides school-level."/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="note"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ==================== SEARCH view ==================== -->
+    <record id="lcs_school_calendar_entry_view_search" model="ir.ui.view">
+        <field name="name">lcs.school.calendar.entry.search</field>
+        <field name="model">lcs.school.calendar.entry</field>
+        <field name="arch" type="xml">
+            <search string="Calendar">
+                <field name="name"/>
+                <field name="school_id"/>
+                <field name="class_company_id"/>
+                <separator/>
+                <filter name="filter_public_holiday" string="Public Holidays"
+                        domain="[('day_type', '=', 'public_holiday')]"/>
+                <filter name="filter_school_holiday" string="School Holidays"
+                        domain="[('day_type', '=', 'school_holiday')]"/>
+                <filter name="filter_exam" string="Exam Days"
+                        domain="[('day_type', '=', 'exam')]"/>
+                <filter name="filter_special_open" string="Special Open"
+                        domain="[('day_type', '=', 'special_open')]"/>
+                <separator/>
+                <filter name="filter_school_wide" string="School-wide (no class)"
+                        domain="[('class_company_id', '=', False)]"/>
+                <filter name="filter_class_specific" string="Class-specific"
+                        domain="[('class_company_id', '!=', False)]"/>
+                <separator/>
+                <filter name="filter_upcoming" string="Upcoming"
+                        domain="[('date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="groupby_school" string="School"
+                        context="{'group_by': 'school_id'}"/>
+                <filter name="groupby_class" string="Class"
+                        context="{'group_by': 'class_company_id'}"/>
+                <filter name="groupby_day_type" string="Type"
+                        context="{'group_by': 'day_type'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ==================== ACTION ==================== -->
+    <record id="lcs_school_calendar_entry_action" model="ir.actions.act_window">
+        <field name="name">School Calendar</field>
+        <field name="res_model">lcs.school.calendar.entry</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="search_view_id" ref="lcs_school_calendar_entry_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add holidays, exam days, or special open days
+            </p>
+            <p>
+                By default Mon–Fri are open and Sat–Sun are closed.
+                Add entries here to override the default for specific dates.
+                Use the "Load HK Public Holidays" button on the school form to bulk-import HK statutory holidays.
+            </p>
+        </field>
+    </record>
+
+</odoo>
