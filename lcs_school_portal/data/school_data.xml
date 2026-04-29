@@ -39,8 +39,8 @@
             <field name="name">陳大文</field>
             <field name="chinese_name">陳大文</field>
             <field name="student_no">1A-001</field>
-            <field name="parent_name">陳志強</field>
-            <field name="parent_phone">98765001</field>
+            <field name="guardian_name">陳志強</field>
+            <field name="guardian_phone">98765001</field>
             <field name="email">parent.chan001@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
@@ -51,8 +51,8 @@
             <field name="name">李美儀</field>
             <field name="chinese_name">李美儀</field>
             <field name="student_no">1A-002</field>
-            <field name="parent_name">李偉文</field>
-            <field name="parent_phone">98765002</field>
+            <field name="guardian_name">李偉文</field>
+            <field name="guardian_phone">98765002</field>
             <field name="email">parent.lee002@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
@@ -64,8 +64,8 @@
             <field name="name">黃志明</field>
             <field name="chinese_name">黃志明</field>
             <field name="student_no">1A-003</field>
-            <field name="parent_name">黃國華</field>
-            <field name="parent_phone">98765003</field>
+            <field name="guardian_name">黃國華</field>
+            <field name="guardian_phone">98765003</field>
             <field name="email">parent.wong003@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
@@ -77,8 +77,8 @@
             <field name="name">張家傑</field>
             <field name="chinese_name">張家傑</field>
             <field name="student_no">1A-004</field>
-            <field name="parent_name">張婉君</field>
-            <field name="parent_phone">98765004</field>
+            <field name="guardian_name">張婉君</field>
+            <field name="guardian_phone">98765004</field>
             <field name="email">parent.cheung004@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
@@ -90,8 +90,8 @@
             <field name="name">劉芷晴</field>
             <field name="chinese_name">劉芷晴</field>
             <field name="student_no">1A-005</field>
-            <field name="parent_name">劉志輝</field>
-            <field name="parent_phone">98765005</field>
+            <field name="guardian_name">劉志輝</field>
+            <field name="guardian_phone">98765005</field>
             <field name="email">parent.lau005@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
@@ -104,8 +104,8 @@
             <field name="name">何家俊</field>
             <field name="chinese_name">何家俊</field>
             <field name="student_no">1B-001</field>
-            <field name="parent_name">何志雄</field>
-            <field name="parent_phone">98765101</field>
+            <field name="guardian_name">何志雄</field>
+            <field name="guardian_phone">98765101</field>
             <field name="email">parent.ho101@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
@@ -116,8 +116,8 @@
             <field name="name">羅嘉欣</field>
             <field name="chinese_name">羅嘉欣</field>
             <field name="student_no">1B-002</field>
-            <field name="parent_name">羅偉強</field>
-            <field name="parent_phone">98765102</field>
+            <field name="guardian_name">羅偉強</field>
+            <field name="guardian_phone">98765102</field>
             <field name="email">parent.law102@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
@@ -128,8 +128,8 @@
             <field name="name">周俊賢</field>
             <field name="chinese_name">周俊賢</field>
             <field name="student_no">1B-003</field>
-            <field name="parent_name">周麗珍</field>
-            <field name="parent_phone">98765103</field>
+            <field name="guardian_name">周麗珍</field>
+            <field name="guardian_phone">98765103</field>
             <field name="email">parent.chow103@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
@@ -141,8 +141,8 @@
             <field name="name">梁靜雯</field>
             <field name="chinese_name">梁靜雯</field>
             <field name="student_no">1B-004</field>
-            <field name="parent_name">梁建明</field>
-            <field name="parent_phone">98765104</field>
+            <field name="guardian_name">梁建明</field>
+            <field name="guardian_phone">98765104</field>
             <field name="email">parent.leung104@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
@@ -153,8 +153,8 @@
             <field name="name">朱浩然</field>
             <field name="chinese_name">朱浩然</field>
             <field name="student_no">1B-005</field>
-            <field name="parent_name">朱嘉欣</field>
-            <field name="parent_phone">98765105</field>
+            <field name="guardian_name">朱嘉欣</field>
+            <field name="guardian_phone">98765105</field>
             <field name="email">parent.chu105@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
@@ -168,8 +168,8 @@
             <field name="name">林子軒</field>
             <field name="chinese_name">林子軒</field>
             <field name="student_no">1C-001</field>
-            <field name="parent_name">林文俊</field>
-            <field name="parent_phone">98765201</field>
+            <field name="guardian_name">林文俊</field>
+            <field name="guardian_phone">98765201</field>
             <field name="email">parent.lam201@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
@@ -180,8 +180,8 @@
             <field name="name">吳詩雅</field>
             <field name="chinese_name">吳詩雅</field>
             <field name="student_no">1C-002</field>
-            <field name="parent_name">吳國強</field>
-            <field name="parent_phone">98765202</field>
+            <field name="guardian_name">吳國強</field>
+            <field name="guardian_phone">98765202</field>
             <field name="email">parent.ng202@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
@@ -192,8 +192,8 @@
             <field name="name">徐健昌</field>
             <field name="chinese_name">徐健昌</field>
             <field name="student_no">1C-003</field>
-            <field name="parent_name">徐美玲</field>
-            <field name="parent_phone">98765203</field>
+            <field name="guardian_name">徐美玲</field>
+            <field name="guardian_phone">98765203</field>
             <field name="email">parent.tsui203@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
@@ -205,8 +205,8 @@
             <field name="name">馬芷君</field>
             <field name="chinese_name">馬芷君</field>
             <field name="student_no">1C-004</field>
-            <field name="parent_name">馬志成</field>
-            <field name="parent_phone">98765204</field>
+            <field name="guardian_name">馬志成</field>
+            <field name="guardian_phone">98765204</field>
             <field name="email">parent.ma204@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
@@ -217,8 +217,8 @@
             <field name="name">蔡天佑</field>
             <field name="chinese_name">蔡天佑</field>
             <field name="student_no">1C-005</field>
-            <field name="parent_name">蔡惠玲</field>
-            <field name="parent_phone">98765205</field>
+            <field name="guardian_name">蔡惠玲</field>
+            <field name="guardian_phone">98765205</field>
             <field name="email">parent.tsoi205@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
@@ -232,8 +232,8 @@
             <field name="name">鄭嘉豪</field>
             <field name="chinese_name">鄭嘉豪</field>
             <field name="student_no">2A-001</field>
-            <field name="parent_name">鄭浩文</field>
-            <field name="parent_phone">98766001</field>
+            <field name="guardian_name">鄭浩文</field>
+            <field name="guardian_phone">98766001</field>
             <field name="email">parent.cheng301@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
@@ -244,8 +244,8 @@
             <field name="name">曾雅文</field>
             <field name="chinese_name">曾雅文</field>
             <field name="student_no">2A-002</field>
-            <field name="parent_name">曾建華</field>
-            <field name="parent_phone">98766002</field>
+            <field name="guardian_name">曾建華</field>
+            <field name="guardian_phone">98766002</field>
             <field name="email">parent.tsang302@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
@@ -256,8 +256,8 @@
             <field name="name">高志明</field>
             <field name="chinese_name">高志明</field>
             <field name="student_no">2A-003</field>
-            <field name="parent_name">高麗華</field>
-            <field name="parent_phone">98766003</field>
+            <field name="guardian_name">高麗華</field>
+            <field name="guardian_phone">98766003</field>
             <field name="email">parent.ko303@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
@@ -269,8 +269,8 @@
             <field name="name">關詠琳</field>
             <field name="chinese_name">關詠琳</field>
             <field name="student_no">2A-004</field>
-            <field name="parent_name">關偉成</field>
-            <field name="parent_phone">98766004</field>
+            <field name="guardian_name">關偉成</field>
+            <field name="guardian_phone">98766004</field>
             <field name="email">parent.kwan304@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
@@ -281,8 +281,8 @@
             <field name="name">楊俊輝</field>
             <field name="chinese_name">楊俊輝</field>
             <field name="student_no">2A-005</field>
-            <field name="parent_name">楊雅芬</field>
-            <field name="parent_phone">98766005</field>
+            <field name="guardian_name">楊雅芬</field>
+            <field name="guardian_phone">98766005</field>
             <field name="email">parent.yeung305@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
@@ -295,8 +295,8 @@
             <field name="name">譚思敏</field>
             <field name="chinese_name">譚思敏</field>
             <field name="student_no">2B-001</field>
-            <field name="parent_name">譚嘉俊</field>
-            <field name="parent_phone">98766101</field>
+            <field name="guardian_name">譚嘉俊</field>
+            <field name="guardian_phone">98766101</field>
             <field name="email">parent.tam401@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
@@ -307,8 +307,8 @@
             <field name="name">司徒文傑</field>
             <field name="chinese_name">司徒文傑</field>
             <field name="student_no">2B-002</field>
-            <field name="parent_name">司徒慧珍</field>
-            <field name="parent_phone">98766102</field>
+            <field name="guardian_name">司徒慧珍</field>
+            <field name="guardian_phone">98766102</field>
             <field name="email">parent.szeto402@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
@@ -320,8 +320,8 @@
             <field name="name">石詠儀</field>
             <field name="chinese_name">石詠儀</field>
             <field name="student_no">2B-003</field>
-            <field name="parent_name">石志鵬</field>
-            <field name="parent_phone">98766103</field>
+            <field name="guardian_name">石志鵬</field>
+            <field name="guardian_phone">98766103</field>
             <field name="email">parent.shek403@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
@@ -332,8 +332,8 @@
             <field name="name">許國華</field>
             <field name="chinese_name">許國華</field>
             <field name="student_no">2B-004</field>
-            <field name="parent_name">許麗芬</field>
-            <field name="parent_phone">98766104</field>
+            <field name="guardian_name">許麗芬</field>
+            <field name="guardian_phone">98766104</field>
             <field name="email">parent.hui404@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
@@ -344,8 +344,8 @@
             <field name="name">古子晴</field>
             <field name="chinese_name">古子晴</field>
             <field name="student_no">2B-005</field>
-            <field name="parent_name">古成輝</field>
-            <field name="parent_phone">98766105</field>
+            <field name="guardian_name">古成輝</field>
+            <field name="guardian_phone">98766105</field>
             <field name="email">parent.koo405@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
@@ -359,8 +359,8 @@
             <field name="name">韓家寶</field>
             <field name="chinese_name">韓家寶</field>
             <field name="student_no">2C-001</field>
-            <field name="parent_name">韓志強</field>
-            <field name="parent_phone">98766201</field>
+            <field name="guardian_name">韓志強</field>
+            <field name="guardian_phone">98766201</field>
             <field name="email">parent.hon501@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>
@@ -371,8 +371,8 @@
             <field name="name">麥慧珊</field>
             <field name="chinese_name">麥慧珊</field>
             <field name="student_no">2C-002</field>
-            <field name="parent_name">麥健文</field>
-            <field name="parent_phone">98766202</field>
+            <field name="guardian_name">麥健文</field>
+            <field name="guardian_phone">98766202</field>
             <field name="email">parent.mak502@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>
@@ -383,8 +383,8 @@
             <field name="name">袁俊熙</field>
             <field name="chinese_name">袁俊熙</field>
             <field name="student_no">2C-003</field>
-            <field name="parent_name">袁麗萍</field>
-            <field name="parent_phone">98766203</field>
+            <field name="guardian_name">袁麗萍</field>
+            <field name="guardian_phone">98766203</field>
             <field name="email">parent.yuen503@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>
@@ -396,8 +396,8 @@
             <field name="name">蘇曉彤</field>
             <field name="chinese_name">蘇曉彤</field>
             <field name="student_no">2C-004</field>
-            <field name="parent_name">蘇文傑</field>
-            <field name="parent_phone">98766204</field>
+            <field name="guardian_name">蘇文傑</field>
+            <field name="guardian_phone">98766204</field>
             <field name="email">parent.so504@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>
@@ -408,8 +408,8 @@
             <field name="name">阮浩賢</field>
             <field name="chinese_name">阮浩賢</field>
             <field name="student_no">2C-005</field>
-            <field name="parent_name">阮嘉麗</field>
-            <field name="parent_phone">98766205</field>
+            <field name="guardian_name">阮嘉麗</field>
+            <field name="guardian_phone">98766205</field>
             <field name="email">parent.yuen505@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>

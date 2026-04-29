@@ -20,8 +20,8 @@
                                 <field name="chinese_name"/>
                             </group>
                             <group string="Parent / Guardian">
-                                <field name="parent_name"/>
-                                <field name="parent_phone"/>
+                                <field name="guardian_name"/>
+                                <field name="guardian_phone"/>
                             </group>
                         </group>
                         <group string="Dietary">
@@ -49,8 +49,8 @@
                 <field name="student_no" optional="hide"/>
                 <field name="class_company_id" optional="hide" string="Class"/>
                 <field name="school_id" optional="hide"/>
-                <field name="parent_name" optional="hide"/>
-                <field name="parent_phone" optional="hide"/>
+                <field name="guardian_name" optional="hide"/>
+                <field name="guardian_phone" optional="hide"/>
                 <field name="diet_preference" optional="hide"/>
             </xpath>
         </field>

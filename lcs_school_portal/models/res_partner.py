@@ -20,8 +20,8 @@ class ResPartner(models.Model):
     )
     chinese_name = fields.Char(string='Chinese Name')
     student_no = fields.Char(string='Student No.', index=True)
-    parent_name = fields.Char(string='Parent Name')
-    parent_phone = fields.Char(string='Parent Phone')
+    guardian_name = fields.Char(string='Parent Name')
+    guardian_phone = fields.Char(string='Parent Phone')
 
     allergy_ids = fields.Many2many(
         'lcs.allergy', 'res_partner_allergy_rel', 'partner_id', 'allergy_id',
