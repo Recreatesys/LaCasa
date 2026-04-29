@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- NEW DISH PRODUCTS                                            -->
+    <!-- (Spanish Suckling Pig already exists as dish_102)            -->
+    <!-- ============================================================ -->
+
+    <record id="dish_go_01" model="product.template">
+        <field name="name">Grand Opening Chinese Suckling Pig (3-4kg)
+大展鴻圖原隻中式乳豬 (3-4kg)</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="description">Includes on-site chef for roasted suckling pig carving service.</field>
+    </record>
+
+    <record id="dish_go_02" model="product.template">
+        <field name="name">Golden Roasted Pig (20-25kg) with Chef
+中式金豬 (20-25kg) 連師傅</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="description">Upgrade option from 3-4kg suckling pig. Includes on-site chef.</field>
+    </record>
+
+    <record id="dish_go_03" model="product.template">
+        <field name="name">Prosperity Toss (Lo Hei) - Smoked Salmon
+開運煙三文魚撈起</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="description">Smoked Salmon, Pickled Young Ginger, Yellow Bell Pepper, Purple Cabbage, Carrot, Shredded Chicken, Red Bell Pepper, Honeydew Melon, Greenhouse Cucumber, White Radish, Pickled Scallions.</field>
+    </record>
+
+    <record id="dish_go_04" model="product.template">
+        <field name="name">Sparkling Wine - Cantina Beato Bartolomeo Prosecco DOC N.V. (Veneto, Italy)
+祝酒氣泡酒 - Cantina Beato Bartolomeo Extra Dry Prosecco DOC N.V. (Veneto, Italy)</field>
+        <field name="categ_id" ref="cat_lcs_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SERVICE PRODUCTS                                             -->
+    <!-- ============================================================ -->
+
+    <record id="product_grand_opening" model="product.template">
+        <field name="name">Grand Opening Package
+開張盛事到會套餐</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">0</field>
+    </record>
+
+    <record id="product_go_pkg_fee" model="product.template">
+        <field name="name">Grand Opening Package Fee
+開張盛事到會套餐費</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">16388</field>
+        <field name="description">All-inclusive: food, drinks, 2 waiters (4 hrs), set-up, round-trip delivery.</field>
+    </record>
+
+    <record id="product_go_champagne" model="product.template">
+        <field name="name">Champagne Moet &amp; Chandon Upgrade (2 bottles)
+香檳升級 Moet &amp; Chandon (2 瓶)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">800</field>
+        <field name="description">Upgrade from included sparkling wine to Champagne Moet &amp; Chandon (2 bottles).</field>
+    </record>
+
+    <record id="product_go_dummy_cake" model="product.template">
+        <field name="name">3-Tier Dummy Cake Rental
+3層仿真慶祝蛋糕租用</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">1200</field>
+        <field name="description">For cake-cutting ceremony. Rental only.</field>
+    </record>
+
+    <record id="product_go_pig_upgrade" model="product.template">
+        <field name="name">Suckling Pig Upgrade to Golden Roasted Pig (20-25kg)
+乳豬升級至中式金豬 (20-25kg)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">4380</field>
+        <field name="description">Upgrade from 3-4kg suckling pig to 20-25kg golden roasted pig. Includes on-site chef.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- CATERING SET: Grand Opening                                  -->
+    <!-- ============================================================ -->
+
+    <record id="set_grand_opening" model="lcs.catering.set">
+        <field name="name">Grand Opening Package 開張盛事到會套餐</field>
+        <field name="product_id" ref="product_grand_opening"/>
+        <field name="recommendation">All-inclusive Grand Opening Package — HK$16,388 fixed.
+
+WORKFLOW:
+1. Pick the Package Fee line first (HK$16,388 — the bundle).
+2. Pick ONE Suckling Pig variant (Spanish OR Chinese — included).
+3. The ceremonial items (Lo Hei, Prosecco, drinks) come pre-included at qty 0 surcharge.
+4. Pick exactly 4 canapes (40 pcs each = 160 pcs total).
+   • Mini Rainbow Angus Beef Burger adds +HK$250 per 40 pcs.
+5. Add optional upgrades (Champagne / Dummy Cake / Golden Pig) as needed.
+
+INCLUDED:
+• 1 Suckling Pig (3-4kg) with on-site chef carving
+• 1 tray Prosperity Toss (Lo Hei) - Smoked Salmon
+• 2 bottles Sparkling Wine (Prosecco DOC) + 12 Champagne Glasses
+• Orange juice, soft drinks, mineral water (~100 cups)
+• Decor: 2 red tablecloths, 6 gold scissors, opening ribbon ball
+• 2 waiters / 4 hours (1hr setup + 2hr service + 1hr dismantle)
+• 50 reusable tableware sets, food trays, heat lamps, tongs, labels
+• Ice bucket, punch bowl, ice, glassware
+• Round-trip delivery (door-to-door)
+
+NOTE: Set is sized for ~50 guests; quantities on each line are FIXED (do not enter guest count expecting per-person scaling).</field>
+    </record>
+
+    <!-- Size Rule: salad_main → l_tray to keep set_line.qty fixed -->
+    <record id="go_size_main" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="size_group">salad_main</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">l_tray</field>
+    </record>
+    <record id="go_size_canapes" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="size_group">canapes</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">l_tray</field>
+    </record>
+
+    <!-- Selection Rules (informational) -->
+    <record id="go_rule_pkg" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="max_selection">1</field>
+        <field name="label">── Package Fee — pick 1 (HK$16,388 all-inclusive)</field>
+    </record>
+    <record id="go_rule_pig" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="max_selection">1</field>
+        <field name="label">A. Suckling Pig — Choose 1 (Spanish or Chinese, both included)</field>
+    </record>
+    <record id="go_rule_ceremonial" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="max_selection">0</field>
+        <field name="label">B. Ceremonial Items (auto-included)</field>
+    </record>
+    <record id="go_rule_canapes" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="max_selection">4</field>
+        <field name="label">C. Canapes — Choose 4 (40 pcs each, 160 pcs total)</field>
+    </record>
+    <record id="go_rule_addons" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="max_selection">0</field>
+        <field name="label">D. Add-on Upgrades (optional)</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SET LINES                                                    -->
+    <!-- ============================================================ -->
+
+    <!-- ── Package Fee (1 line, HK$16,388) ── -->
+    <record id="go_line_pkg" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_go_pkg_fee'))]" model="product.product"/>
+        <field name="section">── Package Fee ──</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">1</field>
+        <field name="qty">1</field>
+        <field name="price_l_tray">16388</field>
+        <field name="description">Grand Opening All-inclusive Package Fee (HK$16,388 — 1 set)</field>
+    </record>
+
+    <!-- ── A. Suckling Pig — Choose 1 ── -->
+    <record id="go_line_pig_spanish" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_102'))]" model="product.product"/>
+        <field name="code">A1</field>
+        <field name="section">A. Suckling Pig 乳豬 (Choose 1)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">10</field>
+        <field name="qty">1</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Grand Opening Spanish Suckling Pig (3-4kg) with on-site chef — 1 pc</field>
+    </record>
+    <record id="go_line_pig_chinese" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_go_01'))]" model="product.product"/>
+        <field name="code">A2</field>
+        <field name="section">A. Suckling Pig 乳豬 (Choose 1)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">20</field>
+        <field name="qty">1</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Grand Opening Chinese Suckling Pig (3-4kg) with on-site chef — 1 pc</field>
+    </record>
+
+    <!-- ── B. Ceremonial Items (auto-included) ── -->
+    <record id="go_line_lohei" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_go_03'))]" model="product.product"/>
+        <field name="code">B1</field>
+        <field name="section">B. Ceremonial Items 開幕儀式食品 (included)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">30</field>
+        <field name="qty">1</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Prosperity Toss (Lo Hei) - Smoked Salmon Platter — 1 tray</field>
+    </record>
+    <record id="go_line_prosecco" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_go_04'))]" model="product.product"/>
+        <field name="code">B2</field>
+        <field name="section">B. Ceremonial Items 開幕儀式食品 (included)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">40</field>
+        <field name="qty">2</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Sparkling Wine - Prosecco DOC (Cantina Beato Bartolomeo) — 2 bottles + 12 Champagne glasses + ~100 cups soft drinks/juice/water + decor (2 red tablecloths, 6 gold scissors, ribbon ball)</field>
+    </record>
+
+    <!-- ── C. Canapes — Choose 4 (40 pcs each) ── -->
+    <record id="go_line_c1" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_032'))]" model="product.product"/>
+        <field name="code">C1</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">50</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Seared Tuna with Sesame &amp; Yuzu Kosho 輕煎吞拿魚黑白芝麻伴柚子胡椒 — 40 pcs</field>
+    </record>
+    <record id="go_line_c2" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_083'))]" model="product.product"/>
+        <field name="code">C2</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">60</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Truffle Egg Salad &amp; Asparagus Tart (V) 黑松露蛋沙律露筍撻 — 40 pcs</field>
+    </record>
+    <record id="go_line_c3" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_090'))]" model="product.product"/>
+        <field name="code">C3</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">70</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Mini Sesame Prawn Toast 迷你芝麻蝦多士 — 40 pcs</field>
+    </record>
+    <record id="go_line_c4" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_070'))]" model="product.product"/>
+        <field name="code">C4</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">80</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Caprese Skewer (V) 水牛芝士車厘茄串 — 40 pcs</field>
+    </record>
+    <record id="go_line_c5" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_075'))]" model="product.product"/>
+        <field name="code">C5</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">90</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Ratatouille Tart (V) 普羅旺斯燉菜撻 — 40 pcs</field>
+    </record>
+    <record id="go_line_c6" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_076'))]" model="product.product"/>
+        <field name="code">C6</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">100</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Truffle Wild Mushroom Vol-au-vent (V) 黑松露野菌酥皮盒 — 40 pcs</field>
+    </record>
+    <record id="go_line_c7" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_162'))]" model="product.product"/>
+        <field name="code">C7</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">110</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Mini Chocolate &amp; Almond Brownie with Passion Plant (V) 一口朱古力杏仁布朗尼配龍珠果 — 40 pcs</field>
+    </record>
+    <record id="go_line_c8" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_173'))]" model="product.product"/>
+        <field name="code">C8</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">120</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Mini Fruit Tart 迷你田園雜果撻 — 40 pcs</field>
+    </record>
+    <record id="go_line_c9" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_169'))]" model="product.product"/>
+        <field name="code">C9</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">130</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">0</field>
+        <field name="description">Mini Tiramisu Cup 迷你提拉米蘇杯 — 40 pcs</field>
+    </record>
+    <record id="go_line_c10" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_067'))]" model="product.product"/>
+        <field name="code">C10</field>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">140</field>
+        <field name="qty">40</field>
+        <field name="price_l_tray">250</field>
+        <field name="remark">+HK$250 per 40 pcs</field>
+        <field name="description">Mini Rainbow Angus Beef Burger 迷你繽紛安格斯漢堡 — 40 pcs (+HK$250 surcharge)</field>
+    </record>
+
+    <!-- ── D. Add-on Upgrades (optional) ── -->
+    <record id="go_line_addon_champagne" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_go_champagne'))]" model="product.product"/>
+        <field name="code">D1</field>
+        <field name="section">D. Add-on Upgrades 升級項目 (optional)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">200</field>
+        <field name="qty">1</field>
+        <field name="price_l_tray">800</field>
+        <field name="description">Upgrade Sparkling Wine to Champagne Moet &amp; Chandon (2 bottles) — +HK$800</field>
+    </record>
+    <record id="go_line_addon_cake" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_go_dummy_cake'))]" model="product.product"/>
+        <field name="code">D2</field>
+        <field name="section">D. Add-on Upgrades 升級項目 (optional)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">210</field>
+        <field name="qty">1</field>
+        <field name="price_l_tray">1200</field>
+        <field name="description">3-Tier Dummy Cake Rental (cake-cutting ceremony) — +HK$1,200</field>
+    </record>
+    <record id="go_line_addon_pig" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_grand_opening"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_go_pig_upgrade'))]" model="product.product"/>
+        <field name="code">D3</field>
+        <field name="section">D. Add-on Upgrades 升級項目 (optional)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">220</field>
+        <field name="qty">1</field>
+        <field name="price_l_tray">4380</field>
+        <field name="description">Upgrade Suckling Pig (3-4kg) to Golden Roasted Pig (20-25kg) with chef — +HK$4,380</field>
+    </record>
+
+</odoo>
