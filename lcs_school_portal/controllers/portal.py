@@ -107,7 +107,7 @@ class LcsSchoolPortalLogin(http.Controller):
                 login = f"{class_label}-{student_name}"
                 try:
                     credential = {'login': login, 'password': password, 'type': 'password'}
-                    request.session.authenticate(request.session.db, credential)
+                    request.session.authenticate(request.env, credential)
                     return request.redirect(redirect or '/my')
                 except Exception:
                     error = _('Invalid student name, class, or password.')
