@@ -104,7 +104,7 @@ class ResPartner(models.Model):
                 'password': partner.guardian_phone,
                 'partner_id': partner.id,
                 'name': partner.name,
-                'groups_id': [(6, 0, [portal_group.id])],
+                'group_ids': [(6, 0, [portal_group.id])],
             })
             partner.write({'portal_granted': True, 'portal_user_id': user.id})
             granted.append(partner)
