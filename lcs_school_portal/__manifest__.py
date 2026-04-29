@@ -18,7 +18,6 @@
         'views/menu_template_views.xml',
         'views/menu_day_views.xml',
         'wizard/menu_generate_wizard_views.xml',
-        'views/portal_templates.xml',
         'views/menu.xml',
     ],
     'installable': True,
