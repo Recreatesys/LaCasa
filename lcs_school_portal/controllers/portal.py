@@ -10,7 +10,7 @@ class LcsSchoolPortalLogin(http.Controller):
     Backend authenticates as login = '<class>-<student_name>'.
     """
 
-    @http.route('/school/login', type='http', auth='public', website=True, sitemap=False, csrf=True)
+    @http.route('/school/login', type='http', auth='public', sitemap=False, csrf=True)
     def school_login(self, redirect=None, **kw):
         if request.session.uid:
             return request.redirect(redirect or '/my')
