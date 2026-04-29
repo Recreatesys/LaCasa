@@ -1,10 +1,5 @@
-import logging
-
 from odoo import _, http
 from odoo.http import request
-
-_logger = logging.getLogger(__name__)
-_logger.warning('===== LCS_SCHOOL_PORTAL CONTROLLER LOADED =====')
 
 
 class LcsSchoolPortalLogin(http.Controller):
@@ -14,10 +9,6 @@ class LcsSchoolPortalLogin(http.Controller):
     Form fields: Class (dropdown) + Student Name (text) + Password.
     Backend authenticates as login = '<class>-<student_name>'.
     """
-
-    @http.route('/school/ping', type='http', auth='none', sitemap=False, csrf=False)
-    def school_ping(self, **kw):
-        return 'pong'
 
     @http.route('/school/login', type='http', auth='public', sitemap=False, csrf=True)
     def school_login(self, redirect=None, **kw):
