@@ -22,11 +22,15 @@
                         <field name="service_format"/>
                         <field name="service_type"/>
                         <field name="delivery_type"/>
+                        <field name="setup_type"/>
                     </group>
                     <group>
                         <field name="guest_count"/>
                         <field name="payment_method"/>
                         <field name="event_remark"/>
+                        <field name="no_logo"/>
+                        <field name="is_wedding"
+                               invisible="service_type != 'food_tasting'"/>
                     </group>
                 </group>
             </xpath>

@@ -4,6 +4,7 @@ from odoo.addons.lcs_crm_catering.models.crm_lead import (
     DELIVERY_TYPE_SELECTION,
     SERVICE_FORMAT_SELECTION,
     SERVICE_TYPE_SELECTION,
+    SETUP_TYPE_SELECTION,
 )
 from odoo.addons.lcs_crm_catering.models.sale_order import CALL_VAN_SELECTION, PAYMENT_METHOD_SELECTION
 
@@ -27,3 +28,13 @@ class AccountMove(models.Model):
     guest_count = fields.Integer(string='No. of Guest')
     event_remark = fields.Text(string='Remark')
     payment_method = fields.Selection(PAYMENT_METHOD_SELECTION, string='Payment Method')
+    no_logo = fields.Boolean(
+        string='No Logo',
+        help='Hide LaCasa branding from packaging / signage (white-label).',
+    )
+    setup_type = fields.Selection(
+        SETUP_TYPE_SELECTION, string='Setup Type',
+    )
+    is_wedding = fields.Boolean(
+        string='Wedding-related',
+    )

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- Sales Order sequences per brand + service format / type      -->
+    <!-- ============================================================ -->
+
+    <record id="seq_so_lacasa" model="ir.sequence">
+        <field name="name">Sales Order — LaCasa Drop-off</field>
+        <field name="code">lacasa.sale.order</field>
+        <field name="prefix">lacasa</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_so_lacasaN" model="ir.sequence">
+        <field name="name">Sales Order — LaCasa Drop-off (No Logo)</field>
+        <field name="code">lacasaN.sale.order</field>
+        <field name="prefix">lacasaN</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_so_lacasaE" model="ir.sequence">
+        <field name="name">Sales Order — LaCasa Event (with Waiters)</field>
+        <field name="code">lacasaE.sale.order</field>
+        <field name="prefix">lacasaE</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_so_lacasaE_N_" model="ir.sequence">
+        <field name="name">Sales Order — LaCasa Event (No Logo)</field>
+        <field name="code">lacasaE_N_.sale.order</field>
+        <field name="prefix">lacasaE_N_</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_so_lacasaK" model="ir.sequence">
+        <field name="name">Sales Order — LaCasa Equipment / Simple Setup</field>
+        <field name="code">lacasaK.sale.order</field>
+        <field name="prefix">lacasaK</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_so_lacasaFT" model="ir.sequence">
+        <field name="name">Sales Order — LaCasa Food Tasting</field>
+        <field name="code">lacasaFT.sale.order</field>
+        <field name="prefix">lacasaFT</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_so_lacasaW" model="ir.sequence">
+        <field name="name">Sales Order — LaCasa Wedding</field>
+        <field name="code">lacasaW.sale.order</field>
+        <field name="prefix">lacasaW</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_so_lacasaWFT" model="ir.sequence">
+        <field name="name">Sales Order — LaCasa Wedding Food Tasting</field>
+        <field name="code">lacasaWFT.sale.order</field>
+        <field name="prefix">lacasaWFT</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_so_MrMix" model="ir.sequence">
+        <field name="name">Sales Order — Mr Mix Drop-off</field>
+        <field name="code">MrMix.sale.order</field>
+        <field name="prefix">MrMix</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+</odoo>

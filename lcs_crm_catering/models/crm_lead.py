@@ -42,6 +42,12 @@ DELIVERY_TYPE_SELECTION = [
     ('drop_off_door', 'Drop-off (Door to door)'),
 ]
 
+SETUP_TYPE_SELECTION = [
+    ('with_waiter', 'Event with Waiter Service'),
+    ('equipment_only', 'Equipment Rental Only'),
+    ('simple_setup', 'Simple Setup (No Waiter, Driver Only)'),
+]
+
 
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
@@ -64,3 +70,16 @@ class CrmLead(models.Model):
     delivery_type = fields.Selection(DELIVERY_TYPE_SELECTION, string='Delivery Type')
     guest_count = fields.Integer(string='No. of Guest')
     event_remark = fields.Text(string='Remark')
+    no_logo = fields.Boolean(
+        string='No Logo',
+        help='Hide LaCasa branding from packaging / signage (white-label).',
+    )
+    setup_type = fields.Selection(
+        SETUP_TYPE_SELECTION,
+        string='Setup Type',
+        help='Distinguishes equipment-only / simple-setup orders from full event service.',
+    )
+    is_wedding = fields.Boolean(
+        string='Wedding-related',
+        help='Tick if this food tasting is for a wedding (used for sequence prefix lacasaWFT).',
+    )

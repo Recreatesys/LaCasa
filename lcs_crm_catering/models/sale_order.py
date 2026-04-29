@@ -1,11 +1,27 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.addons.lcs_crm_catering.models.crm_lead import (
     BRAND_SELECTION,
     CLIENT_TYPE_SELECTION,
     DELIVERY_TYPE_SELECTION,
     SERVICE_FORMAT_SELECTION,
     SERVICE_TYPE_SELECTION,
+    SETUP_TYPE_SELECTION,
 )
+
+
+# Resolved-prefix → ir.sequence code map.
+# Each ir.sequence is created with these codes via data file.
+SO_SEQUENCE_PREFIX_MAP = {
+    'lacasa': 'lacasa.sale.order',
+    'lacasaN': 'lacasaN.sale.order',
+    'lacasaE': 'lacasaE.sale.order',
+    'lacasaE_N_': 'lacasaE_N_.sale.order',
+    'lacasaK': 'lacasaK.sale.order',
+    'lacasaFT': 'lacasaFT.sale.order',
+    'lacasaW': 'lacasaW.sale.order',
+    'lacasaWFT': 'lacasaWFT.sale.order',
+    'MrMix': 'MrMix.sale.order',
+}
 
 PAYMENT_METHOD_SELECTION = [
     ('bea', 'BEA'),
@@ -44,6 +60,24 @@ class SaleOrder(models.Model):
     delivery_type = fields.Selection(DELIVERY_TYPE_SELECTION, string='Delivery Type')
     guest_count = fields.Integer(string='No. of Guest')
     event_remark = fields.Text(string='Remark')
+    no_logo = fields.Boolean(
+        string='No Logo',
+        help='Hide LaCasa branding from packaging / signage (white-label).',
+    )
+    setup_type = fields.Selection(
+        SETUP_TYPE_SELECTION, string='Setup Type',
+        help='Distinguishes equipment-only / simple-setup orders from full event service.',
+    )
+    is_wedding = fields.Boolean(
+        string='Wedding-related',
+        help='Tick if this food tasting is for a wedding.',
+    )
+    so_prefix_preview = fields.Char(
+        string='Sequence Prefix',
+        compute='_compute_so_prefix_preview',
+        help='Preview of the SO sequence prefix that will be used at creation '
+             '(based on brand + service type + flags). Locked once the order is saved.',
+    )
 
     # SO-specific fields
     payment_method = fields.Selection(
@@ -56,6 +90,65 @@ class SaleOrder(models.Model):
     )
     call_van = fields.Selection(CALL_VAN_SELECTION, string='Call Van')
     delivery_time = fields.Float(string='Delivery Time')
+
+    @api.model
+    def _resolve_seq_prefix(self, brand, service_format, service_type,
+                            setup_type, no_logo, is_wedding):
+        """Resolve the SO sequence prefix from order attributes.
+
+        Returns one of the keys of SO_SEQUENCE_PREFIX_MAP, or None if no
+        catering-specific prefix applies (caller falls back to default
+        sale.order sequence).
+        """
+        if brand == 'mr_mix':
+            return 'MrMix'
+        if brand != 'lacasa':
+            return None
+
+        if service_type in ('wedding_buffet', 'wedding_cocktail'):
+            return 'lacasaW'
+        if service_type == 'food_tasting':
+            return 'lacasaWFT' if is_wedding else 'lacasaFT'
+        if setup_type in ('equipment_only', 'simple_setup'):
+            return 'lacasaK'
+        if service_format == 'event_catering':
+            return 'lacasaE_N_' if no_logo else 'lacasaE'
+        if service_format == 'food_delivery':
+            return 'lacasaN' if no_logo else 'lacasa'
+        return None
+
+    @api.depends('brand', 'service_format', 'service_type',
+                 'setup_type', 'no_logo', 'is_wedding')
+    def _compute_so_prefix_preview(self):
+        for order in self:
+            prefix = self._resolve_seq_prefix(
+                order.brand, order.service_format, order.service_type,
+                order.setup_type, order.no_logo, order.is_wedding,
+            )
+            order.so_prefix_preview = prefix or _('(default)')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Skip if user already set a non-default name
+            current_name = vals.get('name')
+            if current_name and current_name != _('New'):
+                continue
+            prefix = self._resolve_seq_prefix(
+                vals.get('brand'),
+                vals.get('service_format'),
+                vals.get('service_type'),
+                vals.get('setup_type'),
+                vals.get('no_logo'),
+                vals.get('is_wedding'),
+            )
+            if not prefix:
+                continue
+            seq_code = SO_SEQUENCE_PREFIX_MAP[prefix]
+            seq_value = self.env['ir.sequence'].next_by_code(seq_code)
+            if seq_value:
+                vals['name'] = seq_value
+        return super().create(vals_list)
 
     @api.onchange('partner_id')
     def _onchange_partner_id_attention(self):
@@ -84,6 +177,9 @@ class SaleOrder(models.Model):
             'guest_count': self.guest_count,
             'event_remark': self.event_remark,
             'payment_method': self.payment_method,
+            'no_logo': self.no_logo,
+            'setup_type': self.setup_type,
+            'is_wedding': self.is_wedding,
         })
         return vals
 
@@ -103,6 +199,9 @@ class SaleOrderFromCRM(models.Model):
             'default_guest_count': self.guest_count,
             'default_event_remark': self.event_remark,
             'default_commitment_date': self.event_date,
+            'default_no_logo': self.no_logo,
+            'default_setup_type': self.setup_type,
+            'default_is_wedding': self.is_wedding,
         })
         # Build delivery address
         if self.event_street:
