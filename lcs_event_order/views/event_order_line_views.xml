@@ -64,9 +64,9 @@
                 <separator/>
                 <filter name="filter_today" string="Today"
                         domain="[('event_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
-                <filter name="filter_this_week" string="This Week"
-                        domain="[('event_date', '&gt;=', (context_today() + relativedelta(weeks=-context_today().weekday()/7, days=-context_today().weekday())).strftime('%Y-%m-%d')),
-                                 ('event_date', '&lt;', (context_today() + relativedelta(weeks=-context_today().weekday()/7, days=7-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_next_7_days" string="Next 7 Days"
+                        domain="[('event_date', '&gt;=', context_today().strftime('%Y-%m-%d')),
+                                 ('event_date', '&lt;=', (context_today() + relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
                 <filter name="filter_upcoming" string="Upcoming"
                         domain="[('event_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
                 <separator/>
