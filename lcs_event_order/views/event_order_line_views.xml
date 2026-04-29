@@ -77,20 +77,18 @@
                 <filter name="filter_not_cancelled" string="Active (not cancelled)"
                         domain="[('payment_status', '!=', 'cancelled')]"/>
                 <separator/>
-                <group string="Group By">
-                    <filter name="groupby_product" string="Dish"
-                            context="{'group_by': 'product_id'}"/>
-                    <filter name="groupby_event_date" string="Event Date"
-                            context="{'group_by': 'event_date'}"/>
-                    <filter name="groupby_partner" string="Customer"
-                            context="{'group_by': 'partner_id'}"/>
-                    <filter name="groupby_brand" string="Brand"
-                            context="{'group_by': 'brand'}"/>
-                    <filter name="groupby_service_format" string="Service Format"
-                            context="{'group_by': 'service_format'}"/>
-                    <filter name="groupby_service_type" string="Service Type"
-                            context="{'group_by': 'service_type'}"/>
-                </group>
+                <filter name="groupby_product" string="Dish"
+                        context="{'group_by': 'product_id'}"/>
+                <filter name="groupby_event_date" string="Event Date"
+                        context="{'group_by': 'event_date'}"/>
+                <filter name="groupby_partner" string="Customer"
+                        context="{'group_by': 'partner_id'}"/>
+                <filter name="groupby_brand" string="Brand"
+                        context="{'group_by': 'brand'}"/>
+                <filter name="groupby_service_format" string="Service Format"
+                        context="{'group_by': 'service_format'}"/>
+                <filter name="groupby_service_type" string="Service Type"
+                        context="{'group_by': 'service_type'}"/>
             </search>
         </field>
     </record>
