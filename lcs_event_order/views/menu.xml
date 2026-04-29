@@ -19,4 +19,10 @@
               action="lcs_event_order_action"
               sequence="10"/>
 
+    <menuitem id="menu_lcs_event_order_line_overview"
+              name="Dish Overview"
+              parent="menu_lcs_event_order_main"
+              action="lcs_event_order_line_action"
+              sequence="20"/>
+
 </odoo>
