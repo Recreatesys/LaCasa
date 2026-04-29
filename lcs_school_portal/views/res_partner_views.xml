@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit partner form: add Student tab/section -->
+    <record id="view_partner_form_inherit_student" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.student</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Student Info" name="student_info"
+                          invisible="not is_student">
+                        <group>
+                            <group string="School / Class">
+                                <field name="is_student"/>
+                                <field name="school_id" readonly="1"/>
+                                <field name="class_company_id"/>
+                                <field name="student_no"/>
+                                <field name="chinese_name"/>
+                            </group>
+                            <group string="Parent / Guardian">
+                                <field name="parent_name"/>
+                                <field name="parent_phone"/>
+                            </group>
+                        </group>
+                        <group string="Dietary">
+                            <group>
+                                <field name="diet_preference"/>
+                            </group>
+                            <group>
+                                <field name="allergy_ids" widget="many2many_tags"
+                                       options="{'color_field': 'color'}"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit partner list: add columns when filtering students -->
+    <record id="view_partner_tree_inherit_student" model="ir.ui.view">
+        <field name="name">res.partner.list.inherit.student</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="student_no" optional="hide"/>
+                <field name="class_company_id" optional="hide" string="Class"/>
+                <field name="school_id" optional="hide"/>
+                <field name="parent_name" optional="hide"/>
+                <field name="parent_phone" optional="hide"/>
+                <field name="diet_preference" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit partner search: add Student filter -->
+    <record id="view_res_partner_filter_inherit_student" model="ir.ui.view">
+        <field name="name">res.partner.select.inherit.student</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter name="filter_students" string="Students"
+                        domain="[('is_student', '=', True)]"/>
+                <filter name="groupby_school" string="School"
+                        context="{'group_by': 'school_id'}"/>
+                <filter name="groupby_class" string="Class"
+                        context="{'group_by': 'class_company_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

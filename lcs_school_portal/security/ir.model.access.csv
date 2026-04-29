@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lcs_school_user,lcs.school.user,model_lcs_school,base.group_user,1,0,0,0
+access_lcs_school_admin,lcs.school.admin,model_lcs_school,base.group_system,1,1,1,1
+access_lcs_allergy_user,lcs.allergy.user,model_lcs_allergy,base.group_user,1,0,0,0
+access_lcs_allergy_admin,lcs.allergy.admin,model_lcs_allergy,base.group_system,1,1,1,1

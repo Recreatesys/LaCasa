@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_lcs_school_portal_root"
+              name="School Portal"
+              web_icon="lcs_school_portal,static/description/icon.png"
+              sequence="30"/>
+
+    <menuitem id="menu_lcs_school_portal_students"
+              name="Students"
+              parent="menu_lcs_school_portal_root"
+              action="lcs_student_action"
+              sequence="10"/>
+
+    <menuitem id="menu_lcs_school_portal_config"
+              name="Configuration"
+              parent="menu_lcs_school_portal_root"
+              sequence="90"/>
+
+    <menuitem id="menu_lcs_school_portal_schools"
+              name="Schools"
+              parent="menu_lcs_school_portal_config"
+              action="lcs_school_action"
+              sequence="10"/>
+
+    <menuitem id="menu_lcs_school_portal_allergies"
+              name="Allergies"
+              parent="menu_lcs_school_portal_config"
+              action="lcs_allergy_action"
+              sequence="20"/>
+
+</odoo>

@@ -1,0 +1,21 @@
+{
+    'name': 'LCS School Portal',
+    'version': '19.0.1.0.0',
+    'category': 'Sales',
+    'summary': 'School ordering portal — students/parents order lunches via web portal',
+    'author': 'Recreatesys',
+    'depends': ['base', 'mail', 'contacts'],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/allergy_data.xml',
+        'data/school_data.xml',
+        'views/school_views.xml',
+        'views/res_company_views.xml',
+        'views/res_partner_views.xml',
+        'views/menu.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}
