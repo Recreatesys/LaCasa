@@ -1,5 +1,10 @@
+import logging
+
 from odoo import _, http
 from odoo.http import request
+
+_logger = logging.getLogger(__name__)
+_logger.warning('===== LCS_SCHOOL_PORTAL CONTROLLER LOADED =====')
 
 
 class LcsSchoolPortalLogin(http.Controller):
