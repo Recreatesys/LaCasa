@@ -1,6 +1,6 @@
 {
     'name': 'LCS Product Catalog',
-    'version': '19.0.2.3.0',
+    'version': '19.0.2.4.0',
     'category': 'Sales',
     'summary': 'Dish master data, set menus, and SO set expansion with dish selection',
     'author': 'Recreatesys',
@@ -13,6 +13,8 @@
         'data/canapes_only_set.xml',
         'data/western_buffet_set.xml',
         'data/chinese_buffet_set.xml',
+        'data/cocktail_party_set.xml',
+        'data/canape_box_set.xml',
         'views/catering_set_views.xml',
         'views/sale_order_views.xml',
     ],

@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- NEW DISH PRODUCTS                                            -->
+    <!-- French Macaron (used in CA5, CB8, CM31)                      -->
+    <!-- "Caviar Cream Cheese Tart" (CM3) reuses dish_034             -->
+    <!-- ============================================================ -->
+
+    <record id="dish_cbx_01" model="product.template">
+        <field name="name">French Macaron
+法式馬卡龍</field>
+        <field name="categ_id" ref="cat_dessert"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- BOX PRODUCTS                                                 -->
+    <!-- ============================================================ -->
+
+    <record id="product_canape_box_classic" model="product.template">
+        <field name="name">6-grid Classic Canape Box
+6格經典小食禮盒</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">138</field>
+        <field name="description">$138 / box (promo $120). Minimum order: 20 boxes. 4 working days lead time.</field>
+    </record>
+
+    <record id="product_canape_box_luxury" model="product.template">
+        <field name="name">9-grid Luxury Canape Box
+9格鑽石級小食禮盒</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">258</field>
+        <field name="description">$258 / box (promo $238). Minimum order: 20 boxes. 4 working days lead time.</field>
+    </record>
+
+    <record id="product_canape_box_mm_4" model="product.template">
+        <field name="name">Mix &amp; Match Canape Box - 4 Canapes
+自選小食禮盒 4款</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">98</field>
+    </record>
+
+    <record id="product_canape_box_mm_6" model="product.template">
+        <field name="name">Mix &amp; Match Canape Box - 6 Canapes
+自選小食禮盒 6款</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">138</field>
+    </record>
+
+    <record id="product_canape_box_mm_9" model="product.template">
+        <field name="name">Mix &amp; Match Canape Box - 9 Canapes
+自選小食禮盒 9款</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">198</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SET A: 6-grid Classic Canape Box (fixed 6 dishes)            -->
+    <!-- ============================================================ -->
+
+    <record id="set_canape_box_classic" model="lcs.catering.set">
+        <field name="name">6-grid Classic Canape Box 6格經典小食禮盒</field>
+        <field name="product_id" ref="product_canape_box_classic"/>
+        <field name="recommendation">Fixed 6-canape gift box. Original $138 / Promo $120. Min 20 boxes. 4 working days lead time.
+All 6 dishes are pre-set; box is sold as a unit.</field>
+    </record>
+
+    <record id="cbx_classic_size" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_canape_box_classic"/>
+        <field name="size_group">canapes</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">per_piece</field>
+    </record>
+
+    <record id="cbx_classic_ratio" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_canape_box_classic"/>
+        <field name="category_id" ref="cat_canapes"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">box</field>
+        <field name="kitchen_unit">pcs</field>
+        <field name="ratio">1.0</field>
+        <field name="conversion_factor">1.0</field>
+        <field name="notes">1 piece of each dish per box</field>
+    </record>
+
+    <record id="cbx_classic_ca1" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_classic"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_070'))]" model="product.product"/>
+        <field name="code">CA1</field>
+        <field name="section">6-grid Classic Box (all 6 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">10</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_classic_ca2" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_classic"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_033'))]" model="product.product"/>
+        <field name="code">CA2</field>
+        <field name="section">6-grid Classic Box (all 6 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">20</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_classic_ca3" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_classic"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_036'))]" model="product.product"/>
+        <field name="code">CA3</field>
+        <field name="section">6-grid Classic Box (all 6 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">30</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_classic_ca4" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_classic"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_178'))]" model="product.product"/>
+        <field name="code">CA4</field>
+        <field name="section">6-grid Classic Box (all 6 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">40</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_classic_ca5" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_classic"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cbx_01'))]" model="product.product"/>
+        <field name="code">CA5</field>
+        <field name="section">6-grid Classic Box (all 6 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">50</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_classic_ca6" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_classic"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_159'))]" model="product.product"/>
+        <field name="code">CA6</field>
+        <field name="section">6-grid Classic Box (all 6 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">60</field>
+        <field name="price_per_piece">0</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SET B: 9-grid Luxury Canape Box (fixed 9 dishes)             -->
+    <!-- ============================================================ -->
+
+    <record id="set_canape_box_luxury" model="lcs.catering.set">
+        <field name="name">9-grid Luxury Canape Box 9格鑽石級小食禮盒</field>
+        <field name="product_id" ref="product_canape_box_luxury"/>
+        <field name="recommendation">Fixed 9-canape gift box. Original $258 / Promo $238. Min 20 boxes. 4 working days lead time.
+All 9 dishes are pre-set; box is sold as a unit.</field>
+    </record>
+
+    <record id="cbx_luxury_size" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="size_group">canapes</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">per_piece</field>
+    </record>
+
+    <record id="cbx_luxury_ratio" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="category_id" ref="cat_canapes"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">box</field>
+        <field name="kitchen_unit">pcs</field>
+        <field name="ratio">1.0</field>
+        <field name="conversion_factor">1.0</field>
+        <field name="notes">1 piece of each dish per box</field>
+    </record>
+
+    <record id="cbx_luxury_cb1" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_036'))]" model="product.product"/>
+        <field name="code">CB1</field>
+        <field name="section">9-grid Luxury Box (all 9 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">10</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_luxury_cb2" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_061'))]" model="product.product"/>
+        <field name="code">CB2</field>
+        <field name="section">9-grid Luxury Box (all 9 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">20</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_luxury_cb3" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_040'))]" model="product.product"/>
+        <field name="code">CB3</field>
+        <field name="section">9-grid Luxury Box (all 9 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">30</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_luxury_cb4" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_039'))]" model="product.product"/>
+        <field name="code">CB4</field>
+        <field name="section">9-grid Luxury Box (all 9 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">40</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_luxury_cb5" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_070'))]" model="product.product"/>
+        <field name="code">CB5</field>
+        <field name="section">9-grid Luxury Box (all 9 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">50</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_luxury_cb6" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_035'))]" model="product.product"/>
+        <field name="code">CB6</field>
+        <field name="section">9-grid Luxury Box (all 9 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">60</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_luxury_cb7" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_163'))]" model="product.product"/>
+        <field name="code">CB7</field>
+        <field name="section">9-grid Luxury Box (all 9 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">70</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_luxury_cb8" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cbx_01'))]" model="product.product"/>
+        <field name="code">CB8</field>
+        <field name="section">9-grid Luxury Box (all 9 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">80</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_luxury_cb9" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_luxury"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_175'))]" model="product.product"/>
+        <field name="code">CB9</field>
+        <field name="section">9-grid Luxury Box (all 9 included)</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">90</field>
+        <field name="price_per_piece">0</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SET C: Mix & Match Canape Box (choose 4 / 6 / 9 dishes)      -->
+    <!-- ============================================================ -->
+
+    <record id="set_canape_box_mixmatch" model="lcs.catering.set">
+        <field name="name">Mix &amp; Match Canape Box 自選小食禮盒</field>
+        <field name="product_id" ref="product_canape_box_mm_6"/>
+        <field name="recommendation">Pick a tier (4 / 6 / 9 canapes per box) then choose your canapes from Cold / Warm / Sweet sections.
+Pricing per box: $98 (4 canapes) / $138 (6 canapes) / $198 (9 canapes). Min 20 boxes. 4 working days lead time.
+Items marked +HK$10 / +HK$20 add a per-person surcharge.</field>
+    </record>
+
+    <record id="cbx_mm_size" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="size_group">canapes</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">per_piece</field>
+    </record>
+    <record id="cbx_mm_size_main" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="size_group">salad_main</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">per_piece</field>
+    </record>
+
+    <record id="cbx_mm_ratio" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="category_id" ref="cat_canapes"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">box</field>
+        <field name="kitchen_unit">pcs</field>
+        <field name="ratio">1.0</field>
+        <field name="conversion_factor">1.0</field>
+        <field name="notes">1 piece of each chosen dish per box</field>
+    </record>
+
+    <!-- Selection Rules (informational) -->
+    <record id="cbx_mm_rule_box" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="max_selection">1</field>
+        <field name="label">── Box Tier — Choose 1 (4 / 6 / 9 canapes per box)</field>
+    </record>
+    <record id="cbx_mm_rule_cold" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="max_selection">9</field>
+        <field name="label">A. Cold Canapes 冷盤小食</field>
+    </record>
+    <record id="cbx_mm_rule_warm" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="max_selection">9</field>
+        <field name="label">B. Warm Canapes 熱盤小食</field>
+    </record>
+    <record id="cbx_mm_rule_sweet" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="max_selection">9</field>
+        <field name="label">C. Sweet Canapes 甜點小食</field>
+    </record>
+
+    <!-- ── Box Tier — Choose 1 ── -->
+    <record id="cbx_mm_tier_4" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_canape_box_mm_4'))]" model="product.product"/>
+        <field name="section">── Box Tier ── (Choose 1)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">1</field>
+        <field name="price_per_piece">98</field>
+        <field name="description">$98 / box — pick 4 canapes</field>
+    </record>
+    <record id="cbx_mm_tier_6" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_canape_box_mm_6'))]" model="product.product"/>
+        <field name="section">── Box Tier ── (Choose 1)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">2</field>
+        <field name="price_per_piece">138</field>
+        <field name="description">$138 / box — pick 6 canapes</field>
+    </record>
+    <record id="cbx_mm_tier_9" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_canape_box_mm_9'))]" model="product.product"/>
+        <field name="section">── Box Tier ── (Choose 1)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">3</field>
+        <field name="price_per_piece">198</field>
+        <field name="description">$198 / box — pick 9 canapes</field>
+    </record>
+
+    <!-- ── A. Cold Canapes (CM1–CM21) ── -->
+    <record id="cbx_mm_cm1" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_086'))]" model="product.product"/>
+        <field name="code">CM1</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">10</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm2" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_070'))]" model="product.product"/>
+        <field name="code">CM2</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">20</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm3" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_034'))]" model="product.product"/>
+        <field name="code">CM3</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">30</field>
+        <field name="price_per_piece">0</field>
+        <field name="description">Caviar Cream Cheese Tart 黑魚籽忌廉芝士撻</field>
+    </record>
+    <record id="cbx_mm_cm4" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_030'))]" model="product.product"/>
+        <field name="code">CM4</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">40</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm5" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_085'))]" model="product.product"/>
+        <field name="code">CM5</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">50</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm6" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_032'))]" model="product.product"/>
+        <field name="code">CM6</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">60</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm7" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_033'))]" model="product.product"/>
+        <field name="code">CM7</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">70</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm8" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_031'))]" model="product.product"/>
+        <field name="code">CM8</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">80</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm9" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_035'))]" model="product.product"/>
+        <field name="code">CM9</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">90</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm10" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_036'))]" model="product.product"/>
+        <field name="code">CM10</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">100</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm11" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_037'))]" model="product.product"/>
+        <field name="code">CM11</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">110</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm12" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_039'))]" model="product.product"/>
+        <field name="code">CM12</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">120</field>
+        <field name="price_per_piece">20</field>
+        <field name="remark">+HK$20 per person</field>
+    </record>
+    <record id="cbx_mm_cm13" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_079'))]" model="product.product"/>
+        <field name="code">CM13</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">130</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm14" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_042'))]" model="product.product"/>
+        <field name="code">CM14</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">140</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm15" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_043'))]" model="product.product"/>
+        <field name="code">CM15</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">150</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm16" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_080'))]" model="product.product"/>
+        <field name="code">CM16</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">160</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm17" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_044'))]" model="product.product"/>
+        <field name="code">CM17</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">170</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm18" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_045'))]" model="product.product"/>
+        <field name="code">CM18</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">180</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm19" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_081'))]" model="product.product"/>
+        <field name="code">CM19</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">190</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm20" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_046'))]" model="product.product"/>
+        <field name="code">CM20</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">200</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm21" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_047'))]" model="product.product"/>
+        <field name="code">CM21</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">210</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+
+    <!-- ── B. Warm Canapes (CM22–CM25) ── -->
+    <record id="cbx_mm_cm22" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_087'))]" model="product.product"/>
+        <field name="code">CM22</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">220</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm23" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_076'))]" model="product.product"/>
+        <field name="code">CM23</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">230</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm24" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_091'))]" model="product.product"/>
+        <field name="code">CM24</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">240</field>
+        <field name="price_per_piece">20</field>
+        <field name="remark">+HK$20 per person</field>
+    </record>
+    <record id="cbx_mm_cm25" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_040'))]" model="product.product"/>
+        <field name="code">CM25</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">250</field>
+        <field name="price_per_piece">20</field>
+        <field name="remark">+HK$20 per person</field>
+    </record>
+
+    <!-- ── C. Sweet Canapes (CM26–CM36) ── -->
+    <record id="cbx_mm_cm26" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_178'))]" model="product.product"/>
+        <field name="code">CM26</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">260</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm27" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_175'))]" model="product.product"/>
+        <field name="code">CM27</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">270</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm28" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_159'))]" model="product.product"/>
+        <field name="code">CM28</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">280</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm29" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_160'))]" model="product.product"/>
+        <field name="code">CM29</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">290</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm30" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_162'))]" model="product.product"/>
+        <field name="code">CM30</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">300</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm31" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cbx_01'))]" model="product.product"/>
+        <field name="code">CM31</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">310</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm32" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_164'))]" model="product.product"/>
+        <field name="code">CM32</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">320</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm33" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_163'))]" model="product.product"/>
+        <field name="code">CM33</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">330</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm34" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_182'))]" model="product.product"/>
+        <field name="code">CM34</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">340</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cbx_mm_cm35" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_183'))]" model="product.product"/>
+        <field name="code">CM35</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">350</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+    <record id="cbx_mm_cm36" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_184'))]" model="product.product"/>
+        <field name="code">CM36</field>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">360</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,896 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- NEW DISH PRODUCTS (1 not in master)                          -->
+    <!-- P15 reuses dish_043 (Cream Cheese Gaufres with Smoked Salmon) -->
+    <!-- ============================================================ -->
+
+    <record id="dish_cp_01" model="product.template">
+        <field name="name">Assorted Cream Puff (V)
+雜錦忌廉泡芙 (素)</field>
+        <field name="categ_id" ref="cat_dessert"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SERVICE PRODUCTS                                             -->
+    <!-- ============================================================ -->
+
+    <record id="product_cocktail_party" model="product.template">
+        <field name="name">Corporate Cocktail Party
+公司雞尾酒會</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">0</field>
+    </record>
+
+    <record id="product_cocktail_pkg_6" model="product.template">
+        <field name="name">Cocktail Package - 6 Canapes (per person)
+雞尾酒套餐 6款 (每位)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">278</field>
+    </record>
+
+    <record id="product_cocktail_pkg_8" model="product.template">
+        <field name="name">Cocktail Package - 8 Canapes (per person)
+雞尾酒套餐 8款 (每位)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">328</field>
+    </record>
+
+    <record id="product_cocktail_pkg_10" model="product.template">
+        <field name="name">Cocktail Package - 10 Canapes (per person)
+雞尾酒套餐 10款 (每位)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">368</field>
+    </record>
+
+    <record id="product_cocktail_pkg_12" model="product.template">
+        <field name="name">Cocktail Package - 12 Canapes (per person)
+雞尾酒套餐 12款 (每位)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">408</field>
+    </record>
+
+    <record id="product_cocktail_drink_deluxe" model="product.template">
+        <field name="name">Deluxe Drink Package Upgrade - Cocktail (per person)
+優越級飲品升級 - 雞尾酒會 (每位)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">60</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- CATERING SET: Corporate Cocktail Party                       -->
+    <!-- ============================================================ -->
+
+    <record id="set_cocktail_party" model="lcs.catering.set">
+        <field name="name">Corporate Cocktail Party 公司雞尾酒會</field>
+        <field name="product_id" ref="product_cocktail_party"/>
+        <field name="recommendation">Executive Cocktail Package — for 50+ guests.
+Choose ONE package tier first (6/8/10/12 canapes per person), then pick canapes from the 5 sections.
+Total picks must match the chosen tier. Items marked +HK$10/+HK$20 add to the per-person price.
+Standard drinks included. Deluxe drink upgrade adds wine &amp; beer (+HK$60/person).
+Includes 3 waiters (4 hrs), tablecloth, glassware, paper napkins, reusable tableware, food labels, delivery.
+Pass-around service may need extra waitstaff (contact CS).</field>
+    </record>
+
+    <!-- Size Rules: per-person pricing => per_piece for canapes -->
+    <record id="cp_size_canapes" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="size_group">canapes</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">per_piece</field>
+    </record>
+    <record id="cp_size_main" model="lcs.catering.set.size.rule">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="size_group">salad_main</field>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="size">per_piece</field>
+    </record>
+
+    <!-- Selection Rules (informational labels per section) -->
+    <record id="cp_rule_pkg" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="max_selection">1</field>
+        <field name="label">── Package Fee — Choose 1 tier (6 / 8 / 10 / 12 canapes)</field>
+    </record>
+    <record id="cp_rule_cold" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="max_selection">12</field>
+        <field name="label">A. Cold Canapes 冷盤小食 — pick from this section</field>
+    </record>
+    <record id="cp_rule_warm" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="max_selection">12</field>
+        <field name="label">B. Warm Canapes 熱盤小食 — pick from this section</field>
+    </record>
+    <record id="cp_rule_veg" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="max_selection">12</field>
+        <field name="label">C. Vegetarian-Friendly 素食小食 — pick from this section</field>
+    </record>
+    <record id="cp_rule_asian" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="max_selection">12</field>
+        <field name="label">D. Asian Fusion 亞洲風味小食 — pick from this section</field>
+    </record>
+    <record id="cp_rule_sweet" model="lcs.catering.set.rule">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="max_selection">12</field>
+        <field name="label">E. Sweet Canapes 甜點小食 — pick from this section</field>
+    </record>
+
+    <!-- Kitchen Ratio Tiers -->
+    <!-- Canapes: ~1.3 pcs per person per item (40 pcs per item for 50 pax) -->
+    <record id="cp_ratio_canapes" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="category_id" ref="cat_canapes"/>
+        <field name="min_guests">50</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">pcs</field>
+        <field name="kitchen_unit">pcs</field>
+        <field name="ratio">0.77</field>
+        <field name="conversion_factor">1.0</field>
+        <field name="notes">1.3 pcs per person per canape item</field>
+    </record>
+    <record id="cp_ratio_party_snack" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="category_id" ref="cat_party_snack"/>
+        <field name="min_guests">50</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">pcs</field>
+        <field name="kitchen_unit">pcs</field>
+        <field name="ratio">0.77</field>
+        <field name="conversion_factor">1.0</field>
+        <field name="notes">1.3 pcs per person</field>
+    </record>
+    <record id="cp_ratio_dessert" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="category_id" ref="cat_dessert"/>
+        <field name="min_guests">50</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">pcs</field>
+        <field name="kitchen_unit">pcs</field>
+        <field name="ratio">1.67</field>
+        <field name="conversion_factor">1.0</field>
+        <field name="notes">0.6 pcs per person per sweet item</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SET LINES                                                    -->
+    <!-- ============================================================ -->
+
+    <!-- ── Package Fee — Choose 1 ── -->
+    <record id="cp_line_pkg_6" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_cocktail_pkg_6'))]" model="product.product"/>
+        <field name="section">── Package Fee ── (Choose 1 tier)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">1</field>
+        <field name="price_per_piece">278</field>
+        <field name="description">HK$278/person — 6 kinds of canapes</field>
+    </record>
+    <record id="cp_line_pkg_8" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_cocktail_pkg_8'))]" model="product.product"/>
+        <field name="section">── Package Fee ── (Choose 1 tier)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">2</field>
+        <field name="price_per_piece">328</field>
+        <field name="description">HK$328/person — 8 kinds of canapes</field>
+    </record>
+    <record id="cp_line_pkg_10" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_cocktail_pkg_10'))]" model="product.product"/>
+        <field name="section">── Package Fee ── (Choose 1 tier)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">3</field>
+        <field name="price_per_piece">368</field>
+        <field name="description">HK$368/person — 10 kinds of canapes</field>
+    </record>
+    <record id="cp_line_pkg_12" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_cocktail_pkg_12'))]" model="product.product"/>
+        <field name="section">── Package Fee ── (Choose 1 tier)</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">4</field>
+        <field name="price_per_piece">408</field>
+        <field name="description">HK$408/person — 12 kinds of canapes</field>
+    </record>
+
+    <!-- ── A. Cold Canapes (P01–P19) ── -->
+    <record id="cp_line_p01" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_029'))]" model="product.product"/>
+        <field name="code">P01</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">10</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p02" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_030'))]" model="product.product"/>
+        <field name="code">P02</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">20</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p03" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_031'))]" model="product.product"/>
+        <field name="code">P03</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">30</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p04" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_032'))]" model="product.product"/>
+        <field name="code">P04</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">40</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p05" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_033'))]" model="product.product"/>
+        <field name="code">P05</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">50</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p06" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_034'))]" model="product.product"/>
+        <field name="code">P06</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">60</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p07" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_083'))]" model="product.product"/>
+        <field name="code">P07</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">70</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p08" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_035'))]" model="product.product"/>
+        <field name="code">P08</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">80</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p09" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_036'))]" model="product.product"/>
+        <field name="code">P09</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">90</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p10" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_037'))]" model="product.product"/>
+        <field name="code">P10</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">100</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p11" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_038'))]" model="product.product"/>
+        <field name="code">P11</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">110</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p12" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_039'))]" model="product.product"/>
+        <field name="code">P12</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">120</field>
+        <field name="price_per_piece">20</field>
+        <field name="remark">+HK$20 per person</field>
+    </record>
+    <record id="cp_line_p13" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_040'))]" model="product.product"/>
+        <field name="code">P13</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">130</field>
+        <field name="price_per_piece">20</field>
+        <field name="remark">+HK$20 per person</field>
+    </record>
+    <record id="cp_line_p14" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_042'))]" model="product.product"/>
+        <field name="code">P14</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">140</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p15" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_043'))]" model="product.product"/>
+        <field name="code">P15</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">150</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p16" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_044'))]" model="product.product"/>
+        <field name="code">P16</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">160</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p17" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_045'))]" model="product.product"/>
+        <field name="code">P17</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">170</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p18" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_046'))]" model="product.product"/>
+        <field name="code">P18</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">180</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p19" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_047'))]" model="product.product"/>
+        <field name="code">P19</field>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">190</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+
+    <!-- ── B. Warm Canapes (P20–P33) ── -->
+    <record id="cp_line_p20" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_049'))]" model="product.product"/>
+        <field name="code">P20</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">200</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p21" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_050'))]" model="product.product"/>
+        <field name="code">P21</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">210</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p22" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_051'))]" model="product.product"/>
+        <field name="code">P22</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">220</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p23" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_052'))]" model="product.product"/>
+        <field name="code">P23</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">230</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p24" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_082'))]" model="product.product"/>
+        <field name="code">P24</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">240</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p25" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_053'))]" model="product.product"/>
+        <field name="code">P25</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">250</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p26" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_054'))]" model="product.product"/>
+        <field name="code">P26</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">260</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p27" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_055'))]" model="product.product"/>
+        <field name="code">P27</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">270</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p28" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_056'))]" model="product.product"/>
+        <field name="code">P28</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">280</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p29" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_057'))]" model="product.product"/>
+        <field name="code">P29</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">290</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p30" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_058'))]" model="product.product"/>
+        <field name="code">P30</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">300</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p31" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_059'))]" model="product.product"/>
+        <field name="code">P31</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">310</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p32" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_060'))]" model="product.product"/>
+        <field name="code">P32</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">320</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p33" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_061'))]" model="product.product"/>
+        <field name="code">P33</field>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">330</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+
+    <!-- ── C. Vegetarian-Friendly Canapes (P34–P46) ── -->
+    <record id="cp_line_p34" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_069'))]" model="product.product"/>
+        <field name="code">P34</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">340</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p35" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_070'))]" model="product.product"/>
+        <field name="code">P35</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">350</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p36" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_071'))]" model="product.product"/>
+        <field name="code">P36</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">360</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p37" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_072'))]" model="product.product"/>
+        <field name="code">P37</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">370</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p38" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_073'))]" model="product.product"/>
+        <field name="code">P38</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">380</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p39" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_074'))]" model="product.product"/>
+        <field name="code">P39</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">390</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p40" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_075'))]" model="product.product"/>
+        <field name="code">P40</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">400</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p41" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_076'))]" model="product.product"/>
+        <field name="code">P41</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">410</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p42" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_077'))]" model="product.product"/>
+        <field name="code">P42</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">420</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p43" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_078'))]" model="product.product"/>
+        <field name="code">P43</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">430</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p44" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_079'))]" model="product.product"/>
+        <field name="code">P44</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">440</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p45" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_080'))]" model="product.product"/>
+        <field name="code">P45</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">450</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p46" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_081'))]" model="product.product"/>
+        <field name="code">P46</field>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">460</field>
+        <field name="price_per_piece">0</field>
+    </record>
+
+    <!-- ── D. Asian Fusion Canapes (P47–P53) ── -->
+    <record id="cp_line_p47" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_085'))]" model="product.product"/>
+        <field name="code">P47</field>
+        <field name="section">D. Asian Fusion 亞洲風味小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">470</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p48" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_086'))]" model="product.product"/>
+        <field name="code">P48</field>
+        <field name="section">D. Asian Fusion 亞洲風味小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">480</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p49" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_113'))]" model="product.product"/>
+        <field name="code">P49</field>
+        <field name="section">D. Asian Fusion 亞洲風味小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">490</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p50" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_088'))]" model="product.product"/>
+        <field name="code">P50</field>
+        <field name="section">D. Asian Fusion 亞洲風味小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">500</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p51" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_089'))]" model="product.product"/>
+        <field name="code">P51</field>
+        <field name="section">D. Asian Fusion 亞洲風味小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">510</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p52" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_090'))]" model="product.product"/>
+        <field name="code">P52</field>
+        <field name="section">D. Asian Fusion 亞洲風味小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">520</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p53" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_091'))]" model="product.product"/>
+        <field name="code">P53</field>
+        <field name="section">D. Asian Fusion 亞洲風味小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">530</field>
+        <field name="price_per_piece">20</field>
+        <field name="remark">+HK$20 per person</field>
+    </record>
+
+    <!-- ── E. Sweet Canapes (P54–P72) ── -->
+    <record id="cp_line_p54" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_158'))]" model="product.product"/>
+        <field name="code">P54</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">540</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p55" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_159'))]" model="product.product"/>
+        <field name="code">P55</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">550</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p56" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_160'))]" model="product.product"/>
+        <field name="code">P56</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">560</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p57" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_cp_01'))]" model="product.product"/>
+        <field name="code">P57</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">570</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p58" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_162'))]" model="product.product"/>
+        <field name="code">P58</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">580</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p59" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_163'))]" model="product.product"/>
+        <field name="code">P59</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">590</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p60" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_164'))]" model="product.product"/>
+        <field name="code">P60</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">600</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p61" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_165'))]" model="product.product"/>
+        <field name="code">P61</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">610</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p62" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_166'))]" model="product.product"/>
+        <field name="code">P62</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">620</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p63" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_167'))]" model="product.product"/>
+        <field name="code">P63</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">630</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+    <record id="cp_line_p64" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_168'))]" model="product.product"/>
+        <field name="code">P64</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">640</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+    <record id="cp_line_p65" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_169'))]" model="product.product"/>
+        <field name="code">P65</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">650</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p66" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_170'))]" model="product.product"/>
+        <field name="code">P66</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">660</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p67" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_171'))]" model="product.product"/>
+        <field name="code">P67</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">670</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p68" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_172'))]" model="product.product"/>
+        <field name="code">P68</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">680</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+    <record id="cp_line_p69" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_182'))]" model="product.product"/>
+        <field name="code">P69</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">690</field>
+        <field name="price_per_piece">0</field>
+    </record>
+    <record id="cp_line_p70" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_183'))]" model="product.product"/>
+        <field name="code">P70</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">700</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+    <record id="cp_line_p71" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_184'))]" model="product.product"/>
+        <field name="code">P71</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">710</field>
+        <field name="price_per_piece">10</field>
+        <field name="remark">+HK$10 per person</field>
+    </record>
+    <record id="cp_line_p72" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('dish_179'))]" model="product.product"/>
+        <field name="code">P72</field>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="size_group">canapes</field>
+        <field name="sequence">720</field>
+        <field name="price_per_piece">0</field>
+    </record>
+
+    <!-- ── Add-on Services ── -->
+    <record id="cp_line_drink" model="lcs.catering.set.line">
+        <field name="set_id" ref="set_cocktail_party"/>
+        <field name="product_id" search="[('product_tmpl_id','=',ref('product_cocktail_drink_deluxe'))]" model="product.product"/>
+        <field name="section">── Add-on Services 附加服務 ──</field>
+        <field name="size_group">salad_main</field>
+        <field name="sequence">800</field>
+        <field name="price_per_piece">60</field>
+        <field name="description">Deluxe Drink Package (+$60/person): adds House Wine (Red/White) &amp; Beer to the Standard package</field>
+    </record>
+
+</odoo>
