@@ -4,3 +4,11 @@ access_lcs_school_admin,lcs.school.admin,model_lcs_school,base.group_system,1,1,
 access_lcs_allergy_user,lcs.allergy.user,model_lcs_allergy,base.group_user,1,0,0,0
 access_lcs_allergy_admin,lcs.allergy.admin,model_lcs_allergy,base.group_system,1,1,1,1
 access_lcs_school_calendar_entry_user,lcs.school.calendar.entry.user,model_lcs_school_calendar_entry,base.group_user,1,1,1,1
+access_lcs_menu_item_user,lcs.menu.item.user,model_lcs_menu_item,base.group_user,1,0,0,0
+access_lcs_menu_item_admin,lcs.menu.item.admin,model_lcs_menu_item,base.group_system,1,1,1,1
+access_lcs_menu_template_user,lcs.menu.template.user,model_lcs_menu_template,base.group_user,1,0,0,0
+access_lcs_menu_template_admin,lcs.menu.template.admin,model_lcs_menu_template,base.group_system,1,1,1,1
+access_lcs_menu_template_line_user,lcs.menu.template.line.user,model_lcs_menu_template_line,base.group_user,1,0,0,0
+access_lcs_menu_template_line_admin,lcs.menu.template.line.admin,model_lcs_menu_template_line,base.group_system,1,1,1,1
+access_lcs_menu_day_user,lcs.menu.day.user,model_lcs_menu_day,base.group_user,1,1,1,1
+access_lcs_menu_generate_wizard_user,lcs.menu.generate.wizard.user,model_lcs_menu_generate_wizard,base.group_user,1,1,1,1

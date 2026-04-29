@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="lcs_menu_day_view_calendar" model="ir.ui.view">
+        <field name="name">lcs.menu.day.calendar</field>
+        <field name="model">lcs.menu.day</field>
+        <field name="arch" type="xml">
+            <calendar string="Menu Planner" date_start="date" color="color" mode="month">
+                <field name="display_name"/>
+                <field name="school_id" filters="1"/>
+                <field name="class_company_id" filters="1"/>
+                <field name="item_count"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="lcs_menu_day_view_list" model="ir.ui.view">
+        <field name="name">lcs.menu.day.list</field>
+        <field name="model">lcs.menu.day</field>
+        <field name="arch" type="xml">
+            <list string="Menu Days" default_order="date desc"
+                  decoration-info="class_company_id">
+                <field name="date"/>
+                <field name="school_id"/>
+                <field name="class_company_id"/>
+                <field name="item_ids" widget="many2many_tags" optional="show"/>
+                <field name="item_count" string="# Items"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="lcs_menu_day_view_form" model="ir.ui.view">
+        <field name="name">lcs.menu.day.form</field>
+        <field name="model">lcs.menu.day</field>
+        <field name="arch" type="xml">
+            <form string="Menu Day">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="school_id"/>
+                            <field name="class_company_id"
+                                   help="Leave empty for school-wide. Class-specific menu overrides school-wide for the same date."/>
+                        </group>
+                        <group>
+                            <field name="item_count"/>
+                        </group>
+                    </group>
+                    <group string="Items">
+                        <field name="item_ids" nolabel="1" widget="many2many_tags"
+                               options="{'no_create_edit': True}"/>
+                    </group>
+                    <group string="Note">
+                        <field name="note" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="lcs_menu_day_view_search" model="ir.ui.view">
+        <field name="name">lcs.menu.day.search</field>
+        <field name="model">lcs.menu.day</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="date"/>
+                <field name="school_id"/>
+                <field name="class_company_id"/>
+                <field name="item_ids"/>
+                <separator/>
+                <filter name="filter_school_wide" string="School-wide (no class)"
+                        domain="[('class_company_id', '=', False)]"/>
+                <filter name="filter_class_specific" string="Class-specific"
+                        domain="[('class_company_id', '!=', False)]"/>
+                <filter name="filter_upcoming" string="Upcoming"
+                        domain="[('date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="groupby_school" string="School"
+                        context="{'group_by': 'school_id'}"/>
+                <filter name="groupby_class" string="Class"
+                        context="{'group_by': 'class_company_id'}"/>
+                <filter name="groupby_date_month" string="Month"
+                        context="{'group_by': 'date:month'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="lcs_menu_day_action" model="ir.actions.act_window">
+        <field name="name">Menu Planner</field>
+        <field name="res_model">lcs.menu.day</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="search_view_id" ref="lcs_menu_day_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Plan menus by date
+            </p>
+            <p>
+                Use the Generate from Template wizard to bulk-create a month of menu days from a weekly template.
+                Then tweak individual dates as needed.
+            </p>
+        </field>
+    </record>
+
+</odoo>

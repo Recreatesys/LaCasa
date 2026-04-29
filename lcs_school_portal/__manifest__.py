@@ -1,6 +1,6 @@
 {
     'name': 'LCS School Portal',
-    'version': '19.0.1.2.0',
+    'version': '19.0.1.3.0',
     'category': 'Sales',
     'summary': 'School ordering portal — students/parents order lunches via web portal',
     'author': 'Recreatesys',
@@ -14,6 +14,10 @@
         'views/school_calendar_views.xml',
         'views/res_company_views.xml',
         'views/res_partner_views.xml',
+        'views/menu_item_views.xml',
+        'views/menu_template_views.xml',
+        'views/menu_day_views.xml',
+        'wizard/menu_generate_wizard_views.xml',
         'views/portal_templates.xml',
         'views/menu.xml',
     ],

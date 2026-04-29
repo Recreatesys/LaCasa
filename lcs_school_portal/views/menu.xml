@@ -18,6 +18,35 @@
               action="lcs_school_calendar_entry_action"
               sequence="20"/>
 
+    <menuitem id="menu_lcs_school_portal_menus"
+              name="Menus"
+              parent="menu_lcs_school_portal_root"
+              sequence="30"/>
+
+    <menuitem id="menu_lcs_school_portal_menu_planner"
+              name="Menu Planner"
+              parent="menu_lcs_school_portal_menus"
+              action="lcs_menu_day_action"
+              sequence="10"/>
+
+    <menuitem id="menu_lcs_school_portal_menu_generate"
+              name="Generate from Template"
+              parent="menu_lcs_school_portal_menus"
+              action="lcs_menu_generate_wizard_action"
+              sequence="20"/>
+
+    <menuitem id="menu_lcs_school_portal_menu_templates"
+              name="Templates"
+              parent="menu_lcs_school_portal_menus"
+              action="lcs_menu_template_action"
+              sequence="30"/>
+
+    <menuitem id="menu_lcs_school_portal_menu_items"
+              name="Menu Items"
+              parent="menu_lcs_school_portal_menus"
+              action="lcs_menu_item_action"
+              sequence="40"/>
+
     <menuitem id="menu_lcs_school_portal_config"
               name="Configuration"
               parent="menu_lcs_school_portal_root"
