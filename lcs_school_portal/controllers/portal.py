@@ -43,4 +43,10 @@ class LcsSchoolPortalLogin(http.Controller):
                 except Exception:
                     values['error'] = _('Invalid student name, class, or password.')
 
-        return request.render('lcs_school_portal.school_login_template', values)
+        # Render directly via ir.qweb to bypass website layout wrapping
+        html = request.env['ir.qweb']._render(
+            'lcs_school_portal.school_login_template', values,
+        )
+        return request.make_response(
+            html, headers=[('Content-Type', 'text/html; charset=utf-8')],
+        )
