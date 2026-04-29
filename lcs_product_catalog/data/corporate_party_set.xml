@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- Corporate Party Set (Drop-off only, min 12 pax)              -->
+    <!-- Set A "Deluxe":  HK$388 / pax (14 dishes)                    -->
+    <!-- Set B "Classic": HK$298 / pax (12 dishes)                    -->
+    <!-- ============================================================ -->
+
+    <!-- ── District-based Delivery Add-ons ── -->
+    <record id="addon_cp_delivery_a_d2d" model="product.template">
+        <field name="name">Delivery — District A (HK Island, Door-to-door)
+運費 - A區 (港島，送上門)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">300</field>
+        <field name="description">per trip</field>
+    </record>
+    <record id="addon_cp_delivery_a_pickup" model="product.template">
+        <field name="name">Delivery — District A (HK Island, Pickup at car park)
+運費 - A區 (港島，停車場提取)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">150</field>
+        <field name="description">per trip</field>
+    </record>
+    <record id="addon_cp_delivery_b_d2d" model="product.template">
+        <field name="name">Delivery — District B (Kowloon / Kwai Tsing, Door-to-door)
+運費 - B區 (九龍/葵青，送上門)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">300</field>
+        <field name="description">per trip</field>
+    </record>
+    <record id="addon_cp_delivery_b_pickup" model="product.template">
+        <field name="name">Delivery — District B (Kowloon / Kwai Tsing, Pickup at car park)
+運費 - B區 (九龍/葵青，停車場提取)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">150</field>
+        <field name="description">per trip</field>
+    </record>
+    <record id="addon_cp_delivery_c_d2d" model="product.template">
+        <field name="name">Delivery — District C (Other N.T., Door-to-door)
+運費 - C區 (其他新界，送上門)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">400</field>
+        <field name="description">per trip</field>
+    </record>
+    <record id="addon_cp_delivery_c_pickup" model="product.template">
+        <field name="name">Delivery — District C (Other N.T., Pickup at car park)
+運費 - C區 (其他新界，停車場提取)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">250</field>
+        <field name="description">per trip</field>
+    </record>
+    <record id="addon_cp_delivery_d_d2d" model="product.template">
+        <field name="name">Delivery — District D (Tung Chung / Discovery Bay, Door-to-door)
+運費 - D區 (東涌/愉景灣，送上門)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">600</field>
+        <field name="description">per trip</field>
+    </record>
+    <record id="addon_cp_delivery_d_pickup" model="product.template">
+        <field name="name">Delivery — District D (Tung Chung / Discovery Bay, Pickup at car park)
+運費 - D區 (東涌/愉景灣，停車場提取)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">400</field>
+        <field name="description">per trip</field>
+    </record>
+
+    <!-- ── New Dish (not in master_dishes.xml) ── -->
+    <record id="dish_extra_cp_01" model="product.template">
+        <field name="name">Dessert Platter (2 kinds)
+甜品拼盤 (2款)</field>
+        <field name="categ_id" ref="cat_dessert"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Set A — Deluxe Party Set (HK$388/pax, min 12)                -->
+    <!-- ============================================================ -->
+    <record id="product_cp_set_a" model="product.template">
+        <field name="name">Corporate Party Set A — Deluxe
+公司派對套餐 A. 高級派對套餐</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">388</field>
+        <field name="description">HK$388 per head — Drop-off only, minimum 12 persons. 4 working days lead time.</field>
+    </record>
+
+    <record id="cp_set_a" model="lcs.catering.set">
+        <field name="name">Corporate Party Set A — Deluxe</field>
+        <field name="product_id" ref="product_cp_set_a"/>
+        <field name="recommendation">Drop-off only · Min. 12 pax · HK$388/pax · 4 working days lead time · 14 dishes</field>
+    </record>
+
+    <record id="cp_set_a_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP01</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_001"/>
+        <field name="section">Salad / Appetizer</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_a_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP02</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_016"/>
+        <field name="section">Salad / Appetizer</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_a_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP03</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_061"/>
+        <field name="section">Snack</field>
+        <field name="sequence">30</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_a_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP04</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_040"/>
+        <field name="section">Canapes</field>
+        <field name="sequence">40</field>
+        <field name="size_group">canapes</field>
+    </record>
+    <record id="cp_set_a_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP05</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_093"/>
+        <field name="section">Main</field>
+        <field name="sequence">50</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_a_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP06</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_121"/>
+        <field name="section">Main</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_a_line_07" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP07</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_108"/>
+        <field name="section">Main</field>
+        <field name="sequence">70</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_a_line_08" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP08</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_101"/>
+        <field name="section">Main</field>
+        <field name="sequence">80</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_a_line_09" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP09</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_130"/>
+        <field name="section">Vegetable</field>
+        <field name="sequence">90</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_a_line_10" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP10</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_140"/>
+        <field name="section">Rice / Pasta</field>
+        <field name="sequence">100</field>
+        <field name="size_group">pasta_rice</field>
+    </record>
+    <record id="cp_set_a_line_11" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP11</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_146"/>
+        <field name="section">Rice / Pasta</field>
+        <field name="sequence">110</field>
+        <field name="size_group">pasta_rice</field>
+    </record>
+    <record id="cp_set_a_line_12" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP12</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_039"/>
+        <field name="section">Canapes</field>
+        <field name="sequence">120</field>
+        <field name="size_group">canapes</field>
+    </record>
+    <record id="cp_set_a_line_13" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP13</field>
+        <field name="product_id" ref="dish_extra_cp_01"/>
+        <field name="section">Dessert</field>
+        <field name="sequence">130</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_a_line_14" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_a"/>
+        <field name="code">DP14</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_133"/>
+        <field name="section">Fruit</field>
+        <field name="sequence">140</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Set B — Classic Party Set (HK$298/pax, min 12)               -->
+    <!-- ============================================================ -->
+    <record id="product_cp_set_b" model="product.template">
+        <field name="name">Corporate Party Set B — Classic
+公司派對套餐 B. 經典派對套餐</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">298</field>
+        <field name="description">HK$298 per person — Drop-off only, minimum 12 persons. 4 working days lead time.</field>
+    </record>
+
+    <record id="cp_set_b" model="lcs.catering.set">
+        <field name="name">Corporate Party Set B — Classic</field>
+        <field name="product_id" ref="product_cp_set_b"/>
+        <field name="recommendation">Drop-off only · Min. 12 pax · HK$298/pax · 4 working days lead time · 12 dishes</field>
+    </record>
+
+    <record id="cp_set_b_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC01</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_003"/>
+        <field name="section">Salad / Appetizer</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_b_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC02</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_015"/>
+        <field name="section">Salad / Appetizer</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_b_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC03</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_035"/>
+        <field name="section">Canapes</field>
+        <field name="sequence">30</field>
+        <field name="size_group">canapes</field>
+    </record>
+    <record id="cp_set_b_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC04</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_021"/>
+        <field name="section">Snack</field>
+        <field name="sequence">40</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_b_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC05</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_099"/>
+        <field name="section">Main</field>
+        <field name="sequence">50</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_b_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC06</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_121"/>
+        <field name="section">Main</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_b_line_07" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC07</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_115"/>
+        <field name="section">Main</field>
+        <field name="sequence">70</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_b_line_08" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC08</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_107"/>
+        <field name="section">Main</field>
+        <field name="sequence">80</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_b_line_09" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC09</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_127"/>
+        <field name="section">Vegetable</field>
+        <field name="sequence">90</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="cp_set_b_line_10" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC10</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_145"/>
+        <field name="section">Rice / Pasta</field>
+        <field name="sequence">100</field>
+        <field name="size_group">pasta_rice</field>
+    </record>
+    <record id="cp_set_b_line_11" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC11</field>
+        <field name="product_id" ref="lcs_product_catalog.dish_151"/>
+        <field name="section">Rice / Pasta</field>
+        <field name="sequence">110</field>
+        <field name="size_group">pasta_rice</field>
+    </record>
+    <record id="cp_set_b_line_12" model="lcs.catering.set.line">
+        <field name="set_id" ref="cp_set_b"/>
+        <field name="code">DC12</field>
+        <field name="product_id" ref="dish_extra_cp_01"/>
+        <field name="section">Dessert</field>
+        <field name="sequence">120</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+</odoo>

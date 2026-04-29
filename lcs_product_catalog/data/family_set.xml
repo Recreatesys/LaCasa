@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- Private Party — Family Set (Drop-Off Only, 6–8 pax)          -->
+    <!-- Set A "Asia Delight":   HK$1,588 base, +HK$198 / extra pax   -->
+    <!-- Set B "Western Fever":  HK$1,588 base, +HK$198 / extra pax   -->
+    <!-- ============================================================ -->
+
+    <!-- ── Add-on: Extra Guest ── -->
+    <record id="addon_fs_extra_guest" model="product.template">
+        <field name="name">Family Set Extra Guest
+家庭套餐 - 額外人數</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">198</field>
+        <field name="description">per extra person beyond the 6–8 pax base</field>
+    </record>
+
+    <!-- ── New Dishes (not in master_dishes.xml) ── -->
+    <record id="dish_extra_fs_01" model="product.template">
+        <field name="name">Steamed Chicken with Ginger and Scallion, served with Chef's Special Sauce
+薑蔥霸王雞配秘製廚師醬汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Family Set A — Asia Delight (HK$1,588 base for 6–8 pax)      -->
+    <!-- ============================================================ -->
+    <record id="product_fs_set_a" model="product.template">
+        <field name="name">Family Set A — Asia Delight (6–8 pax)
+家庭套餐 A. 亞洲風味 (6-8人餐)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">1588</field>
+        <field name="description">Drop-off only — Base for 6–8 pax. Add HK$198 per extra guest beyond 8.</field>
+    </record>
+
+    <record id="fs_set_a" model="lcs.catering.set">
+        <field name="name">Family Set A — Asia Delight</field>
+        <field name="product_id" ref="product_fs_set_a"/>
+        <field name="recommendation">Drop-off only · 6–8 pax base @ HK$1,588 · Extra guest HK$198/pax · Steamed chicken portion is fixed (whole, L-tray) regardless of guest count</field>
+    </record>
+
+    <record id="fs_set_a_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_004"/>
+        <field name="section">Salad — S tray</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_a_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_091"/>
+        <field name="section">Appetizer — 8 pcs</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_a_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_011"/>
+        <field name="section">Soup — 8 bowls</field>
+        <field name="sequence">30</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_a_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_a"/>
+        <field name="product_id" ref="dish_extra_fs_01"/>
+        <field name="section">Main — L tray (fixed portion)</field>
+        <field name="sequence">40</field>
+        <field name="size_group">salad_main</field>
+        <field name="remark">Portion does not vary with guest count</field>
+    </record>
+    <record id="fs_set_a_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_123"/>
+        <field name="section">Main — S tray</field>
+        <field name="sequence">50</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_a_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_112"/>
+        <field name="section">Main — S tray</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_a_line_07" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_152"/>
+        <field name="section">Rice — S tray</field>
+        <field name="sequence">70</field>
+        <field name="size_group">pasta_rice</field>
+    </record>
+    <record id="fs_set_a_line_08" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_181"/>
+        <field name="section">Dessert — 8 cups</field>
+        <field name="sequence">80</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Family Set B — Western Fever (HK$1,588 base for 6–8 pax)     -->
+    <!-- ============================================================ -->
+    <record id="product_fs_set_b" model="product.template">
+        <field name="name">Family Set B — Western Fever (6–8 pax)
+家庭套餐 B. 西式派對 (6-8人餐)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">1588</field>
+        <field name="description">Drop-off only — Base for 6–8 pax. Add HK$198 per extra guest beyond 8.</field>
+    </record>
+
+    <record id="fs_set_b" model="lcs.catering.set">
+        <field name="name">Family Set B — Western Fever</field>
+        <field name="product_id" ref="product_fs_set_b"/>
+        <field name="recommendation">Drop-off only · 6–8 pax base @ HK$1,588 · Extra guest HK$198/pax · Roasted chicken portion is fixed (whole, S-tray) regardless of guest count · Beef sirloin: 2 pcs per head</field>
+    </record>
+
+    <record id="fs_set_b_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_009"/>
+        <field name="section">Salad — S tray</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_b_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_035"/>
+        <field name="section">Appetizer — 8 pcs</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_b_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_012"/>
+        <field name="section">Soup — 8 bowls</field>
+        <field name="sequence">30</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_b_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_093"/>
+        <field name="section">Main — S tray (fixed portion)</field>
+        <field name="sequence">40</field>
+        <field name="size_group">salad_main</field>
+        <field name="remark">Portion does not vary with guest count</field>
+    </record>
+    <record id="fs_set_b_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_118"/>
+        <field name="section">Main — S tray</field>
+        <field name="sequence">50</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_b_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_109"/>
+        <field name="section">Main — S tray (2 pcs per head)</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="fs_set_b_line_07" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_136"/>
+        <field name="section">Pasta — S tray</field>
+        <field name="sequence">70</field>
+        <field name="size_group">pasta_rice</field>
+    </record>
+    <record id="fs_set_b_line_08" model="lcs.catering.set.line">
+        <field name="set_id" ref="fs_set_b"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_179"/>
+        <field name="section">Dessert — 16 pcs</field>
+        <field name="sequence">80</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+</odoo>

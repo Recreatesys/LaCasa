@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- Sit Down Menu (Western) — On-site Chef Service               -->
+    <!-- Set A:  HK$880 / pax (4 hrs chef incl., min 12 pax)          -->
+    <!-- Set B:  HK$1,300 / pax (4 hrs chef incl., min 12 pax)        -->
+    <!-- Semi-Buffet: HK$880 / pax (4 hrs chef incl., min 12 pax)     -->
+    <!-- ============================================================ -->
+
+    <!-- ── Add-on Service Products (specific to sit-down menus) ── -->
+    <record id="addon_sdw_tableware" model="product.template">
+        <field name="name">Guest's Tableware
+餐具租借</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">150</field>
+        <field name="description">per guest</field>
+    </record>
+    <record id="addon_sdw_delivery_hkkl" model="product.template">
+        <field name="name">Round-trip Delivery (HK Island / Kowloon)
+來回運費 (港島/九龍)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">1500</field>
+        <field name="description">per trip</field>
+    </record>
+    <record id="addon_sdw_delivery_nt" model="product.template">
+        <field name="name">Round-trip Delivery (New Territories)
+來回運費 (新界)</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">2000</field>
+        <field name="description">per trip</field>
+    </record>
+
+    <!-- ── New Dishes (not in master_dishes.xml) ── -->
+    <record id="dish_extra_sdw_01" model="product.template">
+        <field name="name">Bread Basket
+法式麵包籃</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_02" model="product.template">
+        <field name="name">Porcini Wild Mushroom Soup
+牛肝菌野菌忌廉湯</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_03" model="product.template">
+        <field name="name">Slow-cook Iberico Pork Rack with Roasted Potato, Asparagus &amp; Plum Sauce
+慢煮西斑牙豬架配燒薯蘆筍及西梅汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_04" model="product.template">
+        <field name="name">US Prime Black Angus Rib Eye with Sautéed Leek, Potato &amp; Gravy
+燒美國頂級黑安格斯肉眼配炒大蔥薯仔及燒汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_05" model="product.template">
+        <field name="name">Lemon &amp; Dill Panna Cotta with Wild Mixed Berries
+檸檬香草意大利奶凍配雜莓</field>
+        <field name="categ_id" ref="cat_dessert"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_06" model="product.template">
+        <field name="name">Cold Tomato Soup with Bocconcini
+蕃茄凍湯配水牛芝士</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_07" model="product.template">
+        <field name="name">Lobster &amp; Avocado Tartar with Polenta Cake
+龍蝦牛油果沙沙配粟米餅</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_08" model="product.template">
+        <field name="name">42°C Slow-cook Salmon with Fennel &amp; Citrus Salad
+42°C 慢煮三文魚配茴香及柚子沙律</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_09" model="product.template">
+        <field name="name">Black Truffle &amp; Portobello Risotto with US Asparagus &amp; Crispy Parmesan
+黑松露大啡菇意大利飯配美國露筍及巴馬臣芝士脆片</field>
+        <field name="categ_id" ref="cat_rice_pasta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_10" model="product.template">
+        <field name="name">Iberico Pork Loin with Sauteed Kale &amp; Plum Sauce
+西斑牙黑毛豬配炒羽衣金蘭及西梅汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_11" model="product.template">
+        <field name="name">Roast US Prime Rib-eye with Broccolini, Grilled Pineapple &amp; Chili Salsa
+燒美國頂級肉眼配西蘭花苗燒菠蘿及辣椒沙沙</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_12" model="product.template">
+        <field name="name">Tiramisu Cake with Chocolate Crumble &amp; French Macaron
+提拉米蘇蛋糕配朱古力脆脆及法式馬卡龍</field>
+        <field name="categ_id" ref="cat_dessert"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_13" model="product.template">
+        <field name="name">Apple, Chicken, Walnut &amp; Blueberry Salad
+蘋果雞肉合桃藍莓沙律</field>
+        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_14" model="product.template">
+        <field name="name">Smoked Salmon &amp; Lemon Cream Cheese Roll with Caviar
+煙三文魚檸檬忌廉芝士卷配黑魚籽</field>
+        <field name="categ_id" ref="cat_appetizer"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_15" model="product.template">
+        <field name="name">Fresh Clams with White Wine, Lemon Leaf &amp; Garlic
+檸檬葉香蒜白酒汁煮大蜆</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_16" model="product.template">
+        <field name="name">Thai Satay Platter
+泰式沙嗲拼盤</field>
+        <field name="categ_id" ref="cat_party_snack"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_17" model="product.template">
+        <field name="name">Crab Meat Vol-au-vent
+蟹肉法式酥皮盒</field>
+        <field name="categ_id" ref="cat_canapes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_18" model="product.template">
+        <field name="name">US Kurobuta Pork Loin with Roasted Potato, Asparagus &amp; Porcini Cream Sauce
+美國黑毛豬配燒薯蘆筍牛肝菌忌廉汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_19" model="product.template">
+        <field name="name">US Angus Sirloin with Sautéed Leek, Potato &amp; Gravy
+美國安格斯西冷配炒大蔥薯仔及燒汁</field>
+        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+    <record id="dish_extra_sdw_20" model="product.template">
+        <field name="name">Chocolate &amp; Almond Brownie with Wild Berry
+朱古力杏仁布朗尼配野莓</field>
+        <field name="categ_id" ref="cat_dessert"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Set A — Western Set A with Chef (HK$880/pax)                 -->
+    <!-- ============================================================ -->
+    <record id="product_sdw_set_a" model="product.template">
+        <field name="name">Western Set A with Chef
+上門下廚 ‧西式套餐A</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">880</field>
+        <field name="description">HK$880 per person — Minimum 12 persons. Includes 4 hours chef service. Basic kitchen stove &amp; exhaust fan required.</field>
+    </record>
+
+    <record id="sdw_set_a" model="lcs.catering.set">
+        <field name="name">Western Set A with Chef</field>
+        <field name="product_id" ref="product_sdw_set_a"/>
+        <field name="recommendation">Min. 12 pax · HK$880/pax · Includes 4 hrs chef service · Basic kitchen stove &amp; exhaust fan required · Tableware HK$150/guest add-on available</field>
+    </record>
+
+    <record id="sdw_set_a_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="product_id" ref="dish_extra_sdw_01"/>
+        <field name="section">Bread Basket</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_a_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_017"/>
+        <field name="section">Appetizer &amp; Salad</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_a_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_040"/>
+        <field name="section">Appetizer &amp; Salad</field>
+        <field name="sequence">30</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_a_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="product_id" ref="dish_extra_sdw_02"/>
+        <field name="section">Soup</field>
+        <field name="sequence">40</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_a_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="product_id" ref="dish_extra_sdw_03"/>
+        <field name="section">Main (choose 1)</field>
+        <field name="sequence">50</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_a_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="product_id" ref="dish_extra_sdw_04"/>
+        <field name="section">Main (choose 1)</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_a_line_07" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="product_id" ref="dish_extra_sdw_05"/>
+        <field name="section">Dessert</field>
+        <field name="sequence">70</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Set B — Western Set B with Chef (HK$1,300/pax)               -->
+    <!-- ============================================================ -->
+    <record id="product_sdw_set_b" model="product.template">
+        <field name="name">Western Set B with Chef
+上門下廚 ‧西式套餐B</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">1300</field>
+        <field name="description">HK$1,300 per person — Minimum 12 persons. Includes 4 hours chef service. Basic kitchen stove &amp; exhaust fan required.</field>
+    </record>
+
+    <record id="sdw_set_b" model="lcs.catering.set">
+        <field name="name">Western Set B with Chef</field>
+        <field name="product_id" ref="product_sdw_set_b"/>
+        <field name="recommendation">Min. 12 pax · HK$1,300/pax · 6-course tasting menu · Includes 4 hrs chef service · Basic kitchen stove &amp; exhaust fan required</field>
+    </record>
+
+    <record id="sdw_set_b_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="product_id" ref="dish_extra_sdw_01"/>
+        <field name="section">Bread Basket</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_b_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="product_id" ref="dish_extra_sdw_06"/>
+        <field name="section">Amuse Bouche</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_b_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="product_id" ref="dish_extra_sdw_07"/>
+        <field name="section">Appetizer</field>
+        <field name="sequence">30</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_b_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="product_id" ref="dish_extra_sdw_08"/>
+        <field name="section">Salad</field>
+        <field name="sequence">40</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_b_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="product_id" ref="dish_extra_sdw_09"/>
+        <field name="section">Third Course</field>
+        <field name="sequence">50</field>
+        <field name="size_group">pasta_rice</field>
+    </record>
+    <record id="sdw_set_b_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="product_id" ref="dish_extra_sdw_10"/>
+        <field name="section">Main (choose 1)</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_b_line_07" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="product_id" ref="dish_extra_sdw_11"/>
+        <field name="section">Main (choose 1)</field>
+        <field name="sequence">70</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_b_line_08" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="product_id" ref="dish_extra_sdw_12"/>
+        <field name="section">Dessert</field>
+        <field name="sequence">80</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Semi-Buffet with Chef (HK$880/pax)                           -->
+    <!-- ============================================================ -->
+    <record id="product_sdw_set_c" model="product.template">
+        <field name="name">Semi-Buffet with Chef
+上門下廚 ‧半自助餐</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">880</field>
+        <field name="description">HK$880 per person — Minimum 12 persons. Includes 4 hours chef service. Basic kitchen stove &amp; exhaust fan required.</field>
+    </record>
+
+    <record id="sdw_set_c" model="lcs.catering.set">
+        <field name="name">Semi-Buffet with Chef</field>
+        <field name="product_id" ref="product_sdw_set_c"/>
+        <field name="recommendation">Min. 12 pax · HK$880/pax · 6 cold/snack items + 1 main (choose 1 of 2) + dessert · Includes 4 hrs chef service</field>
+    </record>
+
+    <record id="sdw_set_c_line_01" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="product_id" ref="dish_extra_sdw_13"/>
+        <field name="section">Cold &amp; Snack Items</field>
+        <field name="sequence">10</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_c_line_02" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="product_id" ref="lcs_product_catalog.dish_015"/>
+        <field name="section">Cold &amp; Snack Items</field>
+        <field name="sequence">20</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_c_line_03" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="product_id" ref="dish_extra_sdw_14"/>
+        <field name="section">Cold &amp; Snack Items</field>
+        <field name="sequence">30</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_c_line_04" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="product_id" ref="dish_extra_sdw_15"/>
+        <field name="section">Cold &amp; Snack Items</field>
+        <field name="sequence">40</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_c_line_05" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="product_id" ref="dish_extra_sdw_16"/>
+        <field name="section">Cold &amp; Snack Items</field>
+        <field name="sequence">50</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_c_line_06" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="product_id" ref="dish_extra_sdw_17"/>
+        <field name="section">Cold &amp; Snack Items</field>
+        <field name="sequence">60</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_c_line_07" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="product_id" ref="dish_extra_sdw_18"/>
+        <field name="section">Main Course (choose 1)</field>
+        <field name="sequence">70</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_c_line_08" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="product_id" ref="dish_extra_sdw_19"/>
+        <field name="section">Main Course (choose 1)</field>
+        <field name="sequence">80</field>
+        <field name="size_group">salad_main</field>
+    </record>
+    <record id="sdw_set_c_line_09" model="lcs.catering.set.line">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="product_id" ref="dish_extra_sdw_20"/>
+        <field name="section">Dessert</field>
+        <field name="sequence">90</field>
+        <field name="size_group">salad_main</field>
+    </record>
+
+</odoo>
