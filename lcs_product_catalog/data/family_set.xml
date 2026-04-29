@@ -50,59 +50,75 @@
     <record id="fs_set_a_line_01" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_a"/>
         <field name="product_id" ref="lcs_product_catalog.dish_004"/>
-        <field name="section">Salad — S tray</field>
+        <field name="section">Salad</field>
         <field name="sequence">10</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">1</field>
+        <field name="eo_unit">S Tray</field>
     </record>
     <record id="fs_set_a_line_02" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_a"/>
         <field name="product_id" ref="lcs_product_catalog.dish_091"/>
-        <field name="section">Appetizer — 8 pcs</field>
+        <field name="section">Appetizer</field>
         <field name="sequence">20</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">8</field>
+        <field name="eo_unit">pcs</field>
     </record>
     <record id="fs_set_a_line_03" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_a"/>
         <field name="product_id" ref="lcs_product_catalog.dish_011"/>
-        <field name="section">Soup — 8 bowls</field>
+        <field name="section">Soup</field>
         <field name="sequence">30</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">8</field>
+        <field name="eo_unit">bowls</field>
     </record>
     <record id="fs_set_a_line_04" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_a"/>
         <field name="product_id" ref="dish_extra_fs_01"/>
-        <field name="section">Main — L tray (fixed portion)</field>
+        <field name="section">Main</field>
         <field name="sequence">40</field>
         <field name="size_group">salad_main</field>
-        <field name="remark">Portion does not vary with guest count</field>
+        <field name="remark">Fixed portion regardless of guest count</field>
+        <field name="eo_qty">1</field>
+        <field name="eo_unit">L Tray</field>
     </record>
     <record id="fs_set_a_line_05" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_a"/>
         <field name="product_id" ref="lcs_product_catalog.dish_123"/>
-        <field name="section">Main — S tray</field>
+        <field name="section">Main</field>
         <field name="sequence">50</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">1</field>
+        <field name="eo_unit">S Tray</field>
     </record>
     <record id="fs_set_a_line_06" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_a"/>
         <field name="product_id" ref="lcs_product_catalog.dish_112"/>
-        <field name="section">Main — S tray</field>
+        <field name="section">Main</field>
         <field name="sequence">60</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">1</field>
+        <field name="eo_unit">S Tray</field>
     </record>
     <record id="fs_set_a_line_07" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_a"/>
         <field name="product_id" ref="lcs_product_catalog.dish_152"/>
-        <field name="section">Rice — S tray</field>
+        <field name="section">Rice</field>
         <field name="sequence">70</field>
         <field name="size_group">pasta_rice</field>
+        <field name="eo_qty">1</field>
+        <field name="eo_unit">S Tray</field>
     </record>
     <record id="fs_set_a_line_08" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_a"/>
         <field name="product_id" ref="lcs_product_catalog.dish_181"/>
-        <field name="section">Dessert — 8 cups</field>
+        <field name="section">Dessert</field>
         <field name="sequence">80</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">8</field>
+        <field name="eo_unit">cups</field>
     </record>
 
     <!-- ============================================================ -->
@@ -127,59 +143,76 @@
     <record id="fs_set_b_line_01" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_b"/>
         <field name="product_id" ref="lcs_product_catalog.dish_009"/>
-        <field name="section">Salad — S tray</field>
+        <field name="section">Salad</field>
         <field name="sequence">10</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">1</field>
+        <field name="eo_unit">S Tray</field>
     </record>
     <record id="fs_set_b_line_02" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_b"/>
         <field name="product_id" ref="lcs_product_catalog.dish_035"/>
-        <field name="section">Appetizer — 8 pcs</field>
+        <field name="section">Appetizer</field>
         <field name="sequence">20</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">8</field>
+        <field name="eo_unit">pcs</field>
     </record>
     <record id="fs_set_b_line_03" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_b"/>
         <field name="product_id" ref="lcs_product_catalog.dish_012"/>
-        <field name="section">Soup — 8 bowls</field>
+        <field name="section">Soup</field>
         <field name="sequence">30</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">8</field>
+        <field name="eo_unit">bowls</field>
     </record>
     <record id="fs_set_b_line_04" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_b"/>
         <field name="product_id" ref="lcs_product_catalog.dish_093"/>
-        <field name="section">Main — S tray (fixed portion)</field>
+        <field name="section">Main</field>
         <field name="sequence">40</field>
         <field name="size_group">salad_main</field>
-        <field name="remark">Portion does not vary with guest count</field>
+        <field name="remark">Fixed portion regardless of guest count</field>
+        <field name="eo_qty">1</field>
+        <field name="eo_unit">S Tray</field>
     </record>
     <record id="fs_set_b_line_05" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_b"/>
         <field name="product_id" ref="lcs_product_catalog.dish_118"/>
-        <field name="section">Main — S tray</field>
+        <field name="section">Main</field>
         <field name="sequence">50</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">1</field>
+        <field name="eo_unit">S Tray</field>
     </record>
     <record id="fs_set_b_line_06" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_b"/>
         <field name="product_id" ref="lcs_product_catalog.dish_109"/>
-        <field name="section">Main — S tray (2 pcs per head)</field>
+        <field name="section">Main</field>
         <field name="sequence">60</field>
         <field name="size_group">salad_main</field>
+        <field name="remark">2 pcs per head</field>
+        <field name="eo_qty">16</field>
+        <field name="eo_unit">pcs</field>
     </record>
     <record id="fs_set_b_line_07" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_b"/>
         <field name="product_id" ref="lcs_product_catalog.dish_136"/>
-        <field name="section">Pasta — S tray</field>
+        <field name="section">Pasta</field>
         <field name="sequence">70</field>
         <field name="size_group">pasta_rice</field>
+        <field name="eo_qty">1</field>
+        <field name="eo_unit">S Tray</field>
     </record>
     <record id="fs_set_b_line_08" model="lcs.catering.set.line">
         <field name="set_id" ref="fs_set_b"/>
         <field name="product_id" ref="lcs_product_catalog.dish_179"/>
-        <field name="section">Dessert — 16 pcs</field>
+        <field name="section">Dessert</field>
         <field name="sequence">80</field>
         <field name="size_group">salad_main</field>
+        <field name="eo_qty">16</field>
+        <field name="eo_unit">pcs</field>
     </record>
 
 </odoo>

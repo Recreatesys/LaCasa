@@ -218,6 +218,88 @@
         <field name="recommendation">Min. 12 pax · HK$880/pax · Includes 4 hrs chef service · Basic kitchen stove &amp; exhaust fan required · Tableware HK$150/guest add-on available</field>
     </record>
 
+    <!-- Plated per-pax: 1 portion per guest, all categories -->
+    <record id="sdw_set_a_ratio_salad_soup" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="category_id" ref="cat_salad_soup"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_a_ratio_appetizer" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="category_id" ref="cat_appetizer"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_a_ratio_party_snack" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="category_id" ref="cat_party_snack"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_a_ratio_canapes" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="category_id" ref="cat_canapes"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_a_ratio_main" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="category_id" ref="cat_main_dishes"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_a_ratio_veg_fruits" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="category_id" ref="cat_vegetables_fruits"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_a_ratio_rice_pasta" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="category_id" ref="cat_rice_pasta"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_a_ratio_dessert" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_a"/>
+        <field name="category_id" ref="cat_dessert"/>
+        <field name="min_guests">1</field>
+        <field name="max_guests">0</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+
     <record id="sdw_set_a_line_01" model="lcs.catering.set.line">
         <field name="set_id" ref="sdw_set_a"/>
         <field name="product_id" ref="dish_extra_sdw_01"/>
@@ -285,6 +367,80 @@
         <field name="name">Western Set B with Chef</field>
         <field name="product_id" ref="product_sdw_set_b"/>
         <field name="recommendation">Min. 12 pax · HK$1,300/pax · 6-course tasting menu · Includes 4 hrs chef service · Basic kitchen stove &amp; exhaust fan required</field>
+    </record>
+
+    <!-- Plated per-pax -->
+    <record id="sdw_set_b_ratio_salad_soup" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="category_id" ref="cat_salad_soup"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_b_ratio_appetizer" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="category_id" ref="cat_appetizer"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_b_ratio_party_snack" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="category_id" ref="cat_party_snack"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_b_ratio_canapes" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="category_id" ref="cat_canapes"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_b_ratio_main" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="category_id" ref="cat_main_dishes"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_b_ratio_veg_fruits" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="category_id" ref="cat_vegetables_fruits"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_b_ratio_rice_pasta" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="category_id" ref="cat_rice_pasta"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_b_ratio_dessert" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_b"/>
+        <field name="category_id" ref="cat_dessert"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
     </record>
 
     <record id="sdw_set_b_line_01" model="lcs.catering.set.line">
@@ -361,6 +517,80 @@
         <field name="name">Semi-Buffet with Chef</field>
         <field name="product_id" ref="product_sdw_set_c"/>
         <field name="recommendation">Min. 12 pax · HK$880/pax · 6 cold/snack items + 1 main (choose 1 of 2) + dessert · Includes 4 hrs chef service</field>
+    </record>
+
+    <!-- Plated per-pax -->
+    <record id="sdw_set_c_ratio_salad_soup" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="category_id" ref="cat_salad_soup"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_c_ratio_appetizer" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="category_id" ref="cat_appetizer"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_c_ratio_party_snack" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="category_id" ref="cat_party_snack"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_c_ratio_canapes" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="category_id" ref="cat_canapes"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_c_ratio_main" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="category_id" ref="cat_main_dishes"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_c_ratio_veg_fruits" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="category_id" ref="cat_vegetables_fruits"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_c_ratio_rice_pasta" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="category_id" ref="cat_rice_pasta"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
+    </record>
+    <record id="sdw_set_c_ratio_dessert" model="lcs.catering.set.ratio.tier">
+        <field name="set_id" ref="sdw_set_c"/>
+        <field name="category_id" ref="cat_dessert"/>
+        <field name="min_guests">1</field>
+        <field name="invoice_unit">portion</field>
+        <field name="kitchen_unit">portion</field>
+        <field name="ratio">1</field>
+        <field name="conversion_factor">1.0</field>
     </record>
 
     <record id="sdw_set_c_line_01" model="lcs.catering.set.line">
