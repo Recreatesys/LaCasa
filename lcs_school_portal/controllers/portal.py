@@ -10,6 +10,10 @@ class LcsSchoolPortalLogin(http.Controller):
     Backend authenticates as login = '<class>-<student_name>'.
     """
 
+    @http.route('/school/ping', type='http', auth='none', sitemap=False, csrf=False)
+    def school_ping(self, **kw):
+        return 'pong'
+
     @http.route('/school/login', type='http', auth='public', sitemap=False, csrf=True)
     def school_login(self, redirect=None, **kw):
         if request.session.uid:
