@@ -24,7 +24,7 @@
                                     invisible="not portal_granted"
                                     confirm="Revoke this student's portal access?"/>
                             <span class="badge text-bg-success ms-2"
-                                  t-if="portal_granted" invisible="not portal_granted">
+                                  invisible="not portal_granted">
                                 Portal Active
                             </span>
                         </div>
