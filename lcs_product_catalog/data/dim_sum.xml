@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- CATEGORIES                                                   -->
+    <!-- ============================================================ -->
+
+    <record id="cat_dim_sum" model="product.category">
+        <field name="name">Dim Sum</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_ds_per_piece" model="product.category">
+        <field name="name">Dim Sum - Per Piece</field>
+        <field name="parent_id" ref="cat_dim_sum"/>
+    </record>
+    <record id="cat_ds_tray" model="product.category">
+        <field name="name">Dim Sum - Trays (Siu Mai)</field>
+        <field name="parent_id" ref="cat_dim_sum"/>
+    </record>
+    <record id="cat_ds_flavored" model="product.category">
+        <field name="name">Dim Sum - Flavored / Sauced</field>
+        <field name="parent_id" ref="cat_dim_sum"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- PER-PIECE DIM SUM                                            -->
+    <!-- (Min order: 5 boxes / 60 pcs unless noted; 7-day lead time)  -->
+    <!-- ============================================================ -->
+
+    <record id="ds_bbq_pork_cookie" model="product.template">
+        <field name="name">Barbecue Pork Cookie
+叉燒酥</field>
+        <field name="categ_id" ref="cat_ds_per_piece"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">18</field>
+        <field name="description">HK$18 / pc. Min order: 5 boxes (60 pcs). 7-day lead time.</field>
+    </record>
+    <record id="ds_black_molten_bun" model="product.template">
+        <field name="name">Black Molten Custard Bun
+黑金流沙包</field>
+        <field name="categ_id" ref="cat_ds_per_piece"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">18</field>
+        <field name="description">HK$18 / pc. Min order: 5 boxes (30 pcs). 7-day lead time. NOT recommended for drop-off.</field>
+    </record>
+    <record id="ds_pork_siumai_crab_roe" model="product.template">
+        <field name="name">Pork Siu Mai with Crab Roe
+蟹籽豬肉燒賣</field>
+        <field name="categ_id" ref="cat_ds_per_piece"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">16</field>
+        <field name="description">HK$16 / pc. Min order: 5 boxes (60 pcs). 7-day lead time. Also available as L Tray (24 pcs / HK$240).</field>
+    </record>
+    <record id="ds_pork_siumai_crab_roe_l" model="product.template">
+        <field name="name">Pork Siu Mai with Crab Roe - L Tray (24 pcs)
+蟹籽豬肉燒賣 - L 盤 (24件)</field>
+        <field name="categ_id" ref="cat_ds_tray"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">240</field>
+        <field name="description">HK$240 / L Tray (24 pcs).</field>
+    </record>
+    <record id="ds_steamed_beef" model="product.template">
+        <field name="name">Steamed Beef
+乾蒸牛肉</field>
+        <field name="categ_id" ref="cat_ds_per_piece"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">15</field>
+        <field name="description">HK$15 / pc. Min order: 5 boxes (60 pcs). 7-day lead time.</field>
+    </record>
+    <record id="ds_steamed_beef_ball" model="product.template">
+        <field name="name">Steamed Beef Ball
+牛肉球</field>
+        <field name="categ_id" ref="cat_ds_per_piece"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">16</field>
+        <field name="description">HK$16 / pc. Min order: 5 boxes (60 pcs). 7-day lead time. Also available as L Tray (20 pcs / HK$220).</field>
+    </record>
+    <record id="ds_steamed_beef_ball_l" model="product.template">
+        <field name="name">Steamed Beef Ball - L Tray (20 pcs)
+牛肉球 - L 盤 (20件)</field>
+        <field name="categ_id" ref="cat_ds_tray"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">220</field>
+        <field name="description">HK$220 / L Tray (20 pcs).</field>
+    </record>
+    <record id="ds_glutinous_rice_dumpling" model="product.template">
+        <field name="name">Mini Glutinous Rice Dumpling
+迷你珍珠雞</field>
+        <field name="categ_id" ref="cat_ds_per_piece"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">18</field>
+        <field name="description">HK$18 / pc. Min order: 1 box (12 pcs). 7-day lead time.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- TRAY-SIZED DIM SUM (Fish &amp; Pork Siu Mai, M/L/XL)             -->
+    <!-- 4-day lead time                                              -->
+    <!-- ============================================================ -->
+
+    <record id="ds_fish_siumai_m" model="product.template">
+        <field name="name">Fish Siu Mai - M Tray (~80 pcs)
+魚肉燒賣 - M 盤 (~80件)</field>
+        <field name="categ_id" ref="cat_ds_tray"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">240</field>
+        <field name="description">HK$240 / M Tray (~80 pcs). 4-day lead time.</field>
+    </record>
+    <record id="ds_fish_siumai_l" model="product.template">
+        <field name="name">Fish Siu Mai - L Tray (~100 pcs)
+魚肉燒賣 - L 盤 (~100件)</field>
+        <field name="categ_id" ref="cat_ds_tray"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">285</field>
+        <field name="description">HK$285 / L Tray (~100 pcs). 4-day lead time.</field>
+    </record>
+    <record id="ds_fish_siumai_xl" model="product.template">
+        <field name="name">Fish Siu Mai - XL Tray (~150 pcs)
+魚肉燒賣 - XL 盤 (~150件)</field>
+        <field name="categ_id" ref="cat_ds_tray"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">390</field>
+        <field name="description">HK$390 / XL Tray (~150 pcs). 4-day lead time.</field>
+    </record>
+
+    <record id="ds_pork_siumai_m" model="product.template">
+        <field name="name">Pork Siu Mai - M Tray (~80 pcs)
+豬肉燒賣 - M 盤 (~80件)</field>
+        <field name="categ_id" ref="cat_ds_tray"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">400</field>
+        <field name="description">HK$400 / M Tray (~80 pcs). 4-day lead time.</field>
+    </record>
+    <record id="ds_pork_siumai_l" model="product.template">
+        <field name="name">Pork Siu Mai - L Tray (~100 pcs)
+豬肉燒賣 - L 盤 (~100件)</field>
+        <field name="categ_id" ref="cat_ds_tray"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">475</field>
+        <field name="description">HK$475 / L Tray (~100 pcs). 4-day lead time.</field>
+    </record>
+    <record id="ds_pork_siumai_xl" model="product.template">
+        <field name="name">Pork Siu Mai - XL Tray (~150 pcs)
+豬肉燒賣 - XL 盤 (~150件)</field>
+        <field name="categ_id" ref="cat_ds_tray"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">675</field>
+        <field name="description">HK$675 / XL Tray (~150 pcs). 4-day lead time.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- FLAVORED / SAUCED DIM SUM                                    -->
+    <!-- ============================================================ -->
+
+    <record id="ds_fish_siumai_sichuan" model="product.template">
+        <field name="name">Fish Siu Mai with Sichuan Chili Sauce
+魚蓉燒賣 (川味花椒麻辣醬)</field>
+        <field name="categ_id" ref="cat_ds_flavored"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">320</field>
+        <field name="description">HK$320 / ~100 pcs.</field>
+    </record>
+    <record id="ds_fish_siumai_hk" model="product.template">
+        <field name="name">Fish Siu Mai with Hong Kong Style Chili Soy Sauce
+魚蓉燒賣 (正宗港式辣椒豉油)</field>
+        <field name="categ_id" ref="cat_ds_flavored"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">320</field>
+        <field name="description">HK$320 / ~100 pcs.</field>
+    </record>
+    <record id="ds_chiu_chow_sichuan" model="product.template">
+        <field name="name">Chiu Chow Dumpling with Sichuan Chili Sauce
+潮州粉果 (川味花椒麻辣醬)</field>
+        <field name="categ_id" ref="cat_ds_flavored"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">280</field>
+        <field name="description">HK$280 / ~20 pcs.</field>
+    </record>
+    <record id="ds_chiu_chow_hk" model="product.template">
+        <field name="name">Chiu Chow Dumpling with Hong Kong Style Chili Soy Sauce
+潮州粉果 (正宗港式辣椒豉油)</field>
+        <field name="categ_id" ref="cat_ds_flavored"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">280</field>
+        <field name="description">HK$280 / ~20 pcs.</field>
+    </record>
+    <record id="ds_meatball_curry" model="product.template">
+        <field name="name">Mushroom and Pork Meatball with Singapore Curry Sauce
+香菇貢丸 (星洲咖喱汁)</field>
+        <field name="categ_id" ref="cat_ds_flavored"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">400</field>
+        <field name="description">HK$400 / ~80 pcs.</field>
+    </record>
+    <record id="ds_fish_ball_curry" model="product.template">
+        <field name="name">Fish Ball with Singapore Curry Sauce
+街頭魚蛋 (星洲咖喱汁)</field>
+        <field name="categ_id" ref="cat_ds_flavored"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">220</field>
+        <field name="description">HK$220 / ~160 pcs.</field>
+    </record>
+    <record id="ds_chicken_sausage" model="product.template">
+        <field name="name">Chef Chicken Sausage
+廚師雞肉腸</field>
+        <field name="categ_id" ref="cat_ds_flavored"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">480</field>
+        <field name="description">HK$480 / ~80 pcs.</field>
+    </record>
+    <record id="ds_salt_pepper_siumai" model="product.template">
+        <field name="name">Salt &amp; Pepper Fish Siu Mai (Tomato / Cucumber Cheese / Sichuan Peppercorn)
+椒鹽旋風燒賣 (蕃茄味、青瓜芝士味及藤椒味)</field>
+        <field name="categ_id" ref="cat_ds_flavored"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">400</field>
+        <field name="description">HK$400 / ~80 pcs. Seasoning powder flavours: Tomato, Cucumber &amp; Cheese, Green Sichuan Peppercorns.</field>
+    </record>
+    <record id="ds_chives_pig_blood" model="product.template">
+        <field name="name">Chinese Chives &amp; Pig Blood (L Tray)
+韮菜豬紅 - L 盤</field>
+        <field name="categ_id" ref="cat_ds_tray"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">300</field>
+        <field name="description">HK$300 / L Tray.</field>
+    </record>
+
+</odoo>

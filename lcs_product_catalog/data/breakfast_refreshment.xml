@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- CATEGORIES                                                   -->
+    <!-- ============================================================ -->
+
+    <record id="cat_breakfast_refreshment" model="product.category">
+        <field name="name">Breakfast / Refreshment</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_br_sandwich" model="product.category">
+        <field name="name">Sandwiches</field>
+        <field name="parent_id" ref="cat_breakfast_refreshment"/>
+    </record>
+    <record id="cat_br_ciabatta" model="product.category">
+        <field name="name">Ciabatta Sandwiches</field>
+        <field name="parent_id" ref="cat_breakfast_refreshment"/>
+    </record>
+    <record id="cat_br_wrap" model="product.category">
+        <field name="name">Salad Wraps</field>
+        <field name="parent_id" ref="cat_breakfast_refreshment"/>
+    </record>
+    <record id="cat_br_fruit_salad" model="product.category">
+        <field name="name">Fruit / Salad Cups &amp; Platters</field>
+        <field name="parent_id" ref="cat_breakfast_refreshment"/>
+    </record>
+    <record id="cat_br_pastry" model="product.category">
+        <field name="name">Pastries</field>
+        <field name="parent_id" ref="cat_breakfast_refreshment"/>
+    </record>
+    <record id="cat_br_platter" model="product.category">
+        <field name="name">Platters</field>
+        <field name="parent_id" ref="cat_breakfast_refreshment"/>
+    </record>
+    <record id="cat_br_others" model="product.category">
+        <field name="name">Others</field>
+        <field name="parent_id" ref="cat_breakfast_refreshment"/>
+    </record>
+    <record id="cat_br_box" model="product.category">
+        <field name="name">Refreshment Boxes</field>
+        <field name="parent_id" ref="cat_breakfast_refreshment"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SANDWICHES (Half + Full pricing, min 20)                     -->
+    <!-- ============================================================ -->
+
+    <record id="br_sw_egg_salad_h" model="product.template">
+        <field name="name">Egg Salad &amp; Tomato Sandwich (Half) (V)
+蛋沙律及蕃茄三文治 (半份) (素)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">20</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_egg_salad_f" model="product.template">
+        <field name="name">Egg Salad &amp; Tomato Sandwich (Full) (V)
+蛋沙律及蕃茄三文治 (全份) (素)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">38</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_ham_cheese_h" model="product.template">
+        <field name="name">Ham &amp; Cheese Sandwich (Half)
+火腿及芝士三文治 (半份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">20</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_ham_cheese_f" model="product.template">
+        <field name="name">Ham &amp; Cheese Sandwich (Full)
+火腿及芝士三文治 (全份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">38</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_pastrami_h" model="product.template">
+        <field name="name">Pastrami &amp; Cheese Sandwich (Half)
+黑椒煙燻牛肉及芝士三文治 (半份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">20</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_pastrami_f" model="product.template">
+        <field name="name">Pastrami &amp; Cheese Sandwich (Full)
+黑椒煙燻牛肉及芝士三文治 (全份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">38</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_smoked_salmon_h" model="product.template">
+        <field name="name">Smoked Salmon, Cucumber &amp; Cream Cheese Sandwich (Half)
+煙三文魚青瓜忌廉芝士三文治 (半份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">24</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_smoked_salmon_f" model="product.template">
+        <field name="name">Smoked Salmon, Cucumber &amp; Cream Cheese Sandwich (Full)
+煙三文魚青瓜忌廉芝士三文治 (全份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">42</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_avocado_h" model="product.template">
+        <field name="name">Avocado, Tomato &amp; Lettuce Sandwich (Half) (V)
+牛油果、蕃茄及生菜三文治 (半份) (素)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">24</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_avocado_f" model="product.template">
+        <field name="name">Avocado, Tomato &amp; Lettuce Sandwich (Full) (V)
+牛油果、蕃茄及生菜三文治 (全份) (素)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">42</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_chicken_h" model="product.template">
+        <field name="name">Chicken, Tomato &amp; Cheese Sandwich (Half)
+雞肉、蕃茄及芝士三文治 (半份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">24</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_chicken_f" model="product.template">
+        <field name="name">Chicken, Tomato &amp; Cheese Sandwich (Full)
+雞肉、蕃茄及芝士三文治 (全份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">42</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_turkey_h" model="product.template">
+        <field name="name">Turkey Ham &amp; Cheese Sandwich (Half)
+火雞火腿芝士三文治 (半份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">24</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_sw_turkey_f" model="product.template">
+        <field name="name">Turkey Ham &amp; Cheese Sandwich (Full)
+火雞火腿芝士三文治 (全份)</field>
+        <field name="categ_id" ref="cat_br_sandwich"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">42</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- CIABATTA SANDWICHES (min 20)                                 -->
+    <!-- ============================================================ -->
+
+    <record id="br_cb_chicken" model="product.template">
+        <field name="name">Slow-cooked Chicken Breast Ciabatta with Honey Mustard Sauce
+慢煮雞胸蕃茄青瓜意式三文治配蜜糖芥末醬</field>
+        <field name="categ_id" ref="cat_br_ciabatta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">45</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_cb_portobello" model="product.template">
+        <field name="name">Portobello, Tomato &amp; Cheese Ciabatta (V)
+大啡菇、蕃茄及芝士意式三文治 (素)</field>
+        <field name="categ_id" ref="cat_br_ciabatta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">45</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_cb_pastrami" model="product.template">
+        <field name="name">Pastrami &amp; Grilled Mixed Vegetable Ciabatta with Pesto
+黑椒牛肉扒雜菜意式三文治配香草醬</field>
+        <field name="categ_id" ref="cat_br_ciabatta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">48</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_cb_avocado" model="product.template">
+        <field name="name">Avocado, Tomato &amp; Lettuce Ciabatta (V)
+牛油果、蕃茄及生菜意式三文治 (素)</field>
+        <field name="categ_id" ref="cat_br_ciabatta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">48</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_cb_turkey" model="product.template">
+        <field name="name">Turkey Ham &amp; Cheese Ciabatta
+火雞火腿芝士意式三文治</field>
+        <field name="categ_id" ref="cat_br_ciabatta"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">45</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SALAD WRAPS (min 20)                                         -->
+    <!-- ============================================================ -->
+
+    <record id="br_wrap_chicken" model="product.template">
+        <field name="name">Deep-fried Chicken, Bell Pepper &amp; Hummus Wrap
+炸雞甜椒鷹嘴豆醬卷</field>
+        <field name="categ_id" ref="cat_br_wrap"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">48</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_wrap_salmon" model="product.template">
+        <field name="name">Smoked Salmon &amp; Avocado Wrap
+煙三文魚牛油果卷</field>
+        <field name="categ_id" ref="cat_br_wrap"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">52</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_wrap_mushroom" model="product.template">
+        <field name="name">Korean Wild Mushroom &amp; Cheese Wrap (V)
+韓式野菌芝士卷 (素)</field>
+        <field name="categ_id" ref="cat_br_wrap"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">45</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_wrap_pork_belly" model="product.template">
+        <field name="name">Korean Pork Belly Wrap
+韓式豬腩卷</field>
+        <field name="categ_id" ref="cat_br_wrap"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">48</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_wrap_tuna" model="product.template">
+        <field name="name">Tuna Salad Wrap
+吞拿魚沙律卷</field>
+        <field name="categ_id" ref="cat_br_wrap"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">52</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- FRUIT / SALAD CUPS &amp; PLATTERS                                -->
+    <!-- ============================================================ -->
+
+    <record id="br_fs_egg_spinach_cup" model="product.template">
+        <field name="name">Boiled Egg &amp; Spinach Cup
+烚蛋及菠菜杯</field>
+        <field name="categ_id" ref="cat_br_fruit_salad"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">30</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_fs_salmon_cup" model="product.template">
+        <field name="name">Smoked Salmon, Green Beans &amp; Citrus Salad Cup with Yuzu Vinaigrette
+煙三文魚四季豆香橙沙律杯配柚子醋</field>
+        <field name="categ_id" ref="cat_br_fruit_salad"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">45</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_fs_shrimp_soba" model="product.template">
+        <field name="name">Shrimp Soba Noodle Salad Cup
+日式大蝦蕎麥麵沙律</field>
+        <field name="categ_id" ref="cat_br_fruit_salad"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">42</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_fs_chicken_cup" model="product.template">
+        <field name="name">Shredded Chicken &amp; Cucumber Salad Cup with Sesame Dressing
+胡麻醬手撕雞青瓜沙律</field>
+        <field name="categ_id" ref="cat_br_fruit_salad"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">45</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_fs_fruit_cup" model="product.template">
+        <field name="name">Seasonal Fresh Fruit Salad Cup (V)
+時令鮮雜果杯 (素)</field>
+        <field name="categ_id" ref="cat_br_fruit_salad"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">30</field>
+        <field name="description">Min order: 20 pcs.</field>
+    </record>
+    <record id="br_fs_fruit_platter" model="product.template">
+        <field name="name">Seasonal Fresh Fruit Platter (V)
+時令鮮雜果拼盤 (素)</field>
+        <field name="categ_id" ref="cat_br_fruit_salad"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">388</field>
+        <field name="description">HK$388 / per box.</field>
+    </record>
+    <record id="br_fs_whole_fruit" model="product.template">
+        <field name="name">Whole Fruit Box - Banana, Green Apple, Fuji Apple (V)
+原個鮮果 (香蕉、青蘋果、富士蘋果) (素)</field>
+        <field name="categ_id" ref="cat_br_fruit_salad"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">188</field>
+        <field name="description">HK$188 / 12 pcs.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- PASTRIES (priced per 12 pcs)                                 -->
+    <!-- ============================================================ -->
+
+    <record id="br_pastry_olive_roll" model="product.template">
+        <field name="name">Mini Roll with Olive Oil and Olives
+迷你橄欖包</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">180</field>
+        <field name="description">HK$180 / 12 pcs. Served with butter &amp; cream cheese.</field>
+    </record>
+    <record id="br_pastry_fig_roll" model="product.template">
+        <field name="name">Mini Fig &amp; Honey Bread Roll
+迷你無花果蜜糖包</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">180</field>
+        <field name="description">HK$180 / 12 pcs. Served with butter &amp; cream cheese.</field>
+    </record>
+    <record id="br_pastry_sausage_puff" model="product.template">
+        <field name="name">Mini Chicken Sausage Puff
+迷你雞肉腸酥皮卷</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">220</field>
+        <field name="description">HK$220 / 12 pcs.</field>
+    </record>
+    <record id="br_pastry_scone" model="product.template">
+        <field name="name">Mini Raisin Scone
+迷你英式提子鬆餅</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">240</field>
+        <field name="description">HK$240 / 12 pcs. Served with butter &amp; cream cheese.</field>
+    </record>
+    <record id="br_pastry_croissant" model="product.template">
+        <field name="name">Mini Croissant
+迷你牛角酥</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">220</field>
+        <field name="description">HK$220 / 12 pcs. Served with butter &amp; cream cheese.</field>
+    </record>
+    <record id="br_pastry_ham_croissant" model="product.template">
+        <field name="name">Mini Ham &amp; Cheese Croissant
+迷你火腿及芝士牛角酥</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">260</field>
+        <field name="description">HK$260 / 12 pcs.</field>
+    </record>
+    <record id="br_pastry_egg_croissant" model="product.template">
+        <field name="name">Mini Egg Salad Croissant
+迷你蛋沙律牛角酥</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">260</field>
+        <field name="description">HK$260 / 12 pcs.</field>
+    </record>
+    <record id="br_pastry_salmon_croissant" model="product.template">
+        <field name="name">Mini Smoked Salmon Croissant
+迷你煙三文魚牛角酥</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">288</field>
+        <field name="description">HK$288 / 12 pcs (was HK$400).</field>
+    </record>
+    <record id="br_pastry_chocolate" model="product.template">
+        <field name="name">Mini Pain au Chocolate
+迷你朱古力酥</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">180</field>
+        <field name="description">HK$180 / 12 pcs.</field>
+    </record>
+    <record id="br_pastry_apple_tatin" model="product.template">
+        <field name="name">Mini Apple Tatin Lattice
+迷你蘋果酥</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">320</field>
+        <field name="description">HK$320 / 12 pcs.</field>
+    </record>
+    <record id="br_pastry_choco_muffin" model="product.template">
+        <field name="name">Chocolate Muffin (90g)
+朱古力鬆餅 (90g)</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">360</field>
+        <field name="description">HK$360 / 12 pcs.</field>
+    </record>
+    <record id="br_pastry_vanilla_muffin" model="product.template">
+        <field name="name">Vanilla &amp; Raspberry Muffin (90g)
+雲尼拿紅桑子鬆餅 (90g)</field>
+        <field name="categ_id" ref="cat_br_pastry"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">360</field>
+        <field name="description">HK$360 / 12 pcs.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- PLATTERS                                                     -->
+    <!-- ============================================================ -->
+
+    <record id="br_plt_mini_roll" model="product.template">
+        <field name="name">Assorted Mini-Roll Platter (Olives, Fig &amp; Honey)
+迷你餐包拼盤 (橄欖, 無花果蜜糖)</field>
+        <field name="categ_id" ref="cat_br_platter"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">200</field>
+        <field name="description">HK$200 / 12 pcs. Served with butter &amp; cream cheese.</field>
+    </record>
+    <record id="br_plt_mini_pastries" model="product.template">
+        <field name="name">Assorted Mini-Pastries Platter (Apple Tatin, Pain au Chocolat)
+迷你酥拼盤 (蘋果, 朱古力)</field>
+        <field name="categ_id" ref="cat_br_platter"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">270</field>
+        <field name="description">HK$270 / 12 pcs.</field>
+    </record>
+    <record id="br_plt_mini_croissant" model="product.template">
+        <field name="name">Assorted Mini Croissant Platter (Egg Salad, Smoked Salmon)
+迷你牛角酥拼盤 (蛋沙律、煙三文魚)</field>
+        <field name="categ_id" ref="cat_br_platter"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">278</field>
+        <field name="description">HK$278 / 12 pcs.</field>
+    </record>
+    <record id="br_plt_muffins" model="product.template">
+        <field name="name">Assorted Muffins Platter (Chocolate, Vanilla &amp; Raspberry, 90g)
+鬆餅拼盤 (朱古力, 雲尼拿紅桑子) (90g)</field>
+        <field name="categ_id" ref="cat_br_platter"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">380</field>
+        <field name="description">HK$380 / 12 pcs.</field>
+    </record>
+    <record id="br_plt_mini_sandwich" model="product.template">
+        <field name="name">Assorted Mini Sandwich Platter (24 pcs)
+迷你三文治拼盤 (24件)</field>
+        <field name="categ_id" ref="cat_br_platter"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">360</field>
+        <field name="description">HK$360 / 24 pcs. Egg Salad, Ham &amp; Cheese, Smoked Salmon, Cucumber &amp; Cream Cheese.</field>
+    </record>
+    <record id="br_plt_sandwich" model="product.template">
+        <field name="name">Assorted Sandwich Platter (16 halves)
+三文治拼盤 (16 半份)</field>
+        <field name="categ_id" ref="cat_br_platter"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">300</field>
+        <field name="description">HK$300 / 16 halves. Egg Salad &amp; Tomato, Ham &amp; Cheese.</field>
+    </record>
+    <record id="br_plt_ciabatta" model="product.template">
+        <field name="name">Ciabatta Sandwich Platter (12 halves)
+意式三文治拼盤 (12 半份)</field>
+        <field name="categ_id" ref="cat_br_platter"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">270</field>
+        <field name="description">HK$270 / 12 halves. Portobello, Tomato &amp; Cheese / Turkey &amp; Cheese.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- OTHERS                                                       -->
+    <!-- ============================================================ -->
+
+    <record id="br_other_breadsticks" model="product.template">
+        <field name="name">Bread Sticks
+麵包條</field>
+        <field name="categ_id" ref="cat_br_others"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">120</field>
+        <field name="description">HK$120 / 24 pcs. Served with butter &amp; cream cheese.</field>
+    </record>
+    <record id="br_other_spinach_frittata" model="product.template">
+        <field name="name">Spinach &amp; Mushroom Frittata
+菠菜野菌意式蛋批</field>
+        <field name="categ_id" ref="cat_br_others"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">390</field>
+        <field name="description">HK$390 / 24 pcs.</field>
+    </record>
+    <record id="br_other_bacon_frittata" model="product.template">
+        <field name="name">Bacon &amp; Cherry Tomato Frittata
+煙肉車厘茄意式蛋批</field>
+        <field name="categ_id" ref="cat_br_others"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">390</field>
+        <field name="description">HK$390 / 24 pcs.</field>
+    </record>
+    <record id="br_other_boiled_eggs" model="product.template">
+        <field name="name">Boiled Eggs
+烚蛋</field>
+        <field name="categ_id" ref="cat_br_others"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">120</field>
+        <field name="description">HK$120 / 12 pcs.</field>
+    </record>
+    <record id="br_other_cold_cut" model="product.template">
+        <field name="name">Cold Cut Platter
+意式冷肉拼盤</field>
+        <field name="categ_id" ref="cat_br_others"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">728</field>
+        <field name="description">HK$728 / per box.</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- REFRESHMENT BOXES (min 20)                                   -->
+    <!-- ============================================================ -->
+
+    <record id="br_box_pastrami_parma" model="product.template">
+        <field name="name">Refreshment Box - Pastrami Cheese Sandwich + Parma Ham Salad
+茶點盒 - 黑椒煙燻牛肉芝士三文治 + 意大利風乾火腿車厘茄沙律</field>
+        <field name="categ_id" ref="cat_br_box"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">38</field>
+        <field name="description">Min order: 20 boxes. Pastrami &amp; Cheese Sandwich (half) + Parma Ham &amp; Cherry Tomato Salad.</field>
+    </record>
+    <record id="br_box_croissant_egg" model="product.template">
+        <field name="name">Refreshment Box - Mini Croissant + Boiled Egg &amp; Spinach Salad
+茶點盒 - 迷你牛角酥 + 烚蛋及菠菜沙律</field>
+        <field name="categ_id" ref="cat_br_box"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">32</field>
+        <field name="description">Min order: 20 boxes. Mini Croissant (with cream cheese) + Boiled Egg &amp; Baby Spinach Salad.</field>
+    </record>
+    <record id="br_box_fig_frittata" model="product.template">
+        <field name="name">Refreshment Box - Fig &amp; Honey Roll + Spinach Frittata Salad (V)
+茶點盒 - 迷你無花果蜜糖包 + 菠菜野菌意式蛋批沙律 (素)</field>
+        <field name="categ_id" ref="cat_br_box"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">36</field>
+        <field name="description">Min order: 20 boxes. Mini Fig &amp; Honey Bread Roll (with butter) + Spinach &amp; Mushroom Frittata &amp; Mesclun Salad.</field>
+    </record>
+    <record id="br_box_salmon_chocolate" model="product.template">
+        <field name="name">Refreshment Box - Smoked Salmon Wrap + Pain au Chocolate
+茶點盒 - 煙三文魚牛油果卷 + 迷你朱古力酥</field>
+        <field name="categ_id" ref="cat_br_box"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">42</field>
+        <field name="description">Min order: 20 boxes. Smoked Salmon &amp; Avocado Wrap (half) + Mini Pain au Chocolate.</field>
+    </record>
+    <record id="br_box_chicken_salmon_salad" model="product.template">
+        <field name="name">Refreshment Box - Chicken Ciabatta + Salmon Orange Salad
+茶點盒 - 慢煮雞胸蕃茄意式三文治 + 煙三文魚香橙沙律</field>
+        <field name="categ_id" ref="cat_br_box"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">38</field>
+        <field name="description">Min order: 20 boxes. Slow-cooked Chicken Breast &amp; Tomato Ciabatta (half) + Smoked Salmon &amp; Orange Salad.</field>
+    </record>
+    <record id="br_box_tomato_bacon" model="product.template">
+        <field name="name">Refreshment Box - Tomato Cheese Croissant + Bacon Frittata Salad (V)
+茶點盒 - 迷你蕃茄芝士牛角酥 + 煙肉車厘茄意式蛋批沙律 (素)</field>
+        <field name="categ_id" ref="cat_br_box"/>
+        <field name="type">consu</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">42</field>
+        <field name="description">Min order: 20 boxes. Mini Tomato &amp; Cheese Croissant + Bacon &amp; Cherry Tomato Frittata &amp; Mesclun Salad.</field>
+    </record>
+
+</odoo>
