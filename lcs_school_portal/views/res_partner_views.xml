@@ -11,6 +11,23 @@
                 <notebook>
                     <page string="Student Info" name="student_info"
                           invisible="not is_student">
+                        <div class="oe_button_box">
+                            <button name="action_grant_order_portal"
+                                    string="Grant Order Portal"
+                                    type="object"
+                                    class="btn-primary"
+                                    invisible="portal_granted"/>
+                            <button name="action_revoke_order_portal"
+                                    string="Revoke Portal"
+                                    type="object"
+                                    class="btn-secondary"
+                                    invisible="not portal_granted"
+                                    confirm="Revoke this student's portal access?"/>
+                            <span class="badge text-bg-success ms-2"
+                                  t-if="portal_granted" invisible="not portal_granted">
+                                Portal Active
+                            </span>
+                        </div>
                         <group>
                             <group string="School / Class">
                                 <field name="is_student"/>
@@ -33,6 +50,10 @@
                                        options="{'color_field': 'color'}"/>
                             </group>
                         </group>
+                        <group string="Portal Access" invisible="not portal_granted">
+                            <field name="portal_granted" readonly="1"/>
+                            <field name="portal_user_id" readonly="1"/>
+                        </group>
                     </page>
                 </notebook>
             </xpath>
@@ -54,6 +75,16 @@
                 <field name="diet_preference" optional="hide"/>
             </xpath>
         </field>
+    </record>
+
+    <!-- Bulk action: Grant Order Portal (visible in list/form Action menu) -->
+    <record id="action_grant_order_portal_server" model="ir.actions.server">
+        <field name="name">Grant Order Portal</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_grant_order_portal()</field>
     </record>
 
     <!-- Inherit partner search: add Student filter -->

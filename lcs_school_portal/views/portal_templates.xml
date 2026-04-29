@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="school_login_template" name="School Portal Login">
+        <t t-call="web.login_layout">
+            <form class="oe_login_form" role="form" t-attf-action="/school/login" method="post"
+                  onsubmit="this.action = this.action + location.search">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <input type="hidden" name="redirect" t-att-value="redirect"/>
+
+                <div class="form-group field-class-label mb-3">
+                    <label for="class_label" class="form-label">Class</label>
+                    <select name="class_label" id="class_label" class="form-select" required="required">
+                        <option value="">— Select Class —</option>
+                        <t t-foreach="classes" t-as="cls">
+                            <t t-set="lbl" t-value="cls.name.split('-')[-1].strip() if '-' in cls.name else cls.name"/>
+                            <option t-att-value="lbl" t-att-selected="lbl == class_label">
+                                <t t-esc="cls.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+
+                <div class="form-group field-student-name mb-3">
+                    <label for="student_name" class="form-label">Student Name</label>
+                    <input type="text" name="student_name" id="student_name" class="form-control"
+                           t-att-value="student_name" required="required" autocomplete="off"
+                           autofocus="autofocus" placeholder="e.g. 陳大文"/>
+                </div>
+
+                <div class="form-group field-password mb-3">
+                    <label for="password" class="form-label">Parent Phone (Password)</label>
+                    <input type="password" name="password" id="password" class="form-control"
+                           required="required" autocomplete="current-password"/>
+                </div>
+
+                <p class="alert alert-danger" t-if="error">
+                    <t t-esc="error"/>
+                </p>
+
+                <div class="text-center oe_login_buttons d-flex flex-column align-items-stretch mt-3">
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                </div>
+            </form>
+        </t>
+    </template>
+
+</odoo>
