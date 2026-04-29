@@ -50,5 +50,4 @@ class ResPartner(models.Model):
     def _onchange_class_company_id(self):
         for partner in self:
             if partner.class_company_id:
-                partner.company_id = partner.class_company_id
                 partner.parent_id = partner.class_company_id.partner_id

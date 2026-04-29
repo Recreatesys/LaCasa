@@ -44,7 +44,6 @@
             <field name="email">parent.chan001@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
-            <field name="company_id" ref="company_class_1a"/>
             <field name="diet_preference">combo</field>
         </record>
         <record id="student_1a_002" model="res.partner">
@@ -56,7 +55,6 @@
             <field name="email">parent.lee002@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
-            <field name="company_id" ref="company_class_1a"/>
             <field name="diet_preference">vegetarian</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_nuts')])]"/>
         </record>
@@ -69,7 +67,6 @@
             <field name="email">parent.wong003@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
-            <field name="company_id" ref="company_class_1a"/>
             <field name="diet_preference">no_pork</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_seafood')])]"/>
         </record>
@@ -82,7 +79,6 @@
             <field name="email">parent.cheung004@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
-            <field name="company_id" ref="company_class_1a"/>
             <field name="diet_preference">combo</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_dairy'), ref('allergy_eggs')])]"/>
         </record>
@@ -95,7 +91,6 @@
             <field name="email">parent.lau005@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1a"/>
-            <field name="company_id" ref="company_class_1a"/>
             <field name="diet_preference">vegan</field>
         </record>
 
@@ -109,7 +104,6 @@
             <field name="email">parent.ho101@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
-            <field name="company_id" ref="company_class_1b"/>
             <field name="diet_preference">combo</field>
         </record>
         <record id="student_1b_002" model="res.partner">
@@ -121,7 +115,6 @@
             <field name="email">parent.law102@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
-            <field name="company_id" ref="company_class_1b"/>
             <field name="diet_preference">halal</field>
         </record>
         <record id="student_1b_003" model="res.partner">
@@ -133,7 +126,6 @@
             <field name="email">parent.chow103@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
-            <field name="company_id" ref="company_class_1b"/>
             <field name="diet_preference">combo</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_gluten')])]"/>
         </record>
@@ -146,7 +138,6 @@
             <field name="email">parent.leung104@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
-            <field name="company_id" ref="company_class_1b"/>
             <field name="diet_preference">no_beef</field>
         </record>
         <record id="student_1b_005" model="res.partner">
@@ -158,7 +149,6 @@
             <field name="email">parent.chu105@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1b"/>
-            <field name="company_id" ref="company_class_1b"/>
             <field name="diet_preference">combo</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_nuts'), ref('allergy_seafood')])]"/>
         </record>
@@ -173,7 +163,6 @@
             <field name="email">parent.lam201@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
-            <field name="company_id" ref="company_class_1c"/>
             <field name="diet_preference">combo</field>
         </record>
         <record id="student_1c_002" model="res.partner">
@@ -185,7 +174,6 @@
             <field name="email">parent.ng202@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
-            <field name="company_id" ref="company_class_1c"/>
             <field name="diet_preference">vegetarian</field>
         </record>
         <record id="student_1c_003" model="res.partner">
@@ -197,7 +185,6 @@
             <field name="email">parent.tsui203@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
-            <field name="company_id" ref="company_class_1c"/>
             <field name="diet_preference">combo</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_dairy')])]"/>
         </record>
@@ -210,7 +197,6 @@
             <field name="email">parent.ma204@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
-            <field name="company_id" ref="company_class_1c"/>
             <field name="diet_preference">no_pork_no_beef</field>
         </record>
         <record id="student_1c_005" model="res.partner">
@@ -222,7 +208,6 @@
             <field name="email">parent.tsoi205@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_1c"/>
-            <field name="company_id" ref="company_class_1c"/>
             <field name="diet_preference">combo</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_eggs')])]"/>
         </record>
@@ -237,7 +222,6 @@
             <field name="email">parent.cheng301@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
-            <field name="company_id" ref="company_class_2a"/>
             <field name="diet_preference">combo</field>
         </record>
         <record id="student_2a_002" model="res.partner">
@@ -249,7 +233,6 @@
             <field name="email">parent.tsang302@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
-            <field name="company_id" ref="company_class_2a"/>
             <field name="diet_preference">vegan</field>
         </record>
         <record id="student_2a_003" model="res.partner">
@@ -261,7 +244,6 @@
             <field name="email">parent.ko303@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
-            <field name="company_id" ref="company_class_2a"/>
             <field name="diet_preference">combo</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_nuts')])]"/>
         </record>
@@ -274,7 +256,6 @@
             <field name="email">parent.kwan304@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
-            <field name="company_id" ref="company_class_2a"/>
             <field name="diet_preference">others</field>
         </record>
         <record id="student_2a_005" model="res.partner">
@@ -286,7 +267,6 @@
             <field name="email">parent.yeung305@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2a"/>
-            <field name="company_id" ref="company_class_2a"/>
             <field name="diet_preference">combo</field>
         </record>
 
@@ -300,7 +280,6 @@
             <field name="email">parent.tam401@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
-            <field name="company_id" ref="company_class_2b"/>
             <field name="diet_preference">vegetarian</field>
         </record>
         <record id="student_2b_002" model="res.partner">
@@ -312,7 +291,6 @@
             <field name="email">parent.szeto402@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
-            <field name="company_id" ref="company_class_2b"/>
             <field name="diet_preference">combo</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_seafood'), ref('allergy_dairy')])]"/>
         </record>
@@ -325,7 +303,6 @@
             <field name="email">parent.shek403@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
-            <field name="company_id" ref="company_class_2b"/>
             <field name="diet_preference">no_pork</field>
         </record>
         <record id="student_2b_004" model="res.partner">
@@ -337,7 +314,6 @@
             <field name="email">parent.hui404@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
-            <field name="company_id" ref="company_class_2b"/>
             <field name="diet_preference">combo</field>
         </record>
         <record id="student_2b_005" model="res.partner">
@@ -349,7 +325,6 @@
             <field name="email">parent.koo405@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2b"/>
-            <field name="company_id" ref="company_class_2b"/>
             <field name="diet_preference">halal</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_gluten')])]"/>
         </record>
@@ -364,7 +339,6 @@
             <field name="email">parent.hon501@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>
-            <field name="company_id" ref="company_class_2c"/>
             <field name="diet_preference">combo</field>
         </record>
         <record id="student_2c_002" model="res.partner">
@@ -376,7 +350,6 @@
             <field name="email">parent.mak502@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>
-            <field name="company_id" ref="company_class_2c"/>
             <field name="diet_preference">vegan</field>
         </record>
         <record id="student_2c_003" model="res.partner">
@@ -388,7 +361,6 @@
             <field name="email">parent.yuen503@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>
-            <field name="company_id" ref="company_class_2c"/>
             <field name="diet_preference">no_beef</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_dairy')])]"/>
         </record>
@@ -401,7 +373,6 @@
             <field name="email">parent.so504@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>
-            <field name="company_id" ref="company_class_2c"/>
             <field name="diet_preference">combo</field>
         </record>
         <record id="student_2c_005" model="res.partner">
@@ -413,7 +384,6 @@
             <field name="email">parent.yuen505@example.com</field>
             <field name="is_student">True</field>
             <field name="class_company_id" ref="company_class_2c"/>
-            <field name="company_id" ref="company_class_2c"/>
             <field name="diet_preference">combo</field>
             <field name="allergy_ids" eval="[(6, 0, [ref('allergy_nuts'), ref('allergy_eggs')])]"/>
         </record>
