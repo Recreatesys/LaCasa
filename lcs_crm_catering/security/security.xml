@@ -4,7 +4,6 @@
 
         <record id="group_kitchen_user" model="res.groups">
             <field name="name">Kitchen</field>
-            <field name="category_id" ref="base.module_category_operations"/>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
             <field name="comment">Kitchen staff: read-only access to CRM opportunities at "High Chance" and "Won" stages only.</field>
         </record>
