@@ -1,5 +1,5 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 SIZE_KEYS = ['per_piece', 'pn_1_1', 'pn_1_2', 's_tray', 'm_tray', 'l_tray', 'xl_tray']
 SIZE_LABELS = {
@@ -51,6 +51,28 @@ class CateringSet(models.Model):
     ratio_tier_ids = fields.One2many(
         'lcs.catering.set.ratio.tier', 'set_id', string='Kitchen Ratio Tiers',
     )
+
+    def action_add_to_active_order(self):
+        """Add this set's product to the SO indicated by context['active_order_id']."""
+        self.ensure_one()
+        order_id = self.env.context.get('active_order_id')
+        if not order_id:
+            raise UserError(_('No active quotation in context.'))
+        if not self.product_id:
+            raise UserError(_(
+                'The set "%s" has no product configured.'
+            ) % self.name)
+        product = self.product_id.product_variant_id
+        if not product:
+            raise UserError(_(
+                'The set product "%s" has no variant available.'
+            ) % self.product_id.display_name)
+        self.env['sale.order.line'].create({
+            'order_id': order_id,
+            'product_id': product.id,
+            'product_uom_qty': 1,
+        })
+        return {'type': 'ir.actions.act_window_close'}
 
     def get_ratio_tier(self, guest_count, category_id):
         """Find the matching ratio tier for a guest count and dish category.

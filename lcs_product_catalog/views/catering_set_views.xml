@@ -100,6 +100,25 @@
         </field>
     </record>
 
+    <!-- ==================== SET PICKER LIST VIEW (modal) ==================== -->
+    <record id="lcs_catering_set_picker_view_list" model="ir.ui.view">
+        <field name="name">lcs.catering.set.picker.list</field>
+        <field name="model">lcs.catering.set</field>
+        <field name="arch" type="xml">
+            <list string="Pick a Catering Set" create="false" edit="false" delete="false">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="recommendation"/>
+                <button name="action_add_to_active_order"
+                        type="object"
+                        string="Add to Quotation"
+                        class="btn-primary"
+                        icon="fa-plus"/>
+            </list>
+        </field>
+    </record>
+
     <!-- ==================== ACTION ==================== -->
     <record id="lcs_catering_set_action" model="ir.actions.act_window">
         <field name="name">Catering Sets</field>

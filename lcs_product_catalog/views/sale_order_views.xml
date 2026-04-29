@@ -6,8 +6,14 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- Add Expand Sets and Reload Sets buttons -->
+            <!-- Add a Set / Expand Sets / Reload Sets buttons -->
             <xpath expr="//field[@name='order_line']" position="before">
+                <button name="action_open_set_picker"
+                        string="Add a Set"
+                        type="object"
+                        class="btn-primary mb-2 me-2"
+                        icon="fa-plus-circle"
+                        invisible="state != 'draft'"/>
                 <button name="action_expand_sets"
                         string="Expand Sets"
                         type="object"

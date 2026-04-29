@@ -121,6 +121,25 @@ class SaleOrder(models.Model):
                     'product_uom_qty': selected[key] if line.is_addon_piece else line.product_uom_qty,
                 })
 
+    def action_open_set_picker(self):
+        """Open a popup listing all active catering sets so the user can pick one."""
+        self.ensure_one()
+        return {
+            'name': _('Pick a Catering Set'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'lcs.catering.set',
+            'view_mode': 'list',
+            'view_id': self.env.ref(
+                'lcs_product_catalog.lcs_catering_set_picker_view_list'
+            ).id,
+            'target': 'new',
+            'domain': [('active', '=', True)],
+            'context': {
+                'active_order_id': self.id,
+                'create': False,
+            },
+        }
+
     def action_expand_sets(self):
         """Expand all set products in the SO into individual dish lines."""
         self.ensure_one()
