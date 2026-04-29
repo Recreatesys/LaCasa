@@ -3,6 +3,6 @@ access_crm_lead_kitchen,crm.lead.kitchen,crm.model_crm_lead,lcs_crm_catering.gro
 access_crm_stage_kitchen,crm.stage.kitchen,crm.model_crm_stage,lcs_crm_catering.group_kitchen_user,1,0,0,0
 access_crm_team_kitchen,crm.team.kitchen,sales_team.model_crm_team,lcs_crm_catering.group_kitchen_user,1,0,0,0
 access_crm_team_member_kitchen,crm.team.member.kitchen,sales_team.model_crm_team_member,lcs_crm_catering.group_kitchen_user,1,0,0,0
-access_crm_tag_kitchen,crm.tag.kitchen,crm.model_crm_tag,lcs_crm_catering.group_kitchen_user,1,0,0,0
+access_crm_tag_kitchen,crm.tag.kitchen,sales_team.model_crm_tag,lcs_crm_catering.group_kitchen_user,1,0,0,0
 access_crm_lost_reason_kitchen,crm.lost.reason.kitchen,crm.model_crm_lost_reason,lcs_crm_catering.group_kitchen_user,1,0,0,0
 access_res_partner_kitchen,res.partner.kitchen,base.model_res_partner,lcs_crm_catering.group_kitchen_user,1,0,0,0
