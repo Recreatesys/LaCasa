@@ -5,6 +5,7 @@ from odoo.addons.lcs_crm_catering.models.crm_lead import (
     SERVICE_FORMAT_SELECTION,
     SERVICE_TYPE_SELECTION,
 )
+from odoo.addons.lcs_crm_catering.models.sale_order import CALL_VAN_SELECTION
 
 PAYMENT_STATUS_SELECTION = [
     ('unpaid', 'Unpaid'),
@@ -52,6 +53,13 @@ class EventOrder(models.Model):
     guest_count = fields.Integer(string='No. of Guest')
     event_remark = fields.Text(string='Remark')
     delivery_time = fields.Float(string='Delivery Time')
+    call_van = fields.Selection(
+        CALL_VAN_SELECTION,
+        string='Call Van',
+        related='sale_order_id.call_van',
+        store=True,
+        readonly=False,
+    )
 
     # EO Lines (kitchen product lines)
     line_ids = fields.One2many(

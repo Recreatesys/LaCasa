@@ -150,6 +150,15 @@ class SaleOrder(models.Model):
                 vals['name'] = seq_value
         return super().create(vals_list)
 
+    def write(self, vals):
+        res = super().write(vals)
+        if 'call_van' in vals and not self.env.context.get('skip_call_van_sync'):
+            for so in self:
+                invs = so.invoice_ids.filtered(lambda i: i.state != 'cancel' and i.call_van != vals['call_van'])
+                if invs:
+                    invs.with_context(skip_call_van_sync=True).write({'call_van': vals['call_van']})
+        return res
+
     @api.onchange('partner_id')
     def _onchange_partner_id_attention(self):
         """Default attention_to_id based on partner type."""

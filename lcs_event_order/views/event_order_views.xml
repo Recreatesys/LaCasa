@@ -46,6 +46,7 @@
                             <field name="service_type"/>
                             <field name="delivery_type"/>
                             <field name="guest_count"/>
+                            <field name="call_van"/>
                         </group>
                     </group>
                     <group string="Delivery Address">

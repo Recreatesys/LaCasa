@@ -38,3 +38,13 @@ class AccountMove(models.Model):
     is_wedding = fields.Boolean(
         string='Wedding-related',
     )
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'call_van' in vals and not self.env.context.get('skip_call_van_sync'):
+            for inv in self:
+                sos = inv.line_ids.sale_line_ids.order_id
+                sos = sos.filtered(lambda s: s.call_van != vals['call_van'])
+                if sos:
+                    sos.with_context(skip_call_van_sync=True).write({'call_van': vals['call_van']})
+        return res
