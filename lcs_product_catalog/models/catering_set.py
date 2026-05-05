@@ -28,6 +28,12 @@ class CateringSet(models.Model):
     )
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
+    min_guest_count = fields.Integer(
+        string='Min Guest Count', default=0,
+        help='Minimum order size. When set, qty/unit calculations use '
+             'max(guest_count, min_guest_count) — the customer can buy for '
+             'fewer guests but the set is sized for the minimum.',
+    )
     description = fields.Text(string='Description')
     recommendation = fields.Text(
         string='Recommended Selection',
@@ -243,20 +249,61 @@ class CateringSetRatioTier(models.Model):
     )
     min_guests = fields.Integer(string='Min Guests', required=True)
     max_guests = fields.Integer(string='Max Guests', default=0)
+
+    tier_mode = fields.Selection([
+        ('ratio', 'Ratio (qty = ceil(guests / ratio))'),
+        ('fixed', 'Fixed Quantity (per bracket)'),
+        ('formula', 'Formula (qty = ceil(guests × per_pax_qty); EO = qty + extra)'),
+    ], string='Tier Mode', default='ratio', required=True)
+
     invoice_unit = fields.Char(
         string='SO/Invoice Unit',
-        help='Unit shown on quotation/invoice, e.g. "1/2 GN tray", "pcs"',
+        help='Unit shown on quotation/invoice, e.g. "1/2 GN tray", "pcs", "lb"',
     )
     kitchen_unit = fields.Char(
         string='EO Unit',
-        help='Unit shown on Event Order for kitchen, e.g. "lb", "pcs"',
+        help='Unit shown on Event Order for kitchen, e.g. "1/2 GN tray", "L"',
     )
+
+    # Ratio mode
     ratio = fields.Float(
         string='Guests per Invoice Unit', default=1.0,
-        help='Number of guests served by 1 invoice unit. E.g. 16 means 1 tray per 16 pax.',
+        help='Number of guests served by 1 invoice unit. Used in ratio mode.',
     )
     conversion_factor = fields.Float(
         string='EO per Invoice Unit', default=1.0,
-        help='How many EO units per 1 invoice unit. E.g. 3.0 means 1 tray = 3 lb.',
+        help='How many EO units per 1 invoice unit. Used in ratio mode.',
     )
+
+    # Fixed mode (explicit qty per bracket)
+    invoice_qty = fields.Float(
+        string='Invoice Qty', default=0,
+        help='Fixed invoice qty for this guest bracket. Used in fixed mode.',
+    )
+    kitchen_qty = fields.Float(
+        string='Kitchen Qty', default=0,
+        help='Fixed EO/kitchen qty for this guest bracket. Used in fixed mode.',
+    )
+
+    # Formula mode (per-pax with optional EO offset)
+    per_pax_qty = fields.Float(
+        string='Per-Pax Qty', default=0,
+        help='Per-guest quantity used in formula mode. E.g. 0.25 for 0.25 L per pax.',
+    )
+    eo_extra_qty = fields.Float(
+        string='EO Extra Qty', default=0,
+        help='Extra qty added to invoice qty for the EO. E.g. 0.5 for soup (kitchen preps an extra 0.5 L).',
+    )
+
+    # Secondary unit (appended to invoice/SO line description, NOT to EO)
+    secondary_qty_per_pax = fields.Float(
+        string='Secondary Qty per Pax', default=0,
+        help='If set, append "(N <unit>)" to the SO/invoice line description. '
+             'E.g. 1 with unit "bowls" → "(50 bowls)" for 50 guests.',
+    )
+    secondary_unit = fields.Char(
+        string='Secondary Unit',
+        help='Label for the secondary qty, e.g. "bowls".',
+    )
+
     notes = fields.Char(string='Notes')

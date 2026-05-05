@@ -164,6 +164,11 @@ class SaleOrder(models.Model):
             if existing:
                 continue
 
+            # Effective guest count honours per-set minimum.
+            effective_guests = max(
+                catering_set.min_guest_count or 0, guest_count or 0
+            )
+
             # Show recommendation as a note line
             if catering_set.recommendation:
                 self.env['sale.order.line'].create({
@@ -193,7 +198,7 @@ class SaleOrder(models.Model):
 
                 # Determine auto-size based on guest count
                 size_key = self._resolve_size(
-                    catering_set, set_line, guest_count
+                    catering_set, set_line, effective_guests
                 )
                 price, actual_size = set_line.get_price_for_size(size_key)
                 size_label = SIZE_LABELS.get(actual_size, actual_size)
@@ -205,30 +210,55 @@ class SaleOrder(models.Model):
 
                 # Qty: if per piece, default to guest count
                 qty = set_line.qty or 1
-                if actual_size == 'per_piece' and guest_count:
-                    qty = guest_count
+                if actual_size == 'per_piece' and effective_guests:
+                    qty = effective_guests
 
                 # Look up ratio tier for SO/EO unit conversion
                 eo_qty = set_line.eo_qty
                 eo_unit = set_line.eo_unit
                 category_id = product_variant.categ_id.id
                 ratio_tier = catering_set.get_ratio_tier(
-                    guest_count, category_id
-                ) if guest_count else False
+                    effective_guests, category_id
+                ) if effective_guests else False
 
-                if ratio_tier and ratio_tier.invoice_unit:
-                    # Calculate SO qty from ratio tier
+                if ratio_tier:
                     import math
-                    if ratio_tier.ratio and ratio_tier.ratio > 0:
-                        tray_count = math.ceil(
-                            guest_count / ratio_tier.ratio
+                    mode = ratio_tier.tier_mode or 'ratio'
+                    if mode == 'fixed' and ratio_tier.invoice_qty:
+                        # Explicit qty per bracket
+                        qty = ratio_tier.invoice_qty
+                        size_label = ratio_tier.invoice_unit or size_label
+                        eo_qty = ratio_tier.kitchen_qty or qty
+                        eo_unit = ratio_tier.kitchen_unit or eo_unit
+                    elif mode == 'formula' and ratio_tier.per_pax_qty:
+                        # Per-pax × guest count, EO adds extra qty
+                        qty = math.ceil(
+                            effective_guests * ratio_tier.per_pax_qty
                         )
-                        qty = tray_count
-                        size_label = ratio_tier.invoice_unit
-                    # Calculate EO qty from conversion factor
-                    if ratio_tier.conversion_factor:
-                        eo_qty = qty * ratio_tier.conversion_factor
-                        eo_unit = ratio_tier.kitchen_unit
+                        size_label = ratio_tier.invoice_unit or size_label
+                        eo_qty = qty + (ratio_tier.eo_extra_qty or 0)
+                        eo_unit = ratio_tier.kitchen_unit or eo_unit
+                    elif ratio_tier.invoice_unit:
+                        # Existing ratio mode (backward compat)
+                        if ratio_tier.ratio and ratio_tier.ratio > 0:
+                            qty = math.ceil(
+                                effective_guests / ratio_tier.ratio
+                            )
+                            size_label = ratio_tier.invoice_unit
+                        if ratio_tier.conversion_factor:
+                            eo_qty = qty * ratio_tier.conversion_factor
+                            eo_unit = ratio_tier.kitchen_unit
+
+                    # Secondary unit appended to invoice/SO description only.
+                    if (ratio_tier.secondary_qty_per_pax
+                            and ratio_tier.secondary_unit):
+                        sec_qty = math.ceil(
+                            effective_guests
+                            * ratio_tier.secondary_qty_per_pax
+                        )
+                        desc = '%s (%s %s)' % (
+                            desc, sec_qty, ratio_tier.secondary_unit,
+                        )
 
                 # Main line (auto-sized, price=0 until selected)
                 self.env['sale.order.line'].create({

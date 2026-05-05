@@ -9,6 +9,22 @@
         <field name="name">A. Salad / Soup</field>
         <field name="parent_id" ref="cat_lcs_dishes"/>
     </record>
+    <record id="cat_soup" model="product.category">
+        <field name="name">A1. Soup</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_whole_chicken" model="product.category">
+        <field name="name">E1. Whole Chicken</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_suckling_pig" model="product.category">
+        <field name="name">E2. Suckling Pig</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
+    <record id="cat_vegetable" model="product.category">
+        <field name="name">F1. Vegetable</field>
+        <field name="parent_id" ref="cat_lcs_dishes"/>
+    </record>
     <record id="cat_appetizer" model="product.category">
         <field name="name">B. Appetizer</field>
         <field name="parent_id" ref="cat_lcs_dishes"/>
@@ -780,7 +796,7 @@
     <record id="dish_093" model="product.template">
         <field name="name">Roasted Chicken with Rosemary Sauce
 原隻燒雞配露絲瑪利汁</field>
-        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="categ_id" ref="cat_whole_chicken"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -855,7 +871,7 @@ L: 1 pc, 1/1 PN: 2.5 pcs</field>
     <record id="dish_102" model="product.template">
         <field name="name">Spanish Suckling Pig
 原隻西班牙乳豬</field>
-        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="categ_id" ref="cat_suckling_pig"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -1055,7 +1071,7 @@ L: 1 pc, 1/1 PN: 2.5 pcs</field>
     <record id="dish_127" model="product.template">
         <field name="name">Grilled Mixed Vegetables (Broccoli, Cauliflower, Eggplant, Zucchini, Bell Pepper, Cherry Tomato) (V)
 意式扒雜菜(西蘭花、椰菜花 、茄子、意瓜、甜椒及車厘茄) (素)</field>
-        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="categ_id" ref="cat_vegetable"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -1063,7 +1079,7 @@ L: 1 pc, 1/1 PN: 2.5 pcs</field>
     <record id="dish_128" model="product.template">
         <field name="name">Cheesy Vegetable Bake (V)
 芝士焗田園雜菜 (素)</field>
-        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="categ_id" ref="cat_vegetable"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -1071,7 +1087,7 @@ L: 1 pc, 1/1 PN: 2.5 pcs</field>
     <record id="dish_129" model="product.template">
         <field name="name">Shanghai Cabbage in Cream Sauce with Crispy Parma Ham
 奶油津白配意大利風乾火腿</field>
-        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="categ_id" ref="cat_vegetable"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -1079,7 +1095,7 @@ L: 1 pc, 1/1 PN: 2.5 pcs</field>
     <record id="dish_130" model="product.template">
         <field name="name">Grilled Portobello &amp; Mixed Vegetables with Herbs &amp; Garlic (V)
 香草蒜片燒大啡菇及雜菜 (素)</field>
-        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="categ_id" ref="cat_vegetable"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -1087,7 +1103,7 @@ L: 1 pc, 1/1 PN: 2.5 pcs</field>
     <record id="dish_131" model="product.template">
         <field name="name">Sauteed Mushroom &amp; Broccoli with Garlic (V)
 香蒜西蘭花炒野菌 (素)</field>
-        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="categ_id" ref="cat_vegetable"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -1095,7 +1111,7 @@ L: 1 pc, 1/1 PN: 2.5 pcs</field>
     <record id="dish_132" model="product.template">
         <field name="name">Japanese Stir-fried Mixed Vegetables (v)
 日式醬油炒雜菜 (素)</field>
-        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="categ_id" ref="cat_vegetable"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -1111,7 +1127,7 @@ L: 1 pc, 1/1 PN: 2.5 pcs</field>
     <record id="dish_134" model="product.template">
         <field name="name">Poached Vegetable and Bean Curd Sheet in Fish Soup
 鮮魚湯鮮腐竹浸翠苗</field>
-        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="categ_id" ref="cat_vegetable"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -1119,7 +1135,7 @@ L: 1 pc, 1/1 PN: 2.5 pcs</field>
     <record id="dish_135" model="product.template">
         <field name="name">Mushrooms Medley (Winter Melon Braised with Yellow Fungus, Elm Fungus, and Wild Mushrooms (V)
 白玉珍菌 (冬瓜燴黃耳、榆耳及野菌)(素)</field>
-        <field name="categ_id" ref="cat_vegetables_fruits"/>
+        <field name="categ_id" ref="cat_vegetable"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
