@@ -24,7 +24,7 @@
     <record id="dish_cb_03" model="product.template">
         <field name="name">Corn &amp; Fish Maw Thick Soup
 粟米魚肚羮</field>
-        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="categ_id" ref="cat_soup"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -130,7 +130,8 @@
     <record id="set_chinese_buffet" model="lcs.catering.set">
         <field name="name">Corporate Chinese Buffet 中式自助餐</field>
         <field name="product_id" ref="product_chinese_buffet"/>
-        <field name="recommendation">Per-head buffet for 50+ persons. HK$398/person base.
+        <field name="min_guest_count">50</field>
+        <field name="recommendation">Per-head buffet for 50+ persons (minimum order 50 pax). HK$398/person base.
 Pick the "Buffet Package Fee" line first, then choose:
 A. 2 Salad/Appetizer, B. 3 Party Snacks (40 pcs each), C. 3 Main Courses,
 D. 1 Vegetable, E. 2 Rice/Noodles, F. 3 Desserts (30 pcs each).
@@ -195,117 +196,672 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
         <field name="label">F. Dessert — Choose 3 (30 pcs each)</field>
     </record>
 
-    <!-- Kitchen Ratio Tiers (same as Western Buffet — from Buffet Portion Calc) -->
-    <record id="chb_ratio_salad_50" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_salad_soup"/>
-        <field name="min_guests">50</field>
-        <field name="max_guests">64</field>
-        <field name="invoice_unit">1/2 GN tray</field>
-        <field name="kitchen_unit">lb</field>
-        <field name="ratio">16</field>
-        <field name="conversion_factor">3.0</field>
-        <field name="notes">2 trays = 6 lb</field>
-    </record>
-    <record id="chb_ratio_salad_65" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_salad_soup"/>
-        <field name="min_guests">65</field>
-        <field name="max_guests">95</field>
-        <field name="invoice_unit">1/2 GN tray</field>
-        <field name="kitchen_unit">lb</field>
-        <field name="ratio">16</field>
-        <field name="conversion_factor">3.0</field>
-        <field name="notes">3 trays = 9 lb</field>
-    </record>
-    <record id="chb_ratio_salad_96" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_salad_soup"/>
-        <field name="min_guests">96</field>
-        <field name="max_guests">165</field>
-        <field name="invoice_unit">1/2 GN tray</field>
-        <field name="kitchen_unit">lb</field>
-        <field name="ratio">16</field>
-        <field name="conversion_factor">3.0</field>
-        <field name="notes">4-5 trays = 12-15 lb</field>
-    </record>
-    <record id="chb_ratio_snack" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_party_snack"/>
-        <field name="min_guests">50</field>
-        <field name="max_guests">0</field>
-        <field name="invoice_unit">pcs</field>
-        <field name="kitchen_unit">pcs</field>
-        <field name="ratio">0.77</field>
-        <field name="conversion_factor">1.0</field>
-        <field name="notes">1.3 pcs per person; 40 pcs per choice for 50 pax</field>
-    </record>
-    <record id="chb_ratio_main_50" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_main_dishes"/>
-        <field name="min_guests">50</field>
-        <field name="max_guests">99</field>
-        <field name="invoice_unit">1/2 GN tray</field>
-        <field name="kitchen_unit">lb</field>
-        <field name="ratio">25</field>
-        <field name="conversion_factor">5.0</field>
-        <field name="notes">1 tray per 25 pax = 5 lb</field>
-    </record>
-    <record id="chb_ratio_main_100" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_main_dishes"/>
-        <field name="min_guests">100</field>
-        <field name="max_guests">149</field>
-        <field name="invoice_unit">1/2 GN tray</field>
-        <field name="kitchen_unit">lb</field>
-        <field name="ratio">28</field>
-        <field name="conversion_factor">5.0</field>
-        <field name="notes">Deduct 10% at 100+ pax</field>
-    </record>
-    <record id="chb_ratio_main_150" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_main_dishes"/>
-        <field name="min_guests">150</field>
-        <field name="max_guests">0</field>
-        <field name="invoice_unit">1/2 GN tray</field>
-        <field name="kitchen_unit">lb</field>
-        <field name="ratio">29</field>
-        <field name="conversion_factor">5.0</field>
-        <field name="notes">Deduct 15% at 150+ pax</field>
-    </record>
-    <record id="chb_ratio_veg" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_vegetables_fruits"/>
-        <field name="min_guests">50</field>
-        <field name="max_guests">0</field>
-        <field name="invoice_unit">1/2 GN tray</field>
-        <field name="kitchen_unit">lb</field>
-        <field name="ratio">32</field>
-        <field name="conversion_factor">4.0</field>
-        <field name="notes">1 tray per 32 pax = 4 lb</field>
-    </record>
-    <record id="chb_ratio_starch" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_rice_pasta"/>
-        <field name="min_guests">50</field>
-        <field name="max_guests">0</field>
-        <field name="invoice_unit">1/2 GN tray</field>
-        <field name="kitchen_unit">lb</field>
-        <field name="ratio">16</field>
-        <field name="conversion_factor">5.0</field>
-        <field name="notes">1 tray per 16 pax = 5 lb</field>
-    </record>
-    <record id="chb_ratio_dessert" model="lcs.catering.set.ratio.tier">
-        <field name="set_id" ref="set_chinese_buffet"/>
-        <field name="category_id" ref="cat_dessert"/>
-        <field name="min_guests">50</field>
-        <field name="max_guests">0</field>
-        <field name="invoice_unit">pcs</field>
-        <field name="kitchen_unit">pcs</field>
-        <field name="ratio">1.67</field>
-        <field name="conversion_factor">1.0</field>
-        <field name="notes">0.6 pcs per person per item; 30 pcs for 50 pax</field>
-    </record>
+    <!-- Kitchen Ratio Tiers — 2025 portion spec (mirrors Western Buffet) -->
+    <record id="chb_tier_salad_50_64" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_salad_soup" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">64</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">6</field>
+            <field name="kitchen_qty">2</field>
+        </record>
+    <record id="chb_tier_salad_65_95" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_salad_soup" />
+            <field name="min_guests">65</field>
+            <field name="max_guests">95</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">9</field>
+            <field name="kitchen_qty">3</field>
+        </record>
+    <record id="chb_tier_salad_96_130" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_salad_soup" />
+            <field name="min_guests">96</field>
+            <field name="max_guests">130</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">12</field>
+            <field name="kitchen_qty">4</field>
+        </record>
+    <record id="chb_tier_salad_131_165" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_salad_soup" />
+            <field name="min_guests">131</field>
+            <field name="max_guests">165</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">15</field>
+            <field name="kitchen_qty">5</field>
+        </record>
+    <record id="chb_tier_salad_166_198" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_salad_soup" />
+            <field name="min_guests">166</field>
+            <field name="max_guests">198</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">18</field>
+            <field name="kitchen_qty">6</field>
+        </record>
+    <record id="chb_tier_salad_199_231" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_salad_soup" />
+            <field name="min_guests">199</field>
+            <field name="max_guests">231</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">21</field>
+            <field name="kitchen_qty">7</field>
+        </record>
+    <record id="chb_tier_salad_232_264" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_salad_soup" />
+            <field name="min_guests">232</field>
+            <field name="max_guests">264</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">24</field>
+            <field name="kitchen_qty">8</field>
+        </record>
+    <record id="chb_tier_salad_265_297" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_salad_soup" />
+            <field name="min_guests">265</field>
+            <field name="max_guests">297</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">27</field>
+            <field name="kitchen_qty">9</field>
+        </record>
+    <record id="chb_tier_salad_298_330" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_salad_soup" />
+            <field name="min_guests">298</field>
+            <field name="max_guests">330</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">30</field>
+            <field name="kitchen_qty">10</field>
+        </record>
+    <record id="chb_tier_soup" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_soup" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">0</field>
+            <field name="tier_mode">formula</field>
+            <field name="invoice_unit">L</field>
+            <field name="kitchen_unit">L</field>
+            <field name="per_pax_qty">0.25</field>
+            <field name="eo_extra_qty">0.5</field>
+            <field name="secondary_qty_per_pax">1</field>
+            <field name="secondary_unit">bowls</field>
+            <field name="notes">0.25 L/pax rounded up. Kitchen +0.5 L. Bowls = pax (invoice description only).</field>
+        </record>
+    <record id="chb_tier_snack_50_99" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_party_snack" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">99</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">pcs (approx.)</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="invoice_qty">65</field>
+            <field name="kitchen_qty">75</field>
+        </record>
+    <record id="chb_tier_snack_100_149" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_party_snack" />
+            <field name="min_guests">100</field>
+            <field name="max_guests">149</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">pcs (approx.)</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="invoice_qty">130</field>
+            <field name="kitchen_qty">140</field>
+        </record>
+    <record id="chb_tier_snack_150_plus" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_party_snack" />
+            <field name="min_guests">150</field>
+            <field name="max_guests">0</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">pcs</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="invoice_qty">195</field>
+            <field name="kitchen_qty">195</field>
+        </record>
+    <record id="chb_tier_appetizer_50_64" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_appetizer" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">64</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">6</field>
+            <field name="kitchen_qty">2</field>
+        </record>
+    <record id="chb_tier_appetizer_65_95" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_appetizer" />
+            <field name="min_guests">65</field>
+            <field name="max_guests">95</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">9</field>
+            <field name="kitchen_qty">3</field>
+        </record>
+    <record id="chb_tier_appetizer_96_130" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_appetizer" />
+            <field name="min_guests">96</field>
+            <field name="max_guests">130</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">12</field>
+            <field name="kitchen_qty">4</field>
+        </record>
+    <record id="chb_tier_appetizer_131_165" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_appetizer" />
+            <field name="min_guests">131</field>
+            <field name="max_guests">165</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">15</field>
+            <field name="kitchen_qty">5</field>
+        </record>
+    <record id="chb_tier_appetizer_166_198" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_appetizer" />
+            <field name="min_guests">166</field>
+            <field name="max_guests">198</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">18</field>
+            <field name="kitchen_qty">6</field>
+        </record>
+    <record id="chb_tier_appetizer_199_231" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_appetizer" />
+            <field name="min_guests">199</field>
+            <field name="max_guests">231</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">21</field>
+            <field name="kitchen_qty">7</field>
+        </record>
+    <record id="chb_tier_appetizer_232_264" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_appetizer" />
+            <field name="min_guests">232</field>
+            <field name="max_guests">264</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">24</field>
+            <field name="kitchen_qty">8</field>
+        </record>
+    <record id="chb_tier_appetizer_265_297" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_appetizer" />
+            <field name="min_guests">265</field>
+            <field name="max_guests">297</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">27</field>
+            <field name="kitchen_qty">9</field>
+        </record>
+    <record id="chb_tier_appetizer_298_330" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_appetizer" />
+            <field name="min_guests">298</field>
+            <field name="max_guests">330</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">30</field>
+            <field name="kitchen_qty">10</field>
+        </record>
+    <record id="chb_tier_canape_50_99" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_canapes" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">99</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">pcs (approx.)</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="invoice_qty">65</field>
+            <field name="kitchen_qty">75</field>
+        </record>
+    <record id="chb_tier_canape_100_149" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_canapes" />
+            <field name="min_guests">100</field>
+            <field name="max_guests">149</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">pcs (approx.)</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="invoice_qty">130</field>
+            <field name="kitchen_qty">140</field>
+        </record>
+    <record id="chb_tier_canape_150_plus" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_canapes" />
+            <field name="min_guests">150</field>
+            <field name="max_guests">0</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">pcs</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="invoice_qty">195</field>
+            <field name="kitchen_qty">195</field>
+        </record>
+    <record id="chb_tier_main_50_99" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_main_dishes" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">99</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">10</field>
+            <field name="kitchen_qty">2</field>
+        </record>
+    <record id="chb_tier_main_100_149" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_main_dishes" />
+            <field name="min_guests">100</field>
+            <field name="max_guests">149</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">20</field>
+            <field name="kitchen_qty">3.6</field>
+        </record>
+    <record id="chb_tier_main_150_plus" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_main_dishes" />
+            <field name="min_guests">150</field>
+            <field name="max_guests">0</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">30</field>
+            <field name="kitchen_qty">5.1</field>
+        </record>
+    <record id="chb_tier_chicken_50_99" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_whole_chicken" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">99</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">pcs</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="invoice_qty">3</field>
+            <field name="kitchen_qty">3.3</field>
+        </record>
+    <record id="chb_tier_chicken_100_149" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_whole_chicken" />
+            <field name="min_guests">100</field>
+            <field name="max_guests">149</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">pcs</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="invoice_qty">6</field>
+            <field name="kitchen_qty">6</field>
+        </record>
+    <record id="chb_tier_chicken_150_plus" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_whole_chicken" />
+            <field name="min_guests">150</field>
+            <field name="max_guests">0</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">pcs</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="invoice_qty">8</field>
+            <field name="kitchen_qty">8.5</field>
+        </record>
+    <record id="chb_tier_suckling_pig" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_suckling_pig" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">0</field>
+            <field name="tier_mode">ratio</field>
+            <field name="invoice_unit">pcs</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="ratio">25</field>
+            <field name="conversion_factor">1.0</field>
+            <field name="notes">~25 pax per suckling pig.</field>
+        </record>
+    <record id="chb_tier_veg_50_64" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetables_fruits" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">64</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">6</field>
+            <field name="kitchen_qty">2</field>
+        </record>
+    <record id="chb_tier_veg_65_95" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetables_fruits" />
+            <field name="min_guests">65</field>
+            <field name="max_guests">95</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">9</field>
+            <field name="kitchen_qty">3</field>
+        </record>
+    <record id="chb_tier_veg_96_130" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetables_fruits" />
+            <field name="min_guests">96</field>
+            <field name="max_guests">130</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">12</field>
+            <field name="kitchen_qty">4</field>
+        </record>
+    <record id="chb_tier_veg_131_165" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetables_fruits" />
+            <field name="min_guests">131</field>
+            <field name="max_guests">165</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">15</field>
+            <field name="kitchen_qty">5</field>
+        </record>
+    <record id="chb_tier_veg_166_198" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetables_fruits" />
+            <field name="min_guests">166</field>
+            <field name="max_guests">198</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">18</field>
+            <field name="kitchen_qty">6</field>
+        </record>
+    <record id="chb_tier_veg_199_231" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetables_fruits" />
+            <field name="min_guests">199</field>
+            <field name="max_guests">231</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">21</field>
+            <field name="kitchen_qty">7</field>
+        </record>
+    <record id="chb_tier_veg_232_264" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetables_fruits" />
+            <field name="min_guests">232</field>
+            <field name="max_guests">264</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">24</field>
+            <field name="kitchen_qty">8</field>
+        </record>
+    <record id="chb_tier_veg_265_297" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetables_fruits" />
+            <field name="min_guests">265</field>
+            <field name="max_guests">297</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">27</field>
+            <field name="kitchen_qty">9</field>
+        </record>
+    <record id="chb_tier_veg_298_330" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetables_fruits" />
+            <field name="min_guests">298</field>
+            <field name="max_guests">330</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">30</field>
+            <field name="kitchen_qty">10</field>
+        </record>
+    <record id="chb_tier_vegetable_50_64" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetable" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">64</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">8</field>
+            <field name="kitchen_qty">2</field>
+        </record>
+    <record id="chb_tier_vegetable_65_95" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetable" />
+            <field name="min_guests">65</field>
+            <field name="max_guests">95</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">12</field>
+            <field name="kitchen_qty">3</field>
+        </record>
+    <record id="chb_tier_vegetable_96_130" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetable" />
+            <field name="min_guests">96</field>
+            <field name="max_guests">130</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">16</field>
+            <field name="kitchen_qty">4</field>
+        </record>
+    <record id="chb_tier_vegetable_131_165" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetable" />
+            <field name="min_guests">131</field>
+            <field name="max_guests">165</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">20</field>
+            <field name="kitchen_qty">5</field>
+        </record>
+    <record id="chb_tier_vegetable_166_198" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetable" />
+            <field name="min_guests">166</field>
+            <field name="max_guests">198</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">24</field>
+            <field name="kitchen_qty">6</field>
+        </record>
+    <record id="chb_tier_vegetable_199_231" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetable" />
+            <field name="min_guests">199</field>
+            <field name="max_guests">231</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">28</field>
+            <field name="kitchen_qty">7</field>
+        </record>
+    <record id="chb_tier_vegetable_232_264" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetable" />
+            <field name="min_guests">232</field>
+            <field name="max_guests">264</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">32</field>
+            <field name="kitchen_qty">8</field>
+        </record>
+    <record id="chb_tier_vegetable_265_297" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetable" />
+            <field name="min_guests">265</field>
+            <field name="max_guests">297</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">36</field>
+            <field name="kitchen_qty">9</field>
+        </record>
+    <record id="chb_tier_vegetable_298_330" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_vegetable" />
+            <field name="min_guests">298</field>
+            <field name="max_guests">330</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">40</field>
+            <field name="kitchen_qty">10</field>
+        </record>
+    <record id="chb_tier_pasta_50_64" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_rice_pasta" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">64</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">10</field>
+            <field name="kitchen_qty">2</field>
+        </record>
+    <record id="chb_tier_pasta_65_95" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_rice_pasta" />
+            <field name="min_guests">65</field>
+            <field name="max_guests">95</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">15</field>
+            <field name="kitchen_qty">3</field>
+        </record>
+    <record id="chb_tier_pasta_96_130" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_rice_pasta" />
+            <field name="min_guests">96</field>
+            <field name="max_guests">130</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">20</field>
+            <field name="kitchen_qty">4</field>
+        </record>
+    <record id="chb_tier_pasta_131_165" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_rice_pasta" />
+            <field name="min_guests">131</field>
+            <field name="max_guests">165</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">25</field>
+            <field name="kitchen_qty">5</field>
+        </record>
+    <record id="chb_tier_pasta_166_198" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_rice_pasta" />
+            <field name="min_guests">166</field>
+            <field name="max_guests">198</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">30</field>
+            <field name="kitchen_qty">6</field>
+        </record>
+    <record id="chb_tier_pasta_199_231" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_rice_pasta" />
+            <field name="min_guests">199</field>
+            <field name="max_guests">231</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">35</field>
+            <field name="kitchen_qty">7</field>
+        </record>
+    <record id="chb_tier_pasta_232_264" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_rice_pasta" />
+            <field name="min_guests">232</field>
+            <field name="max_guests">264</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">40</field>
+            <field name="kitchen_qty">8</field>
+        </record>
+    <record id="chb_tier_pasta_265_297" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_rice_pasta" />
+            <field name="min_guests">265</field>
+            <field name="max_guests">297</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">45</field>
+            <field name="kitchen_qty">9</field>
+        </record>
+    <record id="chb_tier_pasta_298_330" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_rice_pasta" />
+            <field name="min_guests">298</field>
+            <field name="max_guests">330</field>
+            <field name="tier_mode">fixed</field>
+            <field name="invoice_unit">lb</field>
+            <field name="kitchen_unit">1/2 GN tray</field>
+            <field name="invoice_qty">50</field>
+            <field name="kitchen_qty">10</field>
+        </record>
+    <record id="chb_tier_dessert" model="lcs.catering.set.ratio.tier">
+            <field name="set_id" ref="set_chinese_buffet" />
+            <field name="category_id" ref="cat_dessert" />
+            <field name="min_guests">50</field>
+            <field name="max_guests">0</field>
+            <field name="tier_mode">formula</field>
+            <field name="invoice_unit">pcs</field>
+            <field name="kitchen_unit">pcs</field>
+            <field name="per_pax_qty">0.6</field>
+            <field name="eo_extra_qty">0</field>
+            <field name="notes">0.6 pcs per pax (e.g. 30 pcs for 50 pax). Kitchen qty = invoice qty.</field>
+        </record>
 
     <!-- ============================================================ -->
     <!-- SET LINES                                                    -->

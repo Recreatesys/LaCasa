@@ -130,7 +130,7 @@
     <record id="dish_010" model="product.template">
         <field name="name">Assorted Seafood in Dried Scallop Soup
 海皇瑤柱羹</field>
-        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="categ_id" ref="cat_soup"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -138,7 +138,7 @@
     <record id="dish_011" model="product.template">
         <field name="name">Assorted Seafood Soup
 海皇羮</field>
-        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="categ_id" ref="cat_soup"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -154,7 +154,7 @@
     <record id="dish_013" model="product.template">
         <field name="name">Chicken Soup with Conpoy, Conch &amp; Fish Maw
 瑤柱花膠螺肉燉雞湯</field>
-        <field name="categ_id" ref="cat_salad_soup"/>
+        <field name="categ_id" ref="cat_soup"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>
@@ -813,7 +813,7 @@
         <field name="name">Steamed Chicken with Ginger and Scallion
 薑蔥霸皇雞
 L: 1 pc, 1/1 PN: 2.5 pcs</field>
-        <field name="categ_id" ref="cat_main_dishes"/>
+        <field name="categ_id" ref="cat_whole_chicken"/>
         <field name="type">consu</field>
         <field name="sale_ok" eval="True"/>
         <field name="purchase_ok" eval="False"/>

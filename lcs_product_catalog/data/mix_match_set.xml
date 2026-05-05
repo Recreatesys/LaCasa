@@ -72,19 +72,13 @@
         <field name="max_guests">0</field>
         <field name="size">xl_tray</field>
     </record>
+    <!-- Canapes / Sweet Canapes / Dessert / Party Snack: always 1 pc per guest, no tray fallback -->
     <record id="size_rule_mm_9" model="lcs.catering.set.size.rule">
         <field name="set_id" ref="set_mix_match"/>
         <field name="size_group">canapes</field>
         <field name="min_guests">1</field>
-        <field name="max_guests">19</field>
-        <field name="size">per_piece</field>
-    </record>
-    <record id="size_rule_mm_10" model="lcs.catering.set.size.rule">
-        <field name="set_id" ref="set_mix_match"/>
-        <field name="size_group">canapes</field>
-        <field name="min_guests">20</field>
         <field name="max_guests">0</field>
-        <field name="size">l_tray</field>
+        <field name="size">per_piece</field>
     </record>
 
     <record id="mm_line_001" model="lcs.catering.set.line">
