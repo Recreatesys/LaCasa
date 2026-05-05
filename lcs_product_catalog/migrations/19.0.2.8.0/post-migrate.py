@@ -58,8 +58,8 @@ def migrate(cr, version):
                 (cat_id, tmpl_ids),
             )
 
-    # Set min_guest_count=50 on Chinese Buffet (CB's set record is
-    # noupdate=1 so XML changes don't apply).
+    # Set min_guest_count=50 on Western & Chinese Buffet (set records
+    # are noupdate=1 so XML field changes don't apply on upgrade).
     cr.execute(
         """
         UPDATE lcs_catering_set
@@ -68,7 +68,7 @@ def migrate(cr, version):
             SELECT res_id FROM ir_model_data
             WHERE module = 'lcs_product_catalog'
               AND model = 'lcs.catering.set'
-              AND name = 'set_chinese_buffet'
+              AND name IN ('set_western_buffet', 'set_chinese_buffet')
         )
         """
     )
