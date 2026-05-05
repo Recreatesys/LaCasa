@@ -33,6 +33,7 @@
                         <field name="no_logo"/>
                         <field name="is_wedding"
                                invisible="service_type != 'food_tasting'"/>
+                        <field name="hide_prices_on_quote"/>
                         <field name="so_prefix_preview" readonly="1"/>
                     </group>
                 </group>

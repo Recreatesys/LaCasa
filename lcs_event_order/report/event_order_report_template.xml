@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- LCS Event Order (Kitchen) Report                             -->
+    <!-- Internal kitchen-facing — no prices                          -->
+    <!-- ============================================================ -->
+    <template id="report_event_order_lcs_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="lcs_event_order.report_event_order_lcs_page"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_event_order_lcs_page">
+        <t t-call="web.basic_layout">
+            <t t-set="o" t-value="o"/>
+            <div class="page" style="font-family: Arial, sans-serif; font-size: 12px;">
+
+                <!-- Company Header -->
+                <div style="margin-bottom: 15px;">
+                    <img t-if="o.sale_order_id.company_id.logo"
+                         t-att-src="image_data_uri(o.sale_order_id.company_id.logo)"
+                         style="max-height: 50px;" alt="Logo"/>
+                </div>
+
+                <!-- Title -->
+                <table style="width: 100%; margin-bottom: 15px;">
+                    <tr>
+                        <td>
+                            <h1 style="font-size: 22px; font-weight: bold; margin: 0;">Event Order</h1>
+                            <span style="color: #666; font-size: 11px;">Kitchen Document — Internal Use</span>
+                        </td>
+                        <td style="text-align: right; vertical-align: top;">
+                            <strong>EO No.:</strong> <span t-field="o.name"/><br/>
+                            <strong>Version:</strong> v<span t-field="o.version"/>
+                            <t t-if="o.has_unacknowledged_change">
+                                <span style="color: #c00; font-weight: bold;"> ⚠ Unacknowledged change</span>
+                            </t>
+                            <br/>
+                            <strong>SO Ref:</strong> <span t-field="o.sale_order_id.name"/>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Event Block -->
+                <table style="width: 100%; border: 1px solid #999; border-collapse: collapse; margin-bottom: 15px;">
+                    <tr>
+                        <td style="width: 50%; padding: 8px; vertical-align: top; border-right: 1px solid #999;">
+                            <strong>Customer:</strong><br/>
+                            <span t-field="o.partner_id.name" style="font-size: 13px;"/><br/>
+                            <t t-if="o.sale_order_id.attention_to_id">
+                                Attn: <span t-field="o.sale_order_id.attention_to_id.name"/><br/>
+                                <t t-if="o.sale_order_id.attention_to_id.phone">
+                                    Phone: <span t-field="o.sale_order_id.attention_to_id.phone"/>
+                                </t>
+                            </t>
+                        </td>
+                        <td style="width: 50%; padding: 8px; vertical-align: top;">
+                            <strong>Event Date:</strong>
+                            <t t-if="o.event_date">
+                                <span t-field="o.event_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
+                            </t>
+                            <br/>
+                            <strong>Delivery Time:</strong>
+                            <t t-if="o.delivery_time">
+                                <span t-field="o.delivery_time" widget="float_time"/>
+                            </t>
+                            <br/>
+                            <strong>Address:</strong>
+                            <t t-if="o.event_street">
+                                <span t-field="o.event_street"/>
+                                <t t-if="o.event_street2">, <span t-field="o.event_street2"/></t>
+                            </t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 8px; border-top: 1px solid #999;">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td><strong>Brand:</strong> <span t-field="o.brand"/></td>
+                                    <td><strong>Service Format:</strong> <span t-field="o.service_format"/></td>
+                                    <td><strong>Service Type:</strong> <span t-field="o.service_type"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Delivery:</strong> <span t-field="o.delivery_type"/></td>
+                                    <td><strong>Guests:</strong> <span t-field="o.guest_count"/></td>
+                                    <td><strong>Call Van:</strong> <span t-field="o.call_van"/></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Remark -->
+                <div t-if="o.event_remark" style="margin-bottom: 15px; padding: 8px; background-color: #fff8dc; border-left: 4px solid #f0c040;">
+                    <strong>Remark:</strong><br/>
+                    <span t-field="o.event_remark"/>
+                </div>
+
+                <!-- Detail Lines (kitchen view — no prices) -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #000; background-color: #f0f0f0;">
+                            <th style="text-align: left; padding: 5px; width: 50%;">Dish</th>
+                            <th style="text-align: right; padding: 5px; width: 12%;">SO Qty</th>
+                            <th style="text-align: right; padding: 5px; width: 12%;">Kitchen Qty</th>
+                            <th style="text-align: left; padding: 5px; width: 12%;">Unit</th>
+                            <th style="text-align: left; padding: 5px; width: 14%;">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o.line_ids" t-as="line">
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <td style="padding: 5px; vertical-align: top;">
+                                    <span t-field="line.description"/>
+                                </td>
+                                <td style="text-align: right; padding: 5px; vertical-align: top;">
+                                    <span t-field="line.so_qty"/>
+                                </td>
+                                <td style="text-align: right; padding: 5px; vertical-align: top; font-weight: bold;">
+                                    <span t-field="line.kitchen_qty"/>
+                                </td>
+                                <td style="padding: 5px; vertical-align: top;">
+                                    <span t-field="line.kitchen_uom"/>
+                                </td>
+                                <td style="padding: 5px; vertical-align: top; color: #666; font-size: 11px;">
+                                    <span t-field="line.note"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- Sign-off Block -->
+                <table style="width: 100%; margin-top: 30px; border-top: 2px solid #000; padding-top: 10px;">
+                    <tr>
+                        <td style="width: 50%; padding: 10px; vertical-align: top;">
+                            <strong>Chef Sign-off:</strong><br/>
+                            <t t-if="o.is_chef_signed_off">
+                                <span style="font-size: 13px;">
+                                    ✓ <span t-field="o.chef_signoff_user_id.name"/>
+                                </span><br/>
+                                <span style="color: #666; font-size: 11px;">
+                                    on <span t-field="o.chef_signoff_date" t-options='{"format": "d/MMM/yyyy HH:mm"}'/>
+                                </span>
+                            </t>
+                            <t t-else="">
+                                <div style="border-bottom: 1px solid #000; width: 80%; margin-top: 30px;">&#160;</div>
+                                <span style="color: #999; font-size: 10px;">Signature / Date</span>
+                            </t>
+                        </td>
+                        <td style="width: 50%; padding: 10px; vertical-align: top;">
+                            <strong>Acknowledgement:</strong><br/>
+                            <t t-if="o.change_acknowledged and o.acknowledged_by">
+                                <span style="font-size: 13px;">
+                                    ✓ <span t-field="o.acknowledged_by.name"/>
+                                </span><br/>
+                                <span style="color: #666; font-size: 11px;">
+                                    on <span t-field="o.acknowledged_date" t-options='{"format": "d/MMM/yyyy HH:mm"}'/>
+                                </span>
+                            </t>
+                            <t t-else="">
+                                <div style="border-bottom: 1px solid #000; width: 80%; margin-top: 30px;">&#160;</div>
+                                <span style="color: #999; font-size: 10px;">Signature / Date</span>
+                            </t>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </t>
+    </template>
+
+    <!-- Register the report action -->
+    <record id="action_report_event_order_lcs" model="ir.actions.report">
+        <field name="name">LCS Event Order</field>
+        <field name="model">lcs.event.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lcs_event_order.report_event_order_lcs_document</field>
+        <field name="report_file">lcs_event_order.report_event_order_lcs_document</field>
+        <field name="binding_model_id" ref="model_lcs_event_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

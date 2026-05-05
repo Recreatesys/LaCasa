@@ -99,6 +99,39 @@ class EventOrder(models.Model):
         store=True,
     )
 
+    # Chef sign-off
+    chef_signoff_user_id = fields.Many2one(
+        'res.users', string='Chef Sign-off', readonly=True, tracking=True,
+    )
+    chef_signoff_date = fields.Datetime(
+        string='Sign-off Date', readonly=True, tracking=True,
+    )
+    is_chef_signed_off = fields.Boolean(
+        string='Chef Signed Off',
+        compute='_compute_is_chef_signed_off', store=True,
+    )
+
+    @api.depends('chef_signoff_user_id')
+    def _compute_is_chef_signed_off(self):
+        for eo in self:
+            eo.is_chef_signed_off = bool(eo.chef_signoff_user_id)
+
+    def action_chef_signoff(self):
+        """Record chef sign-off for this EO."""
+        for eo in self:
+            eo.write({
+                'chef_signoff_user_id': self.env.uid,
+                'chef_signoff_date': fields.Datetime.now(),
+            })
+
+    def action_chef_unsignoff(self):
+        """Clear chef sign-off (e.g. EO needs to be revised)."""
+        for eo in self:
+            eo.write({
+                'chef_signoff_user_id': False,
+                'chef_signoff_date': False,
+            })
+
     @api.depends(
         'sale_order_id.state',
         'sale_order_id.invoice_ids',

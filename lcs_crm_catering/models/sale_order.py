@@ -78,6 +78,11 @@ class SaleOrder(models.Model):
         help='Preview of the SO sequence prefix that will be used at creation '
              '(based on brand + service type + flags). Locked once the order is saved.',
     )
+    hide_prices_on_quote = fields.Boolean(
+        string='Hide Prices on Quotation',
+        help='When ticked, the printed quotation hides per-line prices and totals '
+             '(useful for sending a menu preview before pricing is finalised).',
+    )
 
     # SO-specific fields
     payment_method = fields.Selection(

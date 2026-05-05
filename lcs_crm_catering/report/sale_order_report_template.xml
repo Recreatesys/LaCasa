@@ -2,31 +2,38 @@
 <odoo>
 
     <!-- ============================================================ -->
-    <!-- PAGE 1: Invoice / Quotation Summary                          -->
+    <!-- LCS Quotation Report                                         -->
+    <!-- Page 1: Summary + payment / reschedule terms                 -->
+    <!-- Page 2+: Delivery details + line items                       -->
     <!-- ============================================================ -->
-    <template id="report_invoice_lcs" inherit_id="account.report_invoice_document" primary="True">
+    <template id="report_quotation_lcs" inherit_id="sale.report_saleorder" primary="True">
         <xpath expr="." position="replace">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-set="lang" t-value="o.partner_id.lang"/>
-                    <t t-call="lcs_crm_catering.report_invoice_lcs_document" t-lang="lang"/>
+                    <t t-call="lcs_crm_catering.report_quotation_lcs_document" t-lang="lang"/>
                 </t>
             </t>
         </xpath>
     </template>
 
-    <template id="report_invoice_lcs_document">
+    <template id="report_quotation_lcs_document">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="lcs_crm_catering.report_invoice_lcs_page" t-lang="o.partner_id.lang"/>
+                <t t-call="lcs_crm_catering.report_quotation_lcs_page" t-lang="o.partner_id.lang"/>
             </t>
         </t>
     </template>
 
-    <template id="report_invoice_lcs_page">
+    <template id="report_quotation_lcs_page">
         <t t-call="web.basic_layout">
             <t t-set="o" t-value="o"/>
+            <t t-set="hide_prices" t-value="o.hide_prices_on_quote"/>
             <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
+
+            <!-- ============================================================ -->
+            <!-- PAGE 1: Summary + Terms                                      -->
+            <!-- ============================================================ -->
             <div class="page" style="font-family: Arial, sans-serif; font-size: 12px;">
 
                 <!-- Company Header -->
@@ -37,56 +44,61 @@
                     </div>
                     <div>
                         <span t-field="o.company_id.partner_id.name"/><br/>
-                        <span t-field="o.company_id.partner_id.street"/>
-                        <t t-if="o.company_id.partner_id.street2">, <span t-field="o.company_id.partner_id.street2"/></t><br/>
-                        <t t-if="o.company_id.phone">Tel: <span t-field="o.company_id.phone"/></t><br/>
+                        <t t-if="o.company_id.partner_id.street">
+                            <span t-field="o.company_id.partner_id.street"/>
+                            <t t-if="o.company_id.partner_id.street2">, <span t-field="o.company_id.partner_id.street2"/></t><br/>
+                        </t>
+                        <t t-if="o.company_id.phone">Tel: <span t-field="o.company_id.phone"/></t>
+                        <t t-if="o.company_id.phone and o.company_id.email"> | </t>
                         <t t-if="o.company_id.email">Email: <span t-field="o.company_id.email"/></t>
                     </div>
                 </div>
 
                 <!-- Title -->
                 <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 15px;">
-                    <t t-if="o.move_type == 'out_invoice'">Invoice</t>
-                    <t t-elif="o.move_type == 'out_refund'">Credit Note</t>
-                    <t t-else="">Document</t>
+                    <t t-if="o.state in ('draft', 'sent')">Quotation</t>
+                    <t t-else="">Sales Order</t>
                 </h1>
 
                 <!-- Reference and Dates -->
                 <table style="width: 100%; margin-bottom: 15px;">
                     <tr>
-                        <td style="width: 50%;">
-                            <strong>Ref Number:</strong> <span t-field="o.name"/>
+                        <td style="width: 50%; vertical-align: top;">
+                            <strong>Quote No.:</strong> <span t-field="o.name"/>
                         </td>
-                        <td style="text-align: right;">
-                            <strong>Invoice Date:</strong> <span t-field="o.invoice_date" t-options='{"format": "d/MMM/yyyy"}'/><br/>
-                            <strong>Payment Due Date:</strong> <span t-field="o.invoice_date_due" t-options='{"format": "d/MMM/yyyy"}'/>
+                        <td style="text-align: right; vertical-align: top;">
+                            <strong>Quote Date:</strong>
+                            <span t-field="o.date_order" t-options='{"format": "d/MMM/yyyy"}'/><br/>
+                            <t t-if="o.validity_date">
+                                <strong>Valid Until:</strong>
+                                <span t-field="o.validity_date" t-options='{"format": "d/MMM/yyyy"}'/>
+                            </t>
                         </td>
                     </tr>
                 </table>
 
                 <!-- Customer Info -->
                 <div style="margin-bottom: 15px;">
-                    <span t-field="o.partner_id.name" style="font-size: 14px;"/><br/>
+                    <span t-field="o.partner_id.name" style="font-size: 14px; font-weight: bold;"/><br/>
                     <t t-if="o.partner_id.street"><span t-field="o.partner_id.street"/><br/></t>
                     <t t-if="o.partner_id.street2"><span t-field="o.partner_id.street2"/><br/></t>
                     <t t-if="o.attention_to_id">
                         Attn: <span t-field="o.attention_to_id.name"/><br/>
                     </t>
-                    <!-- Catering service description -->
-                    <t t-if="o.delivery_type or o.event_date">
-                        Catering service on
-                        <t t-if="o.event_date">
-                            <span t-field="o.event_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
+                    <t t-if="o.commitment_date or o.delivery_type">
+                        Catering service
+                        <t t-if="o.commitment_date">on
+                            <span t-field="o.commitment_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
                         </t>
                     </t>
                 </div>
 
-                <!-- Service Summary Table (Page 1) -->
+                <!-- Service Summary Table -->
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
                     <thead>
                         <tr style="border-bottom: 1px solid #000;">
                             <th style="text-align: left; padding: 5px;">Service Description</th>
-                            <th style="text-align: right; padding: 5px;">Amount</th>
+                            <th t-if="not hide_prices" style="text-align: right; padding: 5px; width: 120px;">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,9 +107,15 @@
                                 <t t-if="o.delivery_type">
                                     <span t-field="o.delivery_type"/><br/>
                                 </t>
+                                <t t-if="o.service_type">
+                                    Service Type: <span t-field="o.service_type"/><br/>
+                                </t>
+                                <t t-if="o.guest_count">
+                                    Guest Count: <span t-field="o.guest_count"/><br/>
+                                </t>
                                 <span style="color: #666;">Details please refer to Appendix</span>
                             </td>
-                            <td style="text-align: right; padding: 10px 5px;">
+                            <td t-if="not hide_prices" style="text-align: right; padding: 10px 5px; vertical-align: top;">
                                 HK$<span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": False}'/>
                             </td>
                         </tr>
@@ -124,17 +142,17 @@
                 <div style="margin-bottom: 20px; font-size: 11px;">
                     <strong>Reschedule:</strong><br/>
                     1. More than or equal to 7-day notice*, the catering service can be rescheduled to later dates within 3 months <u>without extra charge</u>;<br/>
-                    2. less than 7-day notice*: 30% of the total invoice amount:<br/>
+                    2. less than 7-day notice*: 30% of the total invoice amount;<br/>
                     3. less than 4-day notice*: 50% of the total invoice amount;<br/>
                     4. less than 2-day notice*: 100% of the total invoice amount.<br/>
                     <br/>
-                    - Food Delivery / catering service will not be provided if Typhoon Signal No. 8 or above or Black Rainstorm Signal is hoisted or under 'extreme condition. The delivery can be resumed within four hours after Typhoon Signal No. 8 or above or black rainstorm warning is lowered, depends on the traffic condition. The delivery can also be rescheduled on next day <u>without extra charge</u> OR later dates within 3 month with extra charge of 50% of the total invoice amount.<br/>
+                    - Food Delivery / catering service will not be provided if Typhoon Signal No. 8 or above or Black Rainstorm Signal is hoisted or under 'extreme condition'. The delivery can be resumed within four hours after Typhoon Signal No. 8 or above or black rainstorm warning is lowered, depends on the traffic condition. The delivery can also be rescheduled on next day <u>without extra charge</u> OR later dates within 3 months with extra charge of 50% of the total invoice amount.<br/>
                     <br/>
                     *Day of notice here refers to working days, that means Mon-Fri, except Sat, Sun &amp; Public Holidays
                 </div>
 
                 <!-- Total -->
-                <table style="width: 100%; margin-bottom: 20px;">
+                <table t-if="not hide_prices" style="width: 100%; margin-bottom: 20px;">
                     <tr>
                         <td style="text-align: right; padding: 5px; border-top: 1px solid #000;">
                             <strong>Total:</strong>
@@ -144,6 +162,10 @@
                         </td>
                     </tr>
                 </table>
+
+                <div t-if="hide_prices" style="margin-bottom: 20px; padding: 8px; border: 1px dashed #999; font-size: 11px; color: #666;">
+                    <em>Pricing not shown on this quotation — please contact us for the final quote.</em>
+                </div>
 
                 <!-- Thank you -->
                 <div style="text-align: center; margin-top: 30px;">
@@ -166,24 +188,24 @@
                 <!-- Delivery Details -->
                 <table style="width: 100%; margin-bottom: 20px;">
                     <tr>
-                        <td style="width: 150px;"><strong>Ref Number:</strong></td>
+                        <td style="width: 150px;"><strong>Quote No.:</strong></td>
                         <td><span t-field="o.name"/></td>
                     </tr>
-                    <tr t-if="o.event_date">
+                    <tr t-if="o.commitment_date">
                         <td><strong>Delivery Date:</strong></td>
                         <td>
-                            <span t-field="o.event_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
+                            <span t-field="o.commitment_date" t-options='{"format": "EEEE, d MMMM yyyy"}'/>
                         </td>
                     </tr>
                     <tr t-if="o.delivery_time">
                         <td><strong>Delivery Time:</strong></td>
                         <td><span t-field="o.delivery_time" widget="float_time"/></td>
                     </tr>
-                    <tr t-if="o.event_street">
+                    <tr t-if="o.partner_shipping_id and o.partner_shipping_id.street">
                         <td><strong>Delivery Address:</strong></td>
                         <td>
-                            <span t-field="o.event_street"/>
-                            <t t-if="o.event_street2">, <span t-field="o.event_street2"/></t>
+                            <span t-field="o.partner_shipping_id.street"/>
+                            <t t-if="o.partner_shipping_id.street2">, <span t-field="o.partner_shipping_id.street2"/></t>
                         </td>
                     </tr>
                     <tr t-if="o.attention_to_id">
@@ -194,6 +216,10 @@
                         <td><strong>Contact Number:</strong></td>
                         <td><span t-field="o.attention_to_id.phone"/></td>
                     </tr>
+                    <tr t-if="o.event_remark">
+                        <td style="vertical-align: top;"><strong>Remark:</strong></td>
+                        <td><span t-field="o.event_remark"/></td>
+                    </tr>
                 </table>
 
                 <!-- Detail Product Lines -->
@@ -201,40 +227,34 @@
                     <thead>
                         <tr style="border-bottom: 1px solid #000;">
                             <th style="text-align: left; padding: 5px;">Dish Name</th>
-                            <th style="text-align: right; padding: 5px;">Unit Price</th>
-                            <th style="text-align: right; padding: 5px;">Qty</th>
-                            <th style="text-align: right; padding: 5px;">Price</th>
+                            <th t-if="not hide_prices" style="text-align: right; padding: 5px; width: 80px;">Unit Price</th>
+                            <th style="text-align: right; padding: 5px; width: 60px;">Qty</th>
+                            <th t-if="not hide_prices" style="text-align: right; padding: 5px; width: 80px;">Price</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Delivery type header row -->
-                        <tr t-if="o.delivery_type" style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 5px; font-weight: bold;">
-                                <span t-field="o.delivery_type"/>
-                            </td>
-                            <td style="text-align: right; padding: 5px;">-</td>
-                            <td style="text-align: right; padding: 5px;">-</td>
-                            <td style="text-align: right; padding: 5px;">-</td>
-                        </tr>
-                        <!-- Product lines -->
-                        <t t-foreach="o.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
+                        <t t-set="visible_lines" t-value="o.order_line.filtered(lambda l: not l.display_type and (not getattr(l, 'is_set_line', False) or l.dish_selected) and not getattr(l, 'is_addon_piece', False))"/>
+                        <t t-foreach="visible_lines" t-as="line">
                             <tr style="border-bottom: 1px solid #eee;">
                                 <td style="padding: 5px;">
                                     <span t-field="line.name"/>
                                 </td>
-                                <td style="text-align: right; padding: 5px;">
+                                <td t-if="not hide_prices" style="text-align: right; padding: 5px;">
                                     HK$<span t-field="line.price_unit"/>
                                 </td>
                                 <td style="text-align: right; padding: 5px;">
-                                    <span t-field="line.quantity"/>
+                                    <span t-field="line.product_uom_qty"/>
+                                    <t t-if="getattr(line, 'set_unit', False)">
+                                        <small style="color: #666;"> <span t-field="line.set_unit"/></small>
+                                    </t>
                                 </td>
-                                <td style="text-align: right; padding: 5px;">
+                                <td t-if="not hide_prices" style="text-align: right; padding: 5px;">
                                     HK$<span t-field="line.price_subtotal"/>
                                 </td>
                             </tr>
                         </t>
                     </tbody>
-                    <tfoot>
+                    <tfoot t-if="not hide_prices">
                         <tr style="border-top: 1px solid #000;">
                             <td colspan="3" style="text-align: right; padding: 5px;"><strong>Total</strong></td>
                             <td style="text-align: right; padding: 5px;">
@@ -245,18 +265,17 @@
                 </table>
 
             </div>
-
         </t>
     </template>
 
     <!-- Register the report action -->
-    <record id="action_report_invoice_lcs" model="ir.actions.report">
-        <field name="name">LCS Invoice</field>
-        <field name="model">account.move</field>
+    <record id="action_report_quotation_lcs" model="ir.actions.report">
+        <field name="name">LCS Quotation</field>
+        <field name="model">sale.order</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">lcs_crm_catering.report_invoice_lcs_document</field>
-        <field name="report_file">lcs_crm_catering.report_invoice_lcs_document</field>
-        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="report_name">lcs_crm_catering.report_quotation_lcs_document</field>
+        <field name="report_file">lcs_crm_catering.report_quotation_lcs_document</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
         <field name="binding_type">report</field>
     </record>
 
