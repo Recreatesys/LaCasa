@@ -36,12 +36,15 @@ class SchoolCalendarEntry(models.Model):
     school_id = fields.Many2one(
         'lcs.school', string='School', required=True, index=True, ondelete='cascade',
     )
-    class_company_id = fields.Many2one(
-        'res.company', string='Class',
+    class_company_ids = fields.Many2many(
+        'res.company',
+        'lcs_school_calendar_entry_class_rel',
+        'entry_id', 'company_id',
+        string='Classes',
         domain="[('school_id', '=', school_id)]",
         help='Leave empty to apply to the whole school. '
+             'Pick one or more classes to make this entry class-specific. '
              'A class-level entry overrides a school-level entry on the same day.',
-        index=True,
     )
     day_type = fields.Selection(
         DAY_TYPE_SELECTION,
@@ -76,8 +79,9 @@ class SchoolCalendarEntry(models.Model):
         """Resolve open/closed status for a given date and class.
 
         Resolution order:
-          1. Class-level calendar entry covering the date (if class_company_id set)
-          2. School-level calendar entry covering the date
+          1. Calendar entry for the date that includes this class in
+             class_company_ids (class-specific override)
+          2. School-wide entry for the date (class_company_ids empty)
           3. Default: weekdays open, Sat/Sun closed
         """
         domain = [
@@ -87,13 +91,13 @@ class SchoolCalendarEntry(models.Model):
         ]
         if class_company_id:
             entry = self.search(
-                domain + [('class_company_id', '=', class_company_id)], limit=1,
+                domain + [('class_company_ids', 'in', [class_company_id])], limit=1,
             )
             if entry:
                 return entry.is_open
 
         entry = self.search(
-            domain + [('class_company_id', '=', False)], limit=1,
+            domain + [('class_company_ids', '=', False)], limit=1,
         )
         if entry:
             return entry.is_open
