@@ -4,17 +4,8 @@ from odoo import _, http
 from odoo.http import request
 
 
-def _render_login_html(classes, class_label, student_name, redirect, error, csrf_token):
+def _render_login_html(email, redirect, error, csrf_token):
     """Render the login page as plain HTML (bypasses website layout)."""
-    options = []
-    for c in classes:
-        full = c.name or ''
-        lbl = full.split('-')[-1].strip() if '-' in full else full
-        sel = ' selected="selected"' if lbl == class_label else ''
-        options.append(
-            f'<option value="{escape(lbl)}"{sel}>{escape(full)}</option>'
-        )
-    options_html = '\n                                    '.join(options)
     error_html = (
         f'<div class="alert alert-danger" role="alert">{escape(error)}</div>'
         if error else ''
@@ -44,23 +35,16 @@ def _render_login_html(classes, class_label, student_name, redirect, error, csrf
                     <input type="hidden" name="redirect" value="{escape(redirect or '')}"/>
 
                     <div class="mb-3">
-                        <label for="class_label" class="form-label">Class</label>
-                        <select name="class_label" id="class_label" class="form-select" required="required">
-                            <option value="">— Select Class —</option>
-                            {options_html}
-                        </select>
+                        <label for="email" class="form-label">School Email</label>
+                        <input type="email" name="email" id="email"
+                               class="form-control" value="{escape(email or '')}"
+                               required="required" autocomplete="username"
+                               autofocus="autofocus"
+                               placeholder="student@school.example.com"/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="student_name" class="form-label">Student Name</label>
-                        <input type="text" name="student_name" id="student_name"
-                               class="form-control" value="{escape(student_name or '')}"
-                               required="required" autocomplete="off"
-                               autofocus="autofocus" placeholder="e.g. 陳大文"/>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Parent Phone (Password)</label>
+                        <label for="password" class="form-label">Phone (Password)</label>
                         <input type="password" name="password" id="password"
                                class="form-control" required="required"
                                autocomplete="current-password"/>
@@ -80,11 +64,10 @@ def _render_login_html(classes, class_label, student_name, redirect, error, csrf
 
 
 class LcsSchoolPortalLogin(http.Controller):
-    """Custom login page for school parents.
+    """Custom login page for school students/parents.
 
     URL: /school/login
-    Form fields: Class (dropdown) + Student Name (text) + Password.
-    Backend authenticates as login = '<class>-<student_name>'.
+    Form fields: School Email + Phone (Password).
     """
 
     @http.route('/school/login', type='http', auth='public', sitemap=False, csrf=True)
@@ -92,29 +75,22 @@ class LcsSchoolPortalLogin(http.Controller):
         if request.session.uid:
             return request.redirect(redirect or '/my')
 
-        classes = request.env['res.company'].sudo().search(
-            [('school_id', '!=', False)], order='name',
-        )
-        class_label = (kw.get('class_label') or '').strip()
-        student_name = (kw.get('student_name') or '').strip()
+        email = (kw.get('email') or '').strip()
         error = None
 
         if request.httprequest.method == 'POST':
             password = (kw.get('password') or '').strip()
-            if not class_label or not student_name or not password:
+            if not email or not password:
                 error = _('Please fill in all fields.')
             else:
-                login = f"{class_label}-{student_name}"
                 try:
-                    credential = {'login': login, 'password': password, 'type': 'password'}
+                    credential = {'login': email, 'password': password, 'type': 'password'}
                     request.session.authenticate(request.env, credential)
                     return request.redirect(redirect or '/my')
                 except Exception:
-                    error = _('Invalid student name, class, or password.')
+                    error = _('Invalid email or password.')
 
-        html = _render_login_html(
-            classes, class_label, student_name, redirect, error, request.csrf_token(),
-        )
+        html = _render_login_html(email, redirect, error, request.csrf_token())
         return request.make_response(
             html, headers=[('Content-Type', 'text/html; charset=utf-8')],
         )

@@ -53,20 +53,49 @@ class ResPartner(models.Model):
         help='Internal portal user account created via "Grant Order Portal".',
     )
 
+    @staticmethod
+    def _normalize_student_phone(value):
+        """Strip whitespace, dashes and HK country code prefix from a phone string.
+
+        Used as the portal password — must be predictable. So '+852 9876 5001',
+        '+852-9876-5001' and '98765001' all normalize to '98765001'.
+        """
+        if not value:
+            return value
+        cleaned = ''.join(value.split()).replace('-', '')
+        for prefix in ('+852', '00852'):
+            if cleaned.startswith(prefix):
+                cleaned = cleaned[len(prefix):]
+                break
+        return cleaned
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('is_student') and vals.get('phone'):
+                vals['phone'] = self._normalize_student_phone(vals['phone'])
+        return super().create(vals_list)
+
+    def write(self, vals):
+        # Normalize student phone if it's being written
+        if 'phone' in vals and vals.get('phone'):
+            touches_student = bool(vals.get('is_student')) or any(p.is_student for p in self)
+            if touches_student:
+                vals = dict(vals)
+                vals['phone'] = self._normalize_student_phone(vals['phone'])
+        return super().write(vals)
+
     def _build_portal_login(self):
-        """Construct portal login: '<class_label>-<name>' (e.g. '1A-陳大文')."""
+        """Portal login is the student's school email."""
         self.ensure_one()
-        class_name = self.class_company_id.name or ''
-        # Class company name format: "林大輝中學 - 1A" -> take last token after dash
-        class_label = class_name.split('-')[-1].strip() if '-' in class_name else class_name
-        return f"{class_label}-{(self.name or '').strip()}"
+        return (self.email or '').strip()
 
     def action_grant_order_portal(self):
         """Create portal user accounts for selected students.
 
-        Login = '<class>-<student_name>' (e.g. '1A-陳大文').
-        Password = guardian_phone.
-        Skips students missing class or guardian_phone, or already granted.
+        Login = student's school email (res.partner.email).
+        Password = student's phone (res.partner.phone, normalized).
+        Skips students missing email or phone, or already granted.
         """
         Users = self.env['res.users']
         portal_group = self.env.ref('base.group_portal')
@@ -76,17 +105,18 @@ class ResPartner(models.Model):
             if not partner.is_student:
                 skipped.append((partner, _('not a student')))
                 continue
-            if not partner.class_company_id:
-                skipped.append((partner, _('no class assigned')))
+            if not partner.email:
+                skipped.append((partner, _('missing email (used as login)')))
                 continue
-            if not partner.guardian_phone:
-                skipped.append((partner, _('missing guardian phone (used as password)')))
+            if not partner.phone:
+                skipped.append((partner, _('missing student phone (used as password)')))
                 continue
             if partner.portal_granted and partner.portal_user_id:
                 skipped.append((partner, _('already granted')))
                 continue
 
             login = partner._build_portal_login()
+            password = self._normalize_student_phone(partner.phone)
 
             existing = Users.with_context(active_test=False).search(
                 [('login', '=', login)], limit=1,
@@ -101,7 +131,7 @@ class ResPartner(models.Model):
 
             user = Users.with_context(no_reset_password=True).create({
                 'login': login,
-                'password': partner.guardian_phone,
+                'password': password,
                 'partner_id': partner.id,
                 'name': partner.name,
                 'group_ids': [(6, 0, [portal_group.id])],
