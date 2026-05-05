@@ -122,25 +122,15 @@
                     </tbody>
                 </table>
 
-                <!-- Payment Method Terms -->
-                <div style="margin-bottom: 15px; font-size: 11px;">
-                    <strong>Payment Method:</strong><br/>
-                    1. By Bank Transfer / By Cheque:<br/>
-                    <span style="margin-left: 15px;">Please send us the receipt copy once the payment is done.</span><br/>
-                    <span style="margin-left: 15px;">Bank: Bank of East Asia</span><br/>
-                    <span style="margin-left: 15px;">Payee name: La Casa Management Company Ltd</span><br/>
-                    <span style="margin-left: 15px;">A/C no: 015-187-68-00209-0</span><br/>
-                    <br/>
-                    2. Through FPS:<br/>
-                    <span style="margin-left: 15px;">Account name: La Casa Management Company Ltd</span><br/>
-                    <span style="margin-left: 15px;">FPS ID: 165112806</span><br/>
-                    <br/>
-                    *all bank charges shall be paid by customers
-                </div>
-
-                <!-- Reschedule Terms -->
+                <!-- Terms &amp; Conditions -->
                 <div style="margin-bottom: 20px; font-size: 11px;">
-                    <strong>Reschedule:</strong><br/>
+                    <strong>Terms &amp; Conditions</strong><br/>
+                    1. The quotation normally valid for 7 days from the date of issue.<br/>
+                    2. 50% deposit has to be made within 7 days after signing the quotation and the remaining deposit has to be made 7 days before the event;<br/>
+                    3. Payment can be made by cheque with the payee name of La Casa Management Company Ltd or by bank transfer through Bank of East Asia with payee name of La Casa Management Company Ltd (a/c no: 015-187-68-00209-0)<br/>
+                    4. La Casa shall not be responsible for any delivery delays or misadventures due to the unforeseeable traffic incidents, unclear delivery instructions, inaccurate address or any missing or incorrect information. La Casa reserves the right to apply surcharge for any extra effort in delivery.<br/>
+                    <br/>
+                    <strong>Reschedule / Cancellation:</strong><br/>
                     1. More than or equal to 7-day notice*, the catering service can be rescheduled to later dates within 3 months <u>without extra charge</u>;<br/>
                     2. less than 7-day notice*: 30% of the total invoice amount;<br/>
                     3. less than 4-day notice*: 50% of the total invoice amount;<br/>
@@ -148,7 +138,9 @@
                     <br/>
                     - Food Delivery / catering service will not be provided if Typhoon Signal No. 8 or above or Black Rainstorm Signal is hoisted or under 'extreme condition'. The delivery can be resumed within four hours after Typhoon Signal No. 8 or above or black rainstorm warning is lowered, depends on the traffic condition. The delivery can also be rescheduled on next day <u>without extra charge</u> OR later dates within 3 months with extra charge of 50% of the total invoice amount.<br/>
                     <br/>
-                    *Day of notice here refers to working days, that means Mon-Fri, except Sat, Sun &amp; Public Holidays
+                    *Day of notice here refers to working days, that means Mon-Fri, except Sat, Sun &amp; Public Holidays.<br/>
+                    <br/>
+                    - La Casa shall not be responsible for any delivery delays or misadventures due to the unforeseeable traffic incidents, unclear delivery instructions, inaccurate address or any missing or incorrect information. La Casa reserves the right to apply surcharge for any extra effort in delivery.
                 </div>
 
                 <!-- Total -->
@@ -275,6 +267,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">lcs_crm_catering.report_quotation_lcs_document</field>
         <field name="report_file">lcs_crm_catering.report_quotation_lcs_document</field>
+        <field name="paperformat_id" ref="paperformat_lcs_a4"/>
         <field name="binding_model_id" ref="sale.model_sale_order"/>
         <field name="binding_type">report</field>
     </record>

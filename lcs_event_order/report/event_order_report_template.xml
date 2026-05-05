@@ -180,6 +180,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">lcs_event_order.report_event_order_lcs_document</field>
         <field name="report_file">lcs_event_order.report_event_order_lcs_document</field>
+        <field name="paperformat_id" ref="lcs_crm_catering.paperformat_lcs_a4"/>
         <field name="binding_model_id" ref="model_lcs_event_order"/>
         <field name="binding_type">report</field>
     </record>

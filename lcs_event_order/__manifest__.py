@@ -1,6 +1,6 @@
 {
     'name': 'LCS Event Order',
-    'version': '19.0.1.3.0',
+    'version': '19.0.1.4.0',
     'category': 'Operations',
     'summary': 'Event Orders for kitchen — auto-created from confirmed Sales Orders',
     'author': 'Recreatesys',
