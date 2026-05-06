@@ -100,8 +100,15 @@ class CrmLead(models.Model):
     @api.model
     def message_new(self, msg_dict, custom_values=None):
         """Hook into incoming-mail lead creation to pre-fill structured fields
-        when the sender is a known enquiry form (Mr.Mix or La Casa)."""
+        when the sender is a known enquiry form (Mr.Mix or La Casa).
+
+        mail.thread.message_new forcibly sets email_from = sender after
+        custom_values is applied, so any parsed email from the form body
+        gets clobbered. Workaround: track the parsed email and re-write it
+        after super() returns.
+        """
         custom_values = dict(custom_values or {})
+        parsed_overrides = {}
         try:
             sender = (msg_dict.get('email_from') or '').lower()
             html_body = msg_dict.get('body') or ''
@@ -113,10 +120,21 @@ class CrmLead(models.Model):
             elif 'sales@lacasacatering.com' in sender:
                 self._apply_lacasa_form(fields_map, html_body, custom_values)
                 custom_values.setdefault('brand', 'lacasa')
+
+            # Capture fields that mail.thread.message_new will overwrite so
+            # we can re-apply them post-create.
+            if custom_values.get('email_from'):
+                parsed_overrides['email_from'] = custom_values['email_from']
+            if custom_values.get('phone'):
+                parsed_overrides['phone'] = custom_values['phone']
         except Exception:
             _logger.exception('Failed to parse incoming enquiry email; falling back to default behavior.')
 
-        return super().message_new(msg_dict, custom_values=custom_values)
+        new_lead = super().message_new(msg_dict, custom_values=custom_values)
+
+        if parsed_overrides:
+            new_lead.write(parsed_overrides)
+        return new_lead
 
     @staticmethod
     def _parse_date(value):
