@@ -199,21 +199,23 @@ class CrmLead(models.Model):
         event_date_raw = fields_map.get('Event / Delivery Date')
         comment = fields_map.get('Comment or Message')
 
+        # Email/phone come from the form body (the real customer contact),
+        # not the website's sender envelope address. Force-overwrite so the
+        # sender's email_from from msg_dict doesn't win.
+        # Opportunity name = customer's Name (overrides email subject default)
         if name:
-            vals.setdefault('contact_name', name)
-            vals.setdefault('name', f'La Casa enquiry — {name}')
+            vals['contact_name'] = name
+            vals['name'] = name
         if email:
-            vals.setdefault('email_from', email)
+            vals['email_from'] = email
         if phone:
-            vals.setdefault('phone', phone)
-        parsed_date = self._parse_date(event_date_raw) if event_date_raw else None
-        if parsed_date:
-            vals.setdefault('event_date', parsed_date)
-        elif event_date_raw:
-            vals['event_remark'] = (vals.get('event_remark') or '') + \
-                f'Event date (raw): {event_date_raw}\n'
+            vals['phone'] = phone
 
+        # Event date is intentionally left empty for manual entry. Put the raw
+        # value into the notes/description so it's not lost.
         bits = []
+        if event_date_raw:
+            bits.append(f'Requested Event / Delivery Date (please confirm and fill manually): {event_date_raw}')
         if service_format:
             bits.append(f'Service Format: {service_format}')
         if comment:
@@ -247,20 +249,24 @@ class CrmLead(models.Model):
         event_addr = get('送貨 / 活動地區', '送貨/活動地區', '活動地區')
         enquiry = get('寫下你的查詢', '查詢內容')
 
+        # Force-overwrite name/email/phone so the sender's envelope and email
+        # subject default don't win.
         if name:
-            vals.setdefault('contact_name', name)
-            vals.setdefault('name', f'Mr.Mix enquiry — {name}')
+            vals['contact_name'] = name
+            vals['name'] = name
         if email:
-            vals.setdefault('email_from', email)
+            vals['email_from'] = email
         if phone:
-            vals.setdefault('phone', phone)
+            vals['phone'] = phone
         if event_addr:
-            vals.setdefault('event_street', event_addr)
-        parsed_date = self._parse_date(event_date_raw) if event_date_raw else None
-        if parsed_date:
-            vals.setdefault('event_date', parsed_date)
-        elif event_date_raw:
-            vals['event_remark'] = (vals.get('event_remark') or '') + \
-                f'Event date (raw): {event_date_raw}\n'
+            vals['event_street'] = event_addr
+
+        # Event date intentionally left empty for manual entry. Raw value goes
+        # into the notes so it's not lost.
+        bits = []
+        if event_date_raw:
+            bits.append(f'Requested Event / Delivery Date (please confirm and fill manually): {event_date_raw}')
         if enquiry:
-            vals['description'] = (vals.get('description') or '') + enquiry
+            bits.append(enquiry)
+        if bits:
+            vals['description'] = (vals.get('description') or '') + '\n'.join(bits)
