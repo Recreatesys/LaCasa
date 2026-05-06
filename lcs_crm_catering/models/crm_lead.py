@@ -2,6 +2,8 @@ import logging
 import re
 from datetime import datetime
 
+from lxml import html as lxml_html
+
 from odoo import api, fields, models
 from odoo.tools import html2plaintext
 
@@ -102,14 +104,14 @@ class CrmLead(models.Model):
         custom_values = dict(custom_values or {})
         try:
             sender = (msg_dict.get('email_from') or '').lower()
-            body = msg_dict.get('body') or ''
-            text = html2plaintext(body) if '<' in body else body
+            html_body = msg_dict.get('body') or ''
+            fields_map = self._extract_form_fields(html_body)
 
             if 'info@mrmixcatering.com' in sender:
-                self._parse_mrmix_form(text, custom_values)
+                self._apply_mrmix_form(fields_map, html_body, custom_values)
                 custom_values.setdefault('brand', 'mr_mix')
             elif 'sales@lacasacatering.com' in sender:
-                self._parse_lacasa_form(text, custom_values)
+                self._apply_lacasa_form(fields_map, html_body, custom_values)
                 custom_values.setdefault('brand', 'lacasa')
         except Exception:
             _logger.exception('Failed to parse incoming enquiry email; falling back to default behavior.')
@@ -122,98 +124,80 @@ class CrmLead(models.Model):
         if not value:
             return None
         value = value.strip()
-        for fmt in ('%Y-%m-%d', '%d/%m/%Y', '%d-%m-%Y', '%Y/%m/%d', '%d %b %Y', '%d %B %Y'):
+        for fmt in (
+            '%Y-%m-%d', '%d/%m/%Y', '%d-%m-%Y', '%Y/%m/%d',
+            '%-d/%-m/%Y', '%-d-%-m-%Y',
+            '%d %b %Y', '%d %B %Y',
+        ):
             try:
                 return datetime.strptime(value, fmt).date()
             except ValueError:
                 continue
+        # Last-ditch: try to be lenient about single-digit day/month
+        m = re.match(r'^\s*(\d{1,2})[/\-](\d{1,2})[/\-](\d{4})\s*$', value)
+        if m:
+            d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+            try:
+                return datetime(y, mo, d).date()
+            except ValueError:
+                return None
         return None
 
-    @api.model
-    def _parse_mrmix_form(self, text, vals):
-        """Parse the Mr.Mix enquiry form (Chinese labels, value on same line).
+    @staticmethod
+    def _extract_form_fields(html_body):
+        """Extract {label: value} pairs from a form-style HTML email.
 
-        Example:
-          姓名: Felix Testing
-          電子郵件: polly@lacasacatering.com
-          聯絡電話: 61004061
-          送貨 / 活動日期: 2026-06-15
-          送貨 / 活動地區: Central
-          寫下你的查詢: <multi-line message>
+        The two forms we support both render each field as:
+          <strong>Label</strong>            (in one row of a table)
+          Value                              (in the next row)
+
+        We find every <strong> tag and grab the text of the *next* <tr> within
+        the same enclosing <table>. Falls back to the next sibling row if the
+        table layout is non-standard.
         """
-        # Same-line: label: value (allow Chinese or ASCII colon, optional spaces)
-        def grab(label_pattern):
-            m = re.search(label_pattern + r'\s*[:：]\s*(.+?)(?:\r?\n|$)', text)
-            return m.group(1).strip() if m else None
+        if not html_body:
+            return {}
+        try:
+            tree = lxml_html.fromstring(html_body)
+        except Exception:
+            _logger.warning('Could not parse email HTML; skipping form extraction.')
+            return {}
 
-        name = grab(r'姓名')
-        email = grab(r'電子郵件')
-        phone = grab(r'聯絡電話')
-        event_date_raw = grab(r'送貨\s*/\s*活動日期')
-        event_addr = grab(r'送貨\s*/\s*活動地區')
-
-        # Enquiry can span multiple lines until the end of the message
-        m = re.search(r'寫下你的查詢\s*[:：]\s*([\s\S]+?)(?:\Z|--\s*\n)', text)
-        enquiry = m.group(1).strip() if m else None
-
-        if name:
-            vals.setdefault('contact_name', name)
-            vals.setdefault('name', f'Mr.Mix enquiry — {name}')
-        if email:
-            vals.setdefault('email_from', email)
-        if phone:
-            vals.setdefault('phone', phone)
-        if event_addr:
-            vals.setdefault('event_street', event_addr)
-        parsed_date = self._parse_date(event_date_raw) if event_date_raw else None
-        if parsed_date:
-            vals.setdefault('event_date', parsed_date)
-        elif event_date_raw:
-            # Couldn't parse — keep raw value in remark so it's not lost
-            vals['event_remark'] = (vals.get('event_remark') or '') + \
-                f'Event date (raw): {event_date_raw}\n'
-        if enquiry:
-            vals['description'] = (vals.get('description') or '') + enquiry
+        result = {}
+        for strong in tree.xpath('//strong'):
+            label = (strong.text_content() or '').strip()
+            if not label:
+                continue
+            # Find the closest enclosing <table>, then the next <tr> after the
+            # one that contains this <strong>.
+            tables = strong.xpath('ancestor::table[1]')
+            if not tables:
+                continue
+            table = tables[0]
+            rows = table.xpath('.//tr')
+            value = None
+            for i, row in enumerate(rows):
+                if strong in row.iter():
+                    if i + 1 < len(rows):
+                        value = (rows[i + 1].text_content() or '').strip()
+                    break
+            if value:
+                result[label] = value
+        return result
 
     @api.model
-    def _parse_lacasa_form(self, text, vals):
-        """Parse the La Casa Catering enquiry form (English labels, value on
-        the line below the label).
+    def _apply_lacasa_form(self, fields_map, html_body, vals):
+        """Map a La Casa enquiry form's {label: value} into lead fields.
 
-        Example:
-          Name
-          Roberterutt
-          Phone Number
-          88582187274
-          Email
-          abbie@example.com
-          Service Format
-          Food Delivery (packed in foil / paper box)
-          Event / Delivery Date
-          1978-10-10
-          Comment or Message
-          <multi-line message>
+        Expected labels: Name, Phone Number, Email, Service Format,
+        Event / Delivery Date, Comment or Message.
         """
-        def grab_below(label_pattern):
-            # Match: <label-line>\n<value-line>
-            m = re.search(
-                label_pattern + r'\s*\r?\n\s*(.+?)(?:\r?\n|$)',
-                text, flags=re.IGNORECASE,
-            )
-            return m.group(1).strip() if m else None
-
-        name = grab_below(r'^\s*Name')
-        phone = grab_below(r'^\s*Phone\s*Number')
-        email = grab_below(r'^\s*Email')
-        service_format_raw = grab_below(r'^\s*Service\s*Format')
-        event_date_raw = grab_below(r'^\s*Event\s*/?\s*Delivery\s*Date')
-
-        # Comment/Message can span multiple lines until end
-        m = re.search(
-            r'Comment\s+or\s+Message\s*\r?\n([\s\S]+?)(?:\Z|--\s*\n)',
-            text, flags=re.IGNORECASE,
-        )
-        comment = m.group(1).strip() if m else None
+        name = fields_map.get('Name')
+        phone = fields_map.get('Phone Number')
+        email = fields_map.get('Email')
+        service_format = fields_map.get('Service Format')
+        event_date_raw = fields_map.get('Event / Delivery Date')
+        comment = fields_map.get('Comment or Message')
 
         if name:
             vals.setdefault('contact_name', name)
@@ -229,11 +213,54 @@ class CrmLead(models.Model):
             vals['event_remark'] = (vals.get('event_remark') or '') + \
                 f'Event date (raw): {event_date_raw}\n'
 
-        # Service format and Comment go into description (free text)
         bits = []
-        if service_format_raw:
-            bits.append(f'Service Format: {service_format_raw}')
+        if service_format:
+            bits.append(f'Service Format: {service_format}')
         if comment:
             bits.append(f'Comment / Message:\n{comment}')
         if bits:
             vals['description'] = (vals.get('description') or '') + '\n'.join(bits)
+
+    @api.model
+    def _apply_mrmix_form(self, fields_map, html_body, vals):
+        """Map a Mr.Mix enquiry form's {label: value} into lead fields.
+
+        Expected labels: 姓名, 電子郵件, 聯絡電話, 送貨 / 活動日期,
+        送貨 / 活動地區, 寫下你的查詢.
+        """
+        # Be lenient about whitespace variations in Chinese form labels
+        def get(*keys):
+            for k in keys:
+                if k in fields_map:
+                    return fields_map[k]
+            # Match any key that strips to one of the targets
+            wanted = {re.sub(r'\s+', '', k) for k in keys}
+            for label, value in fields_map.items():
+                if re.sub(r'\s+', '', label) in wanted:
+                    return value
+            return None
+
+        name = get('姓名')
+        email = get('電子郵件')
+        phone = get('聯絡電話')
+        event_date_raw = get('送貨 / 活動日期', '送貨/活動日期', '活動日期')
+        event_addr = get('送貨 / 活動地區', '送貨/活動地區', '活動地區')
+        enquiry = get('寫下你的查詢', '查詢內容')
+
+        if name:
+            vals.setdefault('contact_name', name)
+            vals.setdefault('name', f'Mr.Mix enquiry — {name}')
+        if email:
+            vals.setdefault('email_from', email)
+        if phone:
+            vals.setdefault('phone', phone)
+        if event_addr:
+            vals.setdefault('event_street', event_addr)
+        parsed_date = self._parse_date(event_date_raw) if event_date_raw else None
+        if parsed_date:
+            vals.setdefault('event_date', parsed_date)
+        elif event_date_raw:
+            vals['event_remark'] = (vals.get('event_remark') or '') + \
+                f'Event date (raw): {event_date_raw}\n'
+        if enquiry:
+            vals['description'] = (vals.get('description') or '') + enquiry
