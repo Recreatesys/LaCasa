@@ -29,7 +29,7 @@
         <t t-call="web.basic_layout">
             <t t-set="o" t-value="o"/>
             <t t-set="hide_prices" t-value="o.hide_prices_on_quote"/>
-            <t t-set="show_logo" t-value="o.company_id.logo"/>
+            <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
 
             <!-- ============================================================ -->
             <!-- PAGE 1: Summary + Terms                                      -->

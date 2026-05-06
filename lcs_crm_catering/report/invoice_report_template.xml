@@ -26,7 +26,7 @@
     <template id="report_invoice_lcs_page">
         <t t-call="web.basic_layout">
             <t t-set="o" t-value="o"/>
-            <t t-set="show_logo" t-value="o.company_id.logo"/>
+            <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
             <div class="page" style="font-family: Arial, sans-serif; font-size: 12px;">
 
                 <!-- Company Header -->
