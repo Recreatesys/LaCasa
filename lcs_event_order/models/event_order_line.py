@@ -47,5 +47,5 @@ class EventOrderLine(models.Model):
         related='order_id.delivery_type', store=True, string='Delivery Type',
     )
     payment_status = fields.Selection(
-        related='order_id.payment_status', store=True, string='Payment Status',
+        related='order_id.payment_status', store=True, string='Order Status',
     )

@@ -4,7 +4,8 @@ from datetime import datetime
 
 from lxml import html as lxml_html
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools import html2plaintext
 
 _logger = logging.getLogger(__name__)
@@ -102,6 +103,27 @@ class CrmLead(models.Model):
         string='Wedding-related',
         help='Tick if this food tasting is for a wedding (used for sequence prefix lacasaWFT).',
     )
+
+    # ──────────────────────────────────────────────────────────
+    # Stage-reverse guard: salespeople can only advance, not regress
+    # ──────────────────────────────────────────────────────────
+
+    def write(self, vals):
+        if 'stage_id' in vals and vals['stage_id']:
+            new_stage = self.env['crm.stage'].browse(vals['stage_id'])
+            is_manager = self.env.user.has_group('sales_team.group_sale_manager')
+            if not is_manager and not self.env.is_superuser():
+                for lead in self:
+                    if lead.stage_id and new_stage.sequence < lead.stage_id.sequence:
+                        raise UserError(_(
+                            'Only Sales Managers can move "%(lead)s" back from '
+                            '"%(curr)s" to an earlier stage ("%(target)s").'
+                        ) % {
+                            'lead': lead.name or _('this opportunity'),
+                            'curr': lead.stage_id.display_name,
+                            'target': new_stage.display_name,
+                        })
+        return super().write(vals)
 
     # ──────────────────────────────────────────────────────────
     # Email-to-Lead parsers for known catering enquiry forms

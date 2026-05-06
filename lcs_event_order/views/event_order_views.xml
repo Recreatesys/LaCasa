@@ -201,9 +201,9 @@
                 <field name="partner_id"/>
                 <field name="sale_order_id"/>
                 <separator/>
-                <filter name="filter_unpaid" string="Unpaid"
+                <filter name="filter_unpaid" string="Unconfirm"
                         domain="[('payment_status', '=', 'unpaid')]"/>
-                <filter name="filter_paid" string="Paid"
+                <filter name="filter_paid" string="Order Confirm"
                         domain="[('payment_status', '=', 'paid')]"/>
                 <filter name="filter_cancelled" string="Cancelled"
                         domain="[('payment_status', '=', 'cancelled')]"/>
@@ -222,7 +222,7 @@
                         context="{'group_by': 'service_format'}"/>
                 <filter name="groupby_service_type" string="Service Type"
                         context="{'group_by': 'service_type'}"/>
-                <filter name="groupby_payment_status" string="Payment Status"
+                <filter name="groupby_payment_status" string="Order Status"
                         context="{'group_by': 'payment_status'}"/>
                 <filter name="groupby_partner" string="Customer"
                         context="{'group_by': 'partner_id'}"/>

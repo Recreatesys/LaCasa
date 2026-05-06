@@ -7,9 +7,12 @@ from odoo.addons.lcs_crm_catering.models.crm_lead import (
 )
 from odoo.addons.lcs_crm_catering.models.sale_order import CALL_VAN_SELECTION
 
+# Selection keys are legacy ("paid"/"unpaid") for DB compatibility, but the
+# user-facing labels and compute logic now reflect SO confirmation status,
+# not invoice payment.
 PAYMENT_STATUS_SELECTION = [
-    ('unpaid', 'Unpaid'),
-    ('paid', 'Paid'),
+    ('unpaid', 'Unconfirm'),
+    ('paid', 'Order Confirm'),
     ('cancelled', 'Cancelled'),
 ]
 
@@ -70,10 +73,12 @@ class EventOrder(models.Model):
         'lcs.event.order.line', 'order_id', string='Order Lines',
     )
 
-    # Payment status (computed from SO invoices)
+    # Order status (computed from SO state).
+    # Field name kept as `payment_status` for backwards-compat; semantics
+    # now reflect SO confirmation, not invoice payment.
     payment_status = fields.Selection(
         PAYMENT_STATUS_SELECTION,
-        string='Payment Status',
+        string='Order Status',
         compute='_compute_payment_status',
         store=True,
         tracking=True,
@@ -136,29 +141,19 @@ class EventOrder(models.Model):
                 'chef_signoff_date': False,
             })
 
-    @api.depends(
-        'sale_order_id.state',
-        'sale_order_id.invoice_ids',
-        'sale_order_id.invoice_ids.state',
-        'sale_order_id.invoice_ids.payment_state',
-    )
+    @api.depends('sale_order_id.state')
     def _compute_payment_status(self):
+        """Order Status reflects the underlying SO's confirmation state.
+
+        - SO confirmed (state in sale/done) → "Order Confirm" (key 'paid')
+        - SO cancelled → "Cancelled"
+        - SO draft/sent → "Unconfirm" (key 'unpaid')
+        """
         for eo in self:
-            so = eo.sale_order_id
-            if so.state == 'cancel':
+            state = eo.sale_order_id.state
+            if state == 'cancel':
                 eo.payment_status = 'cancelled'
-                continue
-
-            invoices = so.invoice_ids.filtered(
-                lambda inv: inv.state == 'posted'
-                and inv.move_type == 'out_invoice'
-            )
-            if not invoices:
-                eo.payment_status = 'unpaid'
-                continue
-
-            payment_states = invoices.mapped('payment_state')
-            if any(ps in ('paid', 'in_payment', 'partial') for ps in payment_states):
+            elif state in ('sale', 'done'):
                 eo.payment_status = 'paid'
             else:
                 eo.payment_status = 'unpaid'

@@ -70,9 +70,9 @@
                 <filter name="filter_upcoming" string="Upcoming"
                         domain="[('event_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
                 <separator/>
-                <filter name="filter_paid" string="Paid"
+                <filter name="filter_paid" string="Order Confirm"
                         domain="[('payment_status', '=', 'paid')]"/>
-                <filter name="filter_unpaid" string="Unpaid"
+                <filter name="filter_unpaid" string="Unconfirm"
                         domain="[('payment_status', '=', 'unpaid')]"/>
                 <filter name="filter_not_cancelled" string="Active (not cancelled)"
                         domain="[('payment_status', '!=', 'cancelled')]"/>
