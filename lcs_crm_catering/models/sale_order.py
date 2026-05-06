@@ -124,6 +124,57 @@ class SaleOrder(models.Model):
             order.waiter_count = len(order.waiter_line_ids)
             order.waiter_total_hours = sum(order.waiter_line_ids.mapped('hours'))
 
+    # ──────────────────────────────────────────────────────────
+    # Hardware (rented or sold goods listed on the SO)
+    # ──────────────────────────────────────────────────────────
+    hardware_line_ids = fields.One2many(
+        'lcs.sale.hardware.line', 'order_id', string='Hardware',
+    )
+    hardware_total = fields.Monetary(
+        string='Hardware Subtotal',
+        compute='_compute_hardware_total',
+        store=True,
+    )
+
+    @api.depends('hardware_line_ids', 'hardware_line_ids.price_subtotal')
+    def _compute_hardware_total(self):
+        for order in self:
+            order.hardware_total = sum(order.hardware_line_ids.mapped('price_subtotal'))
+
+    def _sync_hardware_lines(self):
+        """Replace any existing auto-managed Hardware lines on order_line
+        with a fresh "Hardware" section + one product line per hardware row.
+        """
+        SOL = self.env['sale.order.line']
+        for order in self:
+            if order.state == 'cancel':
+                continue
+            existing = order.order_line.filtered('is_hardware_line')
+            existing.with_context(skip_hardware_sync=True).unlink()
+
+            if not order.hardware_line_ids:
+                continue
+
+            SOL.with_context(skip_hardware_sync=True).create({
+                'order_id': order.id,
+                'name': 'Hardware',
+                'display_type': 'line_section',
+                'is_hardware_line': True,
+                'sequence': 2000,
+            })
+            seq = 2001
+            for hw in order.hardware_line_ids:
+                SOL.with_context(skip_hardware_sync=True).create({
+                    'order_id': order.id,
+                    'product_id': hw.product_id.id,
+                    'name': hw.product_id.display_name,
+                    'product_uom_qty': hw.product_uom_qty,
+                    'price_unit': hw.price_unit,
+                    'is_hardware_line': True,
+                    'sequence': seq,
+                })
+                seq += 1
+
     def _sync_waiter_service_line(self):
         """Maintain a "Waiter Service" section + product line on the SO,
         driven by the current waiter_line_ids.
@@ -302,6 +353,11 @@ class SaleOrderLine(models.Model):
         string='Auto-Managed Waiter Service Line',
         default=False, copy=False,
         help='Marker for the section/product lines auto-generated from the Waiters tab.',
+    )
+    is_hardware_line = fields.Boolean(
+        string='Auto-Managed Hardware Line',
+        default=False, copy=False,
+        help='Marker for the section/product lines auto-generated from the Hardware tab.',
     )
 
 

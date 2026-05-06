@@ -11,6 +11,7 @@
                 <field name="attention_to_id"
                        domain="[('parent_id', '=', partner_id)]"
                        context="{'default_parent_id': partner_id}"/>
+                <field name="commitment_date" string="Event / Delivery Date"/>
                 <field name="delivery_time" widget="float_time"/>
                 <label for="event_hour"/>
                 <div>
@@ -74,6 +75,33 @@
                         auto-generated "Waiter Service" line equals the sum of
                         hours below. An employee cannot be double-booked across
                         confirmed Sales Orders.
+                    </p>
+                </page>
+
+                <!-- Hardware tab — rented or sold goods listed on the SO -->
+                <page string="Hardware" name="hardware">
+                    <field name="hardware_line_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="product_id"
+                                   options="{'no_create': True}"
+                                   domain="[('type', '=', 'consu'), ('is_storable', '=', True)]"/>
+                            <field name="goods_kind" optional="show"/>
+                            <field name="product_uom_qty"/>
+                            <field name="availability" readonly="1"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal" sum="Total"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                    <group class="oe_subtotal_footer">
+                        <field name="hardware_total" widget="monetary"/>
+                    </group>
+                    <p class="text-muted small mt-2">
+                        Hardware items (storable goods) attached to this order.
+                        Each row will be auto-mirrored as a Sales Order line under
+                        a "Hardware" section. Mark a product as "For Rental" on its
+                        product form to distinguish rentals from sales.
                     </p>
                 </page>
             </xpath>

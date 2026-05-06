@@ -1,6 +1,6 @@
 {
     'name': 'LCS CRM Catering',
-    'version': '19.0.1.18.0',
+    'version': '19.0.1.19.0',
     'category': 'Sales/CRM',
     'summary': 'Catering-specific fields for CRM, Sales Orders, and Invoices',
     'author': 'Recreatesys',
@@ -14,6 +14,7 @@
         'data/waiter_service_product.xml',
         'views/res_partner_views.xml',
         'views/crm_lead_views.xml',
+        'views/product_template_views.xml',
         'views/sale_order_views.xml',
         'views/account_move_views.xml',
         'report/invoice_report_template.xml',

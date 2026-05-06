@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_form_view_inherit_lcs_goods_kind" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.lcs.goods_kind</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sale_ok']" position="after">
+                <field name="goods_kind"
+                       invisible="type != 'consu'"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
