@@ -29,7 +29,7 @@
         <t t-call="web.basic_layout">
             <t t-set="o" t-value="o"/>
             <t t-set="hide_prices" t-value="o.hide_prices_on_quote"/>
-            <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
+            <t t-set="show_logo" t-value="o.company_id.logo"/>
 
             <!-- ============================================================ -->
             <!-- PAGE 1: Summary + Terms                                      -->
@@ -43,7 +43,7 @@
                              style="max-height: 60px;" alt="Logo"/>
                     </div>
                     <div>
-                        <span t-field="o.company_id.partner_id.name"/><br/>
+                        <span t-field="o.company_id.partner_id.name" style="font-weight: bold; font-size: 20px;"/><br/>
                         <t t-if="o.company_id.partner_id.street">
                             <span t-field="o.company_id.partner_id.street"/>
                             <t t-if="o.company_id.partner_id.street2">, <span t-field="o.company_id.partner_id.street2"/></t><br/>
