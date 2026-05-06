@@ -44,6 +44,7 @@ SERVICE_TYPE_SELECTION = [
     ('school_meal', 'School Meal'),
     ('food_tasting', 'Food Tasting'),
     ('staff_meal', 'Staff Meal'),
+    ('event', 'Event'),
 ]
 
 DELIVERY_TYPE_SELECTION = [

@@ -31,6 +31,7 @@ PAYMENT_METHOD_SELECTION = [
     ('paypal', 'Paypal'),
     ('internal_transfer', 'Internal Transfer'),
     ('monthly', 'Monthly'),
+    ('option_1', 'Option 1'),
 ]
 
 CALL_VAN_SELECTION = [
