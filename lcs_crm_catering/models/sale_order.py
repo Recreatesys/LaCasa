@@ -100,6 +100,95 @@ class SaleOrder(models.Model):
         help='Duration of the event, in hours.',
     )
 
+    # ──────────────────────────────────────────────────────────
+    # Waiter assignments (Event Catering only)
+    # ──────────────────────────────────────────────────────────
+    waiter_line_ids = fields.One2many(
+        'lcs.sale.waiter.line', 'order_id', string='Waiters',
+    )
+    waiter_count = fields.Integer(
+        string='# Waiters', compute='_compute_waiter_totals', store=True,
+    )
+    waiter_total_hours = fields.Float(
+        string='Total Person-Hours',
+        compute='_compute_waiter_totals',
+        store=True, digits=(8, 2),
+    )
+
+    @api.depends('waiter_line_ids', 'waiter_line_ids.hours')
+    def _compute_waiter_totals(self):
+        for order in self:
+            order.waiter_count = len(order.waiter_line_ids)
+            order.waiter_total_hours = sum(order.waiter_line_ids.mapped('hours'))
+
+    def _sync_waiter_service_line(self):
+        """Maintain a "Waiter Service" section + product line on the SO,
+        driven by the current waiter_line_ids.
+
+        Quantity = sum of (end - start) across all waiter lines (person-hours).
+        Price unit = the Waiter Service product's list price.
+        """
+        product_template = self.env.ref(
+            'lcs_crm_catering.product_template_waiter_service',
+            raise_if_not_found=False,
+        )
+        if not product_template:
+            return
+        product = product_template.product_variant_id
+        if not product:
+            return
+
+        for order in self:
+            if order.state == 'cancel':
+                continue
+
+            existing = order.order_line.filtered('is_waiter_service_line')
+            existing_section = existing.filtered(lambda l: l.display_type == 'line_section')
+            existing_product = existing.filtered(
+                lambda l: not l.display_type and l.product_id == product
+            )
+
+            if not order.waiter_line_ids:
+                existing.unlink()
+                continue
+
+            qty = order.waiter_total_hours
+            section_name = _('Waiter Service (%(n)d staff, %(h).1f hrs total)') % {
+                'n': order.waiter_count, 'h': order.waiter_total_hours,
+            }
+
+            if existing_section:
+                if existing_section[0].name != section_name:
+                    existing_section[0].with_context(skip_waiter_sync=True).name = section_name
+            else:
+                self.env['sale.order.line'].with_context(
+                    skip_waiter_sync=True,
+                ).create({
+                    'order_id': order.id,
+                    'name': section_name,
+                    'display_type': 'line_section',
+                    'is_waiter_service_line': True,
+                    'sequence': 1000,
+                })
+
+            if existing_product:
+                existing_product[0].with_context(skip_waiter_sync=True).write({
+                    'product_uom_qty': qty,
+                    'price_unit': product.list_price,
+                })
+            else:
+                self.env['sale.order.line'].with_context(
+                    skip_waiter_sync=True,
+                ).create({
+                    'order_id': order.id,
+                    'product_id': product.id,
+                    'name': product.display_name or _('Waiter Service'),
+                    'product_uom_qty': qty,
+                    'price_unit': product.list_price,
+                    'is_waiter_service_line': True,
+                    'sequence': 1001,
+                })
+
     @api.model
     def _resolve_seq_prefix(self, brand, service_format, service_type,
                             setup_type, no_logo, is_wedding):
@@ -201,6 +290,16 @@ class SaleOrder(models.Model):
             'is_wedding': self.is_wedding,
         })
         return vals
+
+
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    is_waiter_service_line = fields.Boolean(
+        string='Auto-Managed Waiter Service Line',
+        default=False, copy=False,
+        help='Marker for the section/product lines auto-generated from the Waiters tab.',
+    )
 
 
 class SaleOrderFromCRM(models.Model):

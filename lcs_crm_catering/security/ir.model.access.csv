@@ -6,3 +6,4 @@ access_crm_team_member_kitchen,crm.team.member.kitchen,sales_team.model_crm_team
 access_crm_tag_kitchen,crm.tag.kitchen,sales_team.model_crm_tag,lcs_crm_catering.group_kitchen_user,1,0,0,0
 access_crm_lost_reason_kitchen,crm.lost.reason.kitchen,crm.model_crm_lost_reason,lcs_crm_catering.group_kitchen_user,1,0,0,0
 access_res_partner_kitchen,res.partner.kitchen,base.model_res_partner,lcs_crm_catering.group_kitchen_user,1,0,0,0
+access_lcs_sale_waiter_line_user,lcs.sale.waiter.line.user,model_lcs_sale_waiter_line,base.group_user,1,1,1,1

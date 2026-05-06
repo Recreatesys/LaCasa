@@ -9,7 +9,6 @@
             <field name="sale_ok" eval="True"/>
             <field name="purchase_ok" eval="False"/>
             <field name="uom_id" ref="uom.product_uom_hour"/>
-            <field name="uom_po_id" ref="uom.product_uom_hour"/>
             <field name="description_sale">Auto-managed by the Waiters tab on Event Catering Sales Orders. Quantity is total person-hours.</field>
         </record>
 
