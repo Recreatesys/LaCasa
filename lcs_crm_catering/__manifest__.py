@@ -10,8 +10,6 @@
         'security/ir.model.access.csv',
         'data/ir_sequence.xml',
         'data/paperformat.xml',
-        'data/event_staff_job.xml',
-        'data/waiter_service_product.xml',
         'views/res_partner_views.xml',
         'views/crm_lead_views.xml',
         'views/sale_order_views.xml',
