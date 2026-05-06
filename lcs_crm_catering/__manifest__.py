@@ -1,10 +1,10 @@
 {
     'name': 'LCS CRM Catering',
-    'version': '19.0.1.19.0',
+    'version': '19.0.1.20.0',
     'category': 'Sales/CRM',
     'summary': 'Catering-specific fields for CRM, Sales Orders, and Invoices',
     'author': 'Recreatesys',
-    'depends': ['crm', 'sale_crm', 'sale', 'account', 'hr'],
+    'depends': ['crm', 'sale_crm', 'sale', 'account', 'hr', 'stock'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
