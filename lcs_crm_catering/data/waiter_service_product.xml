@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="product_template_waiter_service" model="product.template">
+            <field name="name">Waiter Service</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="uom_id" ref="uom.product_uom_hour"/>
+            <field name="uom_po_id" ref="uom.product_uom_hour"/>
+            <field name="description_sale">Auto-managed by the Waiters tab on Event Catering Sales Orders. Quantity is total person-hours.</field>
+        </record>
+
+    </data>
+</odoo>
