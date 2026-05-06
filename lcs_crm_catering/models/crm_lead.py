@@ -20,6 +20,7 @@ CLIENT_TYPE_SELECTION = [
     ('corporate', 'Corporate'),
     ('private', 'Private'),
     ('organization', 'Organization'),
+    ('partner', 'Partner'),
 ]
 
 SERVICE_FORMAT_SELECTION = [

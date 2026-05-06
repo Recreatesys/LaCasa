@@ -46,6 +46,9 @@ CALL_VAN_SELECTION = [
     ('self_pickup', 'Self Pick-up'),
     ('dat', '達'),
     ('fu_gor', '虎哥'),
+    ('supervan', 'SuperVan'),
+    ('gogovan', 'GoGoVan'),
+    ('leopard', 'Leopard'),
 ]
 
 
