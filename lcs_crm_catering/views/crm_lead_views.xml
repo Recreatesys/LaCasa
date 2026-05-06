@@ -19,6 +19,11 @@
                     </group>
                     <group>
                         <field name="event_date"/>
+                        <field name="delivery_time" widget="float_time"/>
+                        <label for="event_hour"/>
+                        <div>
+                            <field name="event_hour" class="oe_inline"/> Hours
+                        </div>
                         <field name="guest_count"/>
                         <field name="no_logo"/>
                         <field name="is_wedding"

@@ -52,7 +52,11 @@ class EventOrder(models.Model):
     delivery_type = fields.Selection(DELIVERY_TYPE_SELECTION, string='Delivery Type')
     guest_count = fields.Integer(string='No. of Guest')
     event_remark = fields.Text(string='Remark')
-    delivery_time = fields.Float(string='Delivery Time')
+    delivery_time = fields.Float(string='Event / Delivery Time')
+    event_hour = fields.Float(
+        string='Event Hour',
+        help='Duration of the event, in hours.',
+    )
     call_van = fields.Selection(
         CALL_VAN_SELECTION,
         string='Call Van',
@@ -213,6 +217,7 @@ class EventOrder(models.Model):
             'guest_count': so.guest_count,
             'event_remark': so.event_remark,
             'delivery_time': so.delivery_time,
+            'event_hour': so.event_hour,
         }
 
     @api.model

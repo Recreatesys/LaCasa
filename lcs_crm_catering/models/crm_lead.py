@@ -63,6 +63,14 @@ class CrmLead(models.Model):
 
     # Event / Delivery fields
     event_date = fields.Date(string='Event / Delivery Date')
+    delivery_time = fields.Float(
+        string='Event / Delivery Time',
+        help='Time of day the event starts / delivery is due (HH:MM).',
+    )
+    event_hour = fields.Float(
+        string='Event Hour',
+        help='Duration of the event, in hours (e.g. 3 or 3.5).',
+    )
     event_street = fields.Char(string='Street')
     event_street2 = fields.Char(string='Street 2')
     event_country_id = fields.Many2one(

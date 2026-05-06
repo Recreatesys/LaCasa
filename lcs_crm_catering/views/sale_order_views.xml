@@ -12,6 +12,10 @@
                        domain="[('parent_id', '=', partner_id)]"
                        context="{'default_parent_id': partner_id}"/>
                 <field name="delivery_time" widget="float_time"/>
+                <label for="event_hour"/>
+                <div>
+                    <field name="event_hour" class="oe_inline"/> Hours
+                </div>
                 <field name="call_van"/>
             </xpath>
 
