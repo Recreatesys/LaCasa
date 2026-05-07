@@ -141,6 +141,16 @@ class EventOrder(models.Model):
                 'chef_signoff_date': False,
             })
 
+    def action_cancel_sale_order(self):
+        """Cancel the linked Sales Order. The EO Order Status will then
+        auto-flip to 'Cancelled' via _compute_payment_status (which reads
+        sale_order_id.state)."""
+        for eo in self:
+            so = eo.sale_order_id
+            if so and so.state != 'cancel':
+                so._action_cancel()
+        return True
+
     @api.depends('sale_order_id.state')
     def _compute_payment_status(self):
         """Order Status reflects the underlying SO's confirmation state.

@@ -25,6 +25,12 @@
                             class="btn-link"
                             invisible="not is_chef_signed_off"
                             confirm="Clear the chef sign-off for this EO?"/>
+                    <button name="action_cancel_sale_order"
+                            string="Cancel"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="payment_status == 'cancelled'"
+                            confirm="Cancel this Event Order? The linked Sales Order will also be cancelled."/>
                     <field name="is_chef_signed_off" widget="badge"
                            decoration-success="is_chef_signed_off"
                            invisible="not is_chef_signed_off"/>
