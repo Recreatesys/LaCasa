@@ -144,12 +144,15 @@ class CrmLead(models.Model):
         try:
             sender = (msg_dict.get('email_from') or '').lower()
             html_body = msg_dict.get('body') or ''
-            fields_map = self._extract_form_fields(html_body)
 
             if 'info@mrmixcatering.com' in sender:
+                # Mr.Mix uses <br>-separated "Label: Value" lines, not <strong>
+                fields_map = self._extract_br_label_value_pairs(html_body)
                 self._apply_mrmix_form(fields_map, html_body, custom_values)
                 custom_values.setdefault('brand', 'mr_mix')
             elif 'sales@lacasacatering.com' in sender:
+                # La Casa uses <strong>label</strong> + value-row HTML tables
+                fields_map = self._extract_form_fields(html_body)
                 self._apply_lacasa_form(fields_map, html_body, custom_values)
                 custom_values.setdefault('brand', 'lacasa')
 
@@ -235,6 +238,43 @@ class CrmLead(models.Model):
                 result[label] = value
         return result
 
+    @staticmethod
+    def _extract_br_label_value_pairs(html_body):
+        """Extract {label: value} pairs from a <br>-separated HTML body.
+
+        Used for plain-form emails like Mr.Mix's, where each form field is
+        on its own line as 'Label: Value', separated by <br> tags. Stops at
+        the first '---' line so submission-metadata footer (date/time/URL/IP/
+        user agent / Powered by) is excluded.
+
+        Labels are returned with all whitespace stripped so that
+        '送貨 /活動日期' and '送貨 / 活動日期' both map to the same key.
+        """
+        if not html_body:
+            return {}
+        # <br>, <br/>, <br /> → newline
+        text = re.sub(r'<br\s*/?>', '\n', html_body, flags=re.IGNORECASE)
+        # Strip remaining HTML tags (<p>, etc.) → plain text
+        if '<' in text:
+            text = html2plaintext(text)
+
+        result = {}
+        for raw_line in text.split('\n'):
+            line = raw_line.strip()
+            if not line:
+                continue
+            if line.startswith('---'):
+                break  # footer metadata starts here
+            # Split on first colon (ASCII or full-width)
+            m = re.match(r'^([^:：]+?)[:：]\s*(.*)$', line)
+            if not m:
+                continue
+            label = re.sub(r'\s+', '', m.group(1).strip())
+            value = m.group(2).strip()
+            if value:
+                result[label] = value
+        return result
+
     @api.model
     def _apply_lacasa_form(self, fields_map, html_body, vals):
         """Map a La Casa enquiry form's {label: value} into lead fields.
@@ -280,24 +320,19 @@ class CrmLead(models.Model):
         Expected labels: 姓名, 電子郵件, 聯絡電話, 送貨 / 活動日期,
         送貨 / 活動地區, 寫下你的查詢.
         """
-        # Be lenient about whitespace variations in Chinese form labels
-        def get(*keys):
-            for k in keys:
-                if k in fields_map:
-                    return fields_map[k]
-            # Match any key that strips to one of the targets
-            wanted = {re.sub(r'\s+', '', k) for k in keys}
-            for label, value in fields_map.items():
-                if re.sub(r'\s+', '', label) in wanted:
-                    return value
-            return None
-
-        name = get('姓名')
-        email = get('電子郵件')
-        phone = get('聯絡電話')
-        event_date_raw = get('送貨 / 活動日期', '送貨/活動日期', '活動日期')
-        event_addr = get('送貨 / 活動地區', '送貨/活動地區', '活動地區')
-        enquiry = get('寫下你的查詢', '查詢內容')
+        # Mr.Mix labels are whitespace-stripped by _extract_br_label_value_pairs.
+        # 姓名 -> contact_name + opportunity name
+        # 電子郵件 -> email_from
+        # 聯絡電話 -> phone
+        # 送貨/活動日期 -> event_date (auto-filled if parseable)
+        # 送貨/活動地區 -> event_street2 (Street 2)
+        # 寫下你的查詢 -> description (notes)
+        name = fields_map.get('姓名')
+        email = fields_map.get('電子郵件')
+        phone = fields_map.get('聯絡電話')
+        event_date_raw = fields_map.get('送貨/活動日期') or fields_map.get('活動日期')
+        event_addr = fields_map.get('送貨/活動地區') or fields_map.get('活動地區')
+        enquiry = fields_map.get('寫下你的查詢') or fields_map.get('查詢內容')
 
         # Force-overwrite name/email/phone so the sender's envelope and email
         # subject default don't win.
@@ -309,14 +344,15 @@ class CrmLead(models.Model):
         if phone:
             vals['phone'] = phone
         if event_addr:
-            vals['event_street'] = event_addr
+            vals['event_street2'] = event_addr
 
-        # Event date intentionally left empty for manual entry. Raw value goes
-        # into the notes so it's not lost.
-        bits = []
-        if event_date_raw:
-            bits.append(f'Requested Event / Delivery Date (please confirm and fill manually): {event_date_raw}')
+        parsed_date = self._parse_date(event_date_raw) if event_date_raw else None
+        if parsed_date:
+            vals['event_date'] = parsed_date
+        elif event_date_raw:
+            # Couldn't parse — fall back to a note so the date isn't lost.
+            vals['event_remark'] = (vals.get('event_remark') or '') + \
+                f'Event date (raw): {event_date_raw}\n'
+
         if enquiry:
-            bits.append(enquiry)
-        if bits:
-            vals['description'] = (vals.get('description') or '') + '\n'.join(bits)
+            vals['description'] = (vals.get('description') or '') + enquiry
