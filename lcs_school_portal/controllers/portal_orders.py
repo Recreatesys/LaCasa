@@ -82,13 +82,14 @@ def _render_orders_page_html(student, days, alerts, csrf_token):
                 f' · {escape(state_label)}</span>'
             )
 
+        no_order_html = '<em class="text-muted small">No order</em>'
         rows_html.append(
             f'<tr>'
             f'<td><strong>{escape(d.strftime("%Y-%m-%d"))}</strong><br/>'
             f'<small class="text-muted">{escape(weekday)}</small></td>'
             f'<td>{open_badge}{cutoff_badge}</td>'
             f'<td>{menu_html}</td>'
-            f'<td>{order_html or "<em class=\"text-muted small\">No order</em>"}</td>'
+            f'<td>{order_html or no_order_html}</td>'
             f'</tr>'
         )
 
