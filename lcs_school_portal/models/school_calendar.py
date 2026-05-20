@@ -25,7 +25,7 @@ DAY_TYPE_META = {
 class SchoolCalendarEntry(models.Model):
     _name = 'lcs.school.calendar.entry'
     _description = 'School Calendar Entry'
-    _order = 'date, school_id, class_company_id'
+    _order = 'date, school_id, id'
 
     name = fields.Char(string='Title', required=True, translate=True)
     date = fields.Date(string='Date', required=True, index=True)
@@ -156,7 +156,7 @@ class LcsSchool(models.Model):
             existing = set(
                 d for d in Entry.search([
                     ('school_id', '=', school.id),
-                    ('class_company_id', '=', False),
+                    ('class_company_ids', '=', False),
                     ('date', '>=', date(years[0], 1, 1)),
                     ('date', '<=', date(years[-1], 12, 31)),
                 ]).mapped('date')
