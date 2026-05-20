@@ -47,6 +47,12 @@
               action="lcs_menu_item_action"
               sequence="40"/>
 
+    <menuitem id="menu_lcs_school_portal_orders"
+              name="Orders"
+              parent="menu_lcs_school_portal_root"
+              action="lcs_school_order_action"
+              sequence="50"/>
+
     <menuitem id="menu_lcs_school_portal_config"
               name="Configuration"
               parent="menu_lcs_school_portal_root"

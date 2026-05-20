@@ -6,3 +6,4 @@ from . import school_calendar
 from . import menu_item
 from . import menu_template
 from . import menu_day
+from . import school_order

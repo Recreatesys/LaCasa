@@ -12,3 +12,8 @@ access_lcs_menu_template_line_user,lcs.menu.template.line.user,model_lcs_menu_te
 access_lcs_menu_template_line_admin,lcs.menu.template.line.admin,model_lcs_menu_template_line,base.group_system,1,1,1,1
 access_lcs_menu_day_user,lcs.menu.day.user,model_lcs_menu_day,base.group_user,1,1,1,1
 access_lcs_menu_generate_wizard_user,lcs.menu.generate.wizard.user,model_lcs_menu_generate_wizard,base.group_user,1,1,1,1
+access_lcs_school_order_user,lcs.school.order.user,model_lcs_school_order,base.group_user,1,1,1,1
+access_lcs_school_order_portal,lcs.school.order.portal,model_lcs_school_order,base.group_portal,1,1,1,1
+access_lcs_menu_item_portal,lcs.menu.item.portal,model_lcs_menu_item,base.group_portal,1,0,0,0
+access_lcs_menu_day_portal,lcs.menu.day.portal,model_lcs_menu_day,base.group_portal,1,0,0,0
+access_lcs_school_calendar_entry_portal,lcs.school.calendar.entry.portal,model_lcs_school_calendar_entry,base.group_portal,1,0,0,0

@@ -1,6 +1,6 @@
 {
     'name': 'LCS School Portal',
-    'version': '19.0.1.5.0',
+    'version': '19.0.1.6.0',
     'category': 'Sales',
     'summary': 'School ordering portal — students/parents order lunches via web portal',
     'author': 'Recreatesys',
@@ -8,6 +8,7 @@
     'external_dependencies': {'python': ['holidays']},
     'data': [
         'security/ir.model.access.csv',
+        'security/ir_rule.xml',
         'data/allergy_data.xml',
         'data/school_data.xml',
         'views/school_views.xml',
@@ -18,6 +19,7 @@
         'views/menu_template_views.xml',
         'views/menu_day_views.xml',
         'wizard/menu_generate_wizard_views.xml',
+        'views/school_order_views.xml',
         'views/menu.xml',
     ],
     'installable': True,

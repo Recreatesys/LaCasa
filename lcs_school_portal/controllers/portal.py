@@ -73,7 +73,7 @@ class LcsSchoolPortalLogin(http.Controller):
     @http.route('/school/login', type='http', auth='public', sitemap=False, csrf=True)
     def school_login(self, redirect=None, **kw):
         if request.session.uid:
-            return request.redirect(redirect or '/my')
+            return request.redirect(redirect or '/my/school/orders')
 
         email = (kw.get('email') or '').strip()
         error = None
@@ -86,7 +86,7 @@ class LcsSchoolPortalLogin(http.Controller):
                 try:
                     credential = {'login': email, 'password': password, 'type': 'password'}
                     request.session.authenticate(request.env, credential)
-                    return request.redirect(redirect or '/my')
+                    return request.redirect(redirect or '/my/school/orders')
                 except Exception:
                     error = _('Invalid email or password.')
 
