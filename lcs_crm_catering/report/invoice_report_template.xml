@@ -104,34 +104,35 @@
                     </tbody>
                 </table>
 
-                <!-- Payment Method Terms -->
-                <div style="margin-bottom: 15px; font-size: 11px;">
-                    <strong>Payment Method:</strong><br/>
-                    1. By Bank Transfer / By Cheque:<br/>
-                    <span style="margin-left: 15px;">Please send us the receipt copy once the payment is done.</span><br/>
-                    <span style="margin-left: 15px;">Bank: Bank of East Asia</span><br/>
-                    <span style="margin-left: 15px;">Payee name: La Casa Management Company Ltd</span><br/>
-                    <span style="margin-left: 15px;">A/C no: 015-187-68-00209-0</span><br/>
-                    <br/>
-                    2. Through FPS:<br/>
-                    <span style="margin-left: 15px;">Account name: La Casa Management Company Ltd</span><br/>
-                    <span style="margin-left: 15px;">FPS ID: 165112806</span><br/>
-                    <br/>
-                    *all bank charges shall be paid by customers
-                </div>
-
-                <!-- Reschedule Terms -->
-                <div style="margin-bottom: 20px; font-size: 11px;">
-                    <strong>Reschedule:</strong><br/>
-                    1. More than or equal to 7-day notice*, the catering service can be rescheduled to later dates within 3 months <u>without extra charge</u>;<br/>
-                    2. less than 7-day notice*: 30% of the total invoice amount:<br/>
-                    3. less than 4-day notice*: 50% of the total invoice amount;<br/>
-                    4. less than 2-day notice*: 100% of the total invoice amount.<br/>
-                    <br/>
-                    - Food Delivery / catering service will not be provided if Typhoon Signal No. 8 or above or Black Rainstorm Signal is hoisted or under 'extreme condition. The delivery can be resumed within four hours after Typhoon Signal No. 8 or above or black rainstorm warning is lowered, depends on the traffic condition. The delivery can also be rescheduled on next day <u>without extra charge</u> OR later dates within 3 month with extra charge of 50% of the total invoice amount.<br/>
-                    <br/>
-                    *Day of notice here refers to working days, that means Mon-Fri, except Sat, Sun &amp; Public Holidays
-                </div>
+                <!-- Payment Method + Reschedule Terms (boxed) -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <tr>
+                        <td style="border: 1px solid #000; padding: 10px; font-size: 11px; vertical-align: top;">
+                            <strong>Payment Method:</strong><br/>
+                            1. By Bank Transfer / By Cheque:<br/>
+                            <span style="margin-left: 15px;">Please send us the receipt copy once the payment is done.</span><br/>
+                            <span style="margin-left: 15px;">Bank: Bank of East Asia</span><br/>
+                            <span style="margin-left: 15px;">Payee name: La Casa Management Company Ltd</span><br/>
+                            <span style="margin-left: 15px;">A/C no: 015-187-68-00209-0</span><br/>
+                            <br/>
+                            2. Through FPS:<br/>
+                            <span style="margin-left: 15px;">Account name: La Casa Management Company Ltd</span><br/>
+                            <span style="margin-left: 15px;">FPS ID: 165112806</span><br/>
+                            <br/>
+                            *all bank charges shall be paid by customers
+                            <br/><br/>
+                            <strong>Reschedule:</strong><br/>
+                            1. More than or equal to 7-day notice*, the catering service can be rescheduled to later dates within 3 months <u>without extra charge</u>;<br/>
+                            2. less than 7-day notice*: 30% of the total invoice amount:<br/>
+                            3. less than 4-day notice*: 50% of the total invoice amount;<br/>
+                            4. less than 2-day notice*: 100% of the total invoice amount.<br/>
+                            <br/>
+                            - Food Delivery / catering service will not be provided if Typhoon Signal No. 8 or above or Black Rainstorm Signal is hoisted or under 'extreme condition. The delivery can be resumed within four hours after Typhoon Signal No. 8 or above or black rainstorm warning is lowered, depends on the traffic condition. The delivery can also be rescheduled on next day <u>without extra charge</u> OR later dates within 3 month with extra charge of 50% of the total invoice amount.<br/>
+                            <br/>
+                            *Day of notice here refers to working days, that means Mon-Fri, except Sat, Sun &amp; Public Holidays
+                        </td>
+                    </tr>
+                </table>
 
                 <!-- Total -->
                 <table style="width: 100%; margin-bottom: 20px;">
@@ -196,7 +197,10 @@
                     </tr>
                 </table>
 
-                <!-- Detail Product Lines -->
+                <!-- Detail Product Lines: list the dishes inside each set
+                     (hide the parent set bundle line + unselected dishes + add-on pieces) -->
+                <t t-set="src_so_lines" t-value="o.invoice_line_ids.mapped('sale_line_ids')"/>
+                <t t-set="parent_set_products" t-value="src_so_lines.filtered(lambda l: l.is_set_line).mapped('set_product_id')"/>
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr style="border-bottom: 1px solid #000;">
@@ -209,17 +213,16 @@
                     <tbody>
                         <!-- Delivery type header row -->
                         <tr t-if="o.delivery_type" style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 5px; font-weight: bold;">
+                            <td colspan="4" style="padding: 5px; font-weight: bold; background-color: #f5f5f5;">
                                 <span t-field="o.delivery_type"/>
                             </td>
-                            <td style="text-align: right; padding: 5px;">-</td>
-                            <td style="text-align: right; padding: 5px;">-</td>
-                            <td style="text-align: right; padding: 5px;">-</td>
                         </tr>
-                        <!-- Product lines -->
+                        <!-- Product lines (filtered) -->
                         <t t-foreach="o.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
-                            <tr style="border-bottom: 1px solid #eee;">
-                                <td style="padding: 5px;">
+                            <t t-set="src" t-value="line.sale_line_ids[:1]"/>
+                            <t t-set="skip" t-value="src and (src.is_addon_piece or (src.is_set_line and not src.dish_selected) or (not src.is_set_line and src.product_id in parent_set_products))"/>
+                            <tr t-if="not skip" style="border-bottom: 1px solid #eee; break-inside: avoid;">
+                                <td style="padding: 5px; white-space: pre-line;">
                                     <span t-field="line.name"/>
                                 </td>
                                 <td style="text-align: right; padding: 5px;">
@@ -227,6 +230,9 @@
                                 </td>
                                 <td style="text-align: right; padding: 5px;">
                                     <span t-field="line.quantity"/>
+                                    <t t-if="src and src.set_unit">
+                                        <small style="color: #666;"> <span t-field="src.set_unit"/></small>
+                                    </t>
                                 </td>
                                 <td style="text-align: right; padding: 5px;">
                                     HK$<span t-field="line.price_subtotal"/>
