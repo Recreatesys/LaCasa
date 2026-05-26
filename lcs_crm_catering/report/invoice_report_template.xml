@@ -30,7 +30,7 @@
             <!-- Identify set parent bundle products via the SO source lines -->
             <t t-set="src_so_lines" t-value="o.invoice_line_ids.mapped('sale_line_ids')"/>
             <t t-set="parent_set_products" t-value="src_so_lines.filtered(lambda l: l.is_set_line).mapped('set_product_id')"/>
-            <t t-set="set_invoice_lines" t-value="o.invoice_line_ids.filtered(lambda l: not l.display_type and l.product_id in parent_set_products)"/>
+            <t t-set="set_invoice_lines" t-value="o.invoice_line_ids.filtered(lambda l: l.display_type == 'product' and l.product_id in parent_set_products)"/>
             <div class="page" style="font-family: Arial, sans-serif; font-size: 12px;">
 
                 <!-- Company Header -->
@@ -222,7 +222,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="o.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
+                        <t t-foreach="o.invoice_line_ids.filtered(lambda l: l.display_type == 'product')" t-as="line">
                             <t t-set="src" t-value="line.sale_line_ids[:1]"/>
                             <t t-set="skip" t-value="src and (src.is_addon_piece or (src.is_set_line and not src.dish_selected))"/>
                             <tr t-if="not skip" style="border-bottom: 1px solid #eee; break-inside: avoid;">
