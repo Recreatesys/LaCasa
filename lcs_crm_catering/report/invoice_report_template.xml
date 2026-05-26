@@ -203,62 +203,45 @@
                         <td><strong>Contact Number:</strong></td>
                         <td><span t-field="o.attention_to_id.phone"/></td>
                     </tr>
+                    <tr t-if="o.event_remark">
+                        <td style="vertical-align: top;"><strong>Remark:</strong></td>
+                        <td><span t-field="o.event_remark"/></td>
+                    </tr>
                 </table>
 
-                <!-- Detail Product Lines: full product table, with section headers preserved.
-                     Hide the parent set bundle line, unselected dishes, and add-on pieces. -->
+                <!-- Detail Product Lines — mirror the SO page 2 filter:
+                     show parent set bundle + selected dishes, hide unselected dishes,
+                     add-on pieces, and display-type rows. -->
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
                         <tr style="border-bottom: 1px solid #000;">
                             <th style="text-align: left; padding: 5px;">Dish Name</th>
-                            <th style="text-align: right; padding: 5px;">Unit Price</th>
-                            <th style="text-align: right; padding: 5px;">Qty</th>
-                            <th style="text-align: right; padding: 5px;">Price</th>
+                            <th style="text-align: right; padding: 5px; width: 80px;">Unit Price</th>
+                            <th style="text-align: right; padding: 5px; width: 60px;">Qty</th>
+                            <th style="text-align: right; padding: 5px; width: 80px;">Price</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Delivery type header row -->
-                        <tr t-if="o.delivery_type" style="border-bottom: 1px solid #eee;">
-                            <td colspan="4" style="padding: 5px; font-weight: bold; background-color: #f5f5f5;">
-                                <span t-field="o.delivery_type"/>
-                            </td>
-                        </tr>
-                        <!-- All invoice lines: sections as banners, notes as italics, products filtered -->
-                        <t t-foreach="o.invoice_line_ids" t-as="line">
-                            <!-- Section banner -->
-                            <tr t-if="line.display_type == 'line_section'" style="border-top: 1px solid #999; background-color: #eee; break-inside: avoid;">
-                                <td colspan="4" style="padding: 6px 5px; font-weight: bold;">
+                        <t t-foreach="o.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
+                            <t t-set="src" t-value="line.sale_line_ids[:1]"/>
+                            <t t-set="skip" t-value="src and (src.is_addon_piece or (src.is_set_line and not src.dish_selected))"/>
+                            <tr t-if="not skip" style="border-bottom: 1px solid #eee; break-inside: avoid;">
+                                <td style="padding: 5px; white-space: pre-line;">
                                     <span t-field="line.name"/>
                                 </td>
-                            </tr>
-                            <!-- Note -->
-                            <tr t-elif="line.display_type == 'line_note'" style="break-inside: avoid;">
-                                <td colspan="4" style="padding: 4px 5px; font-style: italic; color: #555; white-space: pre-line;">
-                                    <span t-field="line.name"/>
+                                <td style="text-align: right; padding: 5px;">
+                                    HK$<span t-field="line.price_unit"/>
+                                </td>
+                                <td style="text-align: right; padding: 5px;">
+                                    <span t-field="line.quantity"/>
+                                    <t t-if="src and src.set_unit">
+                                        <small style="color: #666;"> <span t-field="src.set_unit"/></small>
+                                    </t>
+                                </td>
+                                <td style="text-align: right; padding: 5px;">
+                                    HK$<span t-field="line.price_subtotal"/>
                                 </td>
                             </tr>
-                            <!-- Product row (filtered) -->
-                            <t t-elif="not line.display_type">
-                                <t t-set="src" t-value="line.sale_line_ids[:1]"/>
-                                <t t-set="skip" t-value="src and (src.is_addon_piece or (src.is_set_line and not src.dish_selected) or (not src.is_set_line and src.product_id in parent_set_products))"/>
-                                <tr t-if="not skip" style="border-bottom: 1px solid #eee; break-inside: avoid;">
-                                    <td style="padding: 5px; white-space: pre-line;">
-                                        <span t-field="line.name"/>
-                                    </td>
-                                    <td style="text-align: right; padding: 5px;">
-                                        HK$<span t-field="line.price_unit"/>
-                                    </td>
-                                    <td style="text-align: right; padding: 5px;">
-                                        <span t-field="line.quantity"/>
-                                        <t t-if="src and src.set_unit">
-                                            <small style="color: #666;"> <span t-field="src.set_unit"/></small>
-                                        </t>
-                                    </td>
-                                    <td style="text-align: right; padding: 5px;">
-                                        HK$<span t-field="line.price_subtotal"/>
-                                    </td>
-                                </tr>
-                            </t>
                         </t>
                     </tbody>
                     <tfoot>
