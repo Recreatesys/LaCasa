@@ -13,6 +13,14 @@ class EventOrderLine(models.Model):
         ondelete='cascade',
         index=True,
     )
+    sale_line_id = fields.Many2one(
+        'sale.order.line',
+        string='SO Source Line',
+        ondelete='set null',
+        index=True,
+        help='Originating sale order line; used by the SO→EO sync to '
+             'match lines for diff/merge updates.',
+    )
     sequence = fields.Integer(default=10)
     product_id = fields.Many2one(
         'product.product',

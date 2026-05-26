@@ -185,7 +185,16 @@ class EventOrder(models.Model):
         })
 
     def _update_from_sale_order(self, so, changes_desc=None):
-        """Update EO fields from the confirmed SO, bump version."""
+        """Update EO from SO via diff/merge and bump version.
+
+        Header fields refresh from SO. Lines are matched by `sale_line_id`:
+        existing matches get SO-derived fields refreshed; new SO lines become
+        new EO lines; EO lines whose source SO line vanished get unlinked.
+        Kitchen-only fields (`kitchen_qty`, `note`) are preserved.
+        """
+        self.ensure_one()
+
+        # Header refresh + version bump
         vals = self._prepare_eo_vals_from_so(so)
         vals.update({
             'version': self.version + 1,
@@ -195,13 +204,41 @@ class EventOrder(models.Model):
             'acknowledged_by': False,
             'acknowledged_date': False,
         })
+        self.with_context(skip_eo_sync=True).write(vals)
 
-        # Update lines
-        self.line_ids.unlink()
-        line_vals = self._prepare_eo_lines_from_so(so)
-        vals['line_ids'] = [(0, 0, lv) for lv in line_vals]
+        # Diff/merge lines
+        self._sync_lines_from_so(so)
 
-        self.write(vals)
+    def _sync_lines_from_so(self, so):
+        """Diff/merge EO lines against current SO line scope."""
+        self.ensure_one()
+        EOLine = self.env['lcs.event.order.line']
+
+        # Desired state from SO (each entry carries sale_line_id)
+        desired = self._prepare_eo_lines_from_so(so)
+        desired_by_sol = {d['sale_line_id']: d for d in desired if d.get('sale_line_id')}
+
+        existing_by_sol = {l.sale_line_id.id: l for l in self.line_ids if l.sale_line_id}
+
+        # Update / create
+        for sol_id, lv in desired_by_sol.items():
+            if sol_id in existing_by_sol:
+                line = existing_by_sol[sol_id]
+                # Refresh SO-derived fields; preserve kitchen_qty & note
+                line.write({
+                    'product_id': lv['product_id'],
+                    'description': lv['description'],
+                    'so_qty': lv['so_qty'],
+                    'kitchen_uom': lv['kitchen_uom'],
+                })
+            else:
+                EOLine.create(dict(lv, order_id=self.id))
+
+        # Remove EO lines whose source SO line no longer in scope
+        # (Legacy lines without sale_line_id are left untouched.)
+        for sol_id, line in existing_by_sol.items():
+            if sol_id not in desired_by_sol:
+                line.unlink()
 
     @api.model
     def _prepare_eo_vals_from_so(self, so):
@@ -252,6 +289,7 @@ class EventOrder(models.Model):
 
             lines.append({
                 'product_id': product.id,
+                'sale_line_id': sol.id,
                 'description': sol.name,
                 'so_qty': sol.product_uom_qty,
                 'kitchen_qty': kitchen_qty,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Add EO smart button to Sales Order form -->
+    <!-- Add EO smart button + manual sync button to Sales Order form -->
     <record id="sale_order_view_form_inherit_lcs_eo" model="ir.ui.view">
         <field name="name">sale.order.form.inherit.lcs.eo</field>
         <field name="model">sale.order</field>
@@ -15,6 +15,13 @@
                         invisible="event_order_count == 0">
                     <field name="event_order_count" widget="statinfo" string="Event Orders"/>
                 </button>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_update_event_order"
+                        type="object"
+                        string="Update Event Order"
+                        invisible="state != 'sale' or event_order_count == 0"
+                        help="Push current SO changes to the linked Event Order and bump its version."/>
             </xpath>
         </field>
     </record>
