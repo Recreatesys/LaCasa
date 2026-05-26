@@ -266,6 +266,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">lcs_crm_catering.report_invoice_lcs_document</field>
         <field name="report_file">lcs_crm_catering.report_invoice_lcs_document</field>
+        <field name="print_report_name">('-'.join(object.invoice_line_ids.mapped('sale_line_ids').order_id.mapped('name')) + '-' + object.name) if object.invoice_line_ids.mapped('sale_line_ids').order_id else object.name</field>
         <field name="paperformat_id" ref="paperformat_lcs_a4"/>
         <field name="binding_model_id" ref="account.model_account_move"/>
         <field name="binding_type">report</field>
