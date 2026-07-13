@@ -437,19 +437,11 @@ class SaleOrder(models.Model):
         if not removed_lines:
             return
 
-        # Cancel matching pickings first (their procurement group encodes the day).
-        Picking = self.env.get('stock.picking')
+        # v19: stock.picking.group_id / procurement.group are gone, so we
+        # can't identify per-day pickings anymore. Skip auto-cancel; the
+        # user cancels stale pickings manually until we implement a
+        # v19-native per-day mechanism (TODO).
         cancelled_pickings = []
-        if Picking is not None:
-            for offset in range(new_day_count, self.event_day_count + 8):
-                pg_name = '%s-D%d' % (self.name, offset + 1)
-                pickings = Picking.search([
-                    ('group_id.name', '=', pg_name),
-                    ('state', 'not in', ('done', 'cancel')),
-                ])
-                if pickings:
-                    pickings.action_cancel()
-                    cancelled_pickings += pickings.mapped('name')
 
         # Cancel matching Event Orders.
         EO = self.env.get('lcs.event.order')
@@ -550,36 +542,20 @@ class SaleOrderLine(models.Model):
             else:
                 line.event_date = False
 
-    def _prepare_procurement_values(self, group_id=False):
-        """Split procurement per event day so each day gets its own delivery order.
+    def _prepare_procurement_values(self, *args, **kwargs):
+        """Per-day scheduled/deadline dates for multi-day catering events.
 
-        A separate `procurement.group` per (SO, day_offset) forces stock rules
-        to create a distinct `stock.picking` per day, each scheduled for its
-        actual event day.
+        v19 removed the `procurement.group` model and the `group_id` kwarg on
+        this method, so the per-day-picking grouping we used on v17/v18 is
+        gone. We keep the date-adjustment part (still useful) and drop the
+        grouping — pickings-per-day needs a separate v19 mechanism (TODO).
         """
-        vals = super()._prepare_procurement_values(group_id=group_id)
+        vals = super()._prepare_procurement_values(*args, **kwargs)
         self.ensure_one()
         so = self.order_id
         if not so or (so.event_day_count or 0) < 2:
             return vals
-        # Per-day procurement group
         offset = int(self.event_day_offset or 0)
-        pg_name = '%s-D%d' % (so.name, offset + 1)
-        pg = self.env['procurement.group'].search(
-            [('name', '=', pg_name)], limit=1,
-        )
-        if not pg:
-            pg_vals = so._prepare_procurement_group_vals() if hasattr(
-                so, '_prepare_procurement_group_vals'
-            ) else {}
-            pg_vals.update({
-                'name': pg_name,
-                'sale_id': so.id,
-                'partner_id': so.partner_shipping_id.id or so.partner_id.id,
-            })
-            pg = self.env['procurement.group'].create(pg_vals)
-        vals['group_id'] = pg
-        # Per-day scheduled date (event_date_start + offset at event_time_start).
         from datetime import datetime as _dt, timedelta as _td
         start_date = so.event_date_start
         if start_date:
