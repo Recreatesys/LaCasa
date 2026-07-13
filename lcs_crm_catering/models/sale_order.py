@@ -419,7 +419,20 @@ class SaleOrder(models.Model):
             seq_value = self.env['ir.sequence'].next_by_code(seq_code)
             if seq_value:
                 vals['name'] = seq_value
-        return super().create(vals_list)
+        orders = super().create(vals_list)
+
+        # Sync the Waiter Service section + product line on newly created SOs
+        # whose Waiter tab was filled in at creation time (either via the
+        # table, or via manually-typed # Waiters + Total Person-Hours).
+        if not self.env.context.get('skip_waiter_sync'):
+            for so in orders:
+                if so.state == 'cancel':
+                    continue
+                if so.waiter_line_ids or (
+                    so.waiter_count > 0 and so.waiter_total_hours > 0
+                ):
+                    so._sync_waiter_service_line()
+        return orders
 
     def write(self, vals):
         # Shrink-guard: if the event date range shrinks, auto-remove SO lines
