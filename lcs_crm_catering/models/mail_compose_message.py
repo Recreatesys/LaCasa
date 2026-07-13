@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class MailComposeMessage(models.TransientModel):
@@ -9,6 +9,15 @@ class MailComposeMessage(models.TransientModel):
         help='Comma-separated CC email addresses. Every recipient of this '
              'message will also see the CC in their copy.',
     )
+
+    @api.model
+    def default_get(self, fields_list):
+        defaults = super().default_get(fields_list)
+        if 'email_cc' in fields_list and not defaults.get('email_cc'):
+            user_default = self.env.user.default_email_cc
+            if user_default:
+                defaults['email_cc'] = user_default
+        return defaults
 
     def _prepare_mail_values_static(self):
         # Mass-mail path: creates mail.mail records directly.

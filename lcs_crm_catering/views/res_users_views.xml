@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add "Default Cc Email" to the "Change My Preferences" form only.
+         The admin Users list intentionally does NOT expose it — this is a
+         self-serve preference each user sets on themselves. -->
+    <record id="view_users_form_simple_modif_lcs_default_cc" model="ir.ui.view">
+        <field name="name">res.users.form.simple.modif.inherit.lcs.default_cc</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='other_preferences']" position="inside">
+                <field name="default_email_cc"
+                       placeholder="e.g. me-copy@company.com, boss@company.com"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
