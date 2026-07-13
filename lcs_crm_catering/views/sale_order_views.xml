@@ -192,13 +192,20 @@
                       invisible="not waiter_service">
                     <group>
                         <group>
-                            <field name="waiter_count" readonly="1"/>
+                            <field name="waiter_count"
+                                   readonly="waiter_line_ids != []"/>
                         </group>
                         <group>
-                            <field name="waiter_total_hours" readonly="1"
-                                   widget="float" digits="[8,2]"/>
+                            <field name="waiter_total_hours"
+                                   widget="float" digits="[8,2]"
+                                   readonly="waiter_line_ids != []"/>
                         </group>
                     </group>
+                    <p class="text-muted small" invisible="waiter_line_ids != []">
+                        Waiter table is empty — # Waiters and Total Person-Hours can
+                        be typed manually. They auto-sync to the table once you add
+                        rows below.
+                    </p>
                     <field name="waiter_line_ids">
                         <list editable="bottom"
                               decoration-info="order_state == 'draft'"
