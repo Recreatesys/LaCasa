@@ -5,3 +5,5 @@ from . import sale_order
 from . import sale_waiter_line
 from . import sale_hardware_line
 from . import account_move
+from . import mail_thread
+from . import mail_compose_message

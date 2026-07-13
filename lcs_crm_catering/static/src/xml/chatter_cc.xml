@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="lcs_crm_catering.ChatterCc"
+       t-inherit="mail.Chatter" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if=&quot;state.composerType === 'message'&quot;]/div"
+               position="after">
+            <div t-if="state.composerType === 'message'"
+                 class="d-flex py-1 ps-3">
+                <span class="flex-shrink-0 text-end fw-bold px-2" style="width:46px">Cc: </span>
+                <input type="text"
+                       class="form-control flex-grow-1"
+                       placeholder="Optional — additional email addresses (comma-separated)"
+                       t-att-value="state.thread.composer.emailCc"
+                       t-on-input="(ev) => state.thread.composer.emailCc = ev.target.value"/>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

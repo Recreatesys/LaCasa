@@ -1,10 +1,10 @@
 {
     'name': 'LCS CRM Catering',
-    'version': '19.0.1.29.0',
+    'version': '19.0.1.30.0',
     'category': 'Sales/CRM',
     'summary': 'Catering-specific fields for CRM, Sales Orders, and Invoices',
     'author': 'Recreatesys',
-    'depends': ['crm', 'sale_crm', 'sale', 'account', 'hr', 'stock'],
+    'depends': ['crm', 'sale_crm', 'sale', 'account', 'hr', 'stock', 'mail'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -18,6 +18,7 @@
         'views/product_template_views.xml',
         'views/sale_order_views.xml',
         'views/account_move_views.xml',
+        'views/mail_compose_message_views.xml',
         'report/invoice_report_template.xml',
         'report/sale_order_report_template.xml',
     ],
@@ -25,6 +26,8 @@
         'web.assets_backend': [
             'lcs_crm_catering/static/src/css/chatter.css',
             'lcs_crm_catering/static/src/js/product_field_search_limit.js',
+            'lcs_crm_catering/static/src/js/composer_cc.js',
+            'lcs_crm_catering/static/src/xml/chatter_cc.xml',
         ],
     },
     'installable': True,
