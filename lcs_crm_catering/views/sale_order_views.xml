@@ -227,8 +227,8 @@
                     </p>
                 </page>
 
-                <!-- Hardware tab — rented or sold goods listed on the SO -->
-                <page string="Hardware" name="hardware">
+                <!-- Utensil & Equipment tab — rented or sold goods listed on the SO -->
+                <page string="Utensil &amp; Equipment" name="hardware">
                     <field name="hardware_line_ids">
                         <list editable="bottom">
                             <field name="sequence" widget="handle"/>
