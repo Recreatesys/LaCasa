@@ -1,35 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Remove noise from the Print dropdown on SO and Invoice forms.
-         We keep the report actions themselves (so any hard-coded links keep
-         working); we only clear their binding_model_id so they no longer
-         auto-appear under Print → menu. -->
+    <!-- 1. Clear binding_model_id so these 4 legacy print options no longer
+            appear in the Print dropdown on SO / Invoice forms.
+         2. For the 2 core actions that are also called by the customer
+            PORTAL (Download PDF button, email attachment, "Print" from
+            portal), redirect their report_name to the LCS-branded template
+            so the customer sees LCS content wherever standard Odoo code
+            reaches for these actions. -->
 
     <!-- ── Sales Order ── -->
-    <!-- 'PDF Quote' -->
+    <!-- 'PDF Quote' → redirect to LCS Quotation content -->
     <record id="sale.action_report_saleorder" model="ir.actions.report">
         <field name="binding_model_id" eval="False"/>
         <field name="binding_type">action</field>
+        <field name="report_name">lcs_crm_catering.report_quotation_lcs_document</field>
+        <field name="report_file">lcs_crm_catering.report_quotation_lcs_document</field>
     </record>
 
-    <!-- 'Quotation / Order' (from sale_pdf_quote_builder) -->
+    <!-- 'Quotation / Order' (from sale_pdf_quote_builder) — just hide -->
     <record id="sale_pdf_quote_builder.action_report_saleorder_raw" model="ir.actions.report">
         <field name="binding_model_id" eval="False"/>
         <field name="binding_type">action</field>
     </record>
 
     <!-- ── Invoice ── -->
-    <!-- 'Invoice PDF' -->
+    <!-- 'Invoice PDF' → redirect to LCS Invoice content -->
     <record id="account.account_invoices" model="ir.actions.report">
         <field name="binding_model_id" eval="False"/>
         <field name="binding_type">action</field>
+        <field name="report_name">lcs_crm_catering.report_invoice_lcs_document</field>
+        <field name="report_file">lcs_crm_catering.report_invoice_lcs_document</field>
     </record>
 
-    <!-- 'PDF without Payment' -->
+    <!-- 'PDF without Payment' → redirect to LCS Invoice content -->
     <record id="account.account_invoices_without_payment" model="ir.actions.report">
         <field name="binding_model_id" eval="False"/>
         <field name="binding_type">action</field>
+        <field name="report_name">lcs_crm_catering.report_invoice_lcs_document</field>
+        <field name="report_file">lcs_crm_catering.report_invoice_lcs_document</field>
     </record>
 
 </odoo>
