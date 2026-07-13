@@ -1,6 +1,6 @@
 {
     'name': 'LCS CRM Catering',
-    'version': '19.0.1.26.0',
+    'version': '19.0.1.27.0',
     'category': 'Sales/CRM',
     'summary': 'Catering-specific fields for CRM, Sales Orders, and Invoices',
     'author': 'Recreatesys',
@@ -23,6 +23,7 @@
     'assets': {
         'web.assets_backend': [
             'lcs_crm_catering/static/src/css/chatter.css',
+            'lcs_crm_catering/static/src/js/product_field_search_limit.js',
         ],
     },
     'installable': True,
