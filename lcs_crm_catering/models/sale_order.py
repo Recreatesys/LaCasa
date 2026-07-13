@@ -112,6 +112,60 @@ class SaleOrder(models.Model):
         help='Duration of the event, in hours.',
     )
 
+    # Per-day One2many slices — one field per possible day (up to 7).
+    # These are computed from order_line by filtering on event_day_offset.
+    # Used by the multi-day notebook tabs.
+    order_line_day_1 = fields.One2many(
+        'sale.order.line', compute='_compute_order_line_by_day',
+        inverse='_inverse_order_line_by_day', string='Order Lines — Day 1',
+    )
+    order_line_day_2 = fields.One2many(
+        'sale.order.line', compute='_compute_order_line_by_day',
+        inverse='_inverse_order_line_by_day', string='Order Lines — Day 2',
+    )
+    order_line_day_3 = fields.One2many(
+        'sale.order.line', compute='_compute_order_line_by_day',
+        inverse='_inverse_order_line_by_day', string='Order Lines — Day 3',
+    )
+    order_line_day_4 = fields.One2many(
+        'sale.order.line', compute='_compute_order_line_by_day',
+        inverse='_inverse_order_line_by_day', string='Order Lines — Day 4',
+    )
+    order_line_day_5 = fields.One2many(
+        'sale.order.line', compute='_compute_order_line_by_day',
+        inverse='_inverse_order_line_by_day', string='Order Lines — Day 5',
+    )
+    order_line_day_6 = fields.One2many(
+        'sale.order.line', compute='_compute_order_line_by_day',
+        inverse='_inverse_order_line_by_day', string='Order Lines — Day 6',
+    )
+    order_line_day_7 = fields.One2many(
+        'sale.order.line', compute='_compute_order_line_by_day',
+        inverse='_inverse_order_line_by_day', string='Order Lines — Day 7',
+    )
+
+    @api.depends('order_line', 'order_line.event_day_offset')
+    def _compute_order_line_by_day(self):
+        for so in self:
+            grouped = {n: so.env['sale.order.line'] for n in range(7)}
+            for line in so.order_line:
+                offset = int(line.event_day_offset or 0)
+                if 0 <= offset < 7:
+                    grouped[offset] |= line
+            so.order_line_day_1 = grouped[0]
+            so.order_line_day_2 = grouped[1]
+            so.order_line_day_3 = grouped[2]
+            so.order_line_day_4 = grouped[3]
+            so.order_line_day_5 = grouped[4]
+            so.order_line_day_6 = grouped[5]
+            so.order_line_day_7 = grouped[6]
+
+    def _inverse_order_line_by_day(self):
+        # Writing to a per-day slice already updates order_line via the shared
+        # underlying model (each line is a real sale.order.line linked by order_id).
+        # No separate write needed — the ORM handles it.
+        return
+
     @api.depends('event_date_start', 'event_date_end')
     def _compute_event_day_count(self):
         for so in self:
@@ -334,13 +388,97 @@ class SaleOrder(models.Model):
         return super().create(vals_list)
 
     def write(self, vals):
+        # Shrink-guard: if the event date range shrinks, auto-remove SO lines
+        # whose day_offset falls outside the new range, and cancel any
+        # dependent Event Orders / Delivery Orders for those days.
+        shrink_snapshot = {}
+        if 'event_date_start' in vals or 'event_date_end' in vals:
+            for so in self:
+                if so.state in ('cancel',):
+                    continue
+                new_start = fields.Date.to_date(
+                    vals.get('event_date_start', so.event_date_start)
+                )
+                new_end = fields.Date.to_date(
+                    vals.get('event_date_end', so.event_date_end)
+                )
+                if not new_start:
+                    continue
+                if not new_end or new_end < new_start:
+                    new_end = new_start
+                new_count = (new_end - new_start).days + 1
+                if new_count < (so.event_day_count or 1):
+                    shrink_snapshot[so.id] = new_count
+
         res = super().write(vals)
+
+        if shrink_snapshot:
+            for so in self.browse(list(shrink_snapshot.keys())):
+                so._prune_days_beyond(shrink_snapshot[so.id])
+
         if 'call_van' in vals and not self.env.context.get('skip_call_van_sync'):
             for so in self:
                 invs = so.invoice_ids.filtered(lambda i: i.state != 'cancel' and i.call_van != vals['call_van'])
                 if invs:
                     invs.with_context(skip_call_van_sync=True).write({'call_van': vals['call_van']})
         return res
+
+    def _prune_days_beyond(self, new_day_count):
+        """Remove SO lines with event_day_offset >= new_day_count, and cancel
+        any Event Orders + Delivery Orders scoped to those days.
+
+        Called from write() when the date range shrinks. Post-message on the
+        SO so the user has a clear audit trail.
+        """
+        self.ensure_one()
+        removed_lines = self.order_line.filtered(
+            lambda l: (l.event_day_offset or 0) >= new_day_count
+        )
+        if not removed_lines:
+            return
+
+        # Cancel matching pickings first (their procurement group encodes the day).
+        Picking = self.env.get('stock.picking')
+        cancelled_pickings = []
+        if Picking is not None:
+            for offset in range(new_day_count, self.event_day_count + 8):
+                pg_name = '%s-D%d' % (self.name, offset + 1)
+                pickings = Picking.search([
+                    ('group_id.name', '=', pg_name),
+                    ('state', 'not in', ('done', 'cancel')),
+                ])
+                if pickings:
+                    pickings.action_cancel()
+                    cancelled_pickings += pickings.mapped('name')
+
+        # Cancel matching Event Orders.
+        EO = self.env.get('lcs.event.order')
+        cancelled_eos = []
+        if EO is not None and 'event_day_offset' in EO._fields:
+            eos = self.event_order_ids.filtered(
+                lambda e: (e.event_day_offset or 0) >= new_day_count
+            )
+            if eos:
+                cancelled_eos = eos.mapped('name')
+                eos.unlink()
+
+        removed_names = removed_lines.mapped('name')
+        removed_lines.unlink()
+
+        self.message_post(body=_(
+            'Event range shrunk to %(days)d day(s). Auto-removed %(nlines)d '
+            'SO line(s), cancelled %(neo)d Event Order(s) and %(npick)d '
+            'Delivery Order(s).<br/>Removed lines: %(lines)s'
+            '<br/>Cancelled EO: %(eos)s<br/>Cancelled DO: %(picks)s'
+        ) % {
+            'days': new_day_count,
+            'nlines': len(removed_names),
+            'neo': len(cancelled_eos),
+            'npick': len(cancelled_pickings),
+            'lines': ', '.join(removed_names[:20]) or '—',
+            'eos': ', '.join(cancelled_eos) or '—',
+            'picks': ', '.join(cancelled_pickings) or '—',
+        })
 
     @api.onchange('partner_id')
     def _onchange_partner_id_attention(self):
@@ -391,6 +529,70 @@ class SaleOrderLine(models.Model):
         help='Marker for the section/product lines auto-generated from the Hardware tab.',
     )
 
+    # ── Multi-day event support ──
+    event_day_offset = fields.Integer(
+        string='Event Day',
+        default=0, copy=True,
+        help='0-based day within the SO event range. Day 1 = 0, Day 2 = 1, etc.',
+    )
+    event_date = fields.Date(
+        string='Line Event Date',
+        compute='_compute_event_date', store=True,
+    )
+
+    @api.depends('order_id.event_date_start', 'event_day_offset')
+    def _compute_event_date(self):
+        from datetime import timedelta
+        for line in self:
+            start = line.order_id.event_date_start
+            if start:
+                line.event_date = start + timedelta(days=line.event_day_offset or 0)
+            else:
+                line.event_date = False
+
+    def _prepare_procurement_values(self, group_id=False):
+        """Split procurement per event day so each day gets its own delivery order.
+
+        A separate `procurement.group` per (SO, day_offset) forces stock rules
+        to create a distinct `stock.picking` per day, each scheduled for its
+        actual event day.
+        """
+        vals = super()._prepare_procurement_values(group_id=group_id)
+        self.ensure_one()
+        so = self.order_id
+        if not so or (so.event_day_count or 0) < 2:
+            return vals
+        # Per-day procurement group
+        offset = int(self.event_day_offset or 0)
+        pg_name = '%s-D%d' % (so.name, offset + 1)
+        pg = self.env['procurement.group'].search(
+            [('name', '=', pg_name)], limit=1,
+        )
+        if not pg:
+            pg_vals = so._prepare_procurement_group_vals() if hasattr(
+                so, '_prepare_procurement_group_vals'
+            ) else {}
+            pg_vals.update({
+                'name': pg_name,
+                'sale_id': so.id,
+                'partner_id': so.partner_shipping_id.id or so.partner_id.id,
+            })
+            pg = self.env['procurement.group'].create(pg_vals)
+        vals['group_id'] = pg
+        # Per-day scheduled date (event_date_start + offset at event_time_start).
+        from datetime import datetime as _dt, timedelta as _td
+        start_date = so.event_date_start
+        if start_date:
+            time_start = so.event_time_start or 0.0
+            hours = int(time_start)
+            minutes = int(round((time_start - hours) * 60))
+            day_dt = _dt.combine(
+                start_date + _td(days=offset), _dt.min.time(),
+            ).replace(hour=hours, minute=minutes)
+            vals['date_planned'] = day_dt
+            vals['date_deadline'] = day_dt
+        return vals
+
 
 class SaleOrderFromCRM(models.Model):
     _inherit = 'crm.lead'
@@ -406,6 +608,10 @@ class SaleOrderFromCRM(models.Model):
             'default_delivery_type': self.delivery_type,
             'default_guest_count': self.guest_count,
             'default_event_remark': self.event_remark,
+            'default_event_date_start': self.event_date_start or self.event_date,
+            'default_event_date_end': self.event_date_end,
+            'default_event_time_start': self.event_time_start or self.delivery_time,
+            'default_event_time_end': self.event_time_end,
             'default_commitment_date': self.event_date,
             'default_delivery_time': self.delivery_time,
             'default_event_hour': self.event_hour,

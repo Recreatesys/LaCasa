@@ -54,22 +54,50 @@ class SaleOrder(models.Model):
         return res
 
     def _create_event_order(self):
-        """Create an Event Order from the confirmed Sales Order."""
+        """Create one Event Order per event day on the confirmed Sales Order.
+
+        Single-day SOs (event_day_count <= 1) get one EO tagged day 0 — same
+        as before the multi-day change. Multi-day SOs fan out N EOs, one per
+        offset 0..N-1, each carrying only that day's SO lines.
+        """
         self.ensure_one()
         EO = self.env['lcs.event.order']
-        vals = EO._prepare_eo_vals_from_so(self)
-        vals.update({
-            'sale_order_id': self.id,
-            'name': '%s-v1' % self.name,
-            'version': 1,
-        })
-        line_vals = EO._prepare_eo_lines_from_so(self)
-        vals['line_ids'] = [(0, 0, lv) for lv in line_vals]
-        return EO.create(vals)
+        day_count = max(1, self.event_day_count or 1)
+        created = EO
+        for offset in range(day_count):
+            vals = EO._prepare_eo_vals_from_so(self, day_offset=offset)
+            suffix = '-v1' if day_count == 1 else '-D%d-v1' % (offset + 1)
+            vals.update({
+                'sale_order_id': self.id,
+                'name': '%s%s' % (self.name, suffix),
+                'version': 1,
+            })
+            line_vals = EO._prepare_eo_lines_from_so(self, day_offset=offset)
+            vals['line_ids'] = [(0, 0, lv) for lv in line_vals]
+            created |= EO.create(vals)
+        return created
 
     def _sync_to_event_order(self):
         """Push current SO state to each linked EO (header + lines, bump version)."""
         self.ensure_one()
+        # Ensure one EO exists per day: create missing days for a widened range,
+        # then push the diff to every remaining EO.
+        day_count = max(1, self.event_day_count or 1)
+        existing_offsets = set(self.event_order_ids.mapped('event_day_offset'))
+        missing = [d for d in range(day_count) if d not in existing_offsets]
+        if missing:
+            EO = self.env['lcs.event.order']
+            for offset in missing:
+                vals = EO._prepare_eo_vals_from_so(self, day_offset=offset)
+                suffix = '-D%d-v1' % (offset + 1)
+                vals.update({
+                    'sale_order_id': self.id,
+                    'name': '%s%s' % (self.name, suffix),
+                    'version': 1,
+                })
+                line_vals = EO._prepare_eo_lines_from_so(self, day_offset=offset)
+                vals['line_ids'] = [(0, 0, lv) for lv in line_vals]
+                EO.create(vals)
         for eo in self.event_order_ids:
             changes = self._detect_eo_changes(eo)
             eo._update_from_sale_order(self, changes)

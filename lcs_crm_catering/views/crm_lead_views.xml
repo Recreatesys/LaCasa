@@ -19,8 +19,22 @@
                         <field name="call_van"/>
                     </group>
                     <group>
-                        <field name="event_date"/>
-                        <field name="delivery_time" widget="float_time"/>
+                        <label for="event_date_start" string="Event / Delivery Date"/>
+                        <div class="o_row">
+                            <field name="event_date_start" nolabel="1" class="oe_inline"/>
+                            <span class="mx-2">→</span>
+                            <field name="event_date_end" nolabel="1" class="oe_inline"
+                                   placeholder="(single day)"/>
+                            <field name="event_day_count" nolabel="1" class="oe_inline ms-2"
+                                   readonly="1" invisible="event_day_count &lt; 2"/>
+                            <span invisible="event_day_count &lt; 2" class="ms-1">days</span>
+                        </div>
+                        <label for="event_time_start" string="Event / Delivery Time"/>
+                        <div class="o_row">
+                            <field name="event_time_start" widget="float_time" nolabel="1" class="oe_inline"/>
+                            <span class="mx-2">→</span>
+                            <field name="event_time_end" widget="float_time" nolabel="1" class="oe_inline"/>
+                        </div>
                         <label for="event_hour"/>
                         <div>
                             <field name="event_hour" class="oe_inline"/> Hours

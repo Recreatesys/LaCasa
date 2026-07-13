@@ -46,6 +46,12 @@ class EventOrder(models.Model):
 
     # Catering fields
     brand = fields.Selection(BRAND_SELECTION, string='Brand')
+    # Multi-day support: which day of the SO event range this EO covers (0-based)
+    event_day_offset = fields.Integer(
+        string='Event Day (0-based)',
+        default=0, readonly=True,
+        help='0 = Day 1, 1 = Day 2, etc. Used when the SO spans multiple days.',
+    )
     event_date = fields.Date(string='Event / Delivery Date')
     event_street = fields.Char(string='Street')
     event_street2 = fields.Char(string='Street 2')
@@ -107,6 +113,42 @@ class EventOrder(models.Model):
         compute='_compute_has_unacknowledged_change',
         store=True,
     )
+
+    # Linked Delivery Orders (stock.pickings for this event day)
+    picking_ids = fields.Many2many(
+        'stock.picking', string='Delivery Orders',
+        compute='_compute_picking_ids',
+    )
+    picking_count = fields.Integer(
+        string='# Delivery Orders', compute='_compute_picking_ids',
+    )
+
+    @api.depends('sale_order_id.name', 'event_day_offset')
+    def _compute_picking_ids(self):
+        Picking = self.env.get('stock.picking')
+        for eo in self:
+            if Picking is None or not eo.sale_order_id:
+                eo.picking_ids = False
+                eo.picking_count = 0
+                continue
+            pg_name = '%s-D%d' % (
+                eo.sale_order_id.name, (eo.event_day_offset or 0) + 1,
+            )
+            pickings = Picking.search([
+                ('group_id.name', '=', pg_name),
+            ])
+            eo.picking_ids = pickings
+            eo.picking_count = len(pickings)
+
+    def action_view_pickings(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Delivery Orders',
+            'res_model': 'stock.picking',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', self.picking_ids.ids)],
+        }
 
     # Chef sign-off
     chef_signoff_user_id = fields.Many2one(
@@ -194,8 +236,8 @@ class EventOrder(models.Model):
         """
         self.ensure_one()
 
-        # Header refresh + version bump
-        vals = self._prepare_eo_vals_from_so(so)
+        # Header refresh + version bump. Preserve this EO's own day offset.
+        vals = self._prepare_eo_vals_from_so(so, day_offset=self.event_day_offset or 0)
         vals.update({
             'version': self.version + 1,
             'last_change_date': fields.Datetime.now(),
@@ -215,7 +257,7 @@ class EventOrder(models.Model):
         EOLine = self.env['lcs.event.order.line']
 
         # Desired state from SO (each entry carries sale_line_id)
-        desired = self._prepare_eo_lines_from_so(so)
+        desired = self._prepare_eo_lines_from_so(so, day_offset=self.event_day_offset or 0)
         desired_by_sol = {d['sale_line_id']: d for d in desired if d.get('sale_line_id')}
 
         existing_by_sol = {l.sale_line_id.id: l for l in self.line_ids if l.sale_line_id}
@@ -241,11 +283,25 @@ class EventOrder(models.Model):
                 line.unlink()
 
     @api.model
-    def _prepare_eo_vals_from_so(self, so):
-        """Prepare EO field values from a sales order."""
+    def _prepare_eo_vals_from_so(self, so, day_offset=0):
+        """Prepare EO field values from a sales order for a given day offset.
+
+        The EO's event_date is computed as SO.event_date_start + day_offset,
+        falling back to commitment_date.date() for single-day / legacy SOs.
+        """
+        from datetime import timedelta
+        # Prefer the new range fields; fall back to legacy commitment_date.
+        base_date = so.event_date_start or (
+            so.commitment_date.date() if so.commitment_date else False
+        )
+        event_date = (
+            base_date + timedelta(days=day_offset)
+            if base_date else False
+        )
         return {
             'brand': so.brand,
-            'event_date': so.commitment_date.date() if so.commitment_date else False,
+            'event_date': event_date,
+            'event_day_offset': day_offset,
             'event_street': so.partner_shipping_id.street if so.partner_shipping_id else '',
             'event_street2': so.partner_shipping_id.street2 if so.partner_shipping_id else '',
             'event_country_id': (
@@ -263,15 +319,20 @@ class EventOrder(models.Model):
         }
 
     @api.model
-    def _prepare_eo_lines_from_so(self, so):
-        """Prepare EO line values from SO lines.
+    def _prepare_eo_lines_from_so(self, so, day_offset=0):
+        """Prepare EO line values for the SO lines matching this day_offset.
 
-        If the SO line has eo_qty/eo_unit from a catering set, use those.
-        Otherwise fall back to product-level kitchen_ratio.
-        Only include lines that are selected (dish_selected) or non-set lines.
+        For single-day (or legacy) SOs, day_offset=0 catches all lines that
+        default to offset 0. For multi-day SOs, each EO gets only the SO
+        lines whose event_day_offset matches its own day.
         """
         lines = []
         for sol in so.order_line.filtered(lambda l: not l.display_type):
+            # Filter by day
+            sol_offset = int(getattr(sol, 'event_day_offset', 0) or 0)
+            if sol_offset != day_offset:
+                continue
+
             # Skip unselected set lines
             if hasattr(sol, 'is_set_line') and sol.is_set_line and not sol.dish_selected:
                 continue

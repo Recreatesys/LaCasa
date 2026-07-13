@@ -11,8 +11,22 @@
                 <field name="attention_to_id"
                        domain="[('parent_id', '=', partner_id)]"
                        context="{'default_parent_id': partner_id}"/>
-                <field name="commitment_date" string="Event / Delivery Date"/>
-                <field name="delivery_time" widget="float_time"/>
+                <label for="event_date_start" string="Event / Delivery Date"/>
+                <div class="o_row">
+                    <field name="event_date_start" nolabel="1" class="oe_inline"/>
+                    <span class="mx-2">→</span>
+                    <field name="event_date_end" nolabel="1" class="oe_inline"
+                           placeholder="(single day)"/>
+                    <field name="event_day_count" nolabel="1" class="oe_inline ms-2"
+                           readonly="1" invisible="event_day_count &lt; 2"/>
+                    <span invisible="event_day_count &lt; 2" class="ms-1">days</span>
+                </div>
+                <label for="event_time_start" string="Event / Delivery Time"/>
+                <div class="o_row">
+                    <field name="event_time_start" widget="float_time" nolabel="1" class="oe_inline"/>
+                    <span class="mx-2">→</span>
+                    <field name="event_time_end" widget="float_time" nolabel="1" class="oe_inline"/>
+                </div>
                 <label for="event_hour"/>
                 <div>
                     <field name="event_hour" class="oe_inline"/> Hours
@@ -42,6 +56,117 @@
                         <field name="so_prefix_preview" readonly="1"/>
                     </group>
                 </group>
+            </xpath>
+
+            <!-- Multi-day: hide the stock Order Lines tab when >1 day; the
+                 per-day tabs below take over. -->
+            <xpath expr="//page[@name='order_lines']" position="attributes">
+                <attribute name="invisible">event_day_count &gt; 1</attribute>
+            </xpath>
+
+            <!-- Per-day Order Lines tabs (up to 7). Each renders a filtered
+                 slice of order_line via computed order_line_day_N.
+                 Line-level default_event_day_offset ensures new lines land
+                 in the right day. -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Day 1 Order Lines" name="order_lines_day_1"
+                      invisible="event_day_count &lt; 2">
+                    <field name="order_line_day_1"
+                           context="{'default_event_day_offset': 0}">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="product_uom_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal" sum="Subtotal"/>
+                            <field name="event_day_offset" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Day 2 Order Lines" name="order_lines_day_2"
+                      invisible="event_day_count &lt; 2">
+                    <field name="order_line_day_2"
+                           context="{'default_event_day_offset': 1}">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="product_uom_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal" sum="Subtotal"/>
+                            <field name="event_day_offset" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Day 3 Order Lines" name="order_lines_day_3"
+                      invisible="event_day_count &lt; 3">
+                    <field name="order_line_day_3"
+                           context="{'default_event_day_offset': 2}">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="product_uom_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal" sum="Subtotal"/>
+                            <field name="event_day_offset" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Day 4 Order Lines" name="order_lines_day_4"
+                      invisible="event_day_count &lt; 4">
+                    <field name="order_line_day_4"
+                           context="{'default_event_day_offset': 3}">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="product_uom_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal" sum="Subtotal"/>
+                            <field name="event_day_offset" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Day 5 Order Lines" name="order_lines_day_5"
+                      invisible="event_day_count &lt; 5">
+                    <field name="order_line_day_5"
+                           context="{'default_event_day_offset': 4}">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="product_uom_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal" sum="Subtotal"/>
+                            <field name="event_day_offset" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Day 6 Order Lines" name="order_lines_day_6"
+                      invisible="event_day_count &lt; 6">
+                    <field name="order_line_day_6"
+                           context="{'default_event_day_offset': 5}">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="product_uom_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal" sum="Subtotal"/>
+                            <field name="event_day_offset" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Day 7 Order Lines" name="order_lines_day_7"
+                      invisible="event_day_count &lt; 7">
+                    <field name="order_line_day_7"
+                           context="{'default_event_day_offset': 6}">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="name"/>
+                            <field name="product_uom_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal" sum="Subtotal"/>
+                            <field name="event_day_offset" column_invisible="1"/>
+                        </list>
+                    </field>
+                </page>
             </xpath>
 
             <!-- Waiters tab — visible only when Waiter Service is ticked -->
