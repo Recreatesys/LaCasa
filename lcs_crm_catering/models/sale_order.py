@@ -1,6 +1,7 @@
 from odoo import _, api, fields, models
 from odoo.addons.lcs_crm_catering.models.crm_lead import (
     BRAND_SELECTION,
+    CALL_VAN_SELECTION,
     CLIENT_TYPE_SELECTION,
     DELIVERY_TYPE_SELECTION,
     SERVICE_FORMAT_SELECTION,
@@ -32,25 +33,6 @@ PAYMENT_METHOD_SELECTION = [
     ('monthly', 'Monthly'),
     ('option_1', 'Option 1'),
 ]
-
-CALL_VAN_SELECTION = [
-    ('ah_yuen', '阿源'),
-    ('no_need', 'No need'),
-    ('event_team', 'Arranged by event team'),
-    ('man_zai', '文仔'),
-    ('lalamove', 'Lalamove'),
-    ('hang_gor', '恆哥'),
-    ('self_deliver', '自己送'),
-    ('roy', 'Roy'),
-    ('lik_pak', '力柏'),
-    ('self_pickup', 'Self Pick-up'),
-    ('dat', '達'),
-    ('fu_gor', '虎哥'),
-    ('supervan', 'SuperVan'),
-    ('gogovan', 'GoGoVan'),
-    ('leopard', 'Leopard'),
-]
-
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -97,11 +79,63 @@ class SaleOrder(models.Model):
         help='Contact person for this order',
     )
     call_van = fields.Selection(CALL_VAN_SELECTION, string='Call Van')
-    delivery_time = fields.Float(string='Event / Delivery Time')
+
+    # ── Event / Delivery — date range (multi-day events) ──
+    event_date_start = fields.Date(
+        string='Event / Delivery Date (Start)',
+    )
+    event_date_end = fields.Date(
+        string='Event / Delivery Date (End)',
+        help='Leave blank for a single-day event.',
+    )
+    event_day_count = fields.Integer(
+        string='# Days',
+        compute='_compute_event_day_count', store=True,
+    )
+
+    # ── Event / Delivery — time slot ──
+    event_time_start = fields.Float(
+        string='Event / Delivery Time (Start)',
+        help='Time of day the event starts / delivery is due (HH:MM).',
+    )
+    event_time_end = fields.Float(
+        string='Event / Delivery Time (End)',
+        help='Time of day the event ends (HH:MM).',
+    )
+    # Back-compat alias — read by lcs_event_order sync and imports.
+    delivery_time = fields.Float(
+        string='Event / Delivery Time',
+        related='event_time_start', store=True, readonly=False,
+    )
     event_hour = fields.Float(
         string='Event Hour',
         help='Duration of the event, in hours.',
     )
+
+    @api.depends('event_date_start', 'event_date_end')
+    def _compute_event_day_count(self):
+        for so in self:
+            start = so.event_date_start
+            end = so.event_date_end or start
+            if not start:
+                so.event_day_count = 0
+            elif end < start:
+                so.event_day_count = 1
+            else:
+                so.event_day_count = (end - start).days + 1
+
+    @api.constrains('event_date_start', 'event_date_end')
+    def _check_event_date_range(self):
+        for so in self:
+            if so.event_date_end and so.event_date_start and \
+                    so.event_date_end < so.event_date_start:
+                raise UserError(_(
+                    'Event end date must be on or after the start date.'
+                ))
+            if so.event_day_count > 7:
+                raise UserError(_(
+                    'Event range is limited to 7 consecutive days.'
+                ))
 
     # ──────────────────────────────────────────────────────────
     # Waiter assignments (Event Catering only)
@@ -378,6 +412,7 @@ class SaleOrderFromCRM(models.Model):
             'default_no_logo': self.no_logo,
             'default_waiter_service': self.waiter_service,
             'default_is_wedding': self.is_wedding,
+            'default_call_van': self.call_van,
         })
         # Build delivery address
         if self.event_street:

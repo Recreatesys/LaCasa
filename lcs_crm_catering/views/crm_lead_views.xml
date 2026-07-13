@@ -16,6 +16,7 @@
                         <field name="service_type"/>
                         <field name="delivery_type"/>
                         <field name="waiter_service"/>
+                        <field name="call_van"/>
                     </group>
                     <group>
                         <field name="event_date"/>

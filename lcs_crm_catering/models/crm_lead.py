@@ -54,19 +54,91 @@ DELIVERY_TYPE_SELECTION = [
     ('drop_off_door', 'Drop-off (Door to door)'),
 ]
 
+CALL_VAN_SELECTION = [
+    ('preferred_driver', 'Preferred Driver'),
+    ('ah_yuen', '阿源'),
+    ('no_need', 'No need'),
+    ('event_team', 'Arranged by event team'),
+    ('man_zai', '文仔'),
+    ('lalamove', 'Lalamove'),
+    ('hang_gor', '恆哥'),
+    ('self_deliver', '自己送'),
+    ('roy', 'Roy'),
+    ('lik_pak', '力柏'),
+    ('self_pickup', 'Self Pick-up'),
+    ('dat', '達'),
+    ('fu_gor', '虎哥'),
+    ('supervan', 'SuperVan'),
+    ('gogovan', 'GoGoVan'),
+    ('leopard', 'Leopard'),
+]
+
+
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
-    # Event / Delivery fields
-    event_date = fields.Date(string='Event / Delivery Date')
-    delivery_time = fields.Float(
-        string='Event / Delivery Time',
+    # ── Event / Delivery — date range ──
+    event_date_start = fields.Date(
+        string='Event / Delivery Date (Start)',
+    )
+    event_date_end = fields.Date(
+        string='Event / Delivery Date (End)',
+        help='Leave blank for a single-day event.',
+    )
+    event_day_count = fields.Integer(
+        string='# Days',
+        compute='_compute_event_day_count', store=True,
+    )
+    # Back-compat alias for existing code, imports and integrations.
+    event_date = fields.Date(
+        string='Event / Delivery Date',
+        related='event_date_start', store=True, readonly=False,
+    )
+
+    # ── Event / Delivery — time slot ──
+    event_time_start = fields.Float(
+        string='Event / Delivery Time (Start)',
         help='Time of day the event starts / delivery is due (HH:MM).',
     )
+    event_time_end = fields.Float(
+        string='Event / Delivery Time (End)',
+        help='Time of day the event ends (HH:MM).',
+    )
+    # Back-compat alias — old name still used by lcs_event_order sync + imports.
+    delivery_time = fields.Float(
+        string='Event / Delivery Time',
+        related='event_time_start', store=True, readonly=False,
+    )
+
     event_hour = fields.Float(
         string='Event Hour',
         help='Duration of the event, in hours (e.g. 3 or 3.5).',
     )
+
+    @api.depends('event_date_start', 'event_date_end')
+    def _compute_event_day_count(self):
+        for rec in self:
+            start = rec.event_date_start
+            end = rec.event_date_end or start
+            if not start:
+                rec.event_day_count = 0
+            elif end < start:
+                rec.event_day_count = 1
+            else:
+                rec.event_day_count = (end - start).days + 1
+
+    @api.constrains('event_date_start', 'event_date_end')
+    def _check_event_date_range(self):
+        for rec in self:
+            if rec.event_date_end and rec.event_date_start and \
+                    rec.event_date_end < rec.event_date_start:
+                raise UserError(_(
+                    'Event end date must be on or after the start date.'
+                ))
+            if rec.event_day_count > 7:
+                raise UserError(_(
+                    'Event range is limited to 7 consecutive days.'
+                ))
     event_street = fields.Char(string='Street')
     event_street2 = fields.Char(string='Street 2')
     event_country_id = fields.Many2one(
@@ -90,6 +162,11 @@ class CrmLead(models.Model):
     waiter_service = fields.Boolean(
         string='Waiter Service',
         help='Tick if this event requires waiter staffing. Reveals the Waiters tab on the SO.',
+    )
+    call_van = fields.Selection(
+        CALL_VAN_SELECTION, string='Call Van',
+        help='Preferred driver / van arrangement. Defaults to "Preferred Driver" as a '
+             'temporary answer; can be changed on the SO or Event Order later.',
     )
     is_wedding = fields.Boolean(
         string='Wedding-related',

@@ -1,11 +1,12 @@
 from odoo import fields, models
 from odoo.addons.lcs_crm_catering.models.crm_lead import (
     BRAND_SELECTION,
+    CALL_VAN_SELECTION,
     DELIVERY_TYPE_SELECTION,
     SERVICE_FORMAT_SELECTION,
     SERVICE_TYPE_SELECTION,
 )
-from odoo.addons.lcs_crm_catering.models.sale_order import CALL_VAN_SELECTION, PAYMENT_METHOD_SELECTION
+from odoo.addons.lcs_crm_catering.models.sale_order import PAYMENT_METHOD_SELECTION
 
 
 class AccountMove(models.Model):
