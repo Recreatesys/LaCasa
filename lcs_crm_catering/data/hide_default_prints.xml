@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Remove noise from the Print dropdown on SO and Invoice forms.
+         We keep the report actions themselves (so any hard-coded links keep
+         working); we only clear their binding_model_id so they no longer
+         auto-appear under Print → menu. -->
+
+    <!-- ── Sales Order ── -->
+    <!-- 'PDF Quote' -->
+    <record id="sale.action_report_saleorder" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">action</field>
+    </record>
+
+    <!-- 'Quotation / Order' (from sale_pdf_quote_builder) -->
+    <record id="sale_pdf_quote_builder.action_report_saleorder_raw" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">action</field>
+    </record>
+
+    <!-- ── Invoice ── -->
+    <!-- 'Invoice PDF' -->
+    <record id="account.account_invoices" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">action</field>
+    </record>
+
+    <!-- 'PDF without Payment' -->
+    <record id="account.account_invoices_without_payment" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">action</field>
+    </record>
+
+</odoo>
