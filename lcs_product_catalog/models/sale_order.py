@@ -72,8 +72,17 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     def action_reload_sets(self):
-        """Remove all existing set lines and re-expand with current guest count."""
+        """Recalculate set-line quantities from the current guest count.
+
+        Draft SOs: full rebuild (unlink existing set lines and re-expand).
+        Confirmed / done SOs: in-place quantity update — Odoo blocks line
+        deletion once an SO is confirmed, so we mirror the qty formula from
+        action_expand_sets and write it back onto the existing lines.
+        """
         self.ensure_one()
+        if self.state != 'draft':
+            return self._reload_sets_in_place()
+
         # Remember which dishes were selected
         selected = {}
         for line in self.order_line.filtered(lambda l: l.is_set_line and l.dish_selected):
@@ -120,6 +129,59 @@ class SaleOrder(models.Model):
                     'price_unit': line.full_price,
                     'product_uom_qty': selected[key] if line.is_addon_piece else line.product_uom_qty,
                 })
+
+    def _reload_sets_in_place(self):
+        """Update existing set-line quantities from the current guest count
+        WITHOUT unlinking (Odoo blocks line deletion on confirmed SOs).
+
+        For each existing set line SOL, look up its source `set_line` in the
+        catering set (matched by product_id + set_line_code) and recompute
+        product_uom_qty using the same formula as action_expand_sets. Prices,
+        set_unit, EO qty/unit, and description are left untouched.
+        """
+        import math
+        self.ensure_one()
+        guest_count = self.guest_count or 0
+
+        # Skip auto-managed add-on lines — their qty is user-selected.
+        set_sols = self.order_line.filtered(
+            lambda l: l.is_set_line and not l.is_addon_piece and l.catering_set_id
+        )
+        for sol in set_sols:
+            catering_set = sol.catering_set_id
+            effective_guests = max(
+                catering_set.min_guest_count or 0, guest_count or 0
+            )
+            # Find the source set.line for this SOL.
+            set_line = catering_set.line_ids.filtered(
+                lambda sl: sl.product_id == sol.product_id
+                and (sl.code or '') == (sol.set_line_code or '')
+            )[:1]
+            if not set_line:
+                continue
+
+            size_key = self._resolve_size(catering_set, set_line, effective_guests)
+            _price, actual_size = set_line.get_price_for_size(size_key)
+
+            qty = set_line.qty or 1
+            if actual_size == 'per_piece' and effective_guests:
+                qty = effective_guests
+
+            category_id = set_line.product_id.categ_id.id if set_line.product_id else False
+            ratio_tier = catering_set.get_ratio_tier(
+                effective_guests, category_id
+            ) if effective_guests else False
+            if ratio_tier:
+                mode = ratio_tier.tier_mode or 'ratio'
+                if mode == 'fixed' and ratio_tier.invoice_qty:
+                    qty = ratio_tier.invoice_qty
+                elif mode == 'formula' and ratio_tier.per_pax_qty:
+                    qty = math.ceil(effective_guests * ratio_tier.per_pax_qty)
+                elif ratio_tier.invoice_unit and ratio_tier.ratio and ratio_tier.ratio > 0:
+                    qty = math.ceil(effective_guests / ratio_tier.ratio)
+
+            if qty != sol.product_uom_qty:
+                sol.product_uom_qty = qty
 
     def action_open_set_picker(self):
         """Open a popup listing all active catering sets so the user can pick one."""
