@@ -193,15 +193,15 @@
                     <group>
                         <group>
                             <field name="waiter_count"
-                                   readonly="len(waiter_line_ids) &gt; 0"/>
+                                   readonly="has_waiter_rows"/>
                         </group>
                         <group>
                             <field name="waiter_total_hours"
                                    widget="float" digits="[8,2]"
-                                   readonly="len(waiter_line_ids) &gt; 0"/>
+                                   readonly="has_waiter_rows"/>
                         </group>
                     </group>
-                    <p class="text-muted small" invisible="len(waiter_line_ids) &gt; 0">
+                    <p class="text-muted small" invisible="has_waiter_rows">
                         Waiter table is empty — # Waiters and Total Person-Hours can
                         be typed manually. They auto-sync to the table once you add
                         rows below.

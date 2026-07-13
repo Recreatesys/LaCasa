@@ -197,6 +197,17 @@ class SaleOrder(models.Model):
     waiter_line_ids = fields.One2many(
         'lcs.sale.waiter.line', 'order_id', string='Waiters',
     )
+    has_waiter_rows = fields.Boolean(
+        compute='_compute_has_waiter_rows', store=True,
+        help='True when the Waiter table has at least one row. Used by '
+             'the view to gate readonly on # Waiters and Total Person-Hours.',
+    )
+
+    @api.depends('waiter_line_ids')
+    def _compute_has_waiter_rows(self):
+        for so in self:
+            so.has_waiter_rows = bool(so.waiter_line_ids)
+
     # Both counters are plain editable fields. They auto-sync from the
     # Waiter table when the table has rows, and can be typed manually
     # when the table is empty. Either path also drives the Waiter Service
