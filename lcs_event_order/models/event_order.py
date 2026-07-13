@@ -123,20 +123,18 @@ class EventOrder(models.Model):
         string='# Delivery Orders', compute='_compute_picking_ids',
     )
 
-    @api.depends('sale_order_id.name', 'event_day_offset')
+    @api.depends('sale_order_id', 'event_day_offset')
     def _compute_picking_ids(self):
+        # v19 removed procurement.group; stock.picking now links directly to
+        # sale.order via `sale_id`. Per-day splitting via group_id.name is
+        # no longer available and needs a proper refactor (TODO).
         Picking = self.env.get('stock.picking')
         for eo in self:
             if Picking is None or not eo.sale_order_id:
                 eo.picking_ids = False
                 eo.picking_count = 0
                 continue
-            pg_name = '%s-D%d' % (
-                eo.sale_order_id.name, (eo.event_day_offset or 0) + 1,
-            )
-            pickings = Picking.search([
-                ('group_id.name', '=', pg_name),
-            ])
+            pickings = Picking.search([('sale_id', '=', eo.sale_order_id.id)])
             eo.picking_ids = pickings
             eo.picking_count = len(pickings)
 
