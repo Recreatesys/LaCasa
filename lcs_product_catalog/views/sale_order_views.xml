@@ -12,20 +12,17 @@
                         string="Add a Set"
                         type="object"
                         class="btn-primary mb-2 me-2"
-                        icon="fa-plus-circle"
-                        invisible="state != 'draft'"/>
+                        icon="fa-plus-circle"/>
                 <button name="action_expand_sets"
                         string="Expand Sets"
                         type="object"
                         class="btn-secondary mb-2 me-2"
-                        icon="fa-cutlery"
-                        invisible="state != 'draft'"/>
+                        icon="fa-cutlery"/>
                 <button name="action_reload_sets"
                         string="Reload Sets (Update Guest Count)"
                         type="object"
                         class="btn-link mb-2"
                         icon="fa-refresh"
-                        invisible="state != 'draft'"
                         confirm="This will recalculate all set lines based on the current guest count. Your dish selections will be preserved. Continue?"/>
             </xpath>
 
