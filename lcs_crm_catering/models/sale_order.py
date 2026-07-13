@@ -197,20 +197,46 @@ class SaleOrder(models.Model):
     waiter_line_ids = fields.One2many(
         'lcs.sale.waiter.line', 'order_id', string='Waiters',
     )
+    # Both counters are plain editable fields. They auto-sync from the
+    # Waiter table when the table has rows, and can be typed manually
+    # when the table is empty. Either path also drives the Waiter Service
+    # SO product line via _sync_waiter_service_line().
     waiter_count = fields.Integer(
-        string='# Waiters', compute='_compute_waiter_totals', store=True,
+        string='# Waiters', default=0,
+        help='Number of waiters for the event. Auto-syncs to the Waiter '
+             'table row count when the table has at least one row; '
+             'otherwise editable manually.',
     )
     waiter_total_hours = fields.Float(
-        string='Total Person-Hours',
-        compute='_compute_waiter_totals',
-        store=True, digits=(8, 2),
+        string='Total Person-Hours', default=0.0, digits=(8, 2),
+        help='Auto-syncs to the sum of hours in the Waiter table when it '
+             'has rows. When the table is empty, auto-fills to '
+             '# Waiters × Event Hour on change, and stays editable.',
     )
 
-    @api.depends('waiter_line_ids', 'waiter_line_ids.hours')
-    def _compute_waiter_totals(self):
+    @api.onchange('waiter_line_ids')
+    def _onchange_waiter_line_ids_sync(self):
+        """Auto-populate counters from the Waiter table when it has rows."""
         for order in self:
-            order.waiter_count = len(order.waiter_line_ids)
-            order.waiter_total_hours = sum(order.waiter_line_ids.mapped('hours'))
+            if order.waiter_line_ids:
+                order.waiter_count = len(order.waiter_line_ids)
+                order.waiter_total_hours = sum(
+                    order.waiter_line_ids.mapped('hours')
+                )
+            # else: leave manually-entered values in place
+
+    @api.onchange('waiter_count', 'event_hour')
+    def _onchange_waiter_count_derive_hours(self):
+        """When user types # Waiters manually (no table rows), derive
+        Total Person-Hours from # Waiters × Event Hour."""
+        for order in self:
+            if order.waiter_line_ids:
+                # table drives the values; ignore manual count changes here
+                continue
+            if order.waiter_count and order.event_hour:
+                order.waiter_total_hours = (
+                    order.waiter_count * order.event_hour
+                )
 
     # ──────────────────────────────────────────────────────────
     # Hardware (rented or sold goods listed on the SO)
@@ -264,11 +290,14 @@ class SaleOrder(models.Model):
                 seq += 1
 
     def _sync_waiter_service_line(self):
-        """Maintain a "Waiter Service" section + product line on the SO,
-        driven by the current waiter_line_ids.
+        """Maintain a "Waiter Service" section + product line on the SO.
 
-        Quantity = sum of (end - start) across all waiter lines (person-hours).
-        Price unit = the Waiter Service product's list price.
+        Driven by whichever data path the user chose:
+          - Waiter table has rows → use its row count + summed hours.
+          - Waiter table empty but waiter_count > 0 → use the manually-
+            typed count and waiter_total_hours (auto-derived from
+            # Waiters × Event Hour, or manually overridden).
+          - Neither → no waiter line on the SO (any existing one is dropped).
         """
         product_template = self.env.ref(
             'lcs_crm_catering.product_template_waiter_service',
@@ -290,7 +319,12 @@ class SaleOrder(models.Model):
                 lambda l: not l.display_type and l.product_id == product
             )
 
-            if not order.waiter_line_ids:
+            # Drop the waiter line if neither the table nor the manual
+            # counters carry any signal.
+            has_data = bool(order.waiter_line_ids) or (
+                order.waiter_count > 0 and order.waiter_total_hours > 0
+            )
+            if not has_data:
                 existing.unlink()
                 continue
 
@@ -415,6 +449,15 @@ class SaleOrder(models.Model):
         if shrink_snapshot:
             for so in self.browse(list(shrink_snapshot.keys())):
                 so._prune_days_beyond(shrink_snapshot[so.id])
+
+        # Sync the "Waiter Service" SO line whenever any of its inputs move.
+        if not self.env.context.get('skip_waiter_sync') and (
+            {'waiter_count', 'waiter_total_hours', 'waiter_line_ids',
+             'event_hour'} & set(vals)
+        ):
+            for so in self:
+                if so.state != 'cancel':
+                    so._sync_waiter_service_line()
 
         if 'call_van' in vals and not self.env.context.get('skip_call_van_sync'):
             for so in self:
