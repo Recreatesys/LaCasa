@@ -7,10 +7,9 @@
         <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
         <field name="arch" type="xml">
 
-            <!-- CC field, right below the recipients / "To:" block -->
+            <!-- CC field, just above the Subject line. The parent <group>
+                 auto-renders the label from the field's `string="Cc"`. -->
             <xpath expr="//field[@name='subject']" position="before">
-                <label for="email_cc" string="Cc"
-                       invisible="composition_mode != 'comment' or subtype_is_log"/>
                 <field name="email_cc"
                        placeholder="e.g. copies@company.com, boss@company.com"
                        invisible="composition_mode != 'comment' or subtype_is_log"/>
