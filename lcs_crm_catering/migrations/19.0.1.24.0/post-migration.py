@@ -8,7 +8,7 @@ After copy, drop the legacy setup_type column on all three tables.
 """
 
 
-def migrate(cr, installed_version):
+def migrate(cr, version):
     for table in ('crm_lead', 'sale_order', 'account_move'):
         cr.execute(
             f"""
