@@ -19,5 +19,11 @@
             <field name="perm_unlink" eval="True"/>
         </record>
 
+        <!-- Grant the "Discount per SO line" group to all internal users so
+             the Disc.% column shows on Sales Order lines by default. -->
+        <record id="base.group_user" model="res.groups">
+            <field name="implied_ids" eval="[(4, ref('sale.group_discount_per_so_line'))]"/>
+        </record>
+
     </data>
 </odoo>

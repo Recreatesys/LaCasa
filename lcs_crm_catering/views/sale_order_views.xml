@@ -64,6 +64,23 @@
                 <attribute name="invisible">event_day_count &gt; 1</attribute>
             </xpath>
 
+            <!-- Hide Delivered / Invoiced columns by default (users can
+                 re-enable them via the column selector). -->
+            <xpath expr="//field[@name='order_line']//list//field[@name='qty_delivered']"
+                   position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='qty_invoiced']"
+                   position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+
+            <!-- Hide the "Discount" wizard button (global-discount action). -->
+            <xpath expr="//button[@name='action_open_discount_wizard']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
             <!-- Per-day Order Lines tabs (up to 7). Each renders a filtered
                  slice of order_line via computed order_line_day_N.
                  Line-level default_event_day_offset ensures new lines land

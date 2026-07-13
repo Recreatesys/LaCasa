@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="product_template_free_delivery" model="product.template">
+            <field name="name">Free Delivery</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="description_sale">Complimentary delivery — no charge.</field>
+        </record>
+
+    </data>
+</odoo>
