@@ -5,7 +5,6 @@ from odoo.addons.lcs_crm_catering.models.crm_lead import (
     DELIVERY_TYPE_SELECTION,
     SERVICE_FORMAT_SELECTION,
     SERVICE_TYPE_SELECTION,
-    SETUP_TYPE_SELECTION,
 )
 
 
@@ -68,9 +67,9 @@ class SaleOrder(models.Model):
         string='No Logo',
         help='Hide LaCasa branding from packaging / signage (white-label).',
     )
-    setup_type = fields.Selection(
-        SETUP_TYPE_SELECTION, string='Setup Type',
-        help='Distinguishes equipment-only / simple-setup orders from full event service.',
+    waiter_service = fields.Boolean(
+        string='Waiter Service',
+        help='Tick if this event requires waiter staffing. Reveals the Waiters tab.',
     )
     is_wedding = fields.Boolean(
         string='Wedding-related',
@@ -246,7 +245,7 @@ class SaleOrder(models.Model):
 
     @api.model
     def _resolve_seq_prefix(self, brand, service_format, service_type,
-                            setup_type, no_logo, is_wedding):
+                            no_logo, is_wedding):
         """Resolve the SO sequence prefix from order attributes.
 
         Returns one of the keys of SO_SEQUENCE_PREFIX_MAP, or None if no
@@ -262,8 +261,6 @@ class SaleOrder(models.Model):
             return 'lacasaW'
         if service_type == 'food_tasting':
             return 'lacasaWFT' if is_wedding else 'lacasaFT'
-        if setup_type in ('equipment_only', 'simple_setup'):
-            return 'lacasaK'
         if service_format == 'event_catering':
             return 'lacasaE_N_' if no_logo else 'lacasaE'
         if service_format == 'food_delivery':
@@ -271,12 +268,12 @@ class SaleOrder(models.Model):
         return None
 
     @api.depends('brand', 'service_format', 'service_type',
-                 'setup_type', 'no_logo', 'is_wedding')
+                 'no_logo', 'is_wedding')
     def _compute_so_prefix_preview(self):
         for order in self:
             prefix = self._resolve_seq_prefix(
                 order.brand, order.service_format, order.service_type,
-                order.setup_type, order.no_logo, order.is_wedding,
+                order.no_logo, order.is_wedding,
             )
             order.so_prefix_preview = prefix or _('(default)')
 
@@ -291,7 +288,6 @@ class SaleOrder(models.Model):
                 vals.get('brand'),
                 vals.get('service_format'),
                 vals.get('service_type'),
-                vals.get('setup_type'),
                 vals.get('no_logo'),
                 vals.get('is_wedding'),
             )
@@ -341,7 +337,7 @@ class SaleOrder(models.Model):
             'event_remark': self.event_remark,
             'payment_method': self.payment_method,
             'no_logo': self.no_logo,
-            'setup_type': self.setup_type,
+            'waiter_service': self.waiter_service,
             'is_wedding': self.is_wedding,
         })
         return vals
@@ -380,7 +376,7 @@ class SaleOrderFromCRM(models.Model):
             'default_delivery_time': self.delivery_time,
             'default_event_hour': self.event_hour,
             'default_no_logo': self.no_logo,
-            'default_setup_type': self.setup_type,
+            'default_waiter_service': self.waiter_service,
             'default_is_wedding': self.is_wedding,
         })
         # Build delivery address

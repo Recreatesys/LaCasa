@@ -4,7 +4,6 @@ from odoo.addons.lcs_crm_catering.models.crm_lead import (
     DELIVERY_TYPE_SELECTION,
     SERVICE_FORMAT_SELECTION,
     SERVICE_TYPE_SELECTION,
-    SETUP_TYPE_SELECTION,
 )
 from odoo.addons.lcs_crm_catering.models.sale_order import CALL_VAN_SELECTION, PAYMENT_METHOD_SELECTION
 
@@ -33,9 +32,7 @@ class AccountMove(models.Model):
         string='No Logo',
         help='Hide LaCasa branding from packaging / signage (white-label).',
     )
-    setup_type = fields.Selection(
-        SETUP_TYPE_SELECTION, string='Setup Type',
-    )
+    waiter_service = fields.Boolean(string='Waiter Service')
     is_wedding = fields.Boolean(
         string='Wedding-related',
     )

@@ -54,13 +54,6 @@ DELIVERY_TYPE_SELECTION = [
     ('drop_off_door', 'Drop-off (Door to door)'),
 ]
 
-SETUP_TYPE_SELECTION = [
-    ('with_waiter', 'Event with Waiter Service'),
-    ('equipment_only', 'Equipment Rental Only'),
-    ('simple_setup', 'Simple Setup (No Waiter, Driver Only)'),
-]
-
-
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
@@ -94,10 +87,9 @@ class CrmLead(models.Model):
         string='No Logo',
         help='Hide LaCasa branding from packaging / signage (white-label).',
     )
-    setup_type = fields.Selection(
-        SETUP_TYPE_SELECTION,
-        string='Setup Type',
-        help='Distinguishes equipment-only / simple-setup orders from full event service.',
+    waiter_service = fields.Boolean(
+        string='Waiter Service',
+        help='Tick if this event requires waiter staffing. Reveals the Waiters tab on the SO.',
     )
     is_wedding = fields.Boolean(
         string='Wedding-related',
