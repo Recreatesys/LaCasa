@@ -112,8 +112,20 @@ class CrmLead(models.Model):
 
     event_hour = fields.Float(
         string='Event Hour',
-        help='Duration of the event, in hours (e.g. 3 or 3.5).',
+        help='Duration of the event, in hours (e.g. 3 or 3.5). '
+             'Auto-derived from Event / Delivery Time (end - start) when '
+             'both times are entered; still editable manually.',
     )
+
+    @api.onchange('event_time_start', 'event_time_end')
+    def _onchange_event_time_derive_hour(self):
+        """When both start and end are set, auto-fill Event Hour from
+        the interval. If end <= start, leave Event Hour untouched (user
+        may still be typing)."""
+        for rec in self:
+            if rec.event_time_start and rec.event_time_end \
+                    and rec.event_time_end > rec.event_time_start:
+                rec.event_hour = rec.event_time_end - rec.event_time_start
 
     @api.depends('event_date_start', 'event_date_end')
     def _compute_event_day_count(self):

@@ -109,8 +109,17 @@ class SaleOrder(models.Model):
     )
     event_hour = fields.Float(
         string='Event Hour',
-        help='Duration of the event, in hours.',
+        help='Duration of the event, in hours. Auto-derived from '
+             'Event / Delivery Time (end - start) when both times are '
+             'entered; still editable manually.',
     )
+
+    @api.onchange('event_time_start', 'event_time_end')
+    def _onchange_event_time_derive_hour(self):
+        for order in self:
+            if order.event_time_start and order.event_time_end \
+                    and order.event_time_end > order.event_time_start:
+                order.event_hour = order.event_time_end - order.event_time_start
 
     # Per-day One2many slices — one field per possible day (up to 7).
     # These are computed from order_line by filtering on event_day_offset.
@@ -548,6 +557,80 @@ class SaleOrder(models.Model):
                 self.attention_to_id = self.partner_id
             else:
                 self.attention_to_id = False
+
+    # ──────────────────────────────────────────────────────────
+    # Per-day picking split (v19 replacement for procurement.group)
+    # ──────────────────────────────────────────────────────────
+    def action_confirm(self):
+        """Standard confirm creates one pooled picking with all moves.
+        Split it into one picking per event day for multi-day catering
+        events, tagging each with event_day_offset for downstream linkage."""
+        res = super().action_confirm()
+        for so in self:
+            so._split_pickings_per_day()
+        return res
+
+    def _day_scheduled_dt(self, day_offset):
+        """Combine event_date_start + offset at event_time_start."""
+        from datetime import datetime as _dt, timedelta as _td
+        start_date = self.event_date_start
+        if not start_date:
+            return False
+        time_start = self.event_time_start or 0.0
+        hours = int(time_start)
+        minutes = int(round((time_start - hours) * 60))
+        return _dt.combine(
+            start_date + _td(days=int(day_offset)), _dt.min.time(),
+        ).replace(hour=hours, minute=minutes)
+
+    def _split_pickings_per_day(self):
+        """Fan out this SO's pooled picking(s) into one picking per event day.
+
+        For each picking linked to this SO:
+        - Group its moves by sale_line_id.event_day_offset.
+        - Keep the earliest day on the original picking (tagged with that
+          day's offset + scheduled_date).
+        - For each additional day present, copy the picking header (empty),
+          tag it with the day offset, set its scheduled_date, and reassign
+          the day's moves to it.
+
+        Single-day SOs (event_day_count <= 1): no-op; the standard picking
+        stays as-is (event_day_offset stays 0).
+        """
+        self.ensure_one()
+        if (self.event_day_count or 0) < 2:
+            return
+        Picking = self.env.get('stock.picking')
+        if Picking is None:
+            return
+        pickings = Picking.search([('sale_id', '=', self.id)])
+        for picking in pickings:
+            moves_by_day = {}
+            for move in picking.move_ids:
+                sol = move.sale_line_id
+                day = int(sol.event_day_offset or 0) if sol else 0
+                moves_by_day.setdefault(day, self.env['stock.move'])
+                moves_by_day[day] |= move
+            if not moves_by_day:
+                continue
+            sorted_days = sorted(moves_by_day.keys())
+            first_day = sorted_days[0]
+            # Original picking becomes the first day's picking.
+            first_dt = self._day_scheduled_dt(first_day)
+            picking.event_day_offset = first_day
+            if first_dt:
+                picking.scheduled_date = first_dt
+                picking.date_deadline = first_dt
+            # Additional days: copy the picking header and reassign moves.
+            for day in sorted_days[1:]:
+                dt = self._day_scheduled_dt(day)
+                new_pick = picking.copy({
+                    'move_ids': [],
+                    'event_day_offset': day,
+                    'scheduled_date': dt or picking.scheduled_date,
+                    'date_deadline': dt or picking.date_deadline,
+                })
+                moves_by_day[day].write({'picking_id': new_pick.id})
 
     def _prepare_invoice(self):
         """Pass catering fields to the invoice."""
