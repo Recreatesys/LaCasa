@@ -222,26 +222,46 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="o.invoice_line_ids.filtered(lambda l: l.display_type == 'product')" t-as="line">
-                            <t t-set="src" t-value="line.sale_line_ids[:1]"/>
-                            <t t-set="skip" t-value="src and (src.is_addon_piece or (src.is_set_line and not src.dish_selected))"/>
-                            <tr t-if="not skip" style="border-bottom: 1px solid #eee; break-inside: avoid;">
-                                <td style="padding: 5px; white-space: pre-line;">
-                                    <span t-field="line.name"/>
-                                </td>
-                                <td style="text-align: right; padding: 5px;">
-                                    HK$<span t-field="line.price_unit"/>
-                                </td>
-                                <td style="text-align: right; padding: 5px;">
-                                    <span t-field="line.quantity"/>
-                                    <t t-if="src and src.set_unit">
-                                        <small style="color: #666;"> <span t-field="src.set_unit"/></small>
-                                    </t>
-                                </td>
-                                <td style="text-align: right; padding: 5px;">
-                                    HK$<span t-field="line.price_subtotal"/>
-                                </td>
-                            </tr>
+                        <!-- Iterate product + section + note rows in sequence
+                             order so the down-payment line, the set-name
+                             section header and the dish notes render in the
+                             right visual order. -->
+                        <t t-foreach="o.invoice_line_ids.sorted(lambda l: (l.sequence, l.id)).filtered(lambda l: l.display_type in ('product', 'line_section', 'line_note'))" t-as="line">
+                            <t t-if="line.display_type == 'line_section'">
+                                <tr style="background-color: #f4f4f4; break-inside: avoid;">
+                                    <td colspan="4" style="padding: 6px 5px; font-weight: bold;">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-elif="line.display_type == 'line_note'">
+                                <tr style="break-inside: avoid;">
+                                    <td colspan="4" style="padding: 2px 5px 2px 25px; color: #444; font-size: 11px;">
+                                        • <span t-field="line.name"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-else="">
+                                <t t-set="src" t-value="line.sale_line_ids[:1]"/>
+                                <t t-set="skip" t-value="src and (src.is_addon_piece or (src.is_set_line and not src.dish_selected))"/>
+                                <tr t-if="not skip" style="border-bottom: 1px solid #eee; break-inside: avoid;">
+                                    <td style="padding: 5px; white-space: pre-line;">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td style="text-align: right; padding: 5px;">
+                                        HK$<span t-field="line.price_unit"/>
+                                    </td>
+                                    <td style="text-align: right; padding: 5px;">
+                                        <span t-field="line.quantity"/>
+                                        <t t-if="src and src.set_unit">
+                                            <small style="color: #666;"> <span t-field="src.set_unit"/></small>
+                                        </t>
+                                    </td>
+                                    <td style="text-align: right; padding: 5px;">
+                                        HK$<span t-field="line.price_subtotal"/>
+                                    </td>
+                                </tr>
+                            </t>
                         </t>
                     </tbody>
                     <tfoot>
