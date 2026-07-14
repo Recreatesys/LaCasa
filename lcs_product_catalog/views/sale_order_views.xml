@@ -31,42 +31,42 @@
                 </div>
             </xpath>
 
-            <!-- Per-day "Add a Set to Day N" buttons inside each of the 7
+            <!-- Per-day "Add a Set to Slot N" buttons inside each of the 7
                  Day tabs (added by lcs_crm_catering). Each button passes
                  set_picker_day_offset in context so the created line lands
                  on the right day. -->
             <xpath expr="//page[@name='order_lines_day_1']/field[@name='order_line_day_1']" position="before">
-                <button name="action_open_set_picker" string="Add a Set to Day 1"
+                <button name="action_open_set_picker" string="Add a Set to Slot 1"
                         type="object" class="btn-primary mb-2" icon="fa-plus-circle"
                         context="{'set_picker_day_offset': 0}"/>
             </xpath>
             <xpath expr="//page[@name='order_lines_day_2']/field[@name='order_line_day_2']" position="before">
-                <button name="action_open_set_picker" string="Add a Set to Day 2"
+                <button name="action_open_set_picker" string="Add a Set to Slot 2"
                         type="object" class="btn-primary mb-2" icon="fa-plus-circle"
                         context="{'set_picker_day_offset': 1}"/>
             </xpath>
             <xpath expr="//page[@name='order_lines_day_3']/field[@name='order_line_day_3']" position="before">
-                <button name="action_open_set_picker" string="Add a Set to Day 3"
+                <button name="action_open_set_picker" string="Add a Set to Slot 3"
                         type="object" class="btn-primary mb-2" icon="fa-plus-circle"
                         context="{'set_picker_day_offset': 2}"/>
             </xpath>
             <xpath expr="//page[@name='order_lines_day_4']/field[@name='order_line_day_4']" position="before">
-                <button name="action_open_set_picker" string="Add a Set to Day 4"
+                <button name="action_open_set_picker" string="Add a Set to Slot 4"
                         type="object" class="btn-primary mb-2" icon="fa-plus-circle"
                         context="{'set_picker_day_offset': 3}"/>
             </xpath>
             <xpath expr="//page[@name='order_lines_day_5']/field[@name='order_line_day_5']" position="before">
-                <button name="action_open_set_picker" string="Add a Set to Day 5"
+                <button name="action_open_set_picker" string="Add a Set to Slot 5"
                         type="object" class="btn-primary mb-2" icon="fa-plus-circle"
                         context="{'set_picker_day_offset': 4}"/>
             </xpath>
             <xpath expr="//page[@name='order_lines_day_6']/field[@name='order_line_day_6']" position="before">
-                <button name="action_open_set_picker" string="Add a Set to Day 6"
+                <button name="action_open_set_picker" string="Add a Set to Slot 6"
                         type="object" class="btn-primary mb-2" icon="fa-plus-circle"
                         context="{'set_picker_day_offset': 5}"/>
             </xpath>
             <xpath expr="//page[@name='order_lines_day_7']/field[@name='order_line_day_7']" position="before">
-                <button name="action_open_set_picker" string="Add a Set to Day 7"
+                <button name="action_open_set_picker" string="Add a Set to Slot 7"
                         type="object" class="btn-primary mb-2" icon="fa-plus-circle"
                         context="{'set_picker_day_offset': 6}"/>
             </xpath>

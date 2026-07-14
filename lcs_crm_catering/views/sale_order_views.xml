@@ -60,10 +60,31 @@
                 </group>
             </xpath>
 
-            <!-- Multi-day: hide the stock Order Lines tab when >1 day; the
-                 per-day tabs below take over. -->
+            <!-- Time Slots management area (multi-slot events: breakfast +
+                 lunch + tea, or multi-day, or both). Every SO has ≥1 slot.
+                 Users add / edit slots inline; sequence handle re-orders.
+                 Rendered above the notebook so it's visible everywhere. -->
+            <xpath expr="//notebook" position="before">
+                <field name="time_slot_count" invisible="1"/>
+                <group string="Time Slots">
+                    <field name="time_slot_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="label"/>
+                            <field name="date"/>
+                            <field name="time_start" widget="float_time"/>
+                            <field name="time_end" widget="float_time"/>
+                            <field name="guest_count"/>
+                            <field name="slot_offset" column_invisible="1"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+
+            <!-- Multi-slot: hide the stock Order Lines tab when >1 slot; the
+                 per-slot tabs below take over. -->
             <xpath expr="//page[@name='order_lines']" position="attributes">
-                <attribute name="invisible">event_day_count &gt; 1</attribute>
+                <attribute name="invisible">time_slot_count &gt; 1</attribute>
             </xpath>
 
             <!-- Hide Delivered / Invoiced columns by default (users can
@@ -83,13 +104,14 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
-            <!-- Per-day Order Lines tabs (up to 7). Each renders a filtered
-                 slice of order_line via computed order_line_day_N.
-                 Line-level default_event_day_offset ensures new lines land
-                 in the right day. -->
+            <!-- Per-slot Order Lines tabs (up to 7). Each renders a filtered
+                 slice of order_line via the same order_line_day_N computed
+                 O2Ms — those filter by event_day_offset, which is
+                 auto-synced from time_slot_id.slot_offset. Tab visibility
+                 is now driven by time_slot_count. -->
             <xpath expr="//notebook" position="inside">
-                <page string="Day 1 Order Lines" name="order_lines_day_1"
-                      invisible="event_day_count &lt; 2">
+                <page string="Slot 1 Order Lines" name="order_lines_day_1"
+                      invisible="time_slot_count &lt; 2">
                     <field name="order_line_day_1"
                            context="{'default_event_day_offset': 0}">
                         <list editable="bottom">
@@ -102,8 +124,8 @@
                         </list>
                     </field>
                 </page>
-                <page string="Day 2 Order Lines" name="order_lines_day_2"
-                      invisible="event_day_count &lt; 2">
+                <page string="Slot 2 Order Lines" name="order_lines_day_2"
+                      invisible="time_slot_count &lt; 2">
                     <field name="order_line_day_2"
                            context="{'default_event_day_offset': 1}">
                         <list editable="bottom">
@@ -116,8 +138,8 @@
                         </list>
                     </field>
                 </page>
-                <page string="Day 3 Order Lines" name="order_lines_day_3"
-                      invisible="event_day_count &lt; 3">
+                <page string="Slot 3 Order Lines" name="order_lines_day_3"
+                      invisible="time_slot_count &lt; 3">
                     <field name="order_line_day_3"
                            context="{'default_event_day_offset': 2}">
                         <list editable="bottom">
@@ -130,8 +152,8 @@
                         </list>
                     </field>
                 </page>
-                <page string="Day 4 Order Lines" name="order_lines_day_4"
-                      invisible="event_day_count &lt; 4">
+                <page string="Slot 4 Order Lines" name="order_lines_day_4"
+                      invisible="time_slot_count &lt; 4">
                     <field name="order_line_day_4"
                            context="{'default_event_day_offset': 3}">
                         <list editable="bottom">
@@ -144,8 +166,8 @@
                         </list>
                     </field>
                 </page>
-                <page string="Day 5 Order Lines" name="order_lines_day_5"
-                      invisible="event_day_count &lt; 5">
+                <page string="Slot 5 Order Lines" name="order_lines_day_5"
+                      invisible="time_slot_count &lt; 5">
                     <field name="order_line_day_5"
                            context="{'default_event_day_offset': 4}">
                         <list editable="bottom">
@@ -158,8 +180,8 @@
                         </list>
                     </field>
                 </page>
-                <page string="Day 6 Order Lines" name="order_lines_day_6"
-                      invisible="event_day_count &lt; 6">
+                <page string="Slot 6 Order Lines" name="order_lines_day_6"
+                      invisible="time_slot_count &lt; 6">
                     <field name="order_line_day_6"
                            context="{'default_event_day_offset': 5}">
                         <list editable="bottom">
@@ -172,8 +194,8 @@
                         </list>
                     </field>
                 </page>
-                <page string="Day 7 Order Lines" name="order_lines_day_7"
-                      invisible="event_day_count &lt; 7">
+                <page string="Slot 7 Order Lines" name="order_lines_day_7"
+                      invisible="time_slot_count &lt; 7">
                     <field name="order_line_day_7"
                            context="{'default_event_day_offset': 6}">
                         <list editable="bottom">

@@ -81,6 +81,14 @@ class CateringSet(models.Model):
         day_offset = self.env.context.get('active_day_offset')
         if day_offset is not None:
             vals['event_day_offset'] = int(day_offset)
+            # Look up the matching time slot on the SO and link it too,
+            # so the new SOL lands on the right per-slot picking / EO.
+            so = self.env['sale.order'].browse(order_id)
+            slot = so.time_slot_ids.filtered(
+                lambda s: s.slot_offset == int(day_offset)
+            )[:1]
+            if slot:
+                vals['time_slot_id'] = slot.id
         self.env['sale.order.line'].create(vals)
         return {'type': 'ir.actions.act_window_close'}
 
