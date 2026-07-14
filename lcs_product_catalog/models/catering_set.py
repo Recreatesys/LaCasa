@@ -73,11 +73,15 @@ class CateringSet(models.Model):
             raise UserError(_(
                 'The set product "%s" has no variant available.'
             ) % self.product_id.display_name)
-        self.env['sale.order.line'].create({
+        vals = {
             'order_id': order_id,
             'product_id': product.id,
             'product_uom_qty': 1,
-        })
+        }
+        day_offset = self.env.context.get('active_day_offset')
+        if day_offset is not None:
+            vals['event_day_offset'] = int(day_offset)
+        self.env['sale.order.line'].create(vals)
         return {'type': 'ir.actions.act_window_close'}
 
     def get_ratio_tier(self, guest_count, category_id):

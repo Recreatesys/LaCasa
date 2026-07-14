@@ -184,8 +184,18 @@ class SaleOrder(models.Model):
                 sol.product_uom_qty = qty
 
     def action_open_set_picker(self):
-        """Open a popup listing all active catering sets so the user can pick one."""
+        """Open a popup listing all active catering sets so the user can pick one.
+
+        A caller can pre-select the target event day by setting
+        ``set_picker_day_offset`` in the button's context (see the per-day
+        buttons above each Day N tab); the picker forwards it as
+        ``active_day_offset`` so the created line lands on the right day.
+        """
         self.ensure_one()
+        day_offset = self.env.context.get('set_picker_day_offset')
+        ctx = {'active_order_id': self.id, 'create': False}
+        if day_offset is not None:
+            ctx['active_day_offset'] = int(day_offset)
         return {
             'name': _('Pick a Catering Set'),
             'type': 'ir.actions.act_window',
@@ -196,10 +206,7 @@ class SaleOrder(models.Model):
             ).id,
             'target': 'new',
             'domain': [('active', '=', True)],
-            'context': {
-                'active_order_id': self.id,
-                'create': False,
-            },
+            'context': ctx,
         }
 
     def action_expand_sets(self):
