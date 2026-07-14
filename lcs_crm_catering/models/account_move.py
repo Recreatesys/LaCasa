@@ -17,7 +17,7 @@ class AccountMove(models.Model):
         'res.partner',
         string='Attention To',
     )
-    call_van = fields.Selection(CALL_VAN_SELECTION, string='Call Van')
+    call_van = fields.Selection(CALL_VAN_SELECTION, string='Preferred Driver')
     delivery_time = fields.Float(string='Event / Delivery Time')
     event_hour = fields.Float(string='Event Hour', help='Duration of the event, in hours.')
     event_date = fields.Date(string='Event / Delivery Date')

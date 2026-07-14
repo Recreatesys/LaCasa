@@ -55,7 +55,6 @@ DELIVERY_TYPE_SELECTION = [
 ]
 
 CALL_VAN_SELECTION = [
-    ('preferred_driver', 'Preferred Driver'),
     ('ah_yuen', '阿源'),
     ('no_need', 'No need'),
     ('event_team', 'Arranged by event team'),
@@ -176,9 +175,9 @@ class CrmLead(models.Model):
         help='Tick if this event requires waiter staffing. Reveals the Waiters tab on the SO.',
     )
     call_van = fields.Selection(
-        CALL_VAN_SELECTION, string='Call Van',
-        help='Preferred driver / van arrangement. Defaults to "Preferred Driver" as a '
-             'temporary answer; can be changed on the SO or Event Order later.',
+        CALL_VAN_SELECTION, string='Preferred Driver',
+        help='Preferred driver / van arrangement for the delivery. '
+             'Can be changed later on the SO or Event Order.',
     )
     is_wedding = fields.Boolean(
         string='Wedding-related',

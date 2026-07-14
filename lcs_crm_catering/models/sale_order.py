@@ -78,7 +78,7 @@ class SaleOrder(models.Model):
         string='Attention To',
         help='Contact person for this order',
     )
-    call_van = fields.Selection(CALL_VAN_SELECTION, string='Call Van')
+    call_van = fields.Selection(CALL_VAN_SELECTION, string='Preferred Driver')
 
     # ── Event / Delivery — date range (multi-day events) ──
     event_date_start = fields.Date(
