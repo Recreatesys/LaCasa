@@ -54,21 +54,38 @@ class SaleOrder(models.Model):
         return res
 
     def _create_event_order(self):
-        """Create one Event Order per event day on the confirmed Sales Order.
+        """Create one Event Order per time slot on the confirmed Sales Order.
 
-        Single-day SOs (event_day_count <= 1) get one EO tagged day 0 — same
-        as before the multi-day change. Multi-day SOs fan out N EOs, one per
-        offset 0..N-1, each carrying only that day's SO lines.
+        Fan out N EOs, one per slot in time_slot_ids (sorted by sequence),
+        each carrying only that slot's SO lines. Each EO records
+        time_slot_id AND event_day_offset (= slot.slot_offset) for legacy
+        compat and picking linkage.
         """
         self.ensure_one()
         EO = self.env['lcs.event.order']
-        day_count = max(1, self.event_day_count or 1)
-        created = EO
-        for offset in range(day_count):
-            vals = EO._prepare_eo_vals_from_so(self, day_offset=offset)
-            suffix = '-v1' if day_count == 1 else '-D%d-v1' % (offset + 1)
+        slots = self.time_slot_ids.sorted('sequence')
+        if not slots:
+            # Defensive fallback: SO has no slots (shouldn't happen after
+            # migration, but stay safe). Create one EO for the whole SO.
+            vals = EO._prepare_eo_vals_from_so(self, day_offset=0)
             vals.update({
                 'sale_order_id': self.id,
+                'name': '%s-v1' % self.name,
+                'version': 1,
+            })
+            line_vals = EO._prepare_eo_lines_from_so(self, day_offset=0)
+            vals['line_ids'] = [(0, 0, lv) for lv in line_vals]
+            return EO.create(vals)
+        created = EO
+        many_slots = len(slots) > 1
+        for slot in slots:
+            offset = slot.slot_offset
+            vals = EO._prepare_eo_vals_from_so(self, day_offset=offset)
+            suffix = '-v1' if not many_slots else '-D%d-v1' % (offset + 1)
+            vals.update({
+                'sale_order_id': self.id,
+                'time_slot_id': slot.id,
+                'event_day_offset': offset,
                 'name': '%s%s' % (self.name, suffix),
                 'version': 1,
             })

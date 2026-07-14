@@ -1,4 +1,5 @@
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.addons.lcs_crm_catering.models.crm_lead import (
     BRAND_SELECTION,
     CALL_VAN_SELECTION,
@@ -441,6 +442,13 @@ class SaleOrder(models.Model):
                 vals['name'] = seq_value
         orders = super().create(vals_list)
 
+        # Auto-create an initial time slot for any SO that didn't come with
+        # one (single-day header data → 1 slot; multi-day → N slots).
+        for so in orders:
+            if so.time_slot_ids:
+                continue
+            so._auto_populate_time_slots()
+
         # Sync the Waiter Service section + product line on newly created SOs
         # whose Waiter tab was filled in at creation time (either via the
         # table, or via manually-typed # Waiters + Total Person-Hours).
@@ -567,78 +575,146 @@ class SaleOrder(models.Model):
                 self.attention_to_id = False
 
     # ──────────────────────────────────────────────────────────
-    # Per-day picking split (v19 replacement for procurement.group)
+    # Time-slot support (multi-time-slot, composes with multi-day)
+    # ──────────────────────────────────────────────────────────
+    time_slot_ids = fields.One2many(
+        'lcs.event.time.slot', 'sale_order_id', string='Time Slots',
+        copy=True,
+    )
+    time_slot_count = fields.Integer(
+        string='# Time Slots',
+        compute='_compute_time_slot_count', store=True,
+    )
+
+    @api.depends('time_slot_ids')
+    def _compute_time_slot_count(self):
+        for so in self:
+            so.time_slot_count = len(so.time_slot_ids)
+
+    @api.constrains('time_slot_ids')
+    def _check_time_slot_count(self):
+        for so in self:
+            if len(so.time_slot_ids) > 7:
+                raise ValidationError(_(
+                    'A Sales Order can have at most 7 time slots.'
+                ))
+
+    def _auto_populate_time_slots(self):
+        """Seed time_slot_ids from the SO's header date/time fields.
+
+        - No event_date_start → create one empty "Slot 1" (dates/times can be
+          filled in later).
+        - Single-day (event_day_count <= 1) → one slot inheriting the
+          header times & guest_count.
+        - Multi-day → N slots (up to 7), one per day, inheriting header
+          times & guest_count.
+        """
+        from datetime import timedelta
+        self.ensure_one()
+        if self.time_slot_ids:
+            return
+        Slot = self.env['lcs.event.time.slot']
+        start = self.event_date_start
+        day_count = max(1, min(self.event_day_count or 1, 7))
+        if not start:
+            Slot.create({
+                'sale_order_id': self.id,
+                'label': 'Slot 1',
+                'sequence': 10,
+                'date': fields.Date.context_today(self),
+                'time_start': self.event_time_start or 0.0,
+                'time_end': self.event_time_end or 0.0,
+                'guest_count': self.guest_count or 0,
+            })
+            return
+        for offset in range(day_count):
+            Slot.create({
+                'sale_order_id': self.id,
+                'label': 'Day %d' % (offset + 1) if day_count > 1 else 'Slot 1',
+                'sequence': 10 * (offset + 1),
+                'date': start + timedelta(days=offset),
+                'time_start': self.event_time_start or 0.0,
+                'time_end': self.event_time_end or 0.0,
+                'guest_count': self.guest_count or 0,
+            })
+
+    def _slot_scheduled_dt(self, slot):
+        """Combine slot.date + slot.time_start as a naive datetime."""
+        from datetime import datetime as _dt
+        if not slot or not slot.date:
+            return False
+        t = slot.time_start or 0.0
+        h = int(t)
+        m = int(round((t - h) * 60))
+        return _dt.combine(slot.date, _dt.min.time()).replace(hour=h, minute=m)
+
+    # ──────────────────────────────────────────────────────────
+    # Per-slot picking split (v19-native, replaces procurement.group)
     # ──────────────────────────────────────────────────────────
     def action_confirm(self):
-        """Standard confirm creates one pooled picking with all moves.
-        Split it into one picking per event day for multi-day catering
-        events, tagging each with event_day_offset for downstream linkage."""
+        """After standard confirm builds the pooled picking, fan it out to
+        one picking per time slot."""
         res = super().action_confirm()
         for so in self:
-            so._split_pickings_per_day()
+            so._split_pickings_per_slot()
         return res
 
-    def _day_scheduled_dt(self, day_offset):
-        """Combine event_date_start + offset at event_time_start."""
-        from datetime import datetime as _dt, timedelta as _td
-        start_date = self.event_date_start
-        if not start_date:
-            return False
-        time_start = self.event_time_start or 0.0
-        hours = int(time_start)
-        minutes = int(round((time_start - hours) * 60))
-        return _dt.combine(
-            start_date + _td(days=int(day_offset)), _dt.min.time(),
-        ).replace(hour=hours, minute=minutes)
-
-    def _split_pickings_per_day(self):
-        """Fan out this SO's pooled picking(s) into one picking per event day.
+    def _split_pickings_per_slot(self):
+        """Fan out this SO's pooled picking(s) into one picking per time slot.
 
         For each picking linked to this SO:
-        - Group its moves by sale_line_id.event_day_offset.
-        - Keep the earliest day on the original picking (tagged with that
-          day's offset + scheduled_date).
-        - For each additional day present, copy the picking header (empty),
-          tag it with the day offset, set its scheduled_date, and reassign
-          the day's moves to it.
+        - Group its moves by sale_line_id.time_slot_id (fallback to slot
+          offset 0 if a line has no slot).
+        - Keep the first slot's moves on the original picking (tagged with
+          that slot + slot's scheduled_date/deadline).
+        - For each other slot present, copy the picking header (empty),
+          tag it, set scheduled_date/deadline, reassign the slot's moves.
 
-        Single-day SOs (event_day_count <= 1): no-op; the standard picking
-        stays as-is (event_day_offset stays 0).
+        SOs with <= 1 slot: no-op.
         """
         self.ensure_one()
-        if (self.event_day_count or 0) < 2:
+        if len(self.time_slot_ids) < 2:
             return
         Picking = self.env.get('stock.picking')
         if Picking is None:
             return
+        # Fallback slot (first one) for any lines missing time_slot_id.
+        default_slot = self.time_slot_ids.sorted('sequence')[:1]
         pickings = Picking.search([('sale_id', '=', self.id)])
         for picking in pickings:
-            moves_by_day = {}
+            moves_by_slot = {}
             for move in picking.move_ids:
                 sol = move.sale_line_id
-                day = int(sol.event_day_offset or 0) if sol else 0
-                moves_by_day.setdefault(day, self.env['stock.move'])
-                moves_by_day[day] |= move
-            if not moves_by_day:
+                slot = (sol.time_slot_id if sol else False) or default_slot
+                if not slot:
+                    continue
+                moves_by_slot.setdefault(slot.id, self.env['stock.move'])
+                moves_by_slot[slot.id] |= move
+            if not moves_by_slot:
                 continue
-            sorted_days = sorted(moves_by_day.keys())
-            first_day = sorted_days[0]
-            # Original picking becomes the first day's picking.
-            first_dt = self._day_scheduled_dt(first_day)
-            picking.event_day_offset = first_day
+            slot_ids_sorted = sorted(
+                moves_by_slot.keys(),
+                key=lambda sid: self.env['lcs.event.time.slot'].browse(sid).sequence,
+            )
+            first_slot_id = slot_ids_sorted[0]
+            first_slot = self.env['lcs.event.time.slot'].browse(first_slot_id)
+            first_dt = self._slot_scheduled_dt(first_slot)
+            picking.time_slot_id = first_slot_id
+            picking.event_day_offset = first_slot.slot_offset
             if first_dt:
                 picking.scheduled_date = first_dt
                 picking.date_deadline = first_dt
-            # Additional days: copy the picking header and reassign moves.
-            for day in sorted_days[1:]:
-                dt = self._day_scheduled_dt(day)
+            for slot_id in slot_ids_sorted[1:]:
+                slot = self.env['lcs.event.time.slot'].browse(slot_id)
+                dt = self._slot_scheduled_dt(slot)
                 new_pick = picking.copy({
                     'move_ids': [],
-                    'event_day_offset': day,
+                    'time_slot_id': slot_id,
+                    'event_day_offset': slot.slot_offset,
                     'scheduled_date': dt or picking.scheduled_date,
                     'date_deadline': dt or picking.date_deadline,
                 })
-                moves_by_day[day].write({'picking_id': new_pick.id})
+                moves_by_slot[slot_id].write({'picking_id': new_pick.id})
 
     def _prepare_invoice(self):
         """Pass catering fields to the invoice."""
@@ -679,12 +755,46 @@ class SaleOrderLine(models.Model):
         help='Marker for the section/product lines auto-generated from the Hardware tab.',
     )
 
-    # ── Multi-day event support ──
+    # ── Multi-day / multi-slot event support ──
+    time_slot_id = fields.Many2one(
+        'lcs.event.time.slot',
+        string='Time Slot',
+        ondelete='set null', index=True, copy=True,
+        help='Which time slot on the parent SO this line belongs to. '
+             'Governs which delivery order / EO the line ends up in.',
+    )
     event_day_offset = fields.Integer(
         string='Event Day',
         default=0, copy=True,
-        help='0-based day within the SO event range. Day 1 = 0, Day 2 = 1, etc.',
+        help='0-based day within the SO event range. Auto-synced from '
+             'time_slot_id.slot_offset when a slot is set.',
     )
+
+    @api.onchange('time_slot_id')
+    def _onchange_time_slot_id_sync_offset(self):
+        for line in self:
+            if line.time_slot_id:
+                line.event_day_offset = line.time_slot_id.slot_offset
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Auto-sync event_day_offset from time_slot_id on create.
+        for vals in vals_list:
+            if vals.get('time_slot_id') and 'event_day_offset' not in vals:
+                slot = self.env['lcs.event.time.slot'].browse(vals['time_slot_id'])
+                if slot.exists():
+                    vals['event_day_offset'] = slot.slot_offset
+        return super().create(vals_list)
+
+    def write(self, vals):
+        # Keep event_day_offset in sync when time_slot_id is written.
+        if 'time_slot_id' in vals and 'event_day_offset' not in vals:
+            slot_id = vals['time_slot_id']
+            if slot_id:
+                slot = self.env['lcs.event.time.slot'].browse(slot_id)
+                if slot.exists():
+                    vals['event_day_offset'] = slot.slot_offset
+        return super().write(vals)
     event_date = fields.Date(
         string='Line Event Date',
         compute='_compute_event_date', store=True,

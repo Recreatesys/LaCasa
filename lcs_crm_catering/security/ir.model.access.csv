@@ -8,3 +8,4 @@ access_crm_lost_reason_kitchen,crm.lost.reason.kitchen,crm.model_crm_lost_reason
 access_res_partner_kitchen,res.partner.kitchen,base.model_res_partner,lcs_crm_catering.group_kitchen_user,1,0,0,0
 access_lcs_sale_waiter_line_user,lcs.sale.waiter.line.user,model_lcs_sale_waiter_line,base.group_user,1,1,1,1
 access_lcs_sale_hardware_line_user,lcs.sale.hardware.line.user,model_lcs_sale_hardware_line,base.group_user,1,1,1,1
+access_lcs_event_time_slot_user,lcs.event.time.slot.user,model_lcs_event_time_slot,base.group_user,1,1,1,1

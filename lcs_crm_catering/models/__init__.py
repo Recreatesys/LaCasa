@@ -1,5 +1,6 @@
 from . import res_partner
 from . import product_template
+from . import event_time_slot
 from . import crm_lead
 from . import sale_order
 from . import sale_waiter_line

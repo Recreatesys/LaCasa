@@ -46,11 +46,20 @@ class EventOrder(models.Model):
 
     # Catering fields
     brand = fields.Selection(BRAND_SELECTION, string='Brand')
-    # Multi-day support: which day of the SO event range this EO covers (0-based)
+    # Which time slot on the parent SO this EO covers.
+    time_slot_id = fields.Many2one(
+        'lcs.event.time.slot',
+        string='Time Slot',
+        ondelete='set null', index=True, copy=False,
+        help='Which SO time slot this Event Order covers. Governs which '
+             'delivery order links back via _compute_picking_ids.',
+    )
+    # 0-based offset for legacy compat; auto-synced from time_slot_id.
     event_day_offset = fields.Integer(
         string='Event Day (0-based)',
         default=0, readonly=True,
-        help='0 = Day 1, 1 = Day 2, etc. Used when the SO spans multiple days.',
+        help='0 = Day 1, 1 = Day 2, etc. Auto-synced from '
+             'time_slot_id.slot_offset when a slot is set.',
     )
     event_date = fields.Date(string='Event / Delivery Date')
     event_street = fields.Char(string='Street')
@@ -123,22 +132,26 @@ class EventOrder(models.Model):
         string='# Delivery Orders', compute='_compute_picking_ids',
     )
 
-    @api.depends('sale_order_id', 'event_day_offset')
+    @api.depends('sale_order_id', 'time_slot_id', 'event_day_offset')
     def _compute_picking_ids(self):
-        # v19 uses stock.picking.sale_id + stock.picking.event_day_offset
-        # (custom field added in lcs_crm_catering) to identify per-day
-        # pickings. On SO confirm, lcs_crm_catering splits the pooled
-        # picking into one picking per day and tags each with its offset.
+        # v19-native: pickings link via sale_id + time_slot_id (or
+        # event_day_offset as a legacy fallback for pre-slot data).
         Picking = self.env.get('stock.picking')
         for eo in self:
             if Picking is None or not eo.sale_order_id:
                 eo.picking_ids = False
                 eo.picking_count = 0
                 continue
-            pickings = Picking.search([
-                ('sale_id', '=', eo.sale_order_id.id),
-                ('event_day_offset', '=', int(eo.event_day_offset or 0)),
-            ])
+            if eo.time_slot_id:
+                pickings = Picking.search([
+                    ('sale_id', '=', eo.sale_order_id.id),
+                    ('time_slot_id', '=', eo.time_slot_id.id),
+                ])
+            else:
+                pickings = Picking.search([
+                    ('sale_id', '=', eo.sale_order_id.id),
+                    ('event_day_offset', '=', int(eo.event_day_offset or 0)),
+                ])
             eo.picking_ids = pickings
             eo.picking_count = len(pickings)
 
