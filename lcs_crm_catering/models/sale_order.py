@@ -513,11 +513,19 @@ class SaleOrder(models.Model):
         if not removed_lines:
             return
 
-        # v19: stock.picking.group_id / procurement.group are gone, so we
-        # can't identify per-day pickings anymore. Skip auto-cancel; the
-        # user cancels stale pickings manually until we implement a
-        # v19-native per-day mechanism (TODO).
+        # v19: identify per-day pickings via stock.picking.event_day_offset
+        # (custom field, populated on SO confirm by _split_pickings_per_day).
+        Picking = self.env.get('stock.picking')
         cancelled_pickings = []
+        if Picking is not None:
+            stale = Picking.search([
+                ('sale_id', '=', self.id),
+                ('event_day_offset', '>=', new_day_count),
+                ('state', 'not in', ('done', 'cancel')),
+            ])
+            if stale:
+                stale.action_cancel()
+                cancelled_pickings = stale.mapped('name')
 
         # Cancel matching Event Orders.
         EO = self.env.get('lcs.event.order')

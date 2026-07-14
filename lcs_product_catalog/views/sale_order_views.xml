@@ -6,24 +6,29 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <!-- Add a Set / Expand Sets / Reload Sets buttons -->
-            <xpath expr="//field[@name='order_line']" position="before">
-                <button name="action_open_set_picker"
-                        string="Add a Set"
-                        type="object"
-                        class="btn-primary mb-2 me-2"
-                        icon="fa-plus-circle"/>
-                <button name="action_expand_sets"
-                        string="Expand Sets"
-                        type="object"
-                        class="btn-secondary mb-2 me-2"
-                        icon="fa-cutlery"/>
-                <button name="action_reload_sets"
-                        string="Reload Sets (Update Guest Count)"
-                        type="object"
-                        class="btn-link mb-2"
-                        icon="fa-refresh"
-                        confirm="This will recalculate all set lines based on the current guest count. Your dish selections will be preserved. Continue?"/>
+            <!-- Add a Set / Expand Sets / Reload Sets buttons — placed ABOVE
+                 the notebook so they stay visible in both single-day and
+                 multi-day layouts (in multi-day the standard Order Lines
+                 tab is hidden, replaced by per-day tabs). -->
+            <xpath expr="//notebook" position="before">
+                <div class="mb-2">
+                    <button name="action_open_set_picker"
+                            string="Add a Set"
+                            type="object"
+                            class="btn-primary me-2"
+                            icon="fa-plus-circle"/>
+                    <button name="action_expand_sets"
+                            string="Expand Sets"
+                            type="object"
+                            class="btn-secondary me-2"
+                            icon="fa-cutlery"/>
+                    <button name="action_reload_sets"
+                            string="Reload Sets (Update Guest Count)"
+                            type="object"
+                            class="btn-link"
+                            icon="fa-refresh"
+                            confirm="This will recalculate all set lines based on the current guest count. Your dish selections will be preserved. Continue?"/>
+                </div>
             </xpath>
 
             <!-- Add set fields to SO line list -->

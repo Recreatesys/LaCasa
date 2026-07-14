@@ -34,8 +34,10 @@
                 <field name="call_van"/>
             </xpath>
 
-            <!-- Add catering details group before order lines -->
-            <xpath expr="//field[@name='order_line']" position="before">
+            <!-- Add catering details group ABOVE the notebook so it stays
+                 visible in both single-day and multi-day layouts (in
+                 multi-day the standard Order Lines tab is hidden). -->
+            <xpath expr="//notebook" position="before">
                 <group string="Catering Details">
                     <group>
                         <field name="brand"/>

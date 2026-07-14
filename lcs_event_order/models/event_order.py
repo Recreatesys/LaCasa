@@ -125,16 +125,20 @@ class EventOrder(models.Model):
 
     @api.depends('sale_order_id', 'event_day_offset')
     def _compute_picking_ids(self):
-        # v19 removed procurement.group; stock.picking now links directly to
-        # sale.order via `sale_id`. Per-day splitting via group_id.name is
-        # no longer available and needs a proper refactor (TODO).
+        # v19 uses stock.picking.sale_id + stock.picking.event_day_offset
+        # (custom field added in lcs_crm_catering) to identify per-day
+        # pickings. On SO confirm, lcs_crm_catering splits the pooled
+        # picking into one picking per day and tags each with its offset.
         Picking = self.env.get('stock.picking')
         for eo in self:
             if Picking is None or not eo.sale_order_id:
                 eo.picking_ids = False
                 eo.picking_count = 0
                 continue
-            pickings = Picking.search([('sale_id', '=', eo.sale_order_id.id)])
+            pickings = Picking.search([
+                ('sale_id', '=', eo.sale_order_id.id),
+                ('event_day_offset', '=', int(eo.event_day_offset or 0)),
+            ])
             eo.picking_ids = pickings
             eo.picking_count = len(pickings)
 
