@@ -484,15 +484,37 @@ class SaleOrder(models.Model):
             raise UserError(_(
                 'Every line on the selected orders is already fully invoiced.'
             ))
-        for so in self:
+        # Running sequence: SO A gets 100-199, SO B gets 200-299, etc.
+        # This prevents Odoo from interleaving lines by their per-SO
+        # sequence (both SOs typically start at 1) and keeps each SO's
+        # block visually contiguous.
+        seq = 100
+        block = 100
+        for so_idx, so in enumerate(self):
+            # Section header for the SO — clean visual break between SOs.
+            invoice_lines.append((0, 0, {
+                'display_type': 'line_section',
+                'name': _('Sales Order %s', so.name),
+                'sequence': seq,
+            }))
+            seq += 1
             for line in so.order_line:
                 if line.display_type:
-                    invoice_lines.append((0, 0, line._prepare_invoice_line()))
+                    vals = line._prepare_invoice_line()
+                    vals['sequence'] = seq
+                    invoice_lines.append((0, 0, vals))
+                    seq += 1
                     continue
                 qty = line.qty_to_invoice or 0
                 if qty <= 0:
                     continue
-                invoice_lines.append((0, 0, line._prepare_invoice_line(quantity=qty)))
+                vals = line._prepare_invoice_line(quantity=qty)
+                vals['sequence'] = seq
+                invoice_lines.append((0, 0, vals))
+                seq += 1
+            # Jump to the next SO's block so sequences stay well-spaced
+            # even if an SO has hundreds of lines.
+            seq = (so_idx + 2) * block
         if not invoice_lines:
             raise UserError(_('Nothing to invoice on the selected orders.'))
 
