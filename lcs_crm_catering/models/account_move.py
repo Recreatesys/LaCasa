@@ -43,6 +43,11 @@ class AccountMove(models.Model):
         compute='_compute_lcs_invoice_grouped_html',
         sanitize=False,
     )
+    lcs_invoice_summary_html = fields.Html(
+        string='Sets & Services Summary',
+        compute='_compute_lcs_invoice_summary_html',
+        sanitize=False,
+    )
 
     @api.depends(
         'invoice_line_ids',
@@ -60,6 +65,23 @@ class AccountMove(models.Model):
         for move in self:
             move.lcs_invoice_grouped_html = Qweb._render(
                 'lcs_crm_catering.invoice_grouped_preview',
+                {'move': move, 'groups': move.get_lcs_invoice_groups()},
+            )
+
+    @api.depends(
+        'invoice_line_ids',
+        'invoice_line_ids.price_subtotal',
+        'invoice_line_ids.display_type',
+        'invoice_line_ids.product_id',
+        'invoice_line_ids.sequence',
+        'invoice_line_ids.sale_line_ids',
+        'amount_total',
+    )
+    def _compute_lcs_invoice_summary_html(self):
+        Qweb = self.env['ir.qweb']
+        for move in self:
+            move.lcs_invoice_summary_html = Qweb._render(
+                'lcs_crm_catering.invoice_summary_only',
                 {'move': move, 'groups': move.get_lcs_invoice_groups()},
             )
 

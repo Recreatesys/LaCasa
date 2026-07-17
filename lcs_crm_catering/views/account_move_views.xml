@@ -39,6 +39,14 @@
                 </group>
             </xpath>
 
+            <!-- Sets & Services Summary table injected ABOVE the editable
+                 invoice_line_ids list on the standard Invoice Lines tab.
+                 Read-only; auto-refreshes as the user edits lines. -->
+            <xpath expr="//field[@name='invoice_line_ids']" position="before">
+                <field name="lcs_invoice_summary_html"
+                       nolabel="1" readonly="1"/>
+            </xpath>
+
             <!-- "Grouped Preview" tab — mirrors the PDF's two-table layout
                  (Sets & Services Summary + per-set Food Choices). Read-only
                  view of the invoice's catering structure. Add / edit lines

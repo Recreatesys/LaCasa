@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <!-- Summary-only variant — rendered ABOVE the editable invoice lines
+         so users see the per-set totals live as they edit. -->
+    <template id="invoice_summary_only">
+        <div style="font-family: Arial, sans-serif; font-size: 13px; margin-bottom: 10px;">
+            <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #000;">
+                        <th style="text-align: left; padding: 5px;">Service</th>
+                        <th style="text-align: right; padding: 5px; width: 140px;">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="groups" t-as="group"
+                        style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 5px; white-space: pre-line;">
+                            <span t-esc="group['label']"/>
+                        </td>
+                        <td style="text-align: right; padding: 5px;">
+                            HK$<span t-esc="'%.2f' % group['subtotal']"/>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr style="border-top: 1px solid #000;">
+                        <td style="text-align: right; padding: 5px;"><strong>Total</strong></td>
+                        <td style="text-align: right; padding: 5px;">
+                            <strong>HK$<span t-esc="'%.2f' % (move.amount_total or 0.0)"/></strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </template>
+
     <!-- On-screen mirror of the invoice PDF's Sets Summary + per-set Detail
          layout. Rendered into account.move.lcs_invoice_grouped_html by the
          Python compute, then shown as an <field widget='html'> on a
