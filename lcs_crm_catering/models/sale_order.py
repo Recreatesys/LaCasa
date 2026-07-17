@@ -81,17 +81,9 @@ class SaleOrder(models.Model):
     )
     call_van = fields.Selection(CALL_VAN_SELECTION, string='Preferred Driver')
 
-    # ── Event / Delivery — date range (multi-day events) ──
-    event_date_start = fields.Date(
-        string='Event / Delivery Date (Start)',
-    )
-    event_date_end = fields.Date(
-        string='Event / Delivery Date (End)',
-        help='Leave blank for a single-day event.',
-    )
-    event_day_count = fields.Integer(
-        string='# Days',
-        compute='_compute_event_day_count', store=True,
+    # ── Event / Delivery — single date + time window ──
+    event_date = fields.Date(
+        string='Event / Delivery Date',
     )
 
     # ── Event / Delivery — time slot ──
@@ -122,84 +114,6 @@ class SaleOrder(models.Model):
                     and order.event_time_end > order.event_time_start:
                 order.event_hour = order.event_time_end - order.event_time_start
 
-    # Per-day One2many slices — one field per possible day (up to 7).
-    # These are computed from order_line by filtering on event_day_offset.
-    # Used by the multi-day notebook tabs.
-    order_line_day_1 = fields.One2many(
-        'sale.order.line', compute='_compute_order_line_by_day',
-        inverse='_inverse_order_line_by_day', string='Order Lines — Day 1',
-    )
-    order_line_day_2 = fields.One2many(
-        'sale.order.line', compute='_compute_order_line_by_day',
-        inverse='_inverse_order_line_by_day', string='Order Lines — Day 2',
-    )
-    order_line_day_3 = fields.One2many(
-        'sale.order.line', compute='_compute_order_line_by_day',
-        inverse='_inverse_order_line_by_day', string='Order Lines — Day 3',
-    )
-    order_line_day_4 = fields.One2many(
-        'sale.order.line', compute='_compute_order_line_by_day',
-        inverse='_inverse_order_line_by_day', string='Order Lines — Day 4',
-    )
-    order_line_day_5 = fields.One2many(
-        'sale.order.line', compute='_compute_order_line_by_day',
-        inverse='_inverse_order_line_by_day', string='Order Lines — Day 5',
-    )
-    order_line_day_6 = fields.One2many(
-        'sale.order.line', compute='_compute_order_line_by_day',
-        inverse='_inverse_order_line_by_day', string='Order Lines — Day 6',
-    )
-    order_line_day_7 = fields.One2many(
-        'sale.order.line', compute='_compute_order_line_by_day',
-        inverse='_inverse_order_line_by_day', string='Order Lines — Day 7',
-    )
-
-    @api.depends('order_line', 'order_line.event_day_offset')
-    def _compute_order_line_by_day(self):
-        for so in self:
-            grouped = {n: so.env['sale.order.line'] for n in range(7)}
-            for line in so.order_line:
-                offset = int(line.event_day_offset or 0)
-                if 0 <= offset < 7:
-                    grouped[offset] |= line
-            so.order_line_day_1 = grouped[0]
-            so.order_line_day_2 = grouped[1]
-            so.order_line_day_3 = grouped[2]
-            so.order_line_day_4 = grouped[3]
-            so.order_line_day_5 = grouped[4]
-            so.order_line_day_6 = grouped[5]
-            so.order_line_day_7 = grouped[6]
-
-    def _inverse_order_line_by_day(self):
-        # Writing to a per-day slice already updates order_line via the shared
-        # underlying model (each line is a real sale.order.line linked by order_id).
-        # No separate write needed — the ORM handles it.
-        return
-
-    @api.depends('event_date_start', 'event_date_end')
-    def _compute_event_day_count(self):
-        for so in self:
-            start = so.event_date_start
-            end = so.event_date_end or start
-            if not start:
-                so.event_day_count = 0
-            elif end < start:
-                so.event_day_count = 1
-            else:
-                so.event_day_count = (end - start).days + 1
-
-    @api.constrains('event_date_start', 'event_date_end')
-    def _check_event_date_range(self):
-        for so in self:
-            if so.event_date_end and so.event_date_start and \
-                    so.event_date_end < so.event_date_start:
-                raise UserError(_(
-                    'Event end date must be on or after the start date.'
-                ))
-            if so.event_day_count > 7:
-                raise UserError(_(
-                    'Event range is limited to 7 consecutive days.'
-                ))
 
     # ──────────────────────────────────────────────────────────
     # Waiter assignments (Event Catering only)
@@ -442,13 +356,6 @@ class SaleOrder(models.Model):
                 vals['name'] = seq_value
         orders = super().create(vals_list)
 
-        # Auto-create an initial time slot for any SO that didn't come with
-        # one (single-day header data → 1 slot; multi-day → N slots).
-        for so in orders:
-            if so.time_slot_ids:
-                continue
-            so._auto_populate_time_slots()
-
         # Sync the Waiter Service section + product line on newly created SOs
         # whose Waiter tab was filled in at creation time (either via the
         # table, or via manually-typed # Waiters + Total Person-Hours).
@@ -463,33 +370,7 @@ class SaleOrder(models.Model):
         return orders
 
     def write(self, vals):
-        # Shrink-guard: if the event date range shrinks, auto-remove SO lines
-        # whose day_offset falls outside the new range, and cancel any
-        # dependent Event Orders / Delivery Orders for those days.
-        shrink_snapshot = {}
-        if 'event_date_start' in vals or 'event_date_end' in vals:
-            for so in self:
-                if so.state in ('cancel',):
-                    continue
-                new_start = fields.Date.to_date(
-                    vals.get('event_date_start', so.event_date_start)
-                )
-                new_end = fields.Date.to_date(
-                    vals.get('event_date_end', so.event_date_end)
-                )
-                if not new_start:
-                    continue
-                if not new_end or new_end < new_start:
-                    new_end = new_start
-                new_count = (new_end - new_start).days + 1
-                if new_count < (so.event_day_count or 1):
-                    shrink_snapshot[so.id] = new_count
-
         res = super().write(vals)
-
-        if shrink_snapshot:
-            for so in self.browse(list(shrink_snapshot.keys())):
-                so._prune_days_beyond(shrink_snapshot[so.id])
 
         # Sync the "Waiter Service" SO line whenever any of its inputs move.
         if not self.env.context.get('skip_waiter_sync') and (
@@ -507,63 +388,6 @@ class SaleOrder(models.Model):
                     invs.with_context(skip_call_van_sync=True).write({'call_van': vals['call_van']})
         return res
 
-    def _prune_days_beyond(self, new_day_count):
-        """Remove SO lines with event_day_offset >= new_day_count, and cancel
-        any Event Orders + Delivery Orders scoped to those days.
-
-        Called from write() when the date range shrinks. Post-message on the
-        SO so the user has a clear audit trail.
-        """
-        self.ensure_one()
-        removed_lines = self.order_line.filtered(
-            lambda l: (l.event_day_offset or 0) >= new_day_count
-        )
-        if not removed_lines:
-            return
-
-        # v19: identify per-day pickings via stock.picking.event_day_offset
-        # (custom field, populated on SO confirm by _split_pickings_per_day).
-        Picking = self.env.get('stock.picking')
-        cancelled_pickings = []
-        if Picking is not None:
-            stale = Picking.search([
-                ('sale_id', '=', self.id),
-                ('event_day_offset', '>=', new_day_count),
-                ('state', 'not in', ('done', 'cancel')),
-            ])
-            if stale:
-                stale.action_cancel()
-                cancelled_pickings = stale.mapped('name')
-
-        # Cancel matching Event Orders.
-        EO = self.env.get('lcs.event.order')
-        cancelled_eos = []
-        if EO is not None and 'event_day_offset' in EO._fields:
-            eos = self.event_order_ids.filtered(
-                lambda e: (e.event_day_offset or 0) >= new_day_count
-            )
-            if eos:
-                cancelled_eos = eos.mapped('name')
-                eos.unlink()
-
-        removed_names = removed_lines.mapped('name')
-        removed_lines.unlink()
-
-        self.message_post(body=_(
-            'Event range shrunk to %(days)d day(s). Auto-removed %(nlines)d '
-            'SO line(s), cancelled %(neo)d Event Order(s) and %(npick)d '
-            'Delivery Order(s).<br/>Removed lines: %(lines)s'
-            '<br/>Cancelled EO: %(eos)s<br/>Cancelled DO: %(picks)s'
-        ) % {
-            'days': new_day_count,
-            'nlines': len(removed_names),
-            'neo': len(cancelled_eos),
-            'npick': len(cancelled_pickings),
-            'lines': ', '.join(removed_names[:20]) or '—',
-            'eos': ', '.join(cancelled_eos) or '—',
-            'picks': ', '.join(cancelled_pickings) or '—',
-        })
-
     @api.onchange('partner_id')
     def _onchange_partner_id_attention(self):
         """Default attention_to_id based on partner type."""
@@ -573,148 +397,6 @@ class SaleOrder(models.Model):
                 self.attention_to_id = self.partner_id
             else:
                 self.attention_to_id = False
-
-    # ──────────────────────────────────────────────────────────
-    # Time-slot support (multi-time-slot, composes with multi-day)
-    # ──────────────────────────────────────────────────────────
-    time_slot_ids = fields.One2many(
-        'lcs.event.time.slot', 'sale_order_id', string='Time Slots',
-        copy=True,
-    )
-    time_slot_count = fields.Integer(
-        string='# Time Slots',
-        compute='_compute_time_slot_count', store=True,
-    )
-
-    @api.depends('time_slot_ids')
-    def _compute_time_slot_count(self):
-        for so in self:
-            so.time_slot_count = len(so.time_slot_ids)
-
-    @api.constrains('time_slot_ids')
-    def _check_time_slot_count(self):
-        for so in self:
-            if len(so.time_slot_ids) > 7:
-                raise ValidationError(_(
-                    'A Sales Order can have at most 7 time slots.'
-                ))
-
-    def _auto_populate_time_slots(self):
-        """Seed time_slot_ids from the SO's header date/time fields.
-
-        - No event_date_start → create one empty "Slot 1" (dates/times can be
-          filled in later).
-        - Single-day (event_day_count <= 1) → one slot inheriting the
-          header times & guest_count.
-        - Multi-day → N slots (up to 7), one per day, inheriting header
-          times & guest_count.
-        """
-        from datetime import timedelta
-        self.ensure_one()
-        if self.time_slot_ids:
-            return
-        Slot = self.env['lcs.event.time.slot']
-        start = self.event_date_start
-        day_count = max(1, min(self.event_day_count or 1, 7))
-        if not start:
-            Slot.create({
-                'sale_order_id': self.id,
-                'label': 'Slot 1',
-                'sequence': 10,
-                'date': fields.Date.context_today(self),
-                'time_start': self.event_time_start or 0.0,
-                'time_end': self.event_time_end or 0.0,
-                'guest_count': self.guest_count or 0,
-            })
-            return
-        for offset in range(day_count):
-            Slot.create({
-                'sale_order_id': self.id,
-                'label': 'Day %d' % (offset + 1) if day_count > 1 else 'Slot 1',
-                'sequence': 10 * (offset + 1),
-                'date': start + timedelta(days=offset),
-                'time_start': self.event_time_start or 0.0,
-                'time_end': self.event_time_end or 0.0,
-                'guest_count': self.guest_count or 0,
-            })
-
-    def _slot_scheduled_dt(self, slot):
-        """Combine slot.date + slot.time_start as a naive datetime."""
-        from datetime import datetime as _dt
-        if not slot or not slot.date:
-            return False
-        t = slot.time_start or 0.0
-        h = int(t)
-        m = int(round((t - h) * 60))
-        return _dt.combine(slot.date, _dt.min.time()).replace(hour=h, minute=m)
-
-    # ──────────────────────────────────────────────────────────
-    # Per-slot picking split (v19-native, replaces procurement.group)
-    # ──────────────────────────────────────────────────────────
-    def action_confirm(self):
-        """After standard confirm builds the pooled picking, fan it out to
-        one picking per time slot."""
-        res = super().action_confirm()
-        for so in self:
-            so._split_pickings_per_slot()
-        return res
-
-    def _split_pickings_per_slot(self):
-        """Fan out this SO's pooled picking(s) into one picking per time slot.
-
-        For each picking linked to this SO:
-        - Group its moves by sale_line_id.time_slot_id (fallback to slot
-          offset 0 if a line has no slot).
-        - Keep the first slot's moves on the original picking (tagged with
-          that slot + slot's scheduled_date/deadline).
-        - For each other slot present, copy the picking header (empty),
-          tag it, set scheduled_date/deadline, reassign the slot's moves.
-
-        SOs with <= 1 slot: no-op.
-        """
-        self.ensure_one()
-        if len(self.time_slot_ids) < 2:
-            return
-        Picking = self.env.get('stock.picking')
-        if Picking is None:
-            return
-        # Fallback slot (first one) for any lines missing time_slot_id.
-        default_slot = self.time_slot_ids.sorted('sequence')[:1]
-        pickings = Picking.search([('sale_id', '=', self.id)])
-        for picking in pickings:
-            moves_by_slot = {}
-            for move in picking.move_ids:
-                sol = move.sale_line_id
-                slot = (sol.time_slot_id if sol else False) or default_slot
-                if not slot:
-                    continue
-                moves_by_slot.setdefault(slot.id, self.env['stock.move'])
-                moves_by_slot[slot.id] |= move
-            if not moves_by_slot:
-                continue
-            slot_ids_sorted = sorted(
-                moves_by_slot.keys(),
-                key=lambda sid: self.env['lcs.event.time.slot'].browse(sid).sequence,
-            )
-            first_slot_id = slot_ids_sorted[0]
-            first_slot = self.env['lcs.event.time.slot'].browse(first_slot_id)
-            first_dt = self._slot_scheduled_dt(first_slot)
-            picking.time_slot_id = first_slot_id
-            picking.event_day_offset = first_slot.slot_offset
-            if first_dt:
-                picking.scheduled_date = first_dt
-                picking.date_deadline = first_dt
-            for slot_id in slot_ids_sorted[1:]:
-                slot = self.env['lcs.event.time.slot'].browse(slot_id)
-                dt = self._slot_scheduled_dt(slot)
-                new_pick = picking.copy({
-                    'move_ids': [],
-                    'time_slot_id': slot_id,
-                    'event_day_offset': slot.slot_offset,
-                    'scheduled_date': dt or picking.scheduled_date,
-                    'date_deadline': dt or picking.date_deadline,
-                })
-                moves_by_slot[slot_id].write({'picking_id': new_pick.id})
 
     def _prepare_invoice(self):
         """Pass catering fields to the invoice."""
@@ -755,87 +437,6 @@ class SaleOrderLine(models.Model):
         help='Marker for the section/product lines auto-generated from the Hardware tab.',
     )
 
-    # ── Multi-day / multi-slot event support ──
-    time_slot_id = fields.Many2one(
-        'lcs.event.time.slot',
-        string='Time Slot',
-        ondelete='set null', index=True, copy=True,
-        help='Which time slot on the parent SO this line belongs to. '
-             'Governs which delivery order / EO the line ends up in.',
-    )
-    event_day_offset = fields.Integer(
-        string='Event Day',
-        default=0, copy=True,
-        help='0-based day within the SO event range. Auto-synced from '
-             'time_slot_id.slot_offset when a slot is set.',
-    )
-
-    @api.onchange('time_slot_id')
-    def _onchange_time_slot_id_sync_offset(self):
-        for line in self:
-            if line.time_slot_id:
-                line.event_day_offset = line.time_slot_id.slot_offset
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        # Auto-sync event_day_offset from time_slot_id on create.
-        for vals in vals_list:
-            if vals.get('time_slot_id') and 'event_day_offset' not in vals:
-                slot = self.env['lcs.event.time.slot'].browse(vals['time_slot_id'])
-                if slot.exists():
-                    vals['event_day_offset'] = slot.slot_offset
-        return super().create(vals_list)
-
-    def write(self, vals):
-        # Keep event_day_offset in sync when time_slot_id is written.
-        if 'time_slot_id' in vals and 'event_day_offset' not in vals:
-            slot_id = vals['time_slot_id']
-            if slot_id:
-                slot = self.env['lcs.event.time.slot'].browse(slot_id)
-                if slot.exists():
-                    vals['event_day_offset'] = slot.slot_offset
-        return super().write(vals)
-    event_date = fields.Date(
-        string='Line Event Date',
-        compute='_compute_event_date', store=True,
-    )
-
-    @api.depends('order_id.event_date_start', 'event_day_offset')
-    def _compute_event_date(self):
-        from datetime import timedelta
-        for line in self:
-            start = line.order_id.event_date_start
-            if start:
-                line.event_date = start + timedelta(days=line.event_day_offset or 0)
-            else:
-                line.event_date = False
-
-    def _prepare_procurement_values(self, *args, **kwargs):
-        """Per-day scheduled/deadline dates for multi-day catering events.
-
-        v19 removed the `procurement.group` model and the `group_id` kwarg on
-        this method, so the per-day-picking grouping we used on v17/v18 is
-        gone. We keep the date-adjustment part (still useful) and drop the
-        grouping — pickings-per-day needs a separate v19 mechanism (TODO).
-        """
-        vals = super()._prepare_procurement_values(*args, **kwargs)
-        self.ensure_one()
-        so = self.order_id
-        if not so or (so.event_day_count or 0) < 2:
-            return vals
-        offset = int(self.event_day_offset or 0)
-        from datetime import datetime as _dt, timedelta as _td
-        start_date = so.event_date_start
-        if start_date:
-            time_start = so.event_time_start or 0.0
-            hours = int(time_start)
-            minutes = int(round((time_start - hours) * 60))
-            day_dt = _dt.combine(
-                start_date + _td(days=offset), _dt.min.time(),
-            ).replace(hour=hours, minute=minutes)
-            vals['date_planned'] = day_dt
-            vals['date_deadline'] = day_dt
-        return vals
 
 
 class SaleOrderFromCRM(models.Model):
@@ -852,8 +453,7 @@ class SaleOrderFromCRM(models.Model):
             'default_delivery_type': self.delivery_type,
             'default_guest_count': self.guest_count,
             'default_event_remark': self.event_remark,
-            'default_event_date_start': self.event_date_start or self.event_date,
-            'default_event_date_end': self.event_date_end,
+            'default_event_date': self.event_date,
             'default_event_time_start': self.event_time_start or self.delivery_time,
             'default_event_time_end': self.event_time_end,
             'default_commitment_date': self.event_date,

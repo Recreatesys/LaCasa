@@ -54,45 +54,18 @@ class SaleOrder(models.Model):
         return res
 
     def _create_event_order(self):
-        """Create one Event Order per time slot on the confirmed Sales Order.
-
-        Fan out N EOs, one per slot in time_slot_ids (sorted by sequence),
-        each carrying only that slot's SO lines. Each EO records
-        time_slot_id AND event_day_offset (= slot.slot_offset) for legacy
-        compat and picking linkage.
-        """
+        """Create one Event Order per confirmed Sales Order."""
         self.ensure_one()
         EO = self.env['lcs.event.order']
-        slots = self.time_slot_ids.sorted('sequence')
-        if not slots:
-            # Defensive fallback: SO has no slots (shouldn't happen after
-            # migration, but stay safe). Create one EO for the whole SO.
-            vals = EO._prepare_eo_vals_from_so(self, day_offset=0)
-            vals.update({
-                'sale_order_id': self.id,
-                'name': '%s-v1' % self.name,
-                'version': 1,
-            })
-            line_vals = EO._prepare_eo_lines_from_so(self, day_offset=0)
-            vals['line_ids'] = [(0, 0, lv) for lv in line_vals]
-            return EO.create(vals)
-        created = EO
-        many_slots = len(slots) > 1
-        for slot in slots:
-            offset = slot.slot_offset
-            vals = EO._prepare_eo_vals_from_so(self, day_offset=offset)
-            suffix = '-v1' if not many_slots else '-D%d-v1' % (offset + 1)
-            vals.update({
-                'sale_order_id': self.id,
-                'time_slot_id': slot.id,
-                'event_day_offset': offset,
-                'name': '%s%s' % (self.name, suffix),
-                'version': 1,
-            })
-            line_vals = EO._prepare_eo_lines_from_so(self, day_offset=offset)
-            vals['line_ids'] = [(0, 0, lv) for lv in line_vals]
-            created |= EO.create(vals)
-        return created
+        vals = EO._prepare_eo_vals_from_so(self, day_offset=0)
+        vals.update({
+            'sale_order_id': self.id,
+            'name': '%s-v1' % self.name,
+            'version': 1,
+        })
+        line_vals = EO._prepare_eo_lines_from_so(self, day_offset=0)
+        vals['line_ids'] = [(0, 0, lv) for lv in line_vals]
+        return EO.create(vals)
 
     def _sync_to_event_order(self):
         """Push current SO state to each linked EO (header + lines, bump version)."""

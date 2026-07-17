@@ -184,18 +184,9 @@ class SaleOrder(models.Model):
                 sol.product_uom_qty = qty
 
     def action_open_set_picker(self):
-        """Open a popup listing all active catering sets so the user can pick one.
-
-        A caller can pre-select the target event day by setting
-        ``set_picker_day_offset`` in the button's context (see the per-day
-        buttons above each Day N tab); the picker forwards it as
-        ``active_day_offset`` so the created line lands on the right day.
-        """
+        """Open a popup listing all active catering sets so the user can pick one."""
         self.ensure_one()
-        day_offset = self.env.context.get('set_picker_day_offset')
         ctx = {'active_order_id': self.id, 'create': False}
-        if day_offset is not None:
-            ctx['active_day_offset'] = int(day_offset)
         return {
             'name': _('Pick a Catering Set'),
             'type': 'ir.actions.act_window',
@@ -210,30 +201,15 @@ class SaleOrder(models.Model):
         }
 
     def action_expand_sets(self):
-        """Expand set products in the SO into individual dish lines.
-
-        Reads context flag ``expand_sets_slot_offset`` (Integer): if set,
-        only container lines currently on that slot are expanded. This is
-        how the per-slot "Expand Sets in Slot N" buttons scope their work.
-
-        Every generated child line (note, section header, main line, add-on)
-        inherits the container line's ``time_slot_id`` + ``event_day_offset``
-        so nothing leaks into Slot 1.
-        """
+        """Expand set products in the SO into individual dish lines."""
         self.ensure_one()
         guest_count = self.guest_count or 0
-        only_offset = self.env.context.get('expand_sets_slot_offset')
-        if only_offset is not None:
-            only_offset = int(only_offset)
 
         lines_to_process = self.order_line.filtered(
             lambda l: not l.display_type and not l.is_set_line
         )
 
         for line in lines_to_process:
-            if only_offset is not None \
-                    and int(line.event_day_offset or 0) != only_offset:
-                continue
             catering_set = self.env['lcs.catering.set'].search([
                 ('product_id.product_variant_ids', 'in', [line.product_id.id]),
             ], limit=1)
@@ -253,11 +229,6 @@ class SaleOrder(models.Model):
                 catering_set.min_guest_count or 0, guest_count or 0
             )
 
-            # Inherit slot / offset from the container line so all child
-            # lines land on the same tab.
-            child_slot_id = line.time_slot_id.id if line.time_slot_id else False
-            child_offset = int(line.event_day_offset or 0)
-
             # Show recommendation as a note line
             if catering_set.recommendation:
                 self.env['sale.order.line'].create({
@@ -265,8 +236,6 @@ class SaleOrder(models.Model):
                     'display_type': 'line_note',
                     'name': '💡 %s' % catering_set.recommendation,
                     'sequence': line.sequence + 1,
-                    'time_slot_id': child_slot_id,
-                    'event_day_offset': child_offset,
                 })
 
             seq = line.sequence + 2
@@ -281,8 +250,6 @@ class SaleOrder(models.Model):
                         'display_type': 'line_section',
                         'name': current_section,
                         'sequence': seq,
-                        'time_slot_id': child_slot_id,
-                        'event_day_offset': child_offset,
                     })
                     seq += 1
 
@@ -371,8 +338,6 @@ class SaleOrder(models.Model):
                     'eo_unit': eo_unit,
                     'per_piece_price': set_line.price_per_piece or 0,
                     'sequence': seq,
-                    'time_slot_id': child_slot_id,
-                    'event_day_offset': child_offset,
                 })
                 seq += 1
 
@@ -399,8 +364,6 @@ class SaleOrder(models.Model):
                         'set_line_code': set_line.code,
                         'per_piece_price': set_line.price_per_piece,
                         'sequence': seq,
-                        'time_slot_id': child_slot_id,
-                        'event_day_offset': child_offset,
                     })
                     seq += 1
 
