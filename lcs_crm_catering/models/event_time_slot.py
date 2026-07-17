@@ -52,22 +52,25 @@ class EventTimeSlot(models.Model):
         'sale_order_id',
     )
     def _compute_slot_offset(self):
-        """Position of this slot within its parent's ordered slot list."""
-        parents = self.mapped('crm_lead_id') | self.mapped('sale_order_id')
-        seen = set()
-        for parent in parents:
-            key = (parent._name, parent.id)
-            if key in seen:
-                continue
-            seen.add(key)
-            slots = parent.time_slot_ids.sorted('sequence') \
-                if hasattr(parent, 'time_slot_ids') else self.env[self._name]
-            for idx, slot in enumerate(slots):
-                slot.slot_offset = idx
-        # Slots with no parent → offset stays 0
+        """Position of this slot within its parent's ordered slot list.
+
+        Parents can be crm.lead (new, Phase 2) or the legacy sale.order.
+        Iterate each parent recordset separately — Odoo forbids unioning
+        recordsets of different models.
+        """
+        # Default everything to 0 first; parents below overwrite as needed.
         for slot in self:
-            if not slot.crm_lead_id and not slot.sale_order_id:
-                slot.slot_offset = 0
+            slot.slot_offset = 0
+        for lead in self.mapped('crm_lead_id'):
+            for idx, s in enumerate(lead.time_slot_ids.sorted('sequence')):
+                s.slot_offset = idx
+        for so in self.mapped('sale_order_id'):
+            # Legacy path — sale.order no longer exposes time_slot_ids
+            # after Phase 1 revert; guard so this doesn't crash if the
+            # attribute is gone.
+            if hasattr(so, 'time_slot_ids'):
+                for idx, s in enumerate(so.time_slot_ids.sorted('sequence')):
+                    s.slot_offset = idx
 
     @api.depends('label', 'date', 'time_start', 'time_end')
     def _compute_display_name(self):
