@@ -27,13 +27,15 @@
         <t t-call="web.basic_layout">
             <t t-set="o" t-value="o"/>
             <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
-            <!-- Kill any implicit top padding on every page so the header
-                 sits at the very top on page 1 and content on 2/3/4… does
-                 the same. -->
+            <!-- Kill implicit VERTICAL padding only — leave the container's
+                 horizontal padding alone so content doesn't run off the
+                 paper edges. -->
             <style>
                 @page { margin-top: 5mm; margin-bottom: 10mm; }
-                html, body, main, .article { margin: 0 !important; padding: 0 !important; }
-                .page { margin-top: 0 !important; padding-top: 0 !important; }
+                html, body, main, .article, .page {
+                    margin-top: 0 !important; padding-top: 0 !important;
+                    margin-bottom: 0 !important; padding-bottom: 0 !important;
+                }
             </style>
             <!-- Identify set parent bundle products via the SO source lines -->
             <t t-set="src_so_lines" t-value="o.invoice_line_ids.mapped('sale_line_ids')"/>
