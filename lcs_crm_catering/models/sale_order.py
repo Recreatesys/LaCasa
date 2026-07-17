@@ -550,6 +550,11 @@ class SaleOrder(models.Model):
                     'quantity': 1.0,
                     'price_unit': adjustment,
                     'display_type': 'product',
+                    # Sort last: SO blocks use sequences 100, 200, 300... so
+                    # a very high sequence guarantees the adjustment is the
+                    # bottom-most row in both the product table and the
+                    # Sets & Services Summary.
+                    'sequence': 99999,
                 }))
 
         invoice_vals['invoice_line_ids'] = invoice_lines
