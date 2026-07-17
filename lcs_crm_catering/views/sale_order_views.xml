@@ -141,26 +141,13 @@
 
 
     <!-- Sales Order LIST view: expose Event Date, Event Time, Event Hour
-         columns by default (shown on the Sales / opportunity → Sales tab). -->
-    <record id="sale_order_view_tree_inherit_lcs" model="ir.ui.view">
+         columns by default. Inherits from the root sale_order_tree so the
+         change applies to both the Quotations list and the Sales Orders
+         list (both are primary inheritances of this root). -->
+    <record id="sale_order_tree_inherit_lcs" model="ir.ui.view">
         <field name="name">sale.order.tree.inherit.lcs</field>
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='date_order']" position="after">
-                <field name="event_date" string="Event / Delivery Date" optional="show"/>
-                <field name="event_time_start" widget="float_time"
-                       string="Event / Delivery Time" optional="show"/>
-                <field name="event_hour" string="Event Hour" optional="show"/>
-            </xpath>
-        </field>
-    </record>
-
-    <!-- Same columns on the Quotations list view. -->
-    <record id="sale_quotation_view_tree_inherit_lcs" model="ir.ui.view">
-        <field name="name">sale.order.quotation.tree.inherit.lcs</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='date_order']" position="after">
                 <field name="event_date" string="Event / Delivery Date" optional="show"/>
