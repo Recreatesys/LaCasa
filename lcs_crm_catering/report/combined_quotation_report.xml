@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Combined LCS Quotation Report                                -->
+    <!--                                                              -->
+    <!-- Renders ONE PDF for the N Sales Orders the user ticked in    -->
+    <!-- the list view (typically the quotations of one opportunity). -->
+    <!-- Layout:                                                      -->
+    <!--   Page 1  — Opportunity Summary cover page (list of quotes,  -->
+    <!--             per-quote subtotal, grand total, contact info).  -->
+    <!--   Page 2+ — Each selected quotation rendered with the        -->
+    <!--             existing LCS Quotation page template.            -->
+    <!-- ============================================================ -->
+
+    <template id="report_combined_quotation_lcs">
+        <t t-call="web.html_container">
+            <!-- Cover page — printed in the FIRST doc's partner lang. -->
+            <t t-set="first_doc" t-value="docs[0] if docs else False"/>
+            <t t-set="cover_lang" t-value="first_doc and first_doc.partner_id.lang or 'en_US'"/>
+            <t t-call="lcs_crm_catering.report_combined_quotation_lcs_cover"
+               t-lang="cover_lang"/>
+            <!-- Each ticked SO rendered with the standard LCS page. -->
+            <t t-foreach="docs" t-as="o">
+                <t t-call="lcs_crm_catering.report_quotation_lcs_page"
+                   t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_combined_quotation_lcs_cover">
+        <t t-call="web.basic_layout">
+            <t t-set="opportunities" t-value="docs.mapped('opportunity_id')"/>
+            <t t-set="opportunity" t-value="opportunities[:1]"/>
+            <t t-set="partners" t-value="docs.mapped('partner_id')"/>
+            <t t-set="partner" t-value="partners[:1]"/>
+            <t t-set="grand_total" t-value="sum(docs.mapped('amount_total'))"/>
+            <t t-set="currency" t-value="docs[:1].currency_id"/>
+            <t t-set="show_logo" t-value="first_doc and first_doc.company_id.logo and not first_doc.no_logo"/>
+
+            <div class="page" style="font-family: Arial, sans-serif; font-size: 12px;">
+
+                <!-- Company Header -->
+                <div style="margin-bottom: 20px;">
+                    <div style="margin-bottom: 10px;">
+                        <img t-if="show_logo"
+                             t-att-src="image_data_uri(first_doc.company_id.logo)"
+                             style="max-height: 60px;" alt="Logo"/>
+                    </div>
+                    <div>
+                        <span t-if="first_doc" t-field="first_doc.company_id.partner_id.name"
+                              style="font-weight: bold; font-size: 20px;"/><br/>
+                        <t t-if="first_doc and first_doc.company_id.partner_id.street">
+                            <span t-field="first_doc.company_id.partner_id.street"/>
+                            <t t-if="first_doc.company_id.partner_id.street2">, <span t-field="first_doc.company_id.partner_id.street2"/></t><br/>
+                        </t>
+                        <t t-if="first_doc and first_doc.company_id.phone">Tel: <span t-field="first_doc.company_id.phone"/></t>
+                        <t t-if="first_doc and first_doc.company_id.phone and first_doc.company_id.email"> | </t>
+                        <t t-if="first_doc and first_doc.company_id.email">Email: <span t-field="first_doc.company_id.email"/></t>
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div style="text-align: center; margin: 20px 0;">
+                    <h2 style="margin: 0;">Combined Quotation</h2>
+                    <t t-if="opportunity">
+                        <div style="font-size: 14px; margin-top: 6px;">
+                            Opportunity: <strong t-esc="opportunity.name"/>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Customer summary -->
+                <div style="margin-bottom: 20px;">
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="width:50%; vertical-align:top;">
+                                <strong>Customer:</strong><br/>
+                                <span t-if="partner" t-field="partner.name"/><br/>
+                                <t t-if="partner and partner.street">
+                                    <span t-field="partner.street"/><br/>
+                                </t>
+                                <t t-if="partner and partner.street2">
+                                    <span t-field="partner.street2"/><br/>
+                                </t>
+                                <t t-if="partner and partner.phone">
+                                    Tel: <span t-field="partner.phone"/><br/>
+                                </t>
+                                <t t-if="partner and partner.email">
+                                    Email: <span t-field="partner.email"/>
+                                </t>
+                            </td>
+                            <td style="width:50%; vertical-align:top; text-align:right;">
+                                <strong>Date:</strong>
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/><br/>
+                                <strong># Quotations:</strong>
+                                <span t-esc="len(docs)"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <hr/>
+
+                <!-- Per-quote summary table -->
+                <table class="table table-sm" style="width:100%; margin-top:16px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #333;">
+                            <th style="text-align:left;">Quotation</th>
+                            <th style="text-align:left;">Event Date</th>
+                            <th style="text-align:left;">Time</th>
+                            <th style="text-align:right;">Guests</th>
+                            <th style="text-align:right;">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="docs" t-as="doc" style="border-bottom: 1px solid #ddd;">
+                            <td>
+                                <strong t-esc="doc.name"/>
+                                <t t-if="doc.origin_slot_id">
+                                    <br/><small t-esc="doc.origin_slot_id.label"/>
+                                </t>
+                            </td>
+                            <td>
+                                <span t-if="doc.event_date"
+                                      t-esc="doc.event_date.strftime('%Y-%m-%d')"/>
+                            </td>
+                            <td>
+                                <t t-if="doc.event_time_start or doc.event_time_end">
+                                    <t t-set="ts_h" t-value="int(doc.event_time_start or 0)"/>
+                                    <t t-set="ts_m" t-value="int(round(((doc.event_time_start or 0) - ts_h) * 60))"/>
+                                    <t t-set="te_h" t-value="int(doc.event_time_end or 0)"/>
+                                    <t t-set="te_m" t-value="int(round(((doc.event_time_end or 0) - te_h) * 60))"/>
+                                    <span t-esc="'%02d:%02d – %02d:%02d' % (ts_h, ts_m, te_h, te_m)"/>
+                                </t>
+                            </td>
+                            <td style="text-align:right;" t-esc="doc.guest_count or 0"/>
+                            <td style="text-align:right;">
+                                <span t-esc="doc.amount_total"
+                                      t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr style="border-top: 2px solid #333; font-weight:bold;">
+                            <td colspan="4" style="text-align:right;">Grand Total:</td>
+                            <td style="text-align:right;">
+                                <span t-esc="grand_total"
+                                      t-options='{"widget": "monetary", "display_currency": currency}'/>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <p class="text-muted small mt-4">
+                    Detailed line items for each quotation follow on the next pages.
+                </p>
+
+                <p style="page-break-after: always;"/>
+            </div>
+        </t>
+    </template>
+
+    <!-- Report action (multi=True binds it to selected records on the list view) -->
+    <record id="action_report_combined_quotation_lcs" model="ir.actions.report">
+        <field name="name">Combined LCS Quotation</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lcs_crm_catering.report_combined_quotation_lcs</field>
+        <field name="report_file">lcs_crm_catering.report_combined_quotation_lcs</field>
+        <field name="multi" eval="True"/>
+        <field name="print_report_name">'Combined-Quotation-' + (object.opportunity_id.name or object.partner_id.name or 'batch')</field>
+        <field name="paperformat_id" ref="paperformat_lcs_a4"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>
