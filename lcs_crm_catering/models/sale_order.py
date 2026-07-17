@@ -505,6 +505,13 @@ class SaleOrder(models.Model):
                     invoice_lines.append((0, 0, vals))
                     seq += 1
                     continue
+                # Skip unpicked set-line dishes and unpicked add-on pieces
+                # — customer didn't choose them, so they shouldn't bill.
+                is_set = getattr(line, 'is_set_line', False)
+                is_addon = getattr(line, 'is_addon_piece', False)
+                picked = getattr(line, 'dish_selected', True)
+                if (is_set or is_addon) and not picked:
+                    continue
                 qty = line.qty_to_invoice or 0
                 if qty <= 0:
                     continue
