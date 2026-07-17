@@ -63,6 +63,39 @@
                         <field name="event_remark"/>
                     </group>
                 </group>
+
+                <!-- Time Slots — each row becomes a quotation on "Create
+                     Quotations". After the first click, saving a new slot
+                     auto-creates that slot's quotation. -->
+                <group string="Time Slots">
+                    <field name="quotations_created" invisible="1"/>
+                    <field name="time_slot_count" invisible="1"/>
+                    <div class="mb-2">
+                        <button name="action_create_quotations_from_slots"
+                                string="Create Quotations"
+                                type="object"
+                                class="btn-primary me-2"
+                                icon="fa-file-text-o"
+                                confirm="Create one draft quotation per unquoted slot?"/>
+                        <button name="action_view_opportunity_quotations"
+                                string="View Quotations"
+                                type="object"
+                                class="btn-secondary"
+                                icon="fa-external-link"/>
+                    </div>
+                    <field name="time_slot_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="label"/>
+                            <field name="date"/>
+                            <field name="time_start" widget="float_time"/>
+                            <field name="time_end" widget="float_time"/>
+                            <field name="guest_count"/>
+                            <field name="order_id" readonly="1"
+                                   string="Quotation" optional="show"/>
+                        </list>
+                    </field>
+                </group>
             </xpath>
         </field>
     </record>

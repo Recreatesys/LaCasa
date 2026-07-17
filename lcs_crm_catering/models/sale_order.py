@@ -81,6 +81,14 @@ class SaleOrder(models.Model):
     )
     call_van = fields.Selection(CALL_VAN_SELECTION, string='Preferred Driver')
 
+    # Which opportunity time slot generated this quotation (Phase 2).
+    origin_slot_id = fields.Many2one(
+        'lcs.event.time.slot',
+        string='Origin Time Slot',
+        ondelete='set null', copy=False, index=True,
+        help='The opportunity time slot this quotation was generated from.',
+    )
+
     # ── Event / Delivery — single date + time window ──
     event_date = fields.Date(
         string='Event / Delivery Date',

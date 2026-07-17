@@ -5,7 +5,7 @@ from datetime import datetime
 from lxml import html as lxml_html
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import html2plaintext
 
 _logger = logging.getLogger(__name__)
@@ -183,6 +183,60 @@ class CrmLead(models.Model):
         string='Wedding-related',
         help='Tick if this food tasting is for a wedding (used for sequence prefix lacasaWFT).',
     )
+
+    # ── Time slots — each slot becomes its own quotation ─────────────
+    time_slot_ids = fields.One2many(
+        'lcs.event.time.slot', 'crm_lead_id', string='Time Slots',
+        copy=True,
+    )
+    time_slot_count = fields.Integer(
+        string='# Time Slots',
+        compute='_compute_time_slot_count', store=True,
+    )
+    quotations_created = fields.Boolean(
+        string='Quotations Created',
+        default=False, copy=False,
+        help='Set the first time "Create Quotations" is clicked. Once set, '
+             'saving a new time slot auto-creates its quotation.',
+    )
+
+    @api.depends('time_slot_ids')
+    def _compute_time_slot_count(self):
+        for lead in self:
+            lead.time_slot_count = len(lead.time_slot_ids)
+
+    @api.constrains('time_slot_ids')
+    def _check_time_slot_count(self):
+        for lead in self:
+            if len(lead.time_slot_ids) > 7:
+                raise ValidationError(_(
+                    'An opportunity can have at most 7 time slots.'
+                ))
+
+    def action_create_quotations_from_slots(self):
+        """Create one draft SO per unquoted time slot on this opportunity.
+        Marks quotations_created=True so subsequent slot saves auto-quote.
+        """
+        for lead in self:
+            for slot in lead.time_slot_ids.sorted('sequence'):
+                if not slot.order_id:
+                    slot._create_quotation_for_slot()
+            lead.quotations_created = True
+        # Return an action that opens the linked SOs list
+        return self.action_view_opportunity_quotations()
+
+    def action_view_opportunity_quotations(self):
+        """Open the list of quotations / SOs linked to this opportunity."""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Quotations from %s', self.name or _('Opportunity')),
+            'res_model': 'sale.order',
+            'view_mode': 'list,form',
+            'domain': [('opportunity_id', '=', self.id)],
+            'context': {'default_opportunity_id': self.id,
+                        'default_partner_id': self.partner_id.id},
+        }
 
     # ──────────────────────────────────────────────────────────
     # Stage-reverse guard: salespeople can only advance, not regress
