@@ -226,8 +226,8 @@ class EventOrder(models.Model):
         """
         self.ensure_one()
 
-        # Header refresh + version bump. Preserve this EO's own day offset.
-        vals = self._prepare_eo_vals_from_so(so, day_offset=self.event_day_offset or 0)
+        # Header refresh + version bump.
+        vals = self._prepare_eo_vals_from_so(so, day_offset=0)
         vals.update({
             'version': self.version + 1,
             'last_change_date': fields.Datetime.now(),
@@ -247,7 +247,7 @@ class EventOrder(models.Model):
         EOLine = self.env['lcs.event.order.line']
 
         # Desired state from SO (each entry carries sale_line_id)
-        desired = self._prepare_eo_lines_from_so(so, day_offset=self.event_day_offset or 0)
+        desired = self._prepare_eo_lines_from_so(so, day_offset=0)
         desired_by_sol = {d['sale_line_id']: d for d in desired if d.get('sale_line_id')}
 
         existing_by_sol = {l.sale_line_id.id: l for l in self.line_ids if l.sale_line_id}
@@ -303,19 +303,13 @@ class EventOrder(models.Model):
 
     @api.model
     def _prepare_eo_lines_from_so(self, so, day_offset=0):
-        """Prepare EO line values for the SO lines matching this day_offset.
+        """Prepare EO line values for all product lines on the SO.
 
-        For single-day (or legacy) SOs, day_offset=0 catches all lines that
-        default to offset 0. For multi-day SOs, each EO gets only the SO
-        lines whose event_day_offset matches its own day.
+        Post-Phase-1: 1 SO = 1 EO, so no day-offset filtering. The kwarg is
+        kept for signature compat.
         """
         lines = []
         for sol in so.order_line.filtered(lambda l: not l.display_type):
-            # Filter by day
-            sol_offset = int(getattr(sol, 'event_day_offset', 0) or 0)
-            if sol_offset != day_offset:
-                continue
-
             # Skip unselected set lines
             if hasattr(sol, 'is_set_line') and sol.is_set_line and not sol.dish_selected:
                 continue
