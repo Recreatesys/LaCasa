@@ -38,6 +38,17 @@
                     </group>
                 </group>
             </xpath>
+
+            <!-- "Grouped Preview" tab — mirrors the PDF's two-table layout
+                 (Sets & Services Summary + per-set Food Choices). Read-only
+                 view of the invoice's catering structure. Add / edit lines
+                 in the standard Invoice Lines tab; this tab auto-refreshes. -->
+            <xpath expr="//page[@id='invoice_tab']" position="after">
+                <page string="Grouped Preview" name="lcs_grouped_preview">
+                    <field name="lcs_invoice_grouped_html"
+                           nolabel="1" readonly="1"/>
+                </page>
+            </xpath>
         </field>
     </record>
 

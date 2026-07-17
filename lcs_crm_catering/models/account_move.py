@@ -1,4 +1,4 @@
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.addons.lcs_crm_catering.models.crm_lead import (
     BRAND_SELECTION,
     CALL_VAN_SELECTION,
@@ -37,6 +37,31 @@ class AccountMove(models.Model):
     is_wedding = fields.Boolean(
         string='Wedding-related',
     )
+
+    lcs_invoice_grouped_html = fields.Html(
+        string='Grouped Preview',
+        compute='_compute_lcs_invoice_grouped_html',
+        sanitize=False,
+    )
+
+    @api.depends(
+        'invoice_line_ids',
+        'invoice_line_ids.price_subtotal',
+        'invoice_line_ids.quantity',
+        'invoice_line_ids.price_unit',
+        'invoice_line_ids.name',
+        'invoice_line_ids.display_type',
+        'invoice_line_ids.product_id',
+        'invoice_line_ids.sequence',
+        'invoice_line_ids.sale_line_ids',
+    )
+    def _compute_lcs_invoice_grouped_html(self):
+        Qweb = self.env['ir.qweb']
+        for move in self:
+            move.lcs_invoice_grouped_html = Qweb._render(
+                'lcs_crm_catering.invoice_grouped_preview',
+                {'move': move, 'groups': move.get_lcs_invoice_groups()},
+            )
 
     def write(self, vals):
         res = super().write(vals)
