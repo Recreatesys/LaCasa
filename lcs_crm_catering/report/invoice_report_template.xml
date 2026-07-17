@@ -217,70 +217,113 @@
                     </tr>
                 </table>
 
-                <!-- Detail Product Lines — mirror the SO page 2 filter:
-                     show parent set bundle + selected dishes, hide unselected dishes,
-                     add-on pieces, and display-type rows. -->
-                <table style="width: 100%; border-collapse: collapse;">
+                <!-- Line grouping computed on the invoice: one bucket per
+                     set container + one bucket per standalone product. -->
+                <t t-set="lcs_groups" t-value="o.get_lcs_invoice_groups()"/>
+
+                <!-- ================================================== -->
+                <!-- TABLE 1 — Sets & Services Summary                  -->
+                <!-- One row per set / standalone service, with subtotal.-->
+                <!-- ================================================== -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
                     <thead>
                         <tr style="border-bottom: 1px solid #000;">
-                            <th style="text-align: left; padding: 5px;">Dish Name</th>
-                            <th style="text-align: right; padding: 5px; width: 80px;">Unit Price</th>
-                            <th style="text-align: right; padding: 5px; width: 60px;">Qty</th>
-                            <th style="text-align: right; padding: 5px; width: 80px;">Price</th>
+                            <th style="text-align: left; padding: 5px;">Service</th>
+                            <th style="text-align: right; padding: 5px; width: 100px;">Subtotal</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Iterate product + section + note rows in sequence
-                             order so the down-payment line, the set-name
-                             section header and the dish notes render in the
-                             right visual order. -->
-                        <t t-foreach="o.invoice_line_ids.sorted(lambda l: (l.sequence, l.id)).filtered(lambda l: l.display_type in ('product', 'line_section', 'line_note'))" t-as="line">
-                            <t t-if="line.display_type == 'line_section'">
-                                <tr style="background-color: #f4f4f4; break-inside: avoid;">
-                                    <td colspan="4" style="padding: 6px 5px; font-weight: bold;">
-                                        <span t-field="line.name"/>
-                                    </td>
-                                </tr>
-                            </t>
-                            <t t-elif="line.display_type == 'line_note'">
-                                <tr style="break-inside: avoid;">
-                                    <td colspan="4" style="padding: 2px 5px 2px 25px; color: #444; font-size: 11px;">
-                                        • <span t-field="line.name"/>
-                                    </td>
-                                </tr>
-                            </t>
-                            <t t-else="">
-                                <t t-set="src" t-value="line.sale_line_ids[:1]"/>
-                                <t t-set="skip" t-value="src and (src.is_addon_piece or (src.is_set_line and not src.dish_selected))"/>
-                                <tr t-if="not skip" style="border-bottom: 1px solid #eee; break-inside: avoid;">
-                                    <td style="padding: 5px; white-space: pre-line;">
-                                        <span t-field="line.name"/>
-                                    </td>
-                                    <td style="text-align: right; padding: 5px;">
-                                        HK$<span t-field="line.price_unit"/>
-                                    </td>
-                                    <td style="text-align: right; padding: 5px;">
-                                        <span t-field="line.quantity"/>
-                                        <t t-if="src and src.set_unit">
-                                            <small style="color: #666;"> <span t-field="src.set_unit"/></small>
-                                        </t>
-                                    </td>
-                                    <td style="text-align: right; padding: 5px;">
-                                        HK$<span t-field="line.price_subtotal"/>
-                                    </td>
-                                </tr>
-                            </t>
-                        </t>
+                        <tr t-foreach="lcs_groups" t-as="group"
+                            style="border-bottom: 1px solid #eee; break-inside: avoid;">
+                            <td style="padding: 5px; white-space: pre-line;">
+                                <span t-esc="group['label']"/>
+                            </td>
+                            <td style="text-align: right; padding: 5px;">
+                                HK$<span t-esc="'%.2f' % group['subtotal']"/>
+                            </td>
+                        </tr>
                     </tbody>
                     <tfoot>
                         <tr style="border-top: 1px solid #000;">
-                            <td colspan="3" style="text-align: right; padding: 5px;"><strong>Total</strong></td>
+                            <td style="text-align: right; padding: 5px;"><strong>Total</strong></td>
                             <td style="text-align: right; padding: 5px;">
                                 <strong>HK$<span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": False}'/></strong>
                             </td>
                         </tr>
                     </tfoot>
                 </table>
+
+                <!-- ================================================== -->
+                <!-- TABLE 2 — Food Choices, grouped per set            -->
+                <!-- One sub-table per set container (skips standalone). -->
+                <!-- ================================================== -->
+                <t t-foreach="lcs_groups" t-as="group">
+                    <t t-if="group['is_set'] and group['detail_lines']">
+                        <div style="margin-top: 15px; break-inside: avoid;">
+                            <div style="background-color: #333; color: #fff; padding: 6px 8px; font-weight: bold; font-size: 13px;">
+                                <span t-esc="group['label']"/>
+                            </div>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid #000;">
+                                        <th style="text-align: left; padding: 5px;">Dish Name</th>
+                                        <th style="text-align: right; padding: 5px; width: 80px;">Unit Price</th>
+                                        <th style="text-align: right; padding: 5px; width: 60px;">Qty</th>
+                                        <th style="text-align: right; padding: 5px; width: 80px;">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="group['detail_lines']" t-as="line">
+                                        <t t-if="line.display_type == 'line_section'">
+                                            <tr style="background-color: #f4f4f4; break-inside: avoid;">
+                                                <td colspan="4" style="padding: 6px 5px; font-weight: bold;">
+                                                    <span t-field="line.name"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-elif="line.display_type == 'line_note'">
+                                            <tr style="break-inside: avoid;">
+                                                <td colspan="4" style="padding: 2px 5px 2px 25px; color: #444; font-size: 11px;">
+                                                    • <span t-field="line.name"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="src" t-value="line.sale_line_ids[:1]"/>
+                                            <tr style="border-bottom: 1px solid #eee; break-inside: avoid;">
+                                                <td style="padding: 5px; white-space: pre-line;">
+                                                    <span t-field="line.name"/>
+                                                </td>
+                                                <td style="text-align: right; padding: 5px;">
+                                                    HK$<span t-field="line.price_unit"/>
+                                                </td>
+                                                <td style="text-align: right; padding: 5px;">
+                                                    <span t-field="line.quantity"/>
+                                                    <t t-if="src and src.set_unit">
+                                                        <small style="color: #666;"> <span t-field="src.set_unit"/></small>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align: right; padding: 5px;">
+                                                    HK$<span t-field="line.price_subtotal"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <tr style="border-top: 1px solid #000;">
+                                        <td colspan="3" style="text-align: right; padding: 5px;">
+                                            <strong><span t-esc="group['label']"/> Subtotal</strong>
+                                        </td>
+                                        <td style="text-align: right; padding: 5px;">
+                                            <strong>HK$<span t-esc="'%.2f' % group['subtotal']"/></strong>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </t>
+                </t>
 
             </div>
 
