@@ -406,6 +406,103 @@ class SaleOrder(models.Model):
             else:
                 self.attention_to_id = False
 
+    # ──────────────────────────────────────────────────────────
+    # Combined invoice — line-merge N ticked SOs into one account.move
+    # ──────────────────────────────────────────────────────────
+    def action_create_combined_invoice(self):
+        """Create ONE draft invoice combining lines from every SO in self.
+
+        - All SOs must share the same billing partner.
+        - All SOs must be confirmed (state in sale / done).
+        - Each SO's still-to-invoice quantities are added as separate lines
+          (Q5 default: no cross-SO line-merge, preserves per-SO traceability).
+        - Catering header fields (brand, event_date, service_type, etc.) are
+          copied from the FIRST SO.
+        - Sections / notes: propagated so downstream reports keep structure.
+        """
+        if not self:
+            raise UserError(_('No sales orders selected.'))
+
+        # Validate: same billing partner across all SOs.
+        billing_partners = set()
+        for so in self:
+            p = so.partner_invoice_id or so.partner_id
+            if p:
+                billing_partners.add(p.id)
+        if len(billing_partners) > 1:
+            raise UserError(_(
+                'All selected orders must share the same billing customer. '
+                'Selected orders reference %(n)d different customers.',
+                n=len(billing_partners),
+            ))
+
+        # Validate: all confirmed.
+        unconfirmed = self.filtered(lambda s: s.state not in ('sale', 'done'))
+        if unconfirmed:
+            raise UserError(_(
+                'These orders are not confirmed and cannot be invoiced: %s',
+                ', '.join(unconfirmed.mapped('name')),
+            ))
+
+        # Validate: something is left to invoice.
+        invoiceable = self.filtered(
+            lambda s: any((l.qty_to_invoice or 0) > 0
+                          or (l.display_type and not l.qty_invoiced)
+                          for l in s.order_line)
+        )
+        if not invoiceable:
+            raise UserError(_(
+                'Every line on the selected orders is already fully invoiced.'
+            ))
+
+        # Base invoice header from the FIRST SO (already includes catering
+        # fields via our _prepare_invoice override).
+        first = self[0]
+        invoice_vals = first._prepare_invoice()
+        invoice_vals['move_type'] = 'out_invoice'
+        invoice_vals['invoice_origin'] = ', '.join(self.mapped('name'))
+
+        # Collect lines across every SO, in the order they were selected.
+        invoice_lines = []
+        for so in self:
+            for line in so.order_line:
+                if line.display_type:
+                    # Sections / notes copied verbatim for readability.
+                    line_vals = line._prepare_invoice_line()
+                    invoice_lines.append((0, 0, line_vals))
+                    continue
+                qty = line.qty_to_invoice or 0
+                if qty <= 0:
+                    continue
+                line_vals = line._prepare_invoice_line(quantity=qty)
+                invoice_lines.append((0, 0, line_vals))
+
+        if not invoice_lines:
+            raise UserError(_(
+                'Nothing to invoice on the selected orders.'
+            ))
+
+        invoice_vals['invoice_line_ids'] = invoice_lines
+        move = self.env['account.move'].sudo().create(invoice_vals)
+
+        # Log a note on every source SO.
+        origin_names = ', '.join(self.mapped('name'))
+        for so in self:
+            so.message_post(body=_(
+                'Combined invoice %(inv)s created from %(orig)s',
+                inv=move.name or move.display_name or move.id,
+                orig=origin_names,
+            ))
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Combined Invoice'),
+            'res_model': 'account.move',
+            'res_id': move.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
     def _prepare_invoice(self):
         """Pass catering fields to the invoice."""
         vals = super()._prepare_invoice()

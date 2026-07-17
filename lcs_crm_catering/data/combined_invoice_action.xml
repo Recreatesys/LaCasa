@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- "Create Combined Invoice" — appears in the Action menu of the
+             Sales Order list view when at least one row is ticked. Delegates
+             to sale.order.action_create_combined_invoice which validates
+             (same billing partner, all confirmed, something to invoice) and
+             builds a single account.move with lines from every ticked SO. -->
+        <record id="action_server_combined_invoice" model="ir.actions.server">
+            <field name="name">Create Combined Invoice</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_create_combined_invoice()</field>
+        </record>
+
+    </data>
+</odoo>
