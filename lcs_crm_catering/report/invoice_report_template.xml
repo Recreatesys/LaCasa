@@ -27,6 +27,14 @@
         <t t-call="web.basic_layout">
             <t t-set="o" t-value="o"/>
             <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
+            <!-- Kill any implicit top padding on every page so the header
+                 sits at the very top on page 1 and content on 2/3/4… does
+                 the same. -->
+            <style>
+                @page { margin-top: 5mm; margin-bottom: 10mm; }
+                html, body, main, .article { margin: 0 !important; padding: 0 !important; }
+                .page { margin-top: 0 !important; padding-top: 0 !important; }
+            </style>
             <!-- Identify set parent bundle products via the SO source lines -->
             <t t-set="src_so_lines" t-value="o.invoice_line_ids.mapped('sale_line_ids')"/>
             <t t-set="parent_set_products" t-value="src_so_lines.filtered(lambda l: l.is_set_line).mapped('set_product_id')"/>
