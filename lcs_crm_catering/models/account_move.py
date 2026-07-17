@@ -149,14 +149,17 @@ class AccountMove(models.Model):
                         'container': False,
                         'detail_lines': [],
                     }
-                # Hide unselected dish rows and add-on-piece lines
-                # (mirror the previous filter).
-                if src.is_set_line and not src.dish_selected:
-                    continue
-                if src.is_addon_piece:
-                    continue
-                current['detail_lines'].append(line)
+                # ALWAYS include the line's price in the group subtotal —
+                # the summary must add up to the invoice total. But only
+                # SHOW rows worth reading in the detail table: selected
+                # dishes, or any line that actually carries a price.
                 current['subtotal'] += line.price_subtotal or 0.0
+                show_detail = (
+                    (src.is_set_line and src.dish_selected)
+                    or (line.price_subtotal or 0.0) > 0
+                )
+                if show_detail:
+                    current['detail_lines'].append(line)
                 continue
 
             # Standalone product (Waiter Service, Free Delivery, Corkage…).
