@@ -409,16 +409,37 @@ class SaleOrder(models.Model):
     # ──────────────────────────────────────────────────────────
     # Combined invoice — line-merge N ticked SOs into one account.move
     # ──────────────────────────────────────────────────────────
-    def action_create_combined_invoice(self):
+    def action_open_combined_invoice_wizard(self):
+        """Open the payment-type wizard before creating the combined invoice."""
+        if not self:
+            raise UserError(_('No sales orders selected.'))
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Consolidated Billing'),
+            'res_model': 'lcs.combined.invoice.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_sale_order_ids': [(6, 0, self.ids)],
+            },
+        }
+
+    def action_create_combined_invoice(self, payment_type='full',
+                                       percentage=100.0, amount=0.0):
         """Create ONE draft invoice combining lines from every SO in self.
+
+        payment_type:
+          - 'full'       — full detail lines from every SO (default).
+          - 'percentage' — a single "Consolidated Billing (X%)" line for
+                           X% × total(all SOs).
+          - 'amount'     — a single "Consolidated Billing" line for the
+                           given amount.
 
         - All SOs must share the same billing partner.
         - All SOs must be confirmed (state in sale / done).
-        - Each SO's still-to-invoice quantities are added as separate lines
-          (Q5 default: no cross-SO line-merge, preserves per-SO traceability).
         - Catering header fields (brand, event_date, service_type, etc.) are
           copied from the FIRST SO.
-        - Sections / notes: propagated so downstream reports keep structure.
+        - Sections / notes: propagated only in 'full' mode.
         """
         if not self:
             raise UserError(_('No sales orders selected.'))
@@ -444,54 +465,74 @@ class SaleOrder(models.Model):
                 ', '.join(unconfirmed.mapped('name')),
             ))
 
-        # Validate: something is left to invoice.
-        invoiceable = self.filtered(
-            lambda s: any((l.qty_to_invoice or 0) > 0
-                          or (l.display_type and not l.qty_invoiced)
-                          for l in s.order_line)
-        )
-        if not invoiceable:
-            raise UserError(_(
-                'Every line on the selected orders is already fully invoiced.'
-            ))
-
-        # Base invoice header from the FIRST SO (already includes catering
-        # fields via our _prepare_invoice override).
         first = self[0]
         invoice_vals = first._prepare_invoice()
         invoice_vals['move_type'] = 'out_invoice'
         invoice_vals['invoice_origin'] = ', '.join(self.mapped('name'))
 
-        # Collect lines across every SO, in the order they were selected.
         invoice_lines = []
-        for so in self:
-            for line in so.order_line:
-                if line.display_type:
-                    # Sections / notes copied verbatim for readability.
-                    line_vals = line._prepare_invoice_line()
-                    invoice_lines.append((0, 0, line_vals))
-                    continue
-                qty = line.qty_to_invoice or 0
-                if qty <= 0:
-                    continue
-                line_vals = line._prepare_invoice_line(quantity=qty)
-                invoice_lines.append((0, 0, line_vals))
-
-        if not invoice_lines:
-            raise UserError(_(
-                'Nothing to invoice on the selected orders.'
-            ))
+        if payment_type == 'full':
+            # Full detail from every SO.
+            invoiceable = self.filtered(
+                lambda s: any((l.qty_to_invoice or 0) > 0
+                              or (l.display_type and not l.qty_invoiced)
+                              for l in s.order_line)
+            )
+            if not invoiceable:
+                raise UserError(_(
+                    'Every line on the selected orders is already fully invoiced.'
+                ))
+            for so in self:
+                for line in so.order_line:
+                    if line.display_type:
+                        invoice_lines.append((0, 0, line._prepare_invoice_line()))
+                        continue
+                    qty = line.qty_to_invoice or 0
+                    if qty <= 0:
+                        continue
+                    invoice_lines.append((0, 0, line._prepare_invoice_line(quantity=qty)))
+            if not invoice_lines:
+                raise UserError(_('Nothing to invoice on the selected orders.'))
+        else:
+            # Partial: a single line summarising the amount billed.
+            total = sum(self.mapped('amount_total'))
+            if payment_type == 'percentage':
+                pct = float(percentage or 0.0)
+                billed = total * pct / 100.0
+                label = _('Consolidated Billing — %(pct).2f%% of %(t)s',
+                          pct=pct, t=first.currency_id.symbol
+                          and (first.currency_id.symbol + ('%.2f' % total))
+                          or ('%.2f' % total))
+            elif payment_type == 'amount':
+                billed = float(amount or 0.0)
+                label = _('Consolidated Billing — Fixed Amount')
+            else:
+                raise UserError(_('Unknown payment_type: %s') % payment_type)
+            if billed <= 0:
+                raise UserError(_('Computed billing amount is zero.'))
+            invoice_lines.append((0, 0, {
+                'name': '%s (SOs: %s)' % (label, ', '.join(self.mapped('name'))),
+                'quantity': 1.0,
+                'price_unit': billed,
+                'display_type': 'product',
+            }))
 
         invoice_vals['invoice_line_ids'] = invoice_lines
         move = self.env['account.move'].sudo().create(invoice_vals)
 
         # Log a note on every source SO.
         origin_names = ', '.join(self.mapped('name'))
+        note_extra = ''
+        if payment_type == 'percentage':
+            note_extra = _(' — %(pct).2f%% billed', pct=float(percentage or 0.0))
+        elif payment_type == 'amount':
+            note_extra = _(' — fixed amount billed')
         for so in self:
             so.message_post(body=_(
-                'Combined invoice %(inv)s created from %(orig)s',
+                'Combined invoice %(inv)s created from %(orig)s%(extra)s',
                 inv=move.name or move.display_name or move.id,
                 orig=origin_names,
+                extra=note_extra,
             ))
 
         return {

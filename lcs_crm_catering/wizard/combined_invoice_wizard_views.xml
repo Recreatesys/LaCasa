@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_combined_invoice_wizard_form" model="ir.ui.view">
+        <field name="name">lcs.combined.invoice.wizard.form</field>
+        <field name="model">lcs.combined.invoice.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Consolidated Billing">
+                <group>
+                    <field name="sale_order_ids" widget="many2many_tags"
+                           readonly="1"/>
+                    <field name="total_amount" widget="monetary"
+                           readonly="1"/>
+                    <field name="currency_id" invisible="1"/>
+                </group>
+                <group string="How much to bill on this invoice?">
+                    <field name="payment_type" widget="radio"/>
+                    <field name="percentage"
+                           invisible="payment_type != 'percentage'"
+                           required="payment_type == 'percentage'"/>
+                    <field name="amount" widget="monetary"
+                           invisible="payment_type != 'amount'"
+                           required="payment_type == 'amount'"/>
+                    <field name="billed_amount" widget="monetary"
+                           readonly="1"/>
+                </group>
+                <footer>
+                    <button string="Create Invoice"
+                            name="action_create_invoice"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -13,7 +13,7 @@
             <field name="binding_model_id" ref="sale.model_sale_order"/>
             <field name="binding_view_types">list</field>
             <field name="state">code</field>
-            <field name="code">action = records.action_create_combined_invoice()</field>
+            <field name="code">action = records.action_open_combined_invoice_wizard()</field>
         </record>
 
     </data>
