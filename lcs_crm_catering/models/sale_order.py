@@ -470,52 +470,58 @@ class SaleOrder(models.Model):
         invoice_vals['move_type'] = 'out_invoice'
         invoice_vals['invoice_origin'] = ', '.join(self.mapped('name'))
 
+        # Always emit full detail lines from every SO — the "picks" show at
+        # their full prices in the product table. For partial payment modes
+        # (percentage/amount) we append a single ADJUSTMENT line at the end
+        # so the invoice's grand total equals the billed amount.
         invoice_lines = []
-        if payment_type == 'full':
-            # Full detail from every SO.
-            invoiceable = self.filtered(
-                lambda s: any((l.qty_to_invoice or 0) > 0
-                              or (l.display_type and not l.qty_invoiced)
-                              for l in s.order_line)
-            )
-            if not invoiceable:
-                raise UserError(_(
-                    'Every line on the selected orders is already fully invoiced.'
-                ))
-            for so in self:
-                for line in so.order_line:
-                    if line.display_type:
-                        invoice_lines.append((0, 0, line._prepare_invoice_line()))
-                        continue
-                    qty = line.qty_to_invoice or 0
-                    if qty <= 0:
-                        continue
-                    invoice_lines.append((0, 0, line._prepare_invoice_line(quantity=qty)))
-            if not invoice_lines:
-                raise UserError(_('Nothing to invoice on the selected orders.'))
-        else:
-            # Partial: a single line summarising the amount billed.
-            total = sum(self.mapped('amount_total'))
+        invoiceable = self.filtered(
+            lambda s: any((l.qty_to_invoice or 0) > 0
+                          or (l.display_type and not l.qty_invoiced)
+                          for l in s.order_line)
+        )
+        if not invoiceable:
+            raise UserError(_(
+                'Every line on the selected orders is already fully invoiced.'
+            ))
+        for so in self:
+            for line in so.order_line:
+                if line.display_type:
+                    invoice_lines.append((0, 0, line._prepare_invoice_line()))
+                    continue
+                qty = line.qty_to_invoice or 0
+                if qty <= 0:
+                    continue
+                invoice_lines.append((0, 0, line._prepare_invoice_line(quantity=qty)))
+        if not invoice_lines:
+            raise UserError(_('Nothing to invoice on the selected orders.'))
+
+        if payment_type != 'full':
+            # Compute the adjustment so invoice_total lands on `billed`.
+            # We use amount_total of each SO as the "lump sum" reference —
+            # matches what the user sees on the SO forms.
+            lump_sum = sum(self.mapped('amount_total'))
             if payment_type == 'percentage':
                 pct = float(percentage or 0.0)
-                billed = total * pct / 100.0
-                label = _('Consolidated Billing — %(pct).2f%% of %(t)s',
-                          pct=pct, t=first.currency_id.symbol
-                          and (first.currency_id.symbol + ('%.2f' % total))
-                          or ('%.2f' % total))
+                billed = lump_sum * pct / 100.0
+                adj_label = _('Partial Payment (%(pct).2f%%) — Adjustment on lump sum',
+                              pct=pct)
             elif payment_type == 'amount':
                 billed = float(amount or 0.0)
-                label = _('Consolidated Billing — Fixed Amount')
+                adj_label = _('Fixed-Amount Adjustment (billing %(billed).2f of %(lump).2f)',
+                              billed=billed, lump=lump_sum)
             else:
                 raise UserError(_('Unknown payment_type: %s') % payment_type)
             if billed <= 0:
                 raise UserError(_('Computed billing amount is zero.'))
-            invoice_lines.append((0, 0, {
-                'name': '%s (SOs: %s)' % (label, ', '.join(self.mapped('name'))),
-                'quantity': 1.0,
-                'price_unit': billed,
-                'display_type': 'product',
-            }))
+            adjustment = billed - lump_sum  # negative → reduces the total
+            if adjustment:
+                invoice_lines.append((0, 0, {
+                    'name': adj_label,
+                    'quantity': 1.0,
+                    'price_unit': adjustment,
+                    'display_type': 'product',
+                }))
 
         invoice_vals['invoice_line_ids'] = invoice_lines
         move = self.env['account.move'].sudo().create(invoice_vals)
