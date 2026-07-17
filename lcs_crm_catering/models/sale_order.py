@@ -560,6 +560,20 @@ class SaleOrder(models.Model):
         invoice_vals['invoice_line_ids'] = invoice_lines
         move = self.env['account.move'].sudo().create(invoice_vals)
 
+        # Odoo normalizes account.move.line sequences on creation, undoing
+        # our sequence=99999 on the adjustment row. Re-stamp it explicitly
+        # so it always renders last in both the invoice's line table and
+        # the Sets & Services Summary walker.
+        if payment_type != 'full':
+            adj_lines = move.invoice_line_ids.filtered(
+                lambda l: l.display_type == 'product'
+                and l.price_unit < 0
+                and not l.sale_line_ids
+            )
+            if adj_lines:
+                max_seq = max(move.invoice_line_ids.mapped('sequence') or [0])
+                adj_lines.sudo().write({'sequence': max_seq + 1000})
+
         # Log a note on every source SO.
         origin_names = ', '.join(self.mapped('name'))
         note_extra = ''
