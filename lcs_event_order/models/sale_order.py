@@ -68,26 +68,14 @@ class SaleOrder(models.Model):
         return EO.create(vals)
 
     def _sync_to_event_order(self):
-        """Push current SO state to each linked EO (header + lines, bump version)."""
+        """Push current SO state to each linked EO (header + lines, bump version).
+
+        Post-Phase-1: 1 SO = 1 EO. Ensure exactly one EO exists, then push
+        the diff.
+        """
         self.ensure_one()
-        # Ensure one EO exists per day: create missing days for a widened range,
-        # then push the diff to every remaining EO.
-        day_count = max(1, self.event_day_count or 1)
-        existing_offsets = set(self.event_order_ids.mapped('event_day_offset'))
-        missing = [d for d in range(day_count) if d not in existing_offsets]
-        if missing:
-            EO = self.env['lcs.event.order']
-            for offset in missing:
-                vals = EO._prepare_eo_vals_from_so(self, day_offset=offset)
-                suffix = '-D%d-v1' % (offset + 1)
-                vals.update({
-                    'sale_order_id': self.id,
-                    'name': '%s%s' % (self.name, suffix),
-                    'version': 1,
-                })
-                line_vals = EO._prepare_eo_lines_from_so(self, day_offset=offset)
-                vals['line_ids'] = [(0, 0, lv) for lv in line_vals]
-                EO.create(vals)
+        if not self.event_order_ids:
+            self._create_event_order()
         for eo in self.event_order_ids:
             changes = self._detect_eo_changes(eo)
             eo._update_from_sale_order(self, changes)

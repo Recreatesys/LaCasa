@@ -274,24 +274,17 @@ class EventOrder(models.Model):
 
     @api.model
     def _prepare_eo_vals_from_so(self, so, day_offset=0):
-        """Prepare EO field values from a sales order for a given day offset.
+        """Prepare EO field values from a sales order.
 
-        The EO's event_date is computed as SO.event_date_start + day_offset,
-        falling back to commitment_date.date() for single-day / legacy SOs.
+        Post-Phase-1: 1 SO = 1 event = 1 EO. The day_offset arg is kept in
+        the signature for callers that still pass 0 but is not used.
         """
-        from datetime import timedelta
-        # Prefer the new range fields; fall back to legacy commitment_date.
-        base_date = so.event_date_start or (
+        event_date = so.event_date or (
             so.commitment_date.date() if so.commitment_date else False
-        )
-        event_date = (
-            base_date + timedelta(days=day_offset)
-            if base_date else False
         )
         return {
             'brand': so.brand,
             'event_date': event_date,
-            'event_day_offset': day_offset,
             'event_street': so.partner_shipping_id.street if so.partner_shipping_id else '',
             'event_street2': so.partner_shipping_id.street2 if so.partner_shipping_id else '',
             'event_country_id': (
