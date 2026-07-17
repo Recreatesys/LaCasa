@@ -27,15 +27,22 @@
         <t t-call="web.basic_layout">
             <t t-set="o" t-value="o"/>
             <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
-            <!-- Kill implicit VERTICAL padding only — leave the container's
-                 horizontal padding alone so content doesn't run off the
-                 paper edges. -->
+            <!-- Force top-alignment. Odoo's default report layout wraps
+                 content in a #wrapwrap flexbox column with min-height:100%,
+                 which wkhtmltopdf treats as fill-page and pushes body
+                 content to the middle. Defeat the flex + height:100%
+                 cascade so content sits at the top of every page. -->
             <style>
                 @page { margin-top: 5mm; margin-bottom: 10mm; }
-                html, body, main, .article, .page {
+                html, body { height: auto !important; min-height: 0 !important; }
+                body, main, #wrapwrap, .article {
+                    display: block !important;
+                    flex: none !important;
+                    min-height: 0 !important;
                     margin-top: 0 !important; padding-top: 0 !important;
                     margin-bottom: 0 !important; padding-bottom: 0 !important;
                 }
+                .page { margin-top: 0 !important; padding-top: 0 !important; }
             </style>
             <!-- Identify set parent bundle products via the SO source lines -->
             <t t-set="src_so_lines" t-value="o.invoice_line_ids.mapped('sale_line_ids')"/>

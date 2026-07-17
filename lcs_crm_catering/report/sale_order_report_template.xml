@@ -30,13 +30,20 @@
             <t t-set="o" t-value="o"/>
             <t t-set="hide_prices" t-value="o.hide_prices_on_quote"/>
             <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
-            <!-- Same top-alignment fix as the invoice report — vertical only. -->
+            <!-- Same top-alignment fix as the invoice report — defeat the
+                 #wrapwrap flex + html/body height:100% cascade so content
+                 sits at the top instead of the middle. -->
             <style>
                 @page { margin-top: 5mm; margin-bottom: 10mm; }
-                html, body, main, .article, .page {
+                html, body { height: auto !important; min-height: 0 !important; }
+                body, main, #wrapwrap, .article {
+                    display: block !important;
+                    flex: none !important;
+                    min-height: 0 !important;
                     margin-top: 0 !important; padding-top: 0 !important;
                     margin-bottom: 0 !important; padding-bottom: 0 !important;
                 }
+                .page { margin-top: 0 !important; padding-top: 0 !important; }
             </style>
 
             <!-- ============================================================ -->
