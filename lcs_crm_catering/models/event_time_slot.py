@@ -35,13 +35,17 @@ class EventTimeSlot(models.Model):
         compute='_compute_display_name',
     )
 
-    @api.depends('sale_order_id.time_slot_ids.sequence')
+    @api.depends('sequence', 'sale_order_id')
     def _compute_slot_offset(self):
-        """Position of this slot within its parent SO's ordered list of slots."""
-        for so in self.mapped('sale_order_id'):
-            ordered = so.time_slot_ids.sorted('sequence')
-            for idx, slot in enumerate(ordered):
-                slot.slot_offset = idx
+        """Position of this slot within its parent SO's ordered list of slots.
+
+        Note: after the multi-slot revert, sale.order no longer exposes
+        time_slot_ids, so this compute just leaves the offset at 0 for now.
+        Phase 2 (opportunity slots) will rewire this to walk crm.lead's
+        slot list.
+        """
+        for slot in self:
+            slot.slot_offset = 0
 
     @api.depends('label', 'date', 'time_start', 'time_end')
     def _compute_display_name(self):
