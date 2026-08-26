@@ -38,6 +38,37 @@ class SaleOrderLine(models.Model):
         help='Stored full price — applied when dish is selected, zeroed when not',
     )
 
+    # ── C21b (client comment, slide 21): "Pls also show the cost of each
+    #    food items." Internal-only — the SO line list is backend, and both
+    #    columns are excluded from every customer-facing report. ──
+    lcs_unit_cost = fields.Float(
+        string='Unit Cost', related='product_id.standard_price',
+        digits='Product Price', readonly=True,
+        groups='sales_team.group_sale_salesman',
+    )
+    lcs_line_cost = fields.Monetary(
+        string='Line Cost', compute='_compute_lcs_line_cost',
+        currency_field='currency_id', readonly=True,
+        groups='sales_team.group_sale_salesman',
+    )
+    lcs_margin_pct = fields.Float(
+        string='Margin %', compute='_compute_lcs_line_cost',
+        digits=(5, 1), readonly=True,
+        groups='sales_team.group_sale_salesman',
+        help='(Subtotal - Line Cost) / Subtotal. Blank when the line has no '
+             'revenue (unpicked set dishes, section headers).',
+    )
+
+    @api.depends('product_uom_qty', 'lcs_unit_cost', 'price_subtotal')
+    def _compute_lcs_line_cost(self):
+        for line in self:
+            cost = (line.product_uom_qty or 0.0) * (line.lcs_unit_cost or 0.0)
+            line.lcs_line_cost = cost
+            subtotal = line.price_subtotal or 0.0
+            line.lcs_margin_pct = (
+                (subtotal - cost) / subtotal * 100.0 if subtotal else 0.0
+            )
+
     @api.onchange('dish_selected')
     def _onchange_dish_selected(self):
         """Set price to full_price when selected, 0 when not."""
@@ -229,15 +260,12 @@ class SaleOrder(models.Model):
                 catering_set.min_guest_count or 0, guest_count or 0
             )
 
-            # Show recommendation as a note line
-            if catering_set.recommendation:
-                self.env['sale.order.line'].create({
-                    'order_id': self.id,
-                    'display_type': 'line_note',
-                    'name': '💡 %s' % catering_set.recommendation,
-                    'sequence': line.sequence + 1,
-                })
-
+            # C12 (client comment, slide 12): the set's recommendation used
+            # to be dropped in as a 💡 line_note here. The client doesn't want
+            # that wording on the order lines (it also reached the customer's
+            # quotation PDF). The text still reaches the salesperson via the
+            # onchange warning when the set product is added, and lives on the
+            # set record itself.
             seq = line.sequence + 2
             current_section = None
 

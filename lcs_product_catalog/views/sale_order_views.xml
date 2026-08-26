@@ -51,6 +51,16 @@
                        optional="show"/>
                 <field name="per_piece_price" string="Per pc $" readonly="1"
                        optional="hide"/>
+                <!-- C21b (client comment, slide 21): internal cost / margin.
+                     optional="hide" by default so the everyday line list stays
+                     readable; sales enables the columns when pricing a set. -->
+                <field name="lcs_unit_cost" string="Cost / Unit" readonly="1"
+                       optional="hide"/>
+                <field name="lcs_line_cost" string="Line Cost" readonly="1"
+                       optional="hide"/>
+                <field name="lcs_margin_pct" string="Margin %" readonly="1"
+                       optional="hide"
+                       decoration-danger="lcs_margin_pct &lt; 0"/>
             </xpath>
 
             <!-- Hide Taxes column by default -->
