@@ -221,6 +221,15 @@
                 <separator/>
                 <filter name="filter_today" string="Today"
                         domain="[('event_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <!-- C23 (client comment, slide 23): the list opens on the
+                     current month only. relativedelta(day=31) clamps to the
+                     last day of whatever month it lands in. -->
+                <filter name="filter_this_month" string="This Month"
+                        domain="[('event_date', '&gt;=', (context_today() + relativedelta(day=1)).strftime('%Y-%m-%d')),
+                                 ('event_date', '&lt;=', (context_today() + relativedelta(day=31)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter name="filter_by_event_date" string="Event / Delivery Date"
+                        date="event_date"/>
                 <separator/>
                 <filter name="groupby_event_date" string="Event Date"
                         context="{'group_by': 'event_date'}"/>
@@ -244,12 +253,15 @@
         <field name="res_model">lcs.event.order</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="search_view_id" ref="lcs_event_order_view_search"/>
+        <field name="context">{'search_default_filter_this_month': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No Event Orders yet
             </p>
             <p>
                 Event Orders are automatically created when a Sales Order is confirmed.
+                This list opens on the current month — clear the "This Month" filter to
+                see everything.
             </p>
         </field>
     </record>

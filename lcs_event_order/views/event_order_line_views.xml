@@ -11,8 +11,10 @@
                 <field name="event_date"/>
                 <field name="order_id"/>
                 <field name="partner_id"/>
+                <field name="product_categ_id" optional="show"/>
                 <field name="product_id"/>
                 <field name="description" optional="hide"/>
+                <field name="is_food_item" column_invisible="1"/>
                 <field name="kitchen_qty" sum="Total Qty"/>
                 <field name="kitchen_uom"/>
                 <field name="guest_count" sum="Total Guests"/>
@@ -32,6 +34,7 @@
         <field name="model">lcs.event.order.line</field>
         <field name="arch" type="xml">
             <pivot string="Dish Overview">
+                <field name="product_categ_id" type="row"/>
                 <field name="product_id" type="row"/>
                 <field name="event_date" type="col" interval="day"/>
                 <field name="kitchen_qty" type="measure"/>
@@ -58,17 +61,30 @@
         <field name="arch" type="xml">
             <search string="Dish Overview">
                 <field name="product_id"/>
+                <field name="product_categ_id"/>
                 <field name="order_id"/>
                 <field name="partner_id"/>
                 <field name="event_date"/>
+                <separator/>
+                <!-- C24a: the chef only cooks food. Delivery charges, waiter
+                     service and utensil/equipment lines are noise here. -->
+                <filter name="filter_food_only" string="Food Items Only"
+                        domain="[('is_food_item', '=', True)]"/>
                 <separator/>
                 <filter name="filter_today" string="Today"
                         domain="[('event_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter name="filter_next_7_days" string="Next 7 Days"
                         domain="[('event_date', '&gt;=', context_today().strftime('%Y-%m-%d')),
                                  ('event_date', '&lt;=', (context_today() + relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_tomorrow" string="Tomorrow"
+                        domain="[('event_date', '=', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]"/>
                 <filter name="filter_upcoming" string="Upcoming"
                         domain="[('event_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <!-- C24b: month / quarter / custom-range date selector so the
+                     chef can jump to any specific cooking date. -->
+                <filter name="filter_by_event_date" string="Event / Delivery Date"
+                        date="event_date"/>
                 <separator/>
                 <filter name="filter_paid" string="Order Confirm"
                         domain="[('payment_status', '=', 'paid')]"/>
@@ -77,6 +93,8 @@
                 <filter name="filter_not_cancelled" string="Active (not cancelled)"
                         domain="[('payment_status', '!=', 'cancelled')]"/>
                 <separator/>
+                <filter name="groupby_categ" string="Category"
+                        context="{'group_by': 'product_categ_id'}"/>
                 <filter name="groupby_product" string="Dish"
                         context="{'group_by': 'product_id'}"/>
                 <filter name="groupby_event_date" string="Event Date"
@@ -102,6 +120,8 @@
         <field name="context">{
             'search_default_filter_upcoming': 1,
             'search_default_filter_not_cancelled': 1,
+            'search_default_filter_food_only': 1,
+            'search_default_groupby_categ': 1,
             'search_default_groupby_product': 1,
         }</field>
         <field name="help" type="html">
@@ -109,7 +129,10 @@
                 Aggregated dish view across all Event Orders
             </p>
             <p>
-                Shows each dish line with its event date, customer, guest count, and quantity. Group by Dish to see per-dish subtotals.
+                Shows each dish line with its event date, customer, guest count, and quantity.
+                Grouped by Category then Dish; use the date filter to pick a cooking date.
+                Remove the "Food Items Only" filter to also see delivery, waiter service
+                and utensil lines.
             </p>
         </field>
     </record>

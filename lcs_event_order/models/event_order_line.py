@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EventOrderLine(models.Model):
@@ -57,3 +57,25 @@ class EventOrderLine(models.Model):
     payment_status = fields.Selection(
         related='order_id.payment_status', store=True, string='Order Status',
     )
+
+    # ── C24 (client comment, slide 24): kitchen-facing filters ──
+    product_categ_id = fields.Many2one(
+        related='product_id.categ_id', store=True, string='Category',
+    )
+    is_food_item = fields.Boolean(
+        string='Food Item',
+        compute='_compute_is_food_item', store=True,
+        help='True for lines the kitchen actually cooks. False for services '
+             '(delivery charges, waiter service) and for storable equipment '
+             '(utensils, hardware), which the chef has no dish to prepare for.',
+    )
+
+    @api.depends('product_id', 'product_id.type', 'product_id.is_storable')
+    def _compute_is_food_item(self):
+        for line in self:
+            product = line.product_id
+            line.is_food_item = bool(
+                product
+                and product.type == 'consu'
+                and not product.is_storable
+            )
