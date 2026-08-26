@@ -129,10 +129,11 @@
                         <field name="hardware_total" widget="monetary"/>
                     </group>
                     <p class="text-muted small mt-2">
-                        Hardware items (storable goods) attached to this order.
-                        Each row will be auto-mirrored as a Sales Order line under
-                        a "Hardware" section. Mark a product as "For Rental" on its
-                        product form to distinguish rentals from sales.
+                        Utensil &amp; equipment items (storable goods) attached to
+                        this order. Each row will be auto-mirrored as a Sales Order
+                        line under a "Utensil &amp; Equipment" section. Mark a product
+                        as "For Rental" on its product form to distinguish rentals
+                        from sales.
                     </p>
                 </page>
             </xpath>

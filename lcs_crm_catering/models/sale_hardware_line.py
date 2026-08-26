@@ -3,7 +3,7 @@ from odoo import api, fields, models
 
 class SaleHardwareLine(models.Model):
     _name = 'lcs.sale.hardware.line'
-    _description = 'Sales Order Hardware Line'
+    _description = 'Sales Order Utensil & Equipment Line'
     _order = 'sequence, id'
 
     order_id = fields.Many2one(
@@ -13,7 +13,7 @@ class SaleHardwareLine(models.Model):
     sequence = fields.Integer(default=10)
     product_id = fields.Many2one(
         'product.product',
-        string='Hardware',
+        string='Utensil / Equipment',
         required=True,
         domain="[('type', '=', 'consu'), ('is_storable', '=', True)]",
     )

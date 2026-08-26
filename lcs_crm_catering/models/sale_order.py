@@ -10,6 +10,12 @@ from odoo.addons.lcs_crm_catering.models.crm_lead import (
 )
 
 
+# Section header written on the SO lines auto-generated from the
+# "Utensil & Equipment" tab. Kept as a constant so the migration that
+# re-stamps historical section lines can import it.
+HARDWARE_SECTION_NAME = 'Utensil & Equipment'
+
+
 # Resolved-prefix → ir.sequence code map.
 # Each ir.sequence is created with these codes via data file.
 SO_SEQUENCE_PREFIX_MAP = {
@@ -182,13 +188,13 @@ class SaleOrder(models.Model):
                 )
 
     # ──────────────────────────────────────────────────────────
-    # Hardware (rented or sold goods listed on the SO)
+    # Utensil & Equipment (rented or sold goods listed on the SO)
     # ──────────────────────────────────────────────────────────
     hardware_line_ids = fields.One2many(
-        'lcs.sale.hardware.line', 'order_id', string='Hardware',
+        'lcs.sale.hardware.line', 'order_id', string='Utensil & Equipment',
     )
     hardware_total = fields.Monetary(
-        string='Hardware Subtotal',
+        string='Utensil & Equipment Subtotal',
         compute='_compute_hardware_total',
         store=True,
     )
@@ -199,8 +205,9 @@ class SaleOrder(models.Model):
             order.hardware_total = sum(order.hardware_line_ids.mapped('price_subtotal'))
 
     def _sync_hardware_lines(self):
-        """Replace any existing auto-managed Hardware lines on order_line
-        with a fresh "Hardware" section + one product line per hardware row.
+        """Replace any existing auto-managed Utensil & Equipment lines on
+        order_line with a fresh "Utensil & Equipment" section + one product
+        line per equipment row.
         """
         SOL = self.env['sale.order.line']
         for order in self:
@@ -214,7 +221,7 @@ class SaleOrder(models.Model):
 
             SOL.with_context(skip_hardware_sync=True).create({
                 'order_id': order.id,
-                'name': 'Hardware',
+                'name': HARDWARE_SECTION_NAME,
                 'display_type': 'line_section',
                 'is_hardware_line': True,
                 'sequence': 2000,
@@ -632,9 +639,10 @@ class SaleOrderLine(models.Model):
         help='Marker for the section/product lines auto-generated from the Waiters tab.',
     )
     is_hardware_line = fields.Boolean(
-        string='Auto-Managed Hardware Line',
+        string='Auto-Managed Utensil & Equipment Line',
         default=False, copy=False,
-        help='Marker for the section/product lines auto-generated from the Hardware tab.',
+        help='Marker for the section/product lines auto-generated from the '
+             'Utensil & Equipment tab.',
     )
 
 
