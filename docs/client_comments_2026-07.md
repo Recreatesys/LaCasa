@@ -26,11 +26,11 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 | C08 | 8 | Auto-map the **delivery charge** from Event address + Delivery Type | District products in `corporate_party_set.xml:10-84`; no mapping logic | **TODO** — district model/mapping + auto-add the right delivery line |
 | C09 | 9 | Don't discount delivery — **waive** it. Discount on specific items + "Delivery fee waived" | `free_delivery_product.xml`, standard Odoo discount wizard | **TODO** — `delivery_waived` flag + exclude delivery lines from global discount |
 | C11 | 11 | Show the **HK$398 unit price** on the set line; don't make sales pick the package-fee line under Expand | `lcs_product_catalog/models/sale_order.py` `action_expand_sets` (container written to qty 1 / price 0) | **TODO** |
-| C12 | 12 | Remove the **💡 recommendation note** wording from the order lines | `sale_order.py` `action_expand_sets` — `display_type='line_note'` block | **TODO** — drop the note line (keep the text as an internal hint) |
+| C12 | 12 | Remove the **💡 recommendation note** wording from the order lines | `lcs_product_catalog/models/sale_order.py` | **DONE** `e6d0c90` — note line no longer created; migration clears draft/sent orders |
 | C13 | 13 | Only 2 items chosen where 3 required — **no reminder** | `catering_set.py` `CateringSetRule` has `max_selection` only | **TODO** — add `min_selection` + validation on confirm |
 | C14 | 14, 15 | Changing qty 50→100 on the package line doesn't update dish quantities; **Reload Sets should follow the changed line qty**, not "No. of Guests" | `sale_order.py` `action_reload_sets` / `_reload_sets_in_place` (both read `self.guest_count`) | **TODO** |
 | C21a | 21 | Let sales **create/save their own package templates** | new | **DECIDE** |
-| C21b | 21 | Show the **cost** of each food item on the line | `product.standard_price` | **TODO** (easy) — internal-only column |
+| C21b | 21 | Show the **cost** of each food item on the line | `lcs_product_catalog/models/sale_order.py` | **DONE** `e6d0c90` — `lcs_unit_cost` / `lcs_line_cost` / `lcs_margin_pct`, salesman-only, `optional="hide"` |
 | C21c | 21 | Price below X% → **manager approval** required | new | **DECIDE** — need the threshold and the approver group |
 
 ## C. Waiters / Equipment
@@ -38,7 +38,7 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 | # | Slide | Comment | Where | Status |
 |---|-------|---------|-------|--------|
 | C16 | 16 | Waiter roster is **ops' input (EO)**; sales only shows "# waiters included" | `sale_waiter_line.py`, `sale_order_views.xml:74` Waiters tab | **TODO** — move the detail to EO, leave a count on the SO |
-| C17 | 17 | Rename **Hardware → "Utensil & Equipment"** | `sale_hardware_line.py`, `sale_order_views.xml` | **TODO** (easy) |
+| C17 | 17 | Rename **Hardware → "Utensil & Equipment"** | `sale_hardware_line.py`, `sale_order_views.xml` | **DONE** `b5a847f` — labels + auto-generated SO section; migration re-stamps historical orders |
 
 ## D. Print / Preview / Portal
 
@@ -54,10 +54,10 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 
 | # | Slide | Comment | Where | Status |
 |---|-------|---------|-------|--------|
-| C23 | 23 | EO list should show the **current month only** | `lcs_event_order_action` (no default date filter; kanban groups by every month back to 2024) | **TODO** (easy) |
-| C24a | 24 | Dish Overview: **food items only** (hide Delivery / Waiter Service) | `event_order_line_views.xml` action context | **TODO** |
-| C24b | 24 | Add a **date selection** for the chef in that view | same | **TODO** |
-| C24c | 24 | Rename group "Dish" → **"Category"** and group by category | `groupby_product` filter | **TODO** |
+| C23 | 23 | EO list should show the **current month only** | `event_order_views.xml` | **DONE** `07335b4` — "This Month" default filter + month/quarter date selector |
+| C24a | 24 | Dish Overview: **food items only** (hide Delivery / Waiter Service) | `event_order_line.py` | **DONE** `07335b4` — stored `is_food_item` (non-storable goods only), removable default filter |
+| C24b | 24 | Add a **date selection** for the chef in that view | `event_order_line_views.xml` | **DONE** `07335b4` — `date="event_date"` selector + Tomorrow shortcut |
+| C24c | 24 | Rename group "Dish" → **"Category"** and group by category | `event_order_line.py`, views | **DONE** `07335b4` — stored `product_categ_id`; defaults to Category › Dish (two-level, keeps per-dish qty) |
 | C25 | 25 | Qty should read **"2 × ½ GN tray"**, **"90 pcs"** — not a bare number | `event_order_line.py` `kitchen_qty` / `kitchen_uom` | **TODO** |
 | C26a | 26 | Replace the EO list with **worksheets: Event / Drop-off**, each with its own columns (Kitchen assigned, Driver status, Waiter assigned, EO status) | `event_order.py` — no `kitchen_id`, `driver_status`, `waiter_ids` fields | **TODO** — new fields + 2 filtered list views |
 | C26b | 26 | Generate a **catering order checklist** for CS (check with Prina) | new | **DECIDE** |
@@ -70,3 +70,22 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 |---|-------|------|--------|
 | C27 | 27 | Re-input products (category/unit/price), user roles, template final check, verify packages, import old+current CRM data, website enquiry integration, cost input, accounting integration, security, revenue combination | **N/A** — data & config work stream |
 | C28 | 28 | School project phase 1 (Jul–Aug 2026): site managers build the monthly menu in Odoo; monthly/weekly menu development | `lcs_school_portal` exists (`menu_template`, `menu_day`, `menu_generate_wizard`) | **VERIFY** |
+
+---
+
+## Progress log
+
+- **26 Aug 2026 — Batch 1 (quick wins), deployed.** C12, C17, C21b, C23, C24a/b/c.
+  Modules bumped: `lcs_crm_catering` 19.0.1.76.0, `lcs_event_order` 19.0.1.17.0,
+  `lcs_product_catalog` 19.0.2.19.0.
+
+### Open decisions blocking further work
+
+1. **C19** — which print format survives? There are three today (LCS Quotation,
+   PDF Quote, Quotation/Order). The client asks whether to modify the standard one
+   instead of maintaining separate LCS templates.
+2. **C21a** — should sales be able to save their own package templates, and are
+   those private to the salesperson or shared across the team?
+3. **C21c** — what discount % triggers manager approval, and which group approves?
+4. **C26b/c/d** — the checklist, delivery-assignment and waiter-assignment flows.
+   The deck itself defers these to a meeting ("need to check with Prina").
