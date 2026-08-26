@@ -22,7 +22,8 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 | # | Slide | Comment | Where | Status |
 |---|-------|---------|-------|--------|
 | C06 | 6 | Search products **by category** in the SO line | `static/src/js/product_field_search_limit.js` | **TODO** — add category to the product `_name_search` / autocomplete |
-| C07 | 7 | Restructure product categories to **2 tiers** (Tray Food/Buffet, Canapes, Meal Box, Banquet + children) | `product.category` data — no LCS category data file exists | **TODO** — new category data + remap existing products (migration) |
+| C07 | 7 | Restructure product categories to **2 tiers** (Tray Food/Buffet, Canapes, Meal Box, Banquet + children) | `product.category` on LaCasa_Odoo19 | **DONE** — verified live 26 Aug: the exact tree the client specified already exists, and every product except 67 is filed under it. My first pass read this as TODO off the deck's screenshot (`G. Rice & Pasta`), which predates the work. |
+| C07b | 7 | Residual: 67 products still sit on the bare `LCS Dishes` root (mostly desserts + 4 banquet mains + 1 wine), and ~12 legacy flat categories (`A. Salad / Soup`, `G. Rice & Pasta`, …) are now empty | data | **CLIENT** — filing each dessert under `Canapes / Sweet` vs `Buffet / Dessert` vs `Banquet / Dessert` depends on which set sells it. Folds into the C27 product re-input. Note: most of the 67 are **duplicated pairs**. |
 | C08 | 8 | Auto-map the **delivery charge** from Event address + Delivery Type | District products in `corporate_party_set.xml:10-84`; no mapping logic | **TODO** — district model/mapping + auto-add the right delivery line |
 | C09 | 9 | Don't discount delivery — **waive** it. Discount on specific items + "Delivery fee waived" | `free_delivery_product.xml`, standard Odoo discount wizard | **TODO** — `delivery_waived` flag + exclude delivery lines from global discount |
 | C11 | 11 | Show the **HK$398 unit price** on the set line; don't make sales pick the package-fee line under Expand | `lcs_product_catalog/models/sale_order.py` `action_expand_sets` (container written to qty 1 / price 0) | **TODO** |
@@ -55,7 +56,7 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 | # | Slide | Comment | Where | Status |
 |---|-------|---------|-------|--------|
 | C23 | 23 | EO list should show the **current month only** | `event_order_views.xml` | **DONE** `07335b4` — "This Month" default filter + month/quarter date selector |
-| C24a | 24 | Dish Overview: **food items only** (hide Delivery / Waiter Service) | `event_order_line.py` | **DONE** `07335b4` — stored `is_food_item` (non-storable goods only), removable default filter |
+| C24a | 24 | Dish Overview: **food items only** (hide Delivery / Waiter Service) | `event_order_line.py` | **DONE** `07335b4` — stored `is_food_item` (non-storable goods only), removable default filter. Live split is 197 food / 6,907 not: 6,872 of the excluded are the single `Catering Service (Historical)` placeholder from the 2024 EO import, the rest are fees, delivery, waiter service and set containers. Correct, but it means the historical EOs carry no dish detail. |
 | C24b | 24 | Add a **date selection** for the chef in that view | `event_order_line_views.xml` | **DONE** `07335b4` — `date="event_date"` selector + Tomorrow shortcut |
 | C24c | 24 | Rename group "Dish" → **"Category"** and group by category | `event_order_line.py`, views | **DONE** `07335b4` — stored `product_categ_id`; defaults to Category › Dish (two-level, keeps per-dish qty) |
 | C25 | 25 | Qty should read **"2 × ½ GN tray"**, **"90 pcs"** — not a bare number | `event_order_line.py` `kitchen_qty` / `kitchen_uom` | **TODO** |
@@ -78,6 +79,14 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 - **26 Aug 2026 — Batch 1 (quick wins), deployed.** C12, C17, C21b, C23, C24a/b/c.
   Modules bumped: `lcs_crm_catering` 19.0.1.76.0, `lcs_event_order` 19.0.1.17.0,
   `lcs_product_catalog` 19.0.2.19.0.
+
+### Verified on the live DB (26 Aug 2026)
+
+- Batch 1 upgraded cleanly on `LaCasa_Odoo19` — both migrations ran, no errors.
+- C17: 0 SO section lines still named "Hardware".
+- C12: 0 💡 notes left on draft/sent orders; confirmed orders keep theirs by design.
+- C24: 197 EO lines flagged as food, 193 carrying a category.
+- C07 turned out to be already done (see above).
 
 ### Open decisions blocking further work
 
