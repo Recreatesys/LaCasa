@@ -29,29 +29,42 @@ SERVICE_FORMAT_SELECTION = [
     ('event_catering', 'Event Catering'),
 ]
 
+# C05a (client comment, slide 5): the client specified this exact list and
+# order. Keys are deliberately unchanged wherever the concept survives — only
+# the labels and the ordering move — so 5,500+ historical Sales Orders and
+# Event Orders keep their classification without being touched.
+#
+# Two values the client dropped are remapped to 'event_banquet' by the
+# 19.0.1.77.0 pre-migration: 'sit_down_menu' (31 orders, 27 of them already
+# delivery_type='event') and 'event' (2 legacy 2024 placeholders).
 SERVICE_TYPE_SELECTION = [
     ('canapes', 'Canapes'),
     ('party_food', 'Party Food'),
     ('meal_box', 'Meal Box'),
-    ('buffet', 'Buffet'),
-    ('cocktail', 'Cocktail'),
+    ('staff_meal', 'Staff Meal'),
+    ('buffet', 'Event – Buffet'),
+    ('cocktail', 'Event – Cocktail'),
+    ('event_banquet', 'Event – Banquet'),
+    ('breakfast_refreshment', 'Breakfast / Refreshment Break'),
     ('wedding_buffet', 'Wedding Buffet'),
     ('wedding_cocktail', 'Wedding Cocktail'),
-    ('breakfast_refreshment', 'Breakfast / Refreshment Break'),
-    ('sit_down_menu', 'Sit-down Menu'),
-    ('utensil', 'Utensil'),
-    ('waiter_service', 'Waiter Service'),
+    ('food_tasting', 'Food Tasting'),
+    ('utensil', 'Utensil Rental'),
+    ('waiter_service', 'Staffing'),
     ('oem', 'OEM'),
     ('school_meal', 'School Meal'),
-    ('food_tasting', 'Food Tasting'),
-    ('staff_meal', 'Staff Meal'),
-    ('event', 'Event'),
 ]
 
+# C05b (client comment, slide 5): the client's exact list and order. All three
+# existing keys survive, so this is purely additive plus a reorder — no data
+# migration is needed for delivery_type.
 DELIVERY_TYPE_SELECTION = [
-    ('event', 'Event'),
-    ('drop_off_pickup', 'Drop-off (Pick-up from Driver)'),
     ('drop_off_door', 'Drop-off (Door to door)'),
+    ('drop_off_pickup', 'Drop-off (Pick-up from Driver)'),
+    ('simple_setup_round', 'Simple Set-up (Round-trip)'),
+    ('simple_setup_one', 'Simple Set-up (One-trip)'),
+    ('event', 'Event'),
+    ('self_pickup', 'Self Pick-up'),
 ]
 
 CALL_VAN_SELECTION = [
