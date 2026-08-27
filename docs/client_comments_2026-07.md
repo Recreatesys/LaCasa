@@ -9,7 +9,7 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 
 | # | Slide | Comment | Where | Status |
 |---|-------|---------|-------|--------|
-| C01 | 1 | Client Type should be set when creating the **client**, not asked on the opportunity | `res_partner.py` (no `client_type` field), `crm_lead.py:161` | **TODO** — add `client_type` to `res.partner`, default onto lead/SO from the partner |
+| C01 | 1 | Client Type should be set when creating the **client**, not asked on the opportunity | `res_partner.py`, `crm_lead.py`, `sale_order.py` | **DONE** — `client_type` on `res.partner` is now the source of truth; leads/SOs pre-fill from it (blank only), and a type set on a lead/SO stamps back onto a customer that has none. Migration seeded **876 customers** from their order history. |
 | C02 | 2 | Event / Delivery Time should be a **time slot** (12:00–14:00) | `crm_lead.py` `event_time_start` / `event_time_end` | **DONE** |
 | C03 | 3 | Need to cater an event/order spanning **a few days** | `crm_lead.py` `event_date_start` / `event_date_end` / `event_day_count` (≤7) | **DONE** |
 | C04 | 4 | Sales picks a **preferred driver**; CS team finalises in EO | `crm_lead.call_van` labelled "Preferred Driver"; `lcs.event.order.call_van` editable | **VERIFY** — confirm EO re-sync doesn't overwrite the CS team's choice |
@@ -21,7 +21,7 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 
 | # | Slide | Comment | Where | Status |
 |---|-------|---------|-------|--------|
-| C06 | 6 | Search products **by category** in the SO line | `static/src/js/product_field_search_limit.js` | **TODO** — add category to the product `_name_search` / autocomplete |
+| C06 | 6 | Search products **by category** in the SO line | `product_template.py` | **DONE** — `name_search` on `product.product` appends category matches after name matches. "Meal Box" → 84, "Cold Canapes" → 73, "Dessert" → 10, all previously 0 by category. See the caveat below on the inline dropdown limit. |
 | C07 | 7 | Restructure product categories to **2 tiers** (Tray Food/Buffet, Canapes, Meal Box, Banquet + children) | `product.category` on LaCasa_Odoo19 | **DONE** — verified live 26 Aug: the exact tree the client specified already exists, and every product except 67 is filed under it. My first pass read this as TODO off the deck's screenshot (`G. Rice & Pasta`), which predates the work. |
 | C07b | 7 | Residual: 67 products still sit on the bare `LCS Dishes` root (mostly desserts + 4 banquet mains + 1 wine), and ~12 legacy flat categories (`A. Salad / Soup`, `G. Rice & Pasta`, …) are now empty | data | **CLIENT** — filing each dessert under `Canapes / Sweet` vs `Buffet / Dessert` vs `Banquet / Dessert` depends on which set sells it. Folds into the C27 product re-input. Note: most of the 67 are **duplicated pairs**. |
 | C08 | 8 | Auto-map the **delivery charge** from Event address + Delivery Type | District products in `corporate_party_set.xml:10-84`; no mapping logic | **TODO** — district model/mapping + auto-add the right delivery line |
@@ -132,6 +132,30 @@ printed in its own customer-facing recommendation, was silently ignored: a
     read "Event – Buffet" with a drop-off delivery type. The client's list has
     no plain "Buffet", so this follows their taxonomy — worth confirming that a
     dropped-off buffet should not instead be "Party Food".
+
+- **27 Aug 2026 — C01 + C06, deployed.** `lcs_crm_catering` 19.0.1.78.0.
+  Verified live through `odoo shell` (rolled back):
+  876 customers seeded with a client type; a new quotation for a Corporate
+  customer pre-fills Corporate; setting Organization on an opportunity stamps
+  a blank customer; an already-classified customer is never overwritten.
+  Product search returns 84 for "Meal Box", 73 for "Cold Canapes", 10 for
+  "Dessert" — all of which previously returned nothing by category.
+
+#### Trap found in C06
+
+`product.product.name_search` **does not call `_search_display_name`.** It
+hand-rolls its own cascade (`default_code` exact → `barcode` exact →
+`default_code` ilike → `name` ilike), so the obvious extension point is dead
+code for the Sales Order line's product field — the one place slide 6 actually
+asked about. `product.template.name_search` *does* route through it. Both are
+now covered, by different hooks.
+
+> **Open question for the client (C06):** the SO line's inline autocomplete is
+> capped at **2 suggestions** by `product_field_search_limit.js`, a deliberate
+> earlier choice so "Search more…" surfaces immediately. So typing "Meal Box"
+> shows 2 dishes plus "Search more…", where all 84 appear. If browsing a
+> category inline is the point, that cap should go up (8–10). Left as-is
+> pending confirmation, since raising it reverses an existing decision.
 
 ### Open decisions blocking further work
 
