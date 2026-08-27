@@ -228,8 +228,8 @@ class SaleOrder(models.Model):
 
         A container still sitting at Odoo's default quantity of 1 has never
         been sized, so fall back to guest_count (the behaviour on first
-        expansion). Safe to key off 1 because every per-head set carries
-        min_guest_count >= 12, so a sized container is never at 1.
+        expansion). Keying off 1 is safe because the per-head sets are 50-pax
+        minimum buffets — a sized container is never legitimately at 1.
 
         The per-set minimum always wins: a 30-guest Western Buffet still bills
         50 pax.
