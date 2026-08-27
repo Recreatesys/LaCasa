@@ -26,10 +26,10 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 | C07b | 7 | Residual: 67 products still sit on the bare `LCS Dishes` root (mostly desserts + 4 banquet mains + 1 wine), and ~12 legacy flat categories (`A. Salad / Soup`, `G. Rice & Pasta`, …) are now empty | data | **CLIENT** — filing each dessert under `Canapes / Sweet` vs `Buffet / Dessert` vs `Banquet / Dessert` depends on which set sells it. Folds into the C27 product re-input. Note: most of the 67 are **duplicated pairs**. |
 | C08 | 8 | Auto-map the **delivery charge** from Event address + Delivery Type | District products in `corporate_party_set.xml:10-84`; no mapping logic | **TODO** — district model/mapping + auto-add the right delivery line |
 | C09 | 9 | Don't discount delivery — **waive** it. Discount on specific items + "Delivery fee waived" | `free_delivery_product.xml`, standard Odoo discount wizard | **TODO** — `delivery_waived` flag + exclude delivery lines from global discount |
-| C11 | 11 | Show the **HK$398 unit price** on the set line; don't make sales pick the package-fee line under Expand | `lcs_product_catalog/models/sale_order.py` `action_expand_sets` (container written to qty 1 / price 0) | **TODO** |
+| C11 | 11 | Show the **HK$398 unit price** on the set line; don't make sales pick the package-fee line under Expand | `catering_set.py`, `sale_order.py` | **DONE** `b6fe2c5` — new `is_package_fee`; single-fee sets fold onto the container (`100 × $398`). Flat-fee sets stay at qty 1; Cocktail Party's 4 tiers keep the pick. |
 | C12 | 12 | Remove the **💡 recommendation note** wording from the order lines | `lcs_product_catalog/models/sale_order.py` | **DONE** `e6d0c90` — note line no longer created; migration clears draft/sent orders |
-| C13 | 13 | Only 2 items chosen where 3 required — **no reminder** | `catering_set.py` `CateringSetRule` has `max_selection` only | **TODO** — add `min_selection` + validation on confirm |
-| C14 | 14, 15 | Changing qty 50→100 on the package line doesn't update dish quantities; **Reload Sets should follow the changed line qty**, not "No. of Guests" | `sale_order.py` `action_reload_sets` / `_reload_sets_in_place` (both read `self.guest_count`) | **TODO** |
+| C13 | 13 | Only 2 items chosen where 3 required — **no reminder** | `catering_set.py`, `sale_order.py` | **DONE** `b6fe2c5` — rules re-keyed to `section` (no rule ever had a `category_id`), `min_selection` added, live banner + blocking `action_confirm`. Dead `_get_selected_dish_count` removed. |
+| C14 | 14, 15 | Changing qty 50→100 on the package line doesn't update dish quantities; **Reload Sets should follow the changed line qty**, not "No. of Guests" | `sale_order.py` | **DONE** `b6fe2c5` — `_lcs_effective_pax` makes a sized container authoritative; dishes resize on save (draft/sent). Qty formula extracted to `_lcs_set_line_qty` so expansion and resize can't drift. |
 | C21a | 21 | Let sales **create/save their own package templates** | new | **DECIDE** |
 | C21b | 21 | Show the **cost** of each food item on the line | `lcs_product_catalog/models/sale_order.py` | **DONE** `e6d0c90` — `lcs_unit_cost` / `lcs_line_cost` / `lcs_margin_pct`, salesman-only, `optional="hide"` |
 | C21c | 21 | Price below X% → **manager approval** required | new | **DECIDE** — need the threshold and the approver group |
@@ -87,6 +87,29 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 - C12: 0 💡 notes left on draft/sent orders; confirmed orders keep theirs by design.
 - C24: 197 EO lines flagged as food, 193 carrying a category.
 - C07 turned out to be already done (see above).
+
+- **27 Aug 2026 — Batch 2 (set / pricing logic), deployed.** C11, C13, C14.
+  `lcs_product_catalog` 19.0.2.19.0 → 19.0.2.21.0. Verified end-to-end through
+  `odoo shell` against `LaCasa_Odoo19` (rolled back, nothing persisted):
+  container prices at `100 × $398 = $39,800` with no orphan Package Fee section;
+  62/62 dish lines carry `set_section`; confirm blocks on 0-of-3 picks and
+  clears once minimums are met; 61 dish lines resize on a 100 → 60 change;
+  Grand Opening stays at `1 × $16,388` and Cocktail Party keeps its 4 tiers.
+  Migration back-fills: 7 package-fee flags, 27/27 rule sections, 2,721
+  `set_section` values, 0 missing.
+
+#### Bug found during batch 2 (pre-existing)
+
+`set_western_buffet.min_guest_count` was **0** on the live database though its
+data file declares **50** — the set data is `noupdate="1"`, so a minimum added
+to the XML after the record existed never landed. Chinese Buffet, the
+otherwise-identical set, had 50. The Western Buffet's "minimum order 50 pax",
+printed in its own customer-facing recommendation, was silently ignored: a
+30-guest order was sized and priced for 30. Fixed in 19.0.2.21.0.
+
+> **Worth telling the client:** Western Buffet quotations under 50 guests will
+> now floor to 50 pax. That is what the set has always claimed and what Chinese
+> Buffet already did, but it is a visible price change on small orders.
 
 ### Open decisions blocking further work
 
