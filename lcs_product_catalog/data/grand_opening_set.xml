@@ -148,26 +148,36 @@ NOTE: Set is sized for ~50 guests; quantities on each line are FIXED (do not ent
     <!-- Selection Rules (informational) -->
     <record id="go_rule_pkg" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_grand_opening"/>
+        <field name="section">── Package Fee ──</field>
+        <field name="min_selection">1</field>
         <field name="max_selection">1</field>
         <field name="label">── Package Fee — pick 1 (HK$16,388 all-inclusive)</field>
     </record>
     <record id="go_rule_pig" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_grand_opening"/>
+        <field name="section">A. Suckling Pig 乳豬 (Choose 1)</field>
+        <field name="min_selection">1</field>
         <field name="max_selection">1</field>
         <field name="label">A. Suckling Pig — Choose 1 (Spanish or Chinese, both included)</field>
     </record>
     <record id="go_rule_ceremonial" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_grand_opening"/>
+        <field name="section">B. Ceremonial Items 開幕儀式食品 (included)</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">0</field>
         <field name="label">B. Ceremonial Items (auto-included)</field>
     </record>
     <record id="go_rule_canapes" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_grand_opening"/>
+        <field name="section">C. Canapes 一口小食 (Choose 4, 40 pcs each)</field>
+        <field name="min_selection">4</field>
         <field name="max_selection">4</field>
         <field name="label">C. Canapes — Choose 4 (40 pcs each, 160 pcs total)</field>
     </record>
     <record id="go_rule_addons" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_grand_opening"/>
+        <field name="section">D. Add-on Upgrades 升級項目 (optional)</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">0</field>
         <field name="label">D. Add-on Upgrades (optional)</field>
     </record>
@@ -178,6 +188,7 @@ NOTE: Set is sized for ~50 guests; quantities on each line are FIXED (do not ent
 
     <!-- ── Package Fee (1 line, HK$16,388) ── -->
     <record id="go_line_pkg" model="lcs.catering.set.line">
+        <field name="is_package_fee" eval="True"/>
         <field name="set_id" ref="set_grand_opening"/>
         <field name="product_id" search="[('product_tmpl_id','=',ref('product_go_pkg_fee'))]" model="product.product"/>
         <field name="section">── Package Fee ──</field>

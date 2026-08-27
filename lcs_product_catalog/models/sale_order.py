@@ -1,3 +1,5 @@
+import math
+
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.addons.lcs_product_catalog.models.catering_set import SIZE_LABELS
@@ -25,6 +27,14 @@ class SaleOrderLine(models.Model):
     eo_qty = fields.Float(string='EO Qty', digits='Product Unit of Measure')
     eo_unit = fields.Char(string='EO Unit', help='Kitchen-facing unit from set config')
     set_line_code = fields.Char(string='Code', help='Dish code within the set')
+    set_section = fields.Char(
+        string='Set Section',
+        help='The section of the catering set this dish came from, e.g. '
+             '"F. Dessert 甜品 (Choose 3, 30 pcs each)". Stamped at expansion '
+             'time so selection rules can be checked without inferring the '
+             'section from line order, which breaks as soon as a user '
+             'reorders or deletes a line.',
+    )
     is_addon_piece = fields.Boolean(
         string='Add-on (per piece)', default=False,
         help='This line is an extra per-piece add-on',
@@ -68,6 +78,44 @@ class SaleOrderLine(models.Model):
             line.lcs_margin_pct = (
                 (subtotal - cost) / subtotal * 100.0 if subtotal else 0.0
             )
+
+    def write(self, vals):
+        """C14 (client comment, slides 14-15): editing a set container's
+        quantity resizes the dishes underneath it.
+
+        The client's complaint was that changing the pax count from 50 to 100
+        left every food line at 50. Rather than make them remember to press
+        "Reload Sets", propagate on save.
+
+        Scope is deliberately narrow:
+          - Only when product_uom_qty actually changed.
+          - Only on draft / sent orders. On a confirmed order this would
+            silently rewrite billed quantities, so there "Reload Sets" stays
+            the explicit, user-initiated path (_reload_sets_in_place).
+          - Only for container lines — a line whose product IS a catering set.
+            Dish lines are not containers and never trigger this.
+
+        The lcs_skip_set_resize context key stops the resize's own writes from
+        re-entering here.
+        """
+        res = super().write(vals)
+        if 'product_uom_qty' not in vals or self.env.context.get('lcs_skip_set_resize'):
+            return res
+
+        for line in self:
+            if line.display_type or line.is_set_line:
+                continue
+            if line.order_id.state not in ('draft', 'sent'):
+                continue
+            catering_set = self.env['lcs.catering.set'].search([
+                ('product_id.product_variant_ids', 'in', [line.product_id.id]),
+            ], limit=1)
+            if not catering_set:
+                continue
+            line.order_id.with_context(
+                lcs_skip_set_resize=True
+            )._lcs_resize_set_dishes(catering_set, line)
+        return res
 
     @api.onchange('dish_selected')
     def _onchange_dish_selected(self):
@@ -161,58 +209,131 @@ class SaleOrder(models.Model):
                     'product_uom_qty': selected[key] if line.is_addon_piece else line.product_uom_qty,
                 })
 
-    def _reload_sets_in_place(self):
-        """Update existing set-line quantities from the current guest count
-        WITHOUT unlinking (Odoo blocks line deletion on confirmed SOs).
+    # ──────────────────────────────────────────────────────────
+    # C14 — effective pax resolution and dish resizing
+    # ──────────────────────────────────────────────────────────
 
-        For each existing set line SOL, look up its source `set_line` in the
-        catering set (matched by product_id + set_line_code) and recompute
-        product_uom_qty using the same formula as action_expand_sets. Prices,
-        set_unit, EO qty/unit, and description are left untouched.
+    def _lcs_effective_pax(self, catering_set, container_line=None):
+        """How many people this set is being sized for.
+
+        C14 (slides 14-15): the client edits the quantity on the set's own
+        line, so that line — not the order-level "No. of Guest" field — is the
+        source of truth once it has been sized.
+
+        Only for sets priced per head, though. On a flat-fee set (Grand
+        Opening) or a multi-tier one, the container's quantity counts
+        *packages*, not people — reading it as pax would size the dishes for 2
+        guests because someone ordered 2 suckling-pig packages. Those keep
+        guest_count as the source, exactly as before.
+
+        A container still sitting at Odoo's default quantity of 1 has never
+        been sized, so fall back to guest_count (the behaviour on first
+        expansion). Safe to key off 1 because every per-head set carries
+        min_guest_count >= 12, so a sized container is never at 1.
+
+        The per-set minimum always wins: a 30-guest Western Buffet still bills
+        50 pax.
         """
-        import math
         self.ensure_one()
-        guest_count = self.guest_count or 0
+        qty = 0
+        if container_line and catering_set._get_per_person_fee_line():
+            qty = int(container_line.product_uom_qty or 0)
+        base = qty if qty > 1 else (self.guest_count or 0)
+        return max(catering_set.min_guest_count or 0, base)
 
-        # Skip auto-managed add-on lines — their qty is user-selected.
-        set_sols = self.order_line.filtered(
-            lambda l: l.is_set_line and not l.is_addon_piece and l.catering_set_id
+    def _lcs_set_line_qty(self, catering_set, set_line, effective_pax):
+        """Quantity for one dish line at a given pax count.
+
+        Single formula shared by expansion (action_expand_sets) and every
+        resize path, so the two can't drift apart — they had already diverged
+        once, which is part of why C14 was reported.
+        """
+        size_key = self._resolve_size(catering_set, set_line, effective_pax)
+        _price, actual_size = set_line.get_price_for_size(size_key)
+
+        qty = set_line.qty or 1
+        if actual_size == 'per_piece' and effective_pax:
+            qty = effective_pax
+
+        category_id = set_line.product_id.categ_id.id if set_line.product_id else False
+        ratio_tier = catering_set.get_ratio_tier(
+            effective_pax, category_id
+        ) if effective_pax else False
+        if ratio_tier:
+            mode = ratio_tier.tier_mode or 'ratio'
+            if mode == 'fixed' and ratio_tier.invoice_qty:
+                qty = ratio_tier.invoice_qty
+            elif mode == 'formula' and ratio_tier.per_pax_qty:
+                qty = math.ceil(effective_pax * ratio_tier.per_pax_qty)
+            elif ratio_tier.invoice_unit and ratio_tier.ratio and ratio_tier.ratio > 0:
+                qty = math.ceil(effective_pax / ratio_tier.ratio)
+        return qty
+
+    def _lcs_resize_set_dishes(self, catering_set, container_line):
+        """Resize one set's dish lines to the container's pax count.
+
+        Quantities only — prices, units, EO qty/unit and descriptions are left
+        alone, and auto-managed per-piece add-ons are skipped because their
+        quantity is the salesperson's choice.
+        """
+        self.ensure_one()
+        effective_pax = self._lcs_effective_pax(catering_set, container_line)
+
+        dish_sols = self.order_line.filtered(
+            lambda l: l.is_set_line
+            and not l.is_addon_piece
+            and l.set_product_id == container_line.product_id
         )
-        for sol in set_sols:
-            catering_set = sol.catering_set_id
-            effective_guests = max(
-                catering_set.min_guest_count or 0, guest_count or 0
-            )
-            # Find the source set.line for this SOL.
+        for sol in dish_sols:
             set_line = catering_set.line_ids.filtered(
                 lambda sl: sl.product_id == sol.product_id
                 and (sl.code or '') == (sol.set_line_code or '')
             )[:1]
             if not set_line:
                 continue
-
-            size_key = self._resolve_size(catering_set, set_line, effective_guests)
-            _price, actual_size = set_line.get_price_for_size(size_key)
-
-            qty = set_line.qty or 1
-            if actual_size == 'per_piece' and effective_guests:
-                qty = effective_guests
-
-            category_id = set_line.product_id.categ_id.id if set_line.product_id else False
-            ratio_tier = catering_set.get_ratio_tier(
-                effective_guests, category_id
-            ) if effective_guests else False
-            if ratio_tier:
-                mode = ratio_tier.tier_mode or 'ratio'
-                if mode == 'fixed' and ratio_tier.invoice_qty:
-                    qty = ratio_tier.invoice_qty
-                elif mode == 'formula' and ratio_tier.per_pax_qty:
-                    qty = math.ceil(effective_guests * ratio_tier.per_pax_qty)
-                elif ratio_tier.invoice_unit and ratio_tier.ratio and ratio_tier.ratio > 0:
-                    qty = math.ceil(effective_guests / ratio_tier.ratio)
-
+            qty = self._lcs_set_line_qty(catering_set, set_line, effective_pax)
             if qty != sol.product_uom_qty:
-                sol.product_uom_qty = qty
+                sol.with_context(lcs_skip_set_resize=True).product_uom_qty = qty
+
+        # Keep the container honest — min_guest_count may have floored a
+        # quantity the user typed below the set's minimum. Only for per-head
+        # sets: on a flat-fee set (Grand Opening) the container quantity is 1
+        # and writing the pax count there would multiply the package price.
+        if (catering_set._get_per_person_fee_line()
+                and container_line.product_uom_qty != effective_pax):
+            container_line.with_context(
+                lcs_skip_set_resize=True
+            ).product_uom_qty = effective_pax
+
+        # The Event Order reads order-level guest_count. Mirror the container
+        # onto it only when this order carries a single set — with two sets at
+        # different pax counts there is no one correct value.
+        containers = self._lcs_get_set_containers()
+        if len(containers) == 1 and self.guest_count != effective_pax:
+            self.with_context(lcs_skip_set_resize=True).guest_count = effective_pax
+
+    def _lcs_get_set_containers(self):
+        """[(catering_set, container_line), …] for every set on this order."""
+        self.ensure_one()
+        pairs = []
+        for product in self.order_line.filtered('is_set_line').mapped('set_product_id'):
+            container = self.order_line.filtered(
+                lambda l, p=product: l.product_id == p
+                and not l.is_set_line and not l.display_type
+            )[:1]
+            catering_set = self.env['lcs.catering.set'].search([
+                ('product_id.product_variant_ids', 'in', [product.id]),
+            ], limit=1)
+            if container and catering_set:
+                pairs.append((catering_set, container))
+        return pairs
+
+    def _reload_sets_in_place(self):
+        """Update existing set-line quantities WITHOUT unlinking (Odoo blocks
+        line deletion once an SO is confirmed)."""
+        self.ensure_one()
+        for catering_set, container in self._lcs_get_set_containers():
+            self._lcs_resize_set_dishes(catering_set, container)
 
     def action_open_set_picker(self):
         """Open a popup listing all active catering sets so the user can pick one."""
@@ -234,7 +355,6 @@ class SaleOrder(models.Model):
     def action_expand_sets(self):
         """Expand set products in the SO into individual dish lines."""
         self.ensure_one()
-        guest_count = self.guest_count or 0
 
         lines_to_process = self.order_line.filtered(
             lambda l: not l.display_type and not l.is_set_line
@@ -255,10 +375,21 @@ class SaleOrder(models.Model):
             if existing:
                 continue
 
-            # Effective guest count honours per-set minimum.
-            effective_guests = max(
-                catering_set.min_guest_count or 0, guest_count or 0
-            )
+            effective_guests = self._lcs_effective_pax(catering_set, line)
+
+            # C11 (client comment, slide 11): when the set is priced as a
+            # single per-person fee, that fee belongs on the container line
+            # itself — the salesperson shouldn't have to scroll to a "Package
+            # Fee" row and tick it. Sets offering several priced tiers keep
+            # the pick; _get_sole_package_fee_line returns empty for those.
+            fee_line = catering_set._get_sole_package_fee_line()
+
+            # Pre-filter before the loop: section headers are emitted the
+            # moment set_line.section changes, so dropping the fee line inside
+            # the loop would leave an orphan "── Package Fee ──" header.
+            set_lines = catering_set.line_ids
+            if fee_line:
+                set_lines = set_lines - fee_line
 
             # C12 (client comment, slide 12): the set's recommendation used
             # to be dropped in as a 💡 line_note here. The client doesn't want
@@ -269,7 +400,7 @@ class SaleOrder(models.Model):
             seq = line.sequence + 2
             current_section = None
 
-            for set_line in catering_set.line_ids:
+            for set_line in set_lines:
                 # Insert section header when section changes
                 if set_line.section and set_line.section != current_section:
                     current_section = set_line.section
@@ -310,7 +441,6 @@ class SaleOrder(models.Model):
                 ) if effective_guests else False
 
                 if ratio_tier:
-                    import math
                     mode = ratio_tier.tier_mode or 'ratio'
                     if mode == 'fixed' and ratio_tier.invoice_qty:
                         # Explicit qty per bracket
@@ -362,6 +492,7 @@ class SaleOrder(models.Model):
                     'catering_set_id': catering_set.id,
                     'set_unit': size_label,
                     'set_line_code': set_line.code,
+                    'set_section': set_line.section,
                     'eo_qty': eo_qty,
                     'eo_unit': eo_unit,
                     'per_piece_price': set_line.price_per_piece or 0,
@@ -390,13 +521,31 @@ class SaleOrder(models.Model):
                         'catering_set_id': catering_set.id,
                         'set_unit': 'Per piece',
                         'set_line_code': set_line.code,
+                        'set_section': set_line.section,
                         'per_piece_price': set_line.price_per_piece,
                         'sequence': seq,
                     })
                     seq += 1
 
-            # Set the original set line qty to 1, price to 0 (container)
-            line.write({'product_uom_qty': 1, 'price_unit': 0})
+            # C11: the container carries the package fee when the set has a
+            # single one — quantity is the pax count, price is the per-person
+            # fee, so the salesperson sees "100 × $398" on the line they added.
+            # Sets without a sole fee line keep the inert 1 × $0 container.
+            if fee_line and fee_line.price_per_piece:
+                # Per-person fee (Western / Chinese Buffet, HK$398/head):
+                # quantity is the pax count, so the line reads "100 × $398".
+                fee_qty = effective_guests
+                fee_price = fee_line.price_per_piece
+            elif fee_line:
+                # Flat fee for the whole event (Grand Opening, HK$16,388).
+                # Quantity stays 1 — pax must NOT multiply it.
+                fee_qty = fee_line.qty or 1
+                fee_price, _sz = fee_line.get_price_for_size('l_tray')
+            else:
+                fee_qty, fee_price = 1, 0
+            line.with_context(lcs_skip_set_resize=True).write({
+                'product_uom_qty': fee_qty, 'price_unit': fee_price,
+            })
 
     def _resolve_size(self, catering_set, set_line, guest_count):
         """Determine the right size key for a set line based on guest count."""
@@ -417,11 +566,83 @@ class SaleOrder(models.Model):
             return 'l_tray'
         return 'l_tray'
 
-    def _get_selected_dish_count(self, catering_set_id, category_id):
-        """Count how many dishes are selected for a set+category."""
-        return len(self.order_line.filtered(
-            lambda l: l.is_set_line
-            and l.catering_set_id.id == catering_set_id
-            and l.dish_selected
-            and l.product_id.categ_id.id == category_id
-        ))
+    # ──────────────────────────────────────────────────────────
+    # C13 — selection rules ("Choose 3" actually means 3)
+    # ──────────────────────────────────────────────────────────
+
+    set_selection_warning = fields.Text(
+        string='Set Selection Warning',
+        compute='_compute_set_selection_warning',
+        help='Lists every set section whose picked-dish count breaks its '
+             'Min / Max Selection rule. Empty when the order is valid.',
+    )
+
+    @api.depends(
+        'order_line.dish_selected', 'order_line.set_section',
+        'order_line.catering_set_id', 'order_line.is_addon_piece',
+    )
+    def _compute_set_selection_warning(self):
+        for order in self:
+            order.set_selection_warning = '\n'.join(
+                order._lcs_selection_breaches()
+            )
+
+    def _lcs_selection_breaches(self):
+        """One human-readable line per section that is short or over.
+
+        Rules are keyed by section, not by dish category: no rule record has
+        ever carried a category_id, and a set's sections ("F. Dessert 甜品
+        (Choose 3, 30 pcs each)") don't map 1:1 onto product categories.
+
+        Sections with no matching rule are unconstrained and skipped, so
+        orders expanded before set_section existed simply produce no warning
+        rather than a false one.
+        """
+        self.ensure_one()
+        breaches = []
+        dish_lines = self.order_line.filtered(
+            lambda l: l.is_set_line and not l.is_addon_piece and l.set_section
+        )
+        for catering_set in dish_lines.mapped('catering_set_id'):
+            set_lines = dish_lines.filtered(
+                lambda l, cs=catering_set: l.catering_set_id == cs
+            )
+            for rule in catering_set.rule_ids.filtered('section'):
+                section_lines = set_lines.filtered(
+                    lambda l, r=rule: l.set_section == r.section
+                )
+                if not section_lines:
+                    continue
+                picked = len(section_lines.filtered('dish_selected'))
+                label = rule.label or rule.section
+                if rule.min_selection and picked < rule.min_selection:
+                    breaches.append(_(
+                        '%(set_name)s — %(label)s: choose %(need)s, '
+                        '%(picked)s selected.',
+                        set_name=catering_set.name, label=label,
+                        need=rule.min_selection, picked=picked,
+                    ))
+                elif rule.max_selection and picked > rule.max_selection:
+                    breaches.append(_(
+                        '%(set_name)s — %(label)s: at most %(need)s, '
+                        '%(picked)s selected.',
+                        set_name=catering_set.name, label=label,
+                        need=rule.max_selection, picked=picked,
+                    ))
+        return breaches
+
+    def action_confirm(self):
+        """C13 (client comment, slide 13): "Only 2 items chosen but the system
+        doesn't remind me." Block confirmation while any set is short or over,
+        naming every offending section."""
+        for order in self:
+            breaches = order._lcs_selection_breaches()
+            if breaches:
+                raise UserError(_(
+                    'This order does not satisfy its set selection rules:\n\n'
+                    '%(details)s\n\n'
+                    'Tick the missing dishes (or untick the extras) before '
+                    'confirming.',
+                    details='\n'.join('  • %s' % b for b in breaches),
+                ))
+        return super().action_confirm()

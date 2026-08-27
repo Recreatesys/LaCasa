@@ -40,6 +40,7 @@
                                     <field name="price_xl_tray" string="XL"/>
                                     <field name="eo_qty" string="EO Qty"/>
                                     <field name="eo_unit" string="EO Unit"/>
+                                    <field name="is_package_fee" string="Pkg Fee"/>
                                     <field name="remark"/>
                                 </list>
                             </field>
@@ -59,11 +60,20 @@
                         <page string="Selection Rules" name="rules">
                             <field name="rule_ids">
                                 <list editable="bottom">
-                                    <field name="category_id"/>
+                                    <field name="section"/>
+                                    <field name="min_selection"/>
                                     <field name="max_selection"/>
                                     <field name="label"/>
+                                    <field name="category_id" optional="hide"/>
                                 </list>
                             </field>
+                            <p class="text-muted small mt-2">
+                                Section must match the dish lines' Section text
+                                exactly — that is how a rule finds the dishes it
+                                governs. Min Selection blocks confirmation of a
+                                Sales Order that is short; 0 means no minimum.
+                                Category is unused and kept only for history.
+                            </p>
                         </page>
                         <page string="Kitchen Ratio Tiers" name="ratios">
                             <field name="ratio_tier_ids">

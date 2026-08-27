@@ -107,31 +107,43 @@ Pass-around service may need extra waitstaff (contact CS).</field>
     <!-- Selection Rules (informational labels per section) -->
     <record id="cp_rule_pkg" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_cocktail_party"/>
+        <field name="section">── Package Fee ── (Choose 1 tier)</field>
+        <field name="min_selection">1</field>
         <field name="max_selection">1</field>
         <field name="label">── Package Fee — Choose 1 tier (6 / 8 / 10 / 12 canapes)</field>
     </record>
     <record id="cp_rule_cold" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_cocktail_party"/>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">12</field>
         <field name="label">A. Cold Canapes 冷盤小食 — pick from this section</field>
     </record>
     <record id="cp_rule_warm" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_cocktail_party"/>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">12</field>
         <field name="label">B. Warm Canapes 熱盤小食 — pick from this section</field>
     </record>
     <record id="cp_rule_veg" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_cocktail_party"/>
+        <field name="section">C. Vegetarian-Friendly 素食小食</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">12</field>
         <field name="label">C. Vegetarian-Friendly 素食小食 — pick from this section</field>
     </record>
     <record id="cp_rule_asian" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_cocktail_party"/>
+        <field name="section">D. Asian Fusion 亞洲風味小食</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">12</field>
         <field name="label">D. Asian Fusion 亞洲風味小食 — pick from this section</field>
     </record>
     <record id="cp_rule_sweet" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_cocktail_party"/>
+        <field name="section">E. Sweet Canapes 甜點小食</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">12</field>
         <field name="label">E. Sweet Canapes 甜點小食 — pick from this section</field>
     </record>
@@ -178,6 +190,7 @@ Pass-around service may need extra waitstaff (contact CS).</field>
 
     <!-- ── Package Fee — Choose 1 ── -->
     <record id="cp_line_pkg_6" model="lcs.catering.set.line">
+        <field name="is_package_fee" eval="True"/>
         <field name="set_id" ref="set_cocktail_party"/>
         <field name="product_id" search="[('product_tmpl_id','=',ref('product_cocktail_pkg_6'))]" model="product.product"/>
         <field name="section">── Package Fee ── (Choose 1 tier)</field>
@@ -187,6 +200,7 @@ Pass-around service may need extra waitstaff (contact CS).</field>
         <field name="description">HK$278/person — 6 kinds of canapes</field>
     </record>
     <record id="cp_line_pkg_8" model="lcs.catering.set.line">
+        <field name="is_package_fee" eval="True"/>
         <field name="set_id" ref="set_cocktail_party"/>
         <field name="product_id" search="[('product_tmpl_id','=',ref('product_cocktail_pkg_8'))]" model="product.product"/>
         <field name="section">── Package Fee ── (Choose 1 tier)</field>
@@ -196,6 +210,7 @@ Pass-around service may need extra waitstaff (contact CS).</field>
         <field name="description">HK$328/person — 8 kinds of canapes</field>
     </record>
     <record id="cp_line_pkg_10" model="lcs.catering.set.line">
+        <field name="is_package_fee" eval="True"/>
         <field name="set_id" ref="set_cocktail_party"/>
         <field name="product_id" search="[('product_tmpl_id','=',ref('product_cocktail_pkg_10'))]" model="product.product"/>
         <field name="section">── Package Fee ── (Choose 1 tier)</field>
@@ -205,6 +220,7 @@ Pass-around service may need extra waitstaff (contact CS).</field>
         <field name="description">HK$368/person — 10 kinds of canapes</field>
     </record>
     <record id="cp_line_pkg_12" model="lcs.catering.set.line">
+        <field name="is_package_fee" eval="True"/>
         <field name="set_id" ref="set_cocktail_party"/>
         <field name="product_id" search="[('product_tmpl_id','=',ref('product_cocktail_pkg_12'))]" model="product.product"/>
         <field name="section">── Package Fee ── (Choose 1 tier)</field>

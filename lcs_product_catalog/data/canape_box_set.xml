@@ -308,21 +308,29 @@ Items marked +HK$10 / +HK$20 add a per-person surcharge.</field>
     <!-- Selection Rules (informational) -->
     <record id="cbx_mm_rule_box" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="section">── Box Tier ── (Choose 1)</field>
+        <field name="min_selection">1</field>
         <field name="max_selection">1</field>
         <field name="label">── Box Tier — Choose 1 (4 / 6 / 9 canapes per box)</field>
     </record>
     <record id="cbx_mm_rule_cold" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="section">A. Cold Canapes 冷盤小食</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">9</field>
         <field name="label">A. Cold Canapes 冷盤小食</field>
     </record>
     <record id="cbx_mm_rule_warm" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="section">B. Warm Canapes 熱盤小食</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">9</field>
         <field name="label">B. Warm Canapes 熱盤小食</field>
     </record>
     <record id="cbx_mm_rule_sweet" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_canape_box_mixmatch"/>
+        <field name="section">C. Sweet Canapes 甜點小食</field>
+        <field name="min_selection">0</field>
         <field name="max_selection">9</field>
         <field name="label">C. Sweet Canapes 甜點小食</field>
     </record>

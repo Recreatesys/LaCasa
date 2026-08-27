@@ -109,6 +109,37 @@ class CateringSet(models.Model):
                 return rule.size
         return False
 
+    def _get_sole_package_fee_line(self):
+        """The set's package-fee line, but only when there is exactly one.
+
+        Sets priced as "HK$X per person, then choose your dishes" carry a
+        single fee line (Western Buffet, Chinese Buffet, Grand Opening). For
+        those, the SO container line can carry the fee directly and the
+        salesperson never has to hunt for a "Package Fee" row to tick — see
+        C11 in docs/client_comments_2026-07.md.
+
+        Sets that offer several priced tiers instead (Cocktail Party: $278 /
+        $328 / $368 / 12-kind) genuinely need the salesperson to choose one,
+        so they get an empty recordset here and keep the pick-a-tier flow.
+        """
+        self.ensure_one()
+        fee_lines = self.line_ids.filtered('is_package_fee')
+        return fee_lines if len(fee_lines) == 1 else fee_lines.browse()
+
+    def _get_per_person_fee_line(self):
+        """The sole package-fee line, but only when it is priced per head.
+
+        Not every package fee is per-person. Grand Opening's is a flat
+        HK$16,388 for the whole event (carried on price_l_tray, with no
+        price_per_piece); multiplying that by the guest count would bill
+        HK$1,638,800 for 100 guests. Only a fee with a genuine per-piece rate
+        is allowed to drive the container line's quantity — see
+        SaleOrder.action_expand_sets and _lcs_resize_set_dishes.
+        """
+        self.ensure_one()
+        fee = self._get_sole_package_fee_line()
+        return fee if fee and fee.price_per_piece else fee.browse()
+
 
 class CateringSetLine(models.Model):
     _name = 'lcs.catering.set.line'
@@ -138,6 +169,13 @@ class CateringSetLine(models.Model):
         help='Determines which auto-size rule applies')
     sequence = fields.Integer(default=10)
     remark = fields.Char(string='Remark')
+    is_package_fee = fields.Boolean(
+        string='Package Fee Line',
+        help='This line is the per-person base fee for the set rather than a '
+             'dish. When a set has exactly one of these, the fee is folded '
+             'into the set container line on the Sales Order instead of being '
+             'offered as a separate pick (see _get_sole_package_fee_line).',
+    )
 
     # Multi-size pricing (HK$)
     price_per_piece = fields.Float(string='Per piece', digits='Product Price')
@@ -195,19 +233,43 @@ class CateringSetRule(models.Model):
     set_id = fields.Many2one(
         'lcs.catering.set', string='Set', required=True, ondelete='cascade',
     )
+    section = fields.Char(
+        string='Section',
+        help='The set-line section this rule governs. Must match '
+             'lcs.catering.set.line.section exactly, e.g. '
+             '"F. Dessert 甜品 (Choose 3, 30 pcs each)".',
+    )
     category_id = fields.Many2one(
         'product.category', string='Category',
-        help='Which dish category this rule applies to',
+        help='Unused. Rules are keyed by Section — no record has ever set '
+             'this, and dish categories do not map 1:1 onto set sections.',
+    )
+    min_selection = fields.Integer(
+        string='Min Selection',
+        help='Minimum number of dishes that must be picked from this section '
+             'before the order can be confirmed. 0 = no minimum.',
+        default=0,
     )
     max_selection = fields.Integer(
         string='Max Selection',
-        help='Maximum number of dishes the customer can pick from this category. 0 = unlimited.',
+        help='Maximum number of dishes the customer can pick from this section. 0 = unlimited.',
         default=0,
     )
     label = fields.Char(
         string='Label',
         help='Display label, e.g. "Choose 2 Salads"',
     )
+
+    @api.constrains('min_selection', 'max_selection')
+    def _check_selection_bounds(self):
+        for rule in self:
+            if rule.max_selection and rule.min_selection > rule.max_selection:
+                raise ValidationError(_(
+                    'Rule "%(label)s": minimum selection (%(mn)s) cannot '
+                    'exceed the maximum (%(mx)s).',
+                    label=rule.label or rule.section or rule.id,
+                    mn=rule.min_selection, mx=rule.max_selection,
+                ))
 
 
 class CateringSetSizeRule(models.Model):

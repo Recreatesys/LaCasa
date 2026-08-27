@@ -194,31 +194,43 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
     <!-- Selection Rules -->
     <record id="wb_rule_a" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_western_buffet"/>
+        <field name="section">A. Salad / Appetizer 沙律/前菜 (Choose 2)</field>
+        <field name="min_selection">2</field>
         <field name="max_selection">2</field>
         <field name="label">A. Salad / Appetizer — Choose 2</field>
     </record>
     <record id="wb_rule_b" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_western_buffet"/>
+        <field name="section">B. Party Snack 派對小食 (Choose 3, 40 pcs each)</field>
+        <field name="min_selection">3</field>
         <field name="max_selection">3</field>
         <field name="label">B. Party Snack — Choose 3 (40 pcs/cups each)</field>
     </record>
     <record id="wb_rule_c" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_western_buffet"/>
+        <field name="section">C. Main Course 主菜 (Choose 3)</field>
+        <field name="min_selection">3</field>
         <field name="max_selection">3</field>
         <field name="label">C. Main Course — Choose 3</field>
     </record>
     <record id="wb_rule_d" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_western_buffet"/>
+        <field name="section">D. Vegetable Dish 蔬菜 (Choose 1)</field>
+        <field name="min_selection">1</field>
         <field name="max_selection">1</field>
         <field name="label">D. Vegetable Dish — Choose 1</field>
     </record>
     <record id="wb_rule_e" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_western_buffet"/>
+        <field name="section">E. Pasta &amp; Risotto 意粉及燴飯 (Choose 2)</field>
+        <field name="min_selection">2</field>
         <field name="max_selection">2</field>
         <field name="label">E. Pasta &amp; Risotto — Choose 2</field>
     </record>
     <record id="wb_rule_f" model="lcs.catering.set.rule">
         <field name="set_id" ref="set_western_buffet"/>
+        <field name="section">F. Dessert 甜品 (Choose 3, 30 pcs each)</field>
+        <field name="min_selection">3</field>
         <field name="max_selection">3</field>
         <field name="label">F. Dessert — Choose 3 (30 pcs each)</field>
     </record>
@@ -935,6 +947,7 @@ Includes delivery, 3 waiters (4hrs), tablecloth, chafing dishes, tableware.
 
     <!-- ── Package Fee ── -->
     <record id="wb_line_fee" model="lcs.catering.set.line">
+        <field name="is_package_fee" eval="True"/>
         <field name="set_id" ref="set_western_buffet"/>
         <field name="product_id" search="[('product_tmpl_id','=',ref('product_buffet_base_fee'))]" model="product.product"/>
         <field name="section">── Package Fee ──</field>
