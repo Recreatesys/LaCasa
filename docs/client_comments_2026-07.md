@@ -13,8 +13,8 @@ Status: **DONE** = already shipped after the deck | **TODO** = needs work | **DE
 | C02 | 2 | Event / Delivery Time should be a **time slot** (12:00–14:00) | `crm_lead.py` `event_time_start` / `event_time_end` | **DONE** |
 | C03 | 3 | Need to cater an event/order spanning **a few days** | `crm_lead.py` `event_date_start` / `event_date_end` / `event_day_count` (≤7) | **DONE** |
 | C04 | 4 | Sales picks a **preferred driver**; CS team finalises in EO | `crm_lead.call_van` labelled "Preferred Driver"; `lcs.event.order.call_van` editable | **VERIFY** — confirm EO re-sync doesn't overwrite the CS team's choice |
-| C05a | 5 | **Service Type** — exact list + order (15 values) | `crm_lead.py:32 SERVICE_TYPE_SELECTION` | **TODO** — reorder + rename (Event–Buffet / Event–Cocktail / Event–Banquet, Staffing, Utensil Rental) |
-| C05b | 5 | **Delivery Type** — exact list + order (6 values) | `crm_lead.py:50 DELIVERY_TYPE_SELECTION` | **TODO** — add Simple Set-up (round-trip / one-trip), Self pick-up; reorder |
+| C05a | 5 | **Service Type** — exact list + order (15 values) | `crm_lead.py SERVICE_TYPE_SELECTION` | **DONE** — 15/15 match, verified live. Keys kept where the concept survives (relabel only); `event_banquet` added; `sit_down_menu` + `event` remapped to it by pre-migration (33 rows × 3 tables). |
+| C05b | 5 | **Delivery Type** — exact list + order (6 values) | `crm_lead.py DELIVERY_TYPE_SELECTION` | **DONE** — 6/6 match, verified live. Purely additive + reorder; all three existing keys survive, so no data migration was needed. |
 | C05c | 5 | Setup Type → **Waiter Service**, yes/no | `waiter_service` Boolean | **DONE** |
 
 ## B. Products & Pricing
@@ -111,6 +111,28 @@ printed in its own customer-facing recommendation, was silently ignored: a
 > now floor to 50 pax. That is what the set has always claimed and what Chinese
 > Buffet already did, but it is a visible price change on small orders.
 
+- **27 Aug 2026 — C05a + C05b, deployed.** `lcs_crm_catering` 19.0.1.77.0.
+  Both dropdowns now read exactly as slide 5 specifies. Verified against
+  `ir_model_fields_selection` on the live DB: 15/15 service types and 6/6
+  delivery types, in the client's order.
+
+  Approach: **keys were preserved wherever the concept survives**, so 5,500+
+  historical Sales Orders and Event Orders keep their classification and only
+  the label and position change (`buffet` → "Event – Buffet", `utensil` →
+  "Utensil Rental", `waiter_service` → "Staffing", …). Only the two values the
+  client dropped moved: `sit_down_menu` (31 orders, 27 already
+  `delivery_type='event'`) and `event` (2 legacy 2024 placeholders) → the new
+  `event_banquet`, by **pre**-migration, since rows must stop referencing a
+  value before Odoo reconciles the selection list on upgrade.
+
+  Two notes for the client:
+  - The deck writes "Event – Buffet" / "Event – Cocktail" with an en dash but
+    "Event - Banquet" with a hyphen. Normalised to en dash throughout.
+  - **38 of the 110 `buffet` orders are drop-offs**, not events, so they now
+    read "Event – Buffet" with a drop-off delivery type. The client's list has
+    no plain "Buffet", so this follows their taxonomy — worth confirming that a
+    dropped-off buffet should not instead be "Party Food".
+
 ### Open decisions blocking further work
 
 1. **C19** — which print format survives? There are three today (LCS Quotation,
@@ -121,3 +143,8 @@ printed in its own customer-facing recommendation, was silently ignored: a
 3. **C21c** — what discount % triggers manager approval, and which group approves?
 4. **C26b/c/d** — the checklist, delivery-assignment and waiter-assignment flows.
    The deck itself defers these to a meeting ("need to check with Prina").
+5. **C26a** — buildable except for one input: there is no kitchen / production
+   location list in the system, and the worksheet spec asks for "Kitchen assigned".
+
+All of the above are written up as questions for the client in
+[client_questions_open_items.md](client_questions_open_items.md).
