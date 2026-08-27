@@ -8,6 +8,10 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='vat']" position="after">
                 <field name="shortname"/>
+                <!-- C01 (client comment, slide 1): set the client type here,
+                     when the customer is created, instead of being asked for
+                     it again on every opportunity. -->
+                <field name="client_type"/>
             </xpath>
         </field>
     </record>

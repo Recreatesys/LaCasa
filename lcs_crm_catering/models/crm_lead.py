@@ -197,6 +197,37 @@ class CrmLead(models.Model):
         help='Tick if this food tasting is for a wedding (used for sequence prefix lacasaWFT).',
     )
 
+    # ── C01: Client Type comes from the customer record ──
+
+    @api.onchange('partner_id')
+    def _onchange_partner_id_client_type(self):
+        """Pre-fill Client Type from the customer (slide 1: "No need to ask
+        here"). Only fills a blank — never silently overwrites a type a
+        salesperson has already chosen for this opportunity."""
+        for lead in self:
+            if lead.partner_id and not lead.client_type:
+                lead.client_type = lead.partner_id._lcs_resolve_client_type()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        leads = super().create(vals_list)
+        for lead in leads:
+            if lead.client_type:
+                lead._lcs_stamp_partner_client_type(lead.client_type)
+        return leads
+
+    def _lcs_stamp_partner_client_type(self, client_type):
+        """Push the type back onto a customer that has none.
+
+        Without this, a customer created inline from the opportunity would
+        never acquire a type, and the next opportunity would ask again — the
+        exact loop slide 1 is complaining about. Only ever fills a blank.
+        """
+        for lead in self:
+            partner = lead.partner_id
+            if partner and not partner._lcs_resolve_client_type():
+                partner.client_type = client_type
+
     # ── Time slots — each slot becomes its own quotation ─────────────
     time_slot_ids = fields.One2many(
         'lcs.event.time.slot', 'crm_lead_id', string='Time Slots',
@@ -270,7 +301,11 @@ class CrmLead(models.Model):
                             'curr': lead.stage_id.display_name,
                             'target': new_stage.display_name,
                         })
-        return super().write(vals)
+        res = super().write(vals)
+        # C01: a type chosen here fills in a customer that has none.
+        if vals.get('client_type'):
+            self._lcs_stamp_partner_client_type(vals['client_type'])
+        return res
 
     # ──────────────────────────────────────────────────────────
     # Email-to-Lead parsers for known catering enquiry forms

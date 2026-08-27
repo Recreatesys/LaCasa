@@ -382,6 +382,11 @@ class SaleOrder(models.Model):
                     so.waiter_count > 0 and so.waiter_total_hours > 0
                 ):
                     so._sync_waiter_service_line()
+
+        # C01: a type chosen here fills in a customer that has none.
+        for so in orders:
+            if so.client_type:
+                so._lcs_stamp_partner_client_type(so.client_type)
         return orders
 
     def write(self, vals):
@@ -401,17 +406,34 @@ class SaleOrder(models.Model):
                 invs = so.invoice_ids.filtered(lambda i: i.state != 'cancel' and i.call_van != vals['call_van'])
                 if invs:
                     invs.with_context(skip_call_van_sync=True).write({'call_van': vals['call_van']})
+
+        # C01: a type chosen here fills in a customer that has none.
+        if vals.get('client_type'):
+            self._lcs_stamp_partner_client_type(vals['client_type'])
         return res
 
     @api.onchange('partner_id')
     def _onchange_partner_id_attention(self):
-        """Default attention_to_id based on partner type."""
+        """Default attention_to_id and Client Type based on the customer."""
         if self.partner_id:
             if not self.partner_id.is_company:
                 # Individual contact — default to themselves
                 self.attention_to_id = self.partner_id
             else:
                 self.attention_to_id = False
+            # C01 (client comment, slide 1): pre-fill Client Type from the
+            # customer record. Only fills a blank, so a type deliberately
+            # chosen for this quotation is never overwritten.
+            if not self.client_type:
+                self.client_type = self.partner_id._lcs_resolve_client_type()
+
+    def _lcs_stamp_partner_client_type(self, client_type):
+        """Push the type back onto a customer that has none — see
+        CrmLead._lcs_stamp_partner_client_type."""
+        for order in self:
+            partner = order.partner_id
+            if partner and not partner._lcs_resolve_client_type():
+                partner.client_type = client_type
 
     # ──────────────────────────────────────────────────────────
     # Combined invoice — line-merge N ticked SOs into one account.move
