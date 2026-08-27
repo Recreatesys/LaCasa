@@ -45,18 +45,47 @@ class ProductTemplate(models.Model):
 
     @api.model
     def _search_display_name(self, operator, value):
+        # product.template.name_search DOES route through here, so this alone
+        # covers the product list, the catalog and any m2o onto templates.
         return _lcs_or_category_search(
             super()._search_display_name(operator, value), operator, value,
         )
 
 
 class ProductProduct(models.Model):
-    """Same widening for the variant model — that is what the Sales Order
-    line's product field actually searches."""
     _inherit = 'product.product'
 
     @api.model
-    def _search_display_name(self, operator, value):
-        return _lcs_or_category_search(
-            super()._search_display_name(operator, value), operator, value,
+    def name_search(self, name='', domain=None, operator='ilike', limit=100):
+        """Append category matches to the variant autocomplete.
+
+        product.product.name_search does NOT go through _search_display_name —
+        it hand-rolls its own cascade (default_code exact → barcode exact →
+        default_code ilike → name ilike), so overriding _search_display_name
+        alone has no effect on the Sales Order line's product field, which is
+        exactly where slide 6 asked for this.
+
+        Category hits are appended AFTER whatever the standard search found,
+        so a product actually named "Dessert Platter" still outranks the
+        dishes merely filed under Dessert, and they only fill the space left
+        under `limit`.
+        """
+        res = super().name_search(name, domain, operator, limit)
+        if not name or not isinstance(name, str):
+            return res
+        if operator in Domain.NEGATIVE_OPERATORS or not operator.endswith('like'):
+            return res
+
+        remaining = (limit - len(res)) if limit else None
+        if remaining is not None and remaining <= 0:
+            return res
+
+        already = [r[0] for r in res]
+        extra = self.search_fetch(
+            Domain(domain or Domain.TRUE)
+            & Domain('categ_id', operator, name)
+            & Domain('id', 'not in', already),
+            ['display_name'],
+            limit=remaining,
         )
+        return res + [(p.id, p.display_name) for p in extra]
