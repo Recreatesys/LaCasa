@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Not noupdate: this is structural, and should follow the module. -->
+
+    <!-- Home for the "container" products that represent a catering set on a
+         Sales Order — Corporate Western Buffet, Mix & Match, Grand Opening
+         Package and so on. They are not dishes: they carry the package price
+         and expand into dish lines, so they do not belong under LCS Dishes.
+         Kept top-level alongside it.
+
+         Membership is maintained automatically — see
+         CateringSet._lcs_sync_set_product_category. -->
+    <record id="product_category_lcs_set" model="product.category">
+        <field name="name">LCS Set</field>
+    </record>
+
+</odoo>

@@ -109,6 +109,41 @@ class CateringSet(models.Model):
                 return rule.size
         return False
 
+    # ── Set container products live in their own product category ──
+
+    SET_PRODUCT_CATEGORY_XMLID = 'lcs_product_catalog.product_category_lcs_set'
+
+    def _lcs_sync_set_product_category(self):
+        """File this set's container product under "LCS Set".
+
+        The container is not a dish — it carries the package price and expands
+        into dish lines — so it does not belong under LCS Dishes. Doing this on
+        create/write keeps the category true as ops add or re-point sets,
+        rather than leaving it to drift until someone re-runs a migration.
+        """
+        category = self.env.ref(
+            self.SET_PRODUCT_CATEGORY_XMLID, raise_if_not_found=False
+        )
+        if not category:
+            return
+        products = self.mapped('product_id').filtered(
+            lambda p: p.categ_id != category
+        )
+        if products:
+            products.categ_id = category
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        sets = super().create(vals_list)
+        sets._lcs_sync_set_product_category()
+        return sets
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'product_id' in vals:
+            self._lcs_sync_set_product_category()
+        return res
+
     def _get_sole_package_fee_line(self):
         """The set's package-fee line, but only when there is exactly one.
 
