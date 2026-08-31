@@ -162,18 +162,39 @@
         </t>
     </template>
 
-    <!-- Report action (multi=True binds it to selected records on the list view) -->
+    <!-- Report action.
+
+         Deliberately NOT bound to the Print menu. A Print binding hands Odoo
+         the ticked records as res_ids, and ir.actions.report then tries to
+         split the finished PDF back into one stream per record. A combined
+         report emits N+1 bodies (cover + one per quotation) for N records, so
+         the counts never match and base Odoo silently re-renders the whole
+         report once per record — which produced one cover per quotation, each
+         reading "# Quotations: 1".
+
+         It is reached through the Action menu instead, via
+         sale.order.action_print_combined_quotation, which passes the orders in
+         `data` with no res_ids so Odoo returns the document whole. -->
     <record id="action_report_combined_quotation_lcs" model="ir.actions.report">
         <field name="name">Combined LCS Quotation</field>
         <field name="model">sale.order</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">lcs_crm_catering.report_combined_quotation_lcs</field>
         <field name="report_file">lcs_crm_catering.report_combined_quotation_lcs</field>
-        <field name="multi" eval="True"/>
         <field name="print_report_name">'Combined-Quotation-' + (object.opportunity_id.name or object.partner_id.name or 'batch')</field>
         <field name="paperformat_id" ref="paperformat_lcs_a4"/>
+        <field name="binding_model_id" eval="False"/>
+    </record>
+
+    <!-- "Print Combined Quotation" — Action menu on the Sales Order list,
+         sitting beside "Create Combined Invoice". -->
+    <record id="action_server_combined_quotation" model="ir.actions.server">
+        <field name="name">Print Combined Quotation</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
         <field name="binding_model_id" ref="sale.model_sale_order"/>
-        <field name="binding_type">report</field>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_print_combined_quotation()</field>
     </record>
 
 </odoo>

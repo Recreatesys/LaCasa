@@ -436,6 +436,54 @@ class SaleOrder(models.Model):
                 partner.client_type = client_type
 
     # ──────────────────────────────────────────────────────────
+    # Combined Quotation — one PDF for several quotations
+    # ──────────────────────────────────────────────────────────
+
+    def action_print_combined_quotation(self):
+        """One quotation document covering every ticked quotation.
+
+        Page 1 is a summary of all of them (per-quote date, time, guests,
+        subtotal, grand total); each quotation then follows in full. The
+        counterpart to Consolidated Billing, for the quoting stage.
+
+        The order ids go through `data`, NOT as res_ids: base Odoo splits a
+        report's PDF back into one stream per record and, failing to match
+        outlines to records, silently re-renders the whole report once per
+        record. Passing them in `data` with no res_ids makes Odoo return the
+        document whole. See ReportCombinedQuotation for the detail.
+        """
+        if not self:
+            raise UserError(_('Select the quotations to combine first.'))
+
+        partners = self.mapped('partner_id.commercial_partner_id')
+        if len(partners) > 1:
+            raise UserError(_(
+                'A combined quotation must be for one customer. The selected '
+                'quotations belong to %(count)s: %(names)s.',
+                count=len(partners),
+                names=', '.join(partners.mapped('display_name')),
+            ))
+
+        currencies = self.mapped('currency_id')
+        if len(currencies) > 1:
+            raise UserError(_(
+                'The selected quotations use different currencies (%s), so '
+                'they cannot share one total.',
+                ', '.join(currencies.mapped('name')),
+            ))
+
+        cancelled = self.filtered(lambda o: o.state == 'cancel')
+        if cancelled:
+            raise UserError(_(
+                'These quotations are cancelled and cannot be combined: %s',
+                ', '.join(cancelled.mapped('name')),
+            ))
+
+        return self.env.ref(
+            'lcs_crm_catering.action_report_combined_quotation_lcs'
+        ).report_action(docids=[], data={'order_ids': self.ids})
+
+    # ──────────────────────────────────────────────────────────
     # Combined invoice — line-merge N ticked SOs into one account.move
     # ──────────────────────────────────────────────────────────
     def action_open_combined_invoice_wizard(self):

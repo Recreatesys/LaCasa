@@ -11,3 +11,4 @@ from . import mail_compose_message
 from . import res_users
 from . import ir_http
 from . import stock_picking
+from . import report_combined_quotation
