@@ -289,6 +289,15 @@ class SaleOrder(models.Model):
             # Waiters × Event Hour, or manually overridden).
           - Neither → no waiter line on the SO (any existing one is dropped).
         """
+        # Never let this bump the Event Order's version. It only ever touches
+        # the derived "Waiter Service" section and product line, and the EO
+        # shows the waiter rows themselves live through a related field — so
+        # there is no stale copy to warn anyone about. Set here rather than at
+        # the call sites because sale.order.write calls this directly whenever
+        # waiter_line_ids is in the vals, which is exactly what a related
+        # write from the EO form produces.
+        self = self.with_context(skip_eo_sync=True)
+
         product_template = self.env.ref(
             'lcs_crm_catering.product_template_waiter_service',
             raise_if_not_found=False,
