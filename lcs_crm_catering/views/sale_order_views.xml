@@ -49,6 +49,18 @@
                         <field name="so_prefix_preview" readonly="1"/>
                     </group>
                 </group>
+                <!-- C08: where the food is going. Drives the delivery-zone
+                     lookup, and copied down from the opportunity's slot. -->
+                <group string="Event / Delivery Address">
+                    <group>
+                        <field name="event_street" placeholder="Street"/>
+                        <field name="event_street2" placeholder="Building / floor / unit"/>
+                    </group>
+                    <group>
+                        <field name="event_country_id"
+                               options="{'no_create': True}"/>
+                    </group>
+                </group>
             </xpath>
 
             <!-- Hide Delivered / Invoiced columns by default (users can

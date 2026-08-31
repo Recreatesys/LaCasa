@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="delivery_zone_wizard_view_form" model="ir.ui.view">
+        <field name="name">lcs.delivery.zone.wizard.form</field>
+        <field name="model">lcs.delivery.zone.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Locate Delivery Zone">
+                <field name="order_id" invisible="1"/>
+                <field name="state" invisible="1"/>
+                <field name="lookup_failed" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+
+                <group>
+                    <field name="address" widget="text"
+                           placeholder="e.g. 8/F, Prince's Building, 10 Chater Road, Central"/>
+                    <field name="delivery_type"/>
+                </group>
+
+                <div class="mt-2">
+                    <button name="action_lookup" type="object"
+                            string="Look up on Google Maps"
+                            class="btn-primary" icon="fa-map-marker"/>
+                </div>
+
+                <group invisible="state != 'result'">
+                    <div class="alert alert-info mb-2" role="status"
+                         colspan="2" invisible="lookup_failed">
+                        <field name="lookup_message" nolabel="1" readonly="1"/>
+                    </div>
+                    <div class="alert alert-warning mb-2" role="alert"
+                         colspan="2" invisible="not lookup_failed">
+                        <field name="lookup_message" nolabel="1" readonly="1"/>
+                    </div>
+                    <field name="formatted_address" invisible="not formatted_address"/>
+                </group>
+
+                <group string="Zone">
+                    <field name="district_id" options="{'no_create': True}"/>
+                    <field name="zone_id"/>
+                    <field name="product_id"
+                           invisible="not product_id"/>
+                    <field name="price" widget="monetary"
+                           invisible="not product_id"/>
+                    <div class="alert alert-warning" role="alert" colspan="2"
+                         invisible="not no_rate_reason">
+                        <field name="no_rate_reason" nolabel="1" readonly="1"/>
+                    </div>
+                </group>
+
+                <footer>
+                    <button name="action_confirm" type="object"
+                            string="Add Delivery Charge" class="btn-primary"
+                            invisible="not product_id"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

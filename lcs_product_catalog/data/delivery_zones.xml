@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================================ -->
+        <!-- Delivery zones — C08 (client comment, slide 8)               -->
+        <!--                                                              -->
+        <!-- noupdate: once live, ops maintain rates and districts in the -->
+        <!-- UI (Sales ▸ Configuration ▸ Delivery Zones). A module        -->
+        <!-- upgrade must not overwrite their corrections.                -->
+        <!-- ============================================================ -->
+
+        <record id="delivery_zone_a" model="lcs.delivery.zone">
+            <field name="name">District A (HK Island)</field>
+            <field name="code">A</field>
+            <field name="sequence">10</field>
+        </record>
+        <record id="delivery_zone_b" model="lcs.delivery.zone">
+            <field name="name">District B (Kowloon / Kwai Tsing)</field>
+            <field name="code">B</field>
+            <field name="sequence">20</field>
+        </record>
+        <record id="delivery_zone_c" model="lcs.delivery.zone">
+            <field name="name">District C (Other N.T.)</field>
+            <field name="code">C</field>
+            <field name="sequence">30</field>
+        </record>
+        <record id="delivery_zone_d" model="lcs.delivery.zone">
+            <field name="name">District D (Tung Chung / Discovery Bay)</field>
+            <field name="code">D</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- ── Rates ──
+             Only the two delivery types LCS has priced. Simple Set-up
+             (Round-trip / One-trip) and Event have no agreed rate yet, so no
+             row exists and the wizard says so rather than guessing. Self
+             Pick-up is intentionally never charged. -->
+
+        <record id="delivery_rate_a_door" model="lcs.delivery.zone.rate">
+            <field name="zone_id" ref="delivery_zone_a"/>
+            <field name="delivery_type">drop_off_door</field>
+            <field name="product_id" search="[('product_tmpl_id','=',ref('addon_cp_delivery_a_d2d'))]" model="product.product"/>
+        </record>
+        <record id="delivery_rate_a_pickup" model="lcs.delivery.zone.rate">
+            <field name="zone_id" ref="delivery_zone_a"/>
+            <field name="delivery_type">drop_off_pickup</field>
+            <field name="product_id" search="[('product_tmpl_id','=',ref('addon_cp_delivery_a_pickup'))]" model="product.product"/>
+        </record>
+        <record id="delivery_rate_b_door" model="lcs.delivery.zone.rate">
+            <field name="zone_id" ref="delivery_zone_b"/>
+            <field name="delivery_type">drop_off_door</field>
+            <field name="product_id" search="[('product_tmpl_id','=',ref('addon_cp_delivery_b_d2d'))]" model="product.product"/>
+        </record>
+        <record id="delivery_rate_b_pickup" model="lcs.delivery.zone.rate">
+            <field name="zone_id" ref="delivery_zone_b"/>
+            <field name="delivery_type">drop_off_pickup</field>
+            <field name="product_id" search="[('product_tmpl_id','=',ref('addon_cp_delivery_b_pickup'))]" model="product.product"/>
+        </record>
+        <record id="delivery_rate_c_door" model="lcs.delivery.zone.rate">
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="delivery_type">drop_off_door</field>
+            <field name="product_id" search="[('product_tmpl_id','=',ref('addon_cp_delivery_c_d2d'))]" model="product.product"/>
+        </record>
+        <record id="delivery_rate_c_pickup" model="lcs.delivery.zone.rate">
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="delivery_type">drop_off_pickup</field>
+            <field name="product_id" search="[('product_tmpl_id','=',ref('addon_cp_delivery_c_pickup'))]" model="product.product"/>
+        </record>
+        <record id="delivery_rate_d_door" model="lcs.delivery.zone.rate">
+            <field name="zone_id" ref="delivery_zone_d"/>
+            <field name="delivery_type">drop_off_door</field>
+            <field name="product_id" search="[('product_tmpl_id','=',ref('addon_cp_delivery_d_d2d'))]" model="product.product"/>
+        </record>
+        <record id="delivery_rate_d_pickup" model="lcs.delivery.zone.rate">
+            <field name="zone_id" ref="delivery_zone_d"/>
+            <field name="delivery_type">drop_off_pickup</field>
+            <field name="product_id" search="[('product_tmpl_id','=',ref('addon_cp_delivery_d_pickup'))]" model="product.product"/>
+        </record>
+
+        <!-- ── Localities that override their own district ──
+             Tung Chung and Discovery Bay sit inside Islands District but are
+             priced as zone D. sequence 10 so they are tested before the
+             Islands District record below, which would otherwise swallow
+             them. -->
+
+        <record id="delivery_district_tung_chung" model="lcs.delivery.district">
+            <field name="name">Tung Chung</field>
+            <field name="name_zh">東涌</field>
+            <field name="zone_id" ref="delivery_zone_d"/>
+            <field name="sequence">10</field>
+            <field name="match_keys">Tung Chung,Tung Chung New Town,東涌</field>
+        </record>
+        <record id="delivery_district_discovery_bay" model="lcs.delivery.district">
+            <field name="name">Discovery Bay</field>
+            <field name="name_zh">愉景灣</field>
+            <field name="zone_id" ref="delivery_zone_d"/>
+            <field name="sequence">10</field>
+            <field name="match_keys">Discovery Bay,DB Plaza,愉景灣</field>
+        </record>
+
+        <!-- ── Zone A — Hong Kong Island ── -->
+        <record id="delivery_district_central_western" model="lcs.delivery.district">
+            <field name="name">Central and Western</field>
+            <field name="name_zh">中西區</field>
+            <field name="zone_id" ref="delivery_zone_a"/>
+            <field name="match_keys">Central and Western,Central &amp; Western,Central,Sheung Wan,Kennedy Town,Sai Ying Pun,Mid-Levels,Admiralty,中環,上環,堅尼地城,西營盤,半山,金鐘</field>
+        </record>
+        <record id="delivery_district_wan_chai" model="lcs.delivery.district">
+            <field name="name">Wan Chai</field>
+            <field name="name_zh">灣仔區</field>
+            <field name="zone_id" ref="delivery_zone_a"/>
+            <field name="match_keys">Wan Chai,Causeway Bay,Happy Valley,Tai Hang,灣仔,銅鑼灣,跑馬地,大坑</field>
+        </record>
+        <record id="delivery_district_eastern" model="lcs.delivery.district">
+            <field name="name">Eastern</field>
+            <field name="name_zh">東區</field>
+            <field name="zone_id" ref="delivery_zone_a"/>
+            <field name="match_keys">Eastern District,North Point,Quarry Bay,Tai Koo,Taikoo,Sai Wan Ho,Shau Kei Wan,Chai Wan,Heng Fa Chuen,東區,北角,鰂魚涌,太古,西灣河,筲箕灣,柴灣</field>
+        </record>
+        <record id="delivery_district_southern" model="lcs.delivery.district">
+            <field name="name">Southern</field>
+            <field name="name_zh">南區</field>
+            <field name="zone_id" ref="delivery_zone_a"/>
+            <field name="match_keys">Southern District,Aberdeen,Wong Chuk Hang,Repulse Bay,Stanley,Ap Lei Chau,Pok Fu Lam,Cyberport,南區,香港仔,黃竹坑,淺水灣,赤柱,鴨脷洲,薄扶林,數碼港</field>
+        </record>
+
+        <!-- ── Zone B — Kowloon + Kwai Tsing ── -->
+        <record id="delivery_district_yau_tsim_mong" model="lcs.delivery.district">
+            <field name="name">Yau Tsim Mong</field>
+            <field name="name_zh">油尖旺區</field>
+            <field name="zone_id" ref="delivery_zone_b"/>
+            <field name="match_keys">Yau Tsim Mong,Tsim Sha Tsui,Jordan,Yau Ma Tei,Mong Kok,Prince Edward,West Kowloon,油尖旺,尖沙咀,佐敦,油麻地,旺角,太子,西九龍</field>
+        </record>
+        <record id="delivery_district_sham_shui_po" model="lcs.delivery.district">
+            <field name="name">Sham Shui Po</field>
+            <field name="name_zh">深水埗區</field>
+            <field name="zone_id" ref="delivery_zone_b"/>
+            <field name="match_keys">Sham Shui Po,Cheung Sha Wan,Lai Chi Kok,Mei Foo,Shek Kip Mei,深水埗,長沙灣,荔枝角,美孚,石硤尾</field>
+        </record>
+        <record id="delivery_district_kowloon_city" model="lcs.delivery.district">
+            <field name="name">Kowloon City</field>
+            <field name="name_zh">九龍城區</field>
+            <field name="zone_id" ref="delivery_zone_b"/>
+            <field name="match_keys">Kowloon City,Hung Hom,To Kwa Wan,Ho Man Tin,Kowloon Tong,Kai Tak,九龍城,紅磡,土瓜灣,何文田,九龍塘,啟德</field>
+        </record>
+        <record id="delivery_district_wong_tai_sin" model="lcs.delivery.district">
+            <field name="name">Wong Tai Sin</field>
+            <field name="name_zh">黃大仙區</field>
+            <field name="zone_id" ref="delivery_zone_b"/>
+            <field name="match_keys">Wong Tai Sin,Diamond Hill,Choi Hung,San Po Kong,Ngau Chi Wan,黃大仙,鑽石山,彩虹,新蒲崗,牛池灣</field>
+        </record>
+        <record id="delivery_district_kwun_tong" model="lcs.delivery.district">
+            <field name="name">Kwun Tong</field>
+            <field name="name_zh">觀塘區</field>
+            <field name="zone_id" ref="delivery_zone_b"/>
+            <field name="match_keys">Kwun Tong,Ngau Tau Kok,Kowloon Bay,Lam Tin,Yau Tong,Sau Mau Ping,觀塘,牛頭角,九龍灣,藍田,油塘,秀茂坪</field>
+        </record>
+        <record id="delivery_district_kwai_tsing" model="lcs.delivery.district">
+            <field name="name">Kwai Tsing</field>
+            <field name="name_zh">葵青區</field>
+            <field name="zone_id" ref="delivery_zone_b"/>
+            <field name="match_keys">Kwai Tsing,Kwai Chung,Kwai Fong,Tsing Yi,葵青,葵涌,葵芳,青衣</field>
+        </record>
+
+        <!-- ── Zone C — the rest of the New Territories ── -->
+        <record id="delivery_district_tsuen_wan" model="lcs.delivery.district">
+            <field name="name">Tsuen Wan</field>
+            <field name="name_zh">荃灣區</field>
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="match_keys">Tsuen Wan,Ting Kau,Sham Tseng,荃灣,汀九,深井</field>
+        </record>
+        <record id="delivery_district_tuen_mun" model="lcs.delivery.district">
+            <field name="name">Tuen Mun</field>
+            <field name="name_zh">屯門區</field>
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="match_keys">Tuen Mun,So Kwun Wat,屯門,掃管笏</field>
+        </record>
+        <record id="delivery_district_yuen_long" model="lcs.delivery.district">
+            <field name="name">Yuen Long</field>
+            <field name="name_zh">元朗區</field>
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="match_keys">Yuen Long,Tin Shui Wai,Kam Tin,Pat Heung,元朗,天水圍,錦田,八鄉</field>
+        </record>
+        <record id="delivery_district_north" model="lcs.delivery.district">
+            <field name="name">North District</field>
+            <field name="name_zh">北區</field>
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="match_keys">North District,Sheung Shui,Fanling,Sha Tau Kok,北區,上水,粉嶺,沙頭角</field>
+        </record>
+        <record id="delivery_district_tai_po" model="lcs.delivery.district">
+            <field name="name">Tai Po</field>
+            <field name="name_zh">大埔區</field>
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="match_keys">Tai Po,Tai Wo,Science Park,大埔,太和,科學園</field>
+        </record>
+        <record id="delivery_district_sha_tin" model="lcs.delivery.district">
+            <field name="name">Sha Tin</field>
+            <field name="name_zh">沙田區</field>
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="match_keys">Sha Tin,Shatin,Ma On Shan,Tai Wai,Fo Tan,沙田,馬鞍山,大圍,火炭</field>
+        </record>
+        <record id="delivery_district_sai_kung" model="lcs.delivery.district">
+            <field name="name">Sai Kung</field>
+            <field name="name_zh">西貢區</field>
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="match_keys">Sai Kung,Tseung Kwan O,TKO,Hang Hau,Clear Water Bay,西貢,將軍澳,坑口,清水灣</field>
+        </record>
+        <record id="delivery_district_islands" model="lcs.delivery.district">
+            <field name="name">Islands District</field>
+            <field name="name_zh">離島區</field>
+            <field name="zone_id" ref="delivery_zone_c"/>
+            <field name="sequence">90</field>
+            <field name="match_keys">Islands District,Lantau,Cheung Chau,Lamma,Peng Chau,Mui Wo,Airport,Chek Lap Kok,離島,大嶼山,長洲,南丫島,坪洲,梅窩,機場,赤鱲角</field>
+        </record>
+
+    </data>
+</odoo>

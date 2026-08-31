@@ -9,3 +9,10 @@ access_catering_set_size_rule_user,lcs.catering.set.size.rule user,model_lcs_cat
 access_catering_set_size_rule_manager,lcs.catering.set.size.rule manager,model_lcs_catering_set_size_rule,base.group_system,1,1,1,1
 access_catering_set_ratio_tier_user,lcs.catering.set.ratio.tier user,model_lcs_catering_set_ratio_tier,base.group_user,1,1,1,0
 access_catering_set_ratio_tier_manager,lcs.catering.set.ratio.tier manager,model_lcs_catering_set_ratio_tier,base.group_system,1,1,1,1
+access_delivery_zone_user,lcs.delivery.zone user,model_lcs_delivery_zone,base.group_user,1,0,0,0
+access_delivery_zone_manager,lcs.delivery.zone manager,model_lcs_delivery_zone,sales_team.group_sale_manager,1,1,1,1
+access_delivery_district_user,lcs.delivery.district user,model_lcs_delivery_district,base.group_user,1,0,0,0
+access_delivery_district_manager,lcs.delivery.district manager,model_lcs_delivery_district,sales_team.group_sale_manager,1,1,1,1
+access_delivery_zone_rate_user,lcs.delivery.zone.rate user,model_lcs_delivery_zone_rate,base.group_user,1,0,0,0
+access_delivery_zone_rate_manager,lcs.delivery.zone.rate manager,model_lcs_delivery_zone_rate,sales_team.group_sale_manager,1,1,1,1
+access_delivery_zone_wizard,lcs.delivery.zone.wizard,model_lcs_delivery_zone_wizard,base.group_user,1,1,1,1

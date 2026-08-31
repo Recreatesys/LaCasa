@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="delivery_zone_view_form" model="ir.ui.view">
+        <field name="name">lcs.delivery.zone.form</field>
+        <field name="model">lcs.delivery.zone</field>
+        <field name="arch" type="xml">
+            <form string="Delivery Zone">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Rates" name="rates">
+                            <field name="rate_ids">
+                                <list editable="bottom">
+                                    <field name="delivery_type"/>
+                                    <field name="product_id"
+                                           options="{'no_create': True}"/>
+                                    <field name="price"/>
+                                </list>
+                            </field>
+                            <p class="text-muted small mt-2">
+                                One product per delivery type. A type with no row
+                                here adds no charge — the lookup says so rather
+                                than guessing a price. Self Pick-up should stay
+                                unpriced.
+                            </p>
+                        </page>
+                        <page string="Districts" name="districts">
+                            <field name="district_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="name_zh"/>
+                                    <field name="match_keys"/>
+                                </list>
+                            </field>
+                            <p class="text-muted small mt-2">
+                                Match Keys are compared against what Google returns
+                                for an address. Add local names as you meet them —
+                                a building or estate name works as well as a
+                                district. Lower sequence is checked first, so a
+                                locality can override the district it sits in.
+                            </p>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="delivery_zone_view_list" model="ir.ui.view">
+        <field name="name">lcs.delivery.zone.list</field>
+        <field name="model">lcs.delivery.zone</field>
+        <field name="arch" type="xml">
+            <list string="Delivery Zones">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="delivery_zone_action" model="ir.actions.act_window">
+        <field name="name">Delivery Zones</field>
+        <field name="res_model">lcs.delivery.zone</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Set up a delivery zone</p>
+            <p>
+                Each zone holds the districts that fall in it and the charge for
+                each delivery type.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_delivery_zone"
+              name="Delivery Zones"
+              parent="sale.menu_sale_config"
+              action="delivery_zone_action"
+              sequence="90"/>
+
+</odoo>

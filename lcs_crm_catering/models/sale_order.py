@@ -101,6 +101,18 @@ class SaleOrder(models.Model):
         help='The opportunity time slot this quotation was generated from.',
     )
 
+    # ── Event / Delivery address ──
+    # Mirrors crm.lead's. Added for C08: the delivery charge is derived from
+    # where the food is going, and the quotation is where that charge is
+    # billed, so the address has to be readable here rather than only on the
+    # opportunity and the Event Order.
+    event_street = fields.Char(string='Event Street')
+    event_street2 = fields.Char(string='Event Street 2')
+    event_country_id = fields.Many2one(
+        'res.country', string='Event Country',
+        default=lambda self: self.env.ref('base.hk', raise_if_not_found=False),
+    )
+
     # ── Event / Delivery — single date + time window ──
     event_date = fields.Date(
         string='Event / Delivery Date',

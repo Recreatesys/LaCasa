@@ -36,6 +36,14 @@
                             class="btn-link"
                             icon="fa-refresh"
                             confirm="This will recalculate all set lines based on the current guest count. Your dish selections will be preserved. Continue?"/>
+                    <!-- C08: derive the delivery charge from where the food
+                         is going plus how it is delivered. -->
+                    <button name="action_open_delivery_zone_wizard"
+                            string="Locate Delivery Zone"
+                            type="object"
+                            class="btn-link"
+                            icon="fa-map-marker"
+                            invisible="state not in ('draft', 'sent')"/>
                 </div>
             </xpath>
 

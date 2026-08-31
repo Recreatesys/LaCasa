@@ -27,6 +27,12 @@ class SaleOrderLine(models.Model):
     eo_qty = fields.Float(string='EO Qty', digits='Product Unit of Measure')
     eo_unit = fields.Char(string='EO Unit', help='Kitchen-facing unit from set config')
     set_line_code = fields.Char(string='Code', help='Dish code within the set')
+    is_lcs_delivery_line = fields.Boolean(
+        string='Auto Delivery Charge', default=False, copy=False,
+        help='Marker for the delivery line added by the delivery-zone '
+             'lookup, so re-running it replaces its own line and leaves a '
+             'hand-entered delivery charge alone.',
+    )
     set_section = fields.Char(
         string='Set Section',
         help='The section of the catering set this dish came from, e.g. '
@@ -646,3 +652,77 @@ class SaleOrder(models.Model):
                     details='\n'.join('  • %s' % b for b in breaches),
                 ))
         return super().action_confirm()
+
+    # ──────────────────────────────────────────────────────────
+    # C08 — delivery charge from the event address + delivery type
+    # ──────────────────────────────────────────────────────────
+
+    def _lcs_delivery_address_text(self):
+        """Best available delivery address, as one block of text.
+
+        Prefers the event address captured on the quotation, then the
+        opportunity's, then the customer's delivery address — an event is
+        rarely at the customer's registered office, so that is the last resort
+        rather than the first.
+        """
+        self.ensure_one()
+        for parts in (
+            [self.event_street, self.event_street2],
+            [self.opportunity_id.event_street,
+             self.opportunity_id.event_street2] if self.opportunity_id else [],
+            [self.partner_shipping_id.street,
+             self.partner_shipping_id.street2,
+             self.partner_shipping_id.city] if self.partner_shipping_id else [],
+        ):
+            text = ', '.join(p.strip() for p in parts if p and p.strip())
+            if text:
+                return text
+        return ''
+
+    def action_open_delivery_zone_wizard(self):
+        """Open the Google Maps delivery-zone lookup."""
+        self.ensure_one()
+        if self.state not in ('draft', 'sent'):
+            raise UserError(_(
+                'Delivery charges can only be set while the quotation is a '
+                'draft.'
+            ))
+        return {
+            'name': _('Locate Delivery Zone'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'lcs.delivery.zone.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {**self.env.context, 'active_id': self.id},
+        }
+
+    def _lcs_apply_delivery_charge(self, product, zone, district, address=''):
+        """Add the delivery line, replacing any previous zone-derived one.
+
+        Only lines this wizard created are replaced — a delivery product a
+        salesperson added by hand is left alone, because overwriting a
+        negotiated charge without saying so would be worse than a duplicate.
+        """
+        self.ensure_one()
+        existing = self.order_line.filtered('is_lcs_delivery_line')
+        existing.unlink()
+
+        note = _('%(zone)s — %(district)s') % {
+            'zone': zone.name, 'district': district.name,
+        }
+        self.env['sale.order.line'].create({
+            'order_id': self.id,
+            'product_id': product.id,
+            'name': '%s\n%s' % (product.display_name.split('\n')[0], note),
+            'product_uom_qty': 1,
+            'is_lcs_delivery_line': True,
+            'sequence': 3000,
+        })
+        self.message_post(body=_(
+            'Delivery charge set from the address lookup:<br/>'
+            '<b>%(zone)s</b> (%(district)s) — %(product)s<br/>'
+            '<span class="text-muted">%(address)s</span>',
+            zone=zone.name, district=district.name,
+            product=product.display_name.split('\n')[0],
+            address=address or '',
+        ))
