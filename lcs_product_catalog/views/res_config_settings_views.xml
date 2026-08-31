@@ -6,8 +6,10 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//block[@id='quotation_order_setting_container']" position="after">
-                <block title="LCS Catering" id="lcs_catering_settings">
+            <!-- NB: the sale settings view mixes @id and @name on its
+                 blocks; this one is addressed by @name. -->
+            <xpath expr="//block[@name='quotation_order_setting_container']" position="after">
+                <block title="LCS Catering" name="lcs_catering_settings">
                     <setting id="lcs_google_maps_setting"
                              string="Google Maps API Key"
                              help="Lets the delivery-zone lookup geocode an event address and read back its Hong Kong district. Needs the Geocoding API enabled on a billing-enabled Google Cloud project. Without a key the lookup still works, with the district chosen by hand.">
