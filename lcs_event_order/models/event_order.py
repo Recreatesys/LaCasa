@@ -68,6 +68,29 @@ class EventOrder(models.Model):
         readonly=False,
     )
 
+    # ── Waiters ──
+    # C16 / C26d: "This part should be input by operation team, ie fill in EO
+    # portal." These are RELATED to the Sales Order's own waiter rows, not
+    # copies — the EO and the quotation edit the identical records, so they
+    # cannot drift, and the existing double-booking check and Waiter Service
+    # line sync apply unchanged whichever form the edit came from.
+    waiter_service = fields.Boolean(
+        related='sale_order_id.waiter_service', readonly=False,
+        string='Waiter Service',
+    )
+    waiter_line_ids = fields.One2many(
+        related='sale_order_id.waiter_line_ids', readonly=False,
+        string='Waiters',
+    )
+    waiter_count = fields.Integer(
+        related='sale_order_id.waiter_count', readonly=True,
+        string='# Waiters',
+    )
+    waiter_total_hours = fields.Float(
+        related='sale_order_id.waiter_total_hours', readonly=True,
+        string='Total Person-Hours',
+    )
+
     # EO Lines (kitchen product lines)
     line_ids = fields.One2many(
         'lcs.event.order.line', 'order_id', string='Order Lines',

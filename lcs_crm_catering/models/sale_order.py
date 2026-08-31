@@ -257,6 +257,28 @@ class SaleOrder(models.Model):
                 })
                 seq += 1
 
+    def _lcs_recompute_waiter_counters(self):
+        """Derive # Waiters and Total Person-Hours from the waiter table.
+
+        These used to be maintained only by onchange, so they were correct
+        only when the table was edited on the Sales Order form. The Event
+        Order now edits the very same rows, and an import or a script can too,
+        so the derivation belongs at model level.
+
+        Only when there are rows: with an empty table the counters are the
+        manually-typed path and must not be zeroed.
+        """
+        for order in self:
+            if not order.waiter_line_ids:
+                continue
+            count = len(order.waiter_line_ids)
+            hours = sum(order.waiter_line_ids.mapped('hours'))
+            if order.waiter_count != count or order.waiter_total_hours != hours:
+                order.with_context(skip_waiter_sync=True).write({
+                    'waiter_count': count,
+                    'waiter_total_hours': hours,
+                })
+
     def _sync_waiter_service_line(self):
         """Maintain a "Waiter Service" section + product line on the SO.
 

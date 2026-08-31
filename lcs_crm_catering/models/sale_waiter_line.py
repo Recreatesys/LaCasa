@@ -84,19 +84,34 @@ class SaleWaiterLine(models.Model):
                     'end': conflict.end_datetime,
                 })
 
+    def _lcs_after_change(self, orders):
+        """Refresh the counters, then the SO's Waiter Service line.
+
+        skip_eo_sync because the Event Order shows these very rows through a
+        related field — there is no stale copy to warn about, and flagging the
+        EO as "changed" while someone edits waiters *on* the EO would be
+        circular noise.
+        """
+        orders = orders.exists()
+        if not orders:
+            return
+        orders = orders.with_context(skip_eo_sync=True)
+        orders._lcs_recompute_waiter_counters()
+        orders._sync_waiter_service_line()
+
     @api.model_create_multi
     def create(self, vals_list):
         lines = super().create(vals_list)
-        lines.order_id._sync_waiter_service_line()
+        lines._lcs_after_change(lines.order_id)
         return lines
 
     def write(self, vals):
         res = super().write(vals)
-        self.mapped('order_id')._sync_waiter_service_line()
+        self._lcs_after_change(self.mapped('order_id'))
         return res
 
     def unlink(self):
         orders = self.mapped('order_id')
         res = super().unlink()
-        orders._sync_waiter_service_line()
+        self._lcs_after_change(orders)
         return res

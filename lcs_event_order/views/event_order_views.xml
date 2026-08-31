@@ -100,6 +100,37 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Waiters" name="waiters">
+                            <group>
+                                <group>
+                                    <field name="waiter_service"
+                                           widget="boolean_toggle"/>
+                                    <field name="waiter_count"/>
+                                </group>
+                                <group>
+                                    <field name="waiter_total_hours"
+                                           widget="float" digits="[8,2]"/>
+                                </group>
+                            </group>
+                            <field name="waiter_line_ids">
+                                <list editable="bottom">
+                                    <field name="employee_id"
+                                           options="{'no_create': True}"/>
+                                    <field name="role" readonly="1"/>
+                                    <field name="start_datetime"/>
+                                    <field name="end_datetime"/>
+                                    <field name="hours" readonly="1" sum="Total"/>
+                                </list>
+                            </field>
+                            <p class="text-muted small mt-2">
+                                These are the same rows as the Sales Order's
+                                Waiters tab — edit them in either place. # Waiters
+                                and Total Person-Hours follow the table, and drive
+                                the "Waiter Service" line on the quotation. An
+                                employee cannot be double-booked across confirmed
+                                Sales Orders.
+                            </p>
+                        </page>
                         <page string="Version History" name="version_history">
                             <group>
                                 <group>
