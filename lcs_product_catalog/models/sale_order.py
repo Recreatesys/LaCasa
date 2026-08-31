@@ -142,6 +142,15 @@ class SaleOrderLine(models.Model):
         ], limit=1)
         if not catering_set:
             return
+        # Size the line straight away for a per-head set, so "80 guests"
+        # shows as "80 x HK$398" without waiting for Expand Sets.
+        fee_line = catering_set._get_per_person_fee_line()
+        if fee_line and self.order_id:
+            pax = self.order_id._lcs_pax_from_guest_count(catering_set)
+            if pax:
+                self.product_uom_qty = pax
+            self.price_unit = fee_line.price_per_piece
+
         return {
             'warning': {
                 'title': _('Catering Set'),
@@ -319,20 +328,73 @@ class SaleOrder(models.Model):
             self.with_context(lcs_skip_set_resize=True).guest_count = effective_pax
 
     def _lcs_get_set_containers(self):
-        """[(catering_set, container_line), …] for every set on this order."""
+        """[(catering_set, container_line), …] for every set on this order.
+
+        Found from the line's product, not from expanded dish lines, so a set
+        that has been added but not yet expanded still counts. Keying off
+        is_set_line would have missed exactly that case.
+        """
         self.ensure_one()
         pairs = []
-        for product in self.order_line.filtered('is_set_line').mapped('set_product_id'):
-            container = self.order_line.filtered(
-                lambda l, p=product: l.product_id == p
-                and not l.is_set_line and not l.display_type
-            )[:1]
-            catering_set = self.env['lcs.catering.set'].search([
-                ('product_id.product_variant_ids', 'in', [product.id]),
+        CateringSet = self.env['lcs.catering.set']
+        for line in self.order_line.filtered(
+            lambda l: not l.display_type and not l.is_set_line and l.product_id
+        ):
+            catering_set = CateringSet.search([
+                ('product_id.product_variant_ids', 'in', [line.product_id.id]),
             ], limit=1)
-            if container and catering_set:
-                pairs.append((catering_set, container))
+            if catering_set:
+                pairs.append((catering_set, line))
         return pairs
+
+    def _lcs_pax_from_guest_count(self, catering_set):
+        """Pax implied by the order's No. of Guest, floored at the set minimum.
+
+        Deliberately ignores the container's own quantity, unlike
+        _lcs_effective_pax: this is the direction where the guest count is
+        the input.
+        """
+        self.ensure_one()
+        return max(catering_set.min_guest_count or 0, self.guest_count or 0)
+
+    def _lcs_sync_containers_from_guest_count(self):
+        """No. of Guest drives the set container's quantity.
+
+        Until now the container only picked up the guest count inside
+        action_expand_sets, so a set added to a quotation and left unexpanded
+        sat at Odoo's default quantity of 1 — 80 guests, "Corporate Western
+        Buffet x 1". The two now stay in step from the moment the set is
+        added.
+
+        Only per-head sets. A flat-fee container (Grand Opening, HK$16,388 for
+        the event) must stay at 1, and a container with no package price is
+        just a heading for its dish lines.
+        """
+        for order in self:
+            if order.state not in ('draft', 'sent'):
+                continue
+            for catering_set, container in order._lcs_get_set_containers():
+                if not catering_set._get_per_person_fee_line():
+                    continue
+                pax = order._lcs_pax_from_guest_count(catering_set)
+                if not pax or container.product_uom_qty == pax:
+                    continue
+                container.with_context(
+                    lcs_skip_set_resize=True
+                ).product_uom_qty = pax
+                order.with_context(
+                    lcs_skip_set_resize=True
+                )._lcs_resize_set_dishes(catering_set, container)
+
+    @api.onchange('guest_count')
+    def _onchange_guest_count_sync_containers(self):
+        self._lcs_sync_containers_from_guest_count()
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'guest_count' in vals and not self.env.context.get('lcs_skip_set_resize'):
+            self._lcs_sync_containers_from_guest_count()
+        return res
 
     def _reload_sets_in_place(self):
         """Update existing set-line quantities WITHOUT unlinking (Odoo blocks
