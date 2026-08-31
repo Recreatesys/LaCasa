@@ -134,7 +134,9 @@ class EventTimeSlot(models.Model):
             'service_type': lead.service_type,
             'delivery_type': lead.delivery_type,
             'waiter_service': lead.waiter_service,
-            'call_van': lead.call_van,
+            # Fall back to the SO default rather than writing False, which
+            # would suppress it — the opportunity often has no van chosen.
+            'call_van': lead.call_van or 'preferred_driver',
             'no_logo': lead.no_logo,
             'is_wedding': lead.is_wedding,
             'event_remark': lead.event_remark,

@@ -85,7 +85,12 @@ class SaleOrder(models.Model):
         string='Attention To',
         help='Contact person for this order',
     )
-    call_van = fields.Selection(CALL_VAN_SELECTION, string='Preferred Driver')
+    call_van = fields.Selection(
+        CALL_VAN_SELECTION, string='Preferred Driver',
+        default='preferred_driver',
+        help='Sales indicates the preferred van here; the CS team finalises '
+             'the actual driver on the Event Order.',
+    )
 
     # Which opportunity time slot generated this quotation (Phase 2).
     origin_slot_id = fields.Many2one(

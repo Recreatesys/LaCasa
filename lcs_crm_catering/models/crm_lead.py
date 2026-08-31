@@ -68,6 +68,11 @@ DELIVERY_TYPE_SELECTION = [
 ]
 
 CALL_VAN_SELECTION = [
+    # First entry and the Sales Order default: a neutral placeholder meaning
+    # sales has not nominated a specific van yet. Slide 4 asks for sales to
+    # indicate a preferred driver and the CS team to finalise it at Event
+    # Order stage, so a quotation should not have to name a real van.
+    ('preferred_driver', 'Preferred Driver'),
     ('ah_yuen', '阿源'),
     ('no_need', 'No need'),
     ('event_team', 'Arranged by event team'),
