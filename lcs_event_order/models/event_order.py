@@ -62,7 +62,7 @@ class EventOrder(models.Model):
     )
     call_van = fields.Selection(
         CALL_VAN_SELECTION,
-        string='Preferred Driver',
+        string='Call Van',
         related='sale_order_id.call_van',
         store=True,
         readonly=False,

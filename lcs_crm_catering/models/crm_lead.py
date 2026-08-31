@@ -193,9 +193,10 @@ class CrmLead(models.Model):
         help='Tick if this event requires waiter staffing. Reveals the Waiters tab on the SO.',
     )
     call_van = fields.Selection(
-        CALL_VAN_SELECTION, string='Preferred Driver',
-        help='Preferred driver / van arrangement for the delivery. '
-             'Can be changed later on the SO or Event Order.',
+        CALL_VAN_SELECTION, string='Call Van',
+        help='Van arrangement for the delivery. Leave on "Preferred Driver" '
+             'when no specific van is nominated yet — the CS team finalises '
+             'it on the Event Order.',
     )
     is_wedding = fields.Boolean(
         string='Wedding-related',

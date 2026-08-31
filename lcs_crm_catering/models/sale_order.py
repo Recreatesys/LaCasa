@@ -86,10 +86,11 @@ class SaleOrder(models.Model):
         help='Contact person for this order',
     )
     call_van = fields.Selection(
-        CALL_VAN_SELECTION, string='Preferred Driver',
+        CALL_VAN_SELECTION, string='Call Van',
         default='preferred_driver',
-        help='Sales indicates the preferred van here; the CS team finalises '
-             'the actual driver on the Event Order.',
+        help='Sales indicates the van here; the CS team finalises the actual '
+             'driver on the Event Order. Defaults to the "Preferred Driver" '
+             'placeholder when no specific van is nominated.',
     )
 
     # Which opportunity time slot generated this quotation (Phase 2).
