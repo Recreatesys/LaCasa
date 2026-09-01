@@ -11,7 +11,7 @@
                 <field name="event_date"/>
                 <field name="order_id" optional="show"/>
                 <button name="action_open_event_order" type="object"
-                        string="Open" icon="fa-external-link"
+                        string="EO" icon="fa-external-link"
                         title="Open this Event Order"
                         class="btn-link"/>
                 <field name="partner_id" optional="show"/>
