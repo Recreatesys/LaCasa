@@ -70,6 +70,26 @@ class EventOrderLine(models.Model):
              '(utensils, hardware), which the chef has no dish to prepare for.',
     )
 
+    def action_open_event_order(self):
+        """Open the Event Order this dish line belongs to.
+
+        Dish Overview is a read-only, grouped list of lcs.event.order.line, so
+        clicking a row has nowhere useful to go — the line has no form view of
+        its own, and a many2one cell in a list renders as plain text rather
+        than a link. This gives the row an explicit way through to its EO.
+        """
+        self.ensure_one()
+        if not self.order_id:
+            return False
+        return {
+            'type': 'ir.actions.act_window',
+            'name': self.order_id.display_name,
+            'res_model': 'lcs.event.order',
+            'res_id': self.order_id.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
     @api.depends('product_id', 'product_id.type', 'product_id.is_storable')
     def _compute_is_food_item(self):
         for line in self:
