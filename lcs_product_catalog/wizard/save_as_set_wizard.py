@@ -119,8 +119,26 @@ class SaveAsSetWizard(models.TransientModel):
             ))
 
         guests = self.order_id.guest_count or 0
+
+        # Every set needs a container product: "Add a Set" adds it to the
+        # quotation, and action_expand_sets finds the set by looking that
+        # product up. Without one the set could be saved but never re-used.
+        # Priced at zero — a saved menu carries its price on the dishes, not
+        # as a per-head package fee. The set's create hook files this product
+        # under the "LCS Set" category.
+        container = self.env['product.template'].create({
+            'name': name,
+            'type': 'service',
+            'sale_ok': True,
+            'purchase_ok': False,
+            'list_price': 0.0,
+            'description_sale': _('Set saved from quotation %s.',
+                                  self.order_id.name),
+        })
+
         catering_set = self.env['lcs.catering.set'].create({
             'name': name,
+            'product_id': container.id,
             'user_id': self.env.user.id,
             'is_user_template': True,
             'is_shared': False,
