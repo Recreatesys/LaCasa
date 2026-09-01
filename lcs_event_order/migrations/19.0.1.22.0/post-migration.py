@@ -5,44 +5,37 @@ line without a ratio tier behind it took product.uom_id.name and came out as
 "45 Units". Lines that DO have a tier were always right ("2 x 1/2 GN tray")
 and are left alone.
 
-Only food lines whose source Sales Order line carries a resolved set unit are
-touched, and only where the current value is empty or the generic UoM name —
+Written as SQL on purpose. sale_order_line.set_unit / eo_qty / eo_unit belong
+to lcs_product_catalog, which loads AFTER lcs_event_order — they are absent
+from the registry at this point, which is why the model code guards every
+access with hasattr(). The columns themselves exist in the database, so SQL
+can read them safely.
+
+Only rows whose current value is empty or the generic "Units" are touched, so
 a kitchen unit somebody typed by hand is preserved.
 """
 
 import logging
 
-from odoo import SUPERUSER_ID, api
-
 _logger = logging.getLogger(__name__)
 
 
 def migrate(cr, version):
-    env = api.Environment(cr, SUPERUSER_ID, {})
-    EOLine = env['lcs.event.order.line']
-
-    generic_names = set(
-        env['uom.uom'].with_context(active_test=False).search([]).mapped('name')
+    cr.execute(
+        """
+        UPDATE lcs_event_order_line l
+           SET kitchen_uom = CASE
+                   WHEN sol.set_unit = 'Per piece' THEN 'pcs'
+                   ELSE sol.set_unit
+               END
+          FROM sale_order_line sol
+         WHERE sol.id = l.sale_line_id
+           AND l.is_food_item IS TRUE
+           AND coalesce(sol.set_unit, '') <> ''
+           -- a ratio tier already produced the right answer here
+           AND NOT (coalesce(sol.eo_qty, 0) <> 0
+                    AND coalesce(sol.eo_unit, '') <> '')
+           AND coalesce(l.kitchen_uom, '') IN ('', 'Units')
+        """
     )
-
-    lines = EOLine.search([
-        ('is_food_item', '=', True),
-        ('sale_line_id', '!=', False),
-    ])
-    fixed = 0
-    for line in lines:
-        current = (line.kitchen_uom or '').strip()
-        if current and current not in generic_names:
-            continue  # a real unit, possibly hand-entered — leave it
-        sol = line.sale_line_id
-        if sol.eo_qty and sol.eo_unit:
-            continue  # ratio tier already gave the right answer
-        new_unit = EOLine._lcs_source_kitchen_unit(sol)
-        if new_unit and new_unit != current:
-            line.kitchen_uom = new_unit
-            fixed += 1
-
-    _logger.info(
-        'C25: re-derived the kitchen unit on %s of %s food EO line(s)',
-        fixed, len(lines),
-    )
+    _logger.info('C25: re-derived the kitchen unit on %s EO line(s)', cr.rowcount)
