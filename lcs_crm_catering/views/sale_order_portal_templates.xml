@@ -33,9 +33,10 @@
             </section>
         </xpath>
 
-        <!-- The LCS body ends with its own Total, so Odoo's totals table
-             would be a second, differently-formatted total on the same page. -->
-        <xpath expr="//div[@id='total']" position="replace"/>
+        <!-- Odoo's totals table (div#total) sits INSIDE section#details, so
+             replacing details above already removed it; the LCS body prints
+             its own total. The accept/signature section is a sibling of
+             details, not a child, so it survives untouched. -->
 
     </template>
 
