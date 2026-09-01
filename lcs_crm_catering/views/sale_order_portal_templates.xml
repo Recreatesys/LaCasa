@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- Customer portal: show the LCS quotation, not Odoo's default  -->
+    <!--                                                              -->
+    <!-- C19 (client comment, slide 19): Print produced the LCS       -->
+    <!-- layout while Preview showed the stock Odoo order page, so    -->
+    <!-- the customer saw two different documents for one quotation.  -->
+    <!-- Both now render lcs_crm_catering.report_quotation_lcs_body.  -->
+    <!--                                                              -->
+    <!-- Only the informations block and the line table are replaced. -->
+    <!-- The accept / signature and payment sections in this template -->
+    <!-- are deliberately left intact — replacing the whole thing     -->
+    <!-- would take away the customer's ability to accept the         -->
+    <!-- quotation.                                                   -->
+    <!-- ============================================================ -->
+    <template id="sale_order_portal_content_lcs"
+              inherit_id="sale.sale_order_portal_content">
+
+        <!-- Odoo's own header block duplicates what the LCS layout prints. -->
+        <xpath expr="//div[@id='informations']" position="replace"/>
+
+        <xpath expr="//section[@id='details']" position="replace">
+            <section id="details" style="page-break-inside: auto;">
+                <t t-set="o" t-value="sale_order"/>
+                <!-- The PDF embeds the logo as a data URI via image_data_uri,
+                     which is a report-rendering helper. On a web page a plain
+                     /web/image URL is the equivalent. -->
+                <t t-set="lcs_logo_src"
+                   t-value="'/web/image/res.company/%s/logo' % sale_order.company_id.id"/>
+                <t t-call="lcs_crm_catering.report_quotation_lcs_body"/>
+            </section>
+        </xpath>
+
+        <!-- The LCS body ends with its own Total, so Odoo's totals table
+             would be a second, differently-formatted total on the same page. -->
+        <xpath expr="//div[@id='total']" position="replace"/>
+
+    </template>
+
+</odoo>

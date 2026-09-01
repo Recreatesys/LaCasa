@@ -28,8 +28,8 @@
     <template id="report_quotation_lcs_page">
         <t t-call="web.basic_layout">
             <t t-set="o" t-value="o"/>
-            <t t-set="hide_prices" t-value="o.hide_prices_on_quote"/>
-            <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
+            <t t-set="lcs_logo_src"
+               t-value="image_data_uri(o.company_id.logo) if o.company_id.logo else False"/>
             <!-- Same top-alignment fix as the invoice report — defeat the
                  #wrapwrap flex + html/body height:100% cascade so content
                  sits at the top instead of the middle. -->
@@ -46,6 +46,17 @@
                 .page { margin-top: 0 !important; padding-top: 0 !important; }
             </style>
 
+            <t t-call="lcs_crm_catering.report_quotation_lcs_body"/>
+        </t>
+    </template>
+
+    <!-- The quotation content itself, with no layout wrapper, so the printed
+         PDF and the customer portal page render from one definition. Callers
+         must set `o` (the sale.order) and `lcs_logo_src`. -->
+    <template id="report_quotation_lcs_body">
+        <t t-set="hide_prices" t-value="o.hide_prices_on_quote"/>
+        <t t-set="show_logo" t-value="not o.no_logo and o.company_id.logo"/>
+
             <!-- ============================================================ -->
             <!-- PAGE 1: Summary + Terms                                      -->
             <!-- ============================================================ -->
@@ -54,7 +65,7 @@
                 <!-- Company Header -->
                 <div style="margin-bottom: 20px;">
                     <div style="margin-bottom: 10px;">
-                        <img t-if="show_logo" t-att-src="image_data_uri(o.company_id.logo)"
+                        <img t-if="show_logo" t-att-src="lcs_logo_src"
                              style="max-height: 60px;" alt="Logo"/>
                     </div>
                     <div>
@@ -131,7 +142,7 @@
                                 <span style="color: #666;">Details please refer to Appendix</span>
                             </td>
                             <td t-if="not hide_prices" style="text-align: right; padding: 10px 5px; vertical-align: top;">
-                                HK$<span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": False}'/>
+                                HK$<span t-esc="'{:,.2f}'.format(o.amount_total or 0.0)"/>
                             </td>
                         </tr>
                     </tbody>
@@ -169,7 +180,7 @@
                             <strong>Total:</strong>
                         </td>
                         <td style="text-align: right; padding: 5px; border-top: 1px solid #000; width: 120px;">
-                            <strong>HK$<span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": False}'/></strong>
+                            <strong>HK$<span t-esc="'{:,.2f}'.format(o.amount_total or 0.0)"/></strong>
                         </td>
                     </tr>
                 </table>
@@ -192,7 +203,7 @@
 
                 <!-- Company Header (repeated) -->
                 <div style="margin-bottom: 20px;">
-                    <img t-if="show_logo" t-att-src="image_data_uri(o.company_id.logo)"
+                    <img t-if="show_logo" t-att-src="lcs_logo_src"
                          style="max-height: 60px;" alt="Logo"/>
                 </div>
 
@@ -210,7 +221,7 @@
                     </tr>
                     <tr t-if="o.delivery_time">
                         <td><strong>Delivery Time:</strong></td>
-                        <td><span t-field="o.delivery_time" widget="float_time"/></td>
+                        <td><span t-field="o.delivery_time" t-options='{"widget": "float_time"}'/></td>
                     </tr>
                     <tr t-if="o.partner_shipping_id and o.partner_shipping_id.street">
                         <td><strong>Delivery Address:</strong></td>
@@ -260,7 +271,7 @@
                                     </t>
                                 </td>
                                 <td t-if="not hide_prices" style="text-align: right; padding: 5px;">
-                                    HK$<span t-field="line.price_subtotal"/>
+                                    HK$<span t-esc="'{:,.2f}'.format(line.price_subtotal or 0.0)"/>
                                 </td>
                             </tr>
                         </t>
@@ -269,14 +280,13 @@
                         <tr style="border-top: 1px solid #000;">
                             <td colspan="3" style="text-align: right; padding: 5px;"><strong>Total</strong></td>
                             <td style="text-align: right; padding: 5px;">
-                                <strong>HK$<span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": False}'/></strong>
+                                <strong>HK$<span t-esc="'{:,.2f}'.format(o.amount_total or 0.0)"/></strong>
                             </td>
                         </tr>
                     </tfoot>
                 </table>
 
             </div>
-        </t>
     </template>
 
     <!-- Register the report action -->
