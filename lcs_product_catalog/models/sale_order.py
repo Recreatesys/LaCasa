@@ -741,6 +741,18 @@ class SaleOrder(models.Model):
                 return text
         return ''
 
+    def action_open_save_as_set_wizard(self):
+        """C21a: save this quotation's menu as a reusable set."""
+        self.ensure_one()
+        return {
+            'name': _('Save as New Set'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'lcs.catering.set.save.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {**self.env.context, 'active_id': self.id},
+        }
+
     def action_open_delivery_zone_wizard(self):
         """Open the Google Maps delivery-zone lookup."""
         self.ensure_one()

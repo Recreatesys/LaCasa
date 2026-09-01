@@ -36,6 +36,12 @@
                             class="btn-link"
                             icon="fa-refresh"
                             confirm="This will recalculate all set lines based on the current guest count. Your dish selections will be preserved. Continue?"/>
+                    <!-- C21a: keep this menu for re-use on later quotations. -->
+                    <button name="action_open_save_as_set_wizard"
+                            string="Save as New Set"
+                            type="object"
+                            class="btn-link"
+                            icon="fa-floppy-o"/>
                     <!-- C08: derive the delivery charge from where the food
                          is going plus how it is delivered. -->
                     <button name="action_open_delivery_zone_wizard"

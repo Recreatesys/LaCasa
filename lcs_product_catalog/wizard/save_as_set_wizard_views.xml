@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="save_as_set_wizard_view_form" model="ir.ui.view">
+        <field name="name">lcs.catering.set.save.wizard.form</field>
+        <field name="model">lcs.catering.set.save.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Save as New Set">
+                <field name="order_id" invisible="1"/>
+                <group>
+                    <field name="set_name" placeholder="e.g. Standard Corporate Lunch"/>
+                    <field name="final_name"/>
+                    <field name="line_count"/>
+                    <field name="guest_count"/>
+                </group>
+                <group string="Dishes to be saved">
+                    <field name="preview" nolabel="1" readonly="1" widget="text"/>
+                </group>
+                <div class="alert alert-info mt-2" role="status">
+                    Dish prices are saved per head, so re-using this set on
+                    another quotation resizes every dish to that order's guest
+                    count — the same way the built-in menus work.
+                    <br/>
+                    Delivery charges, Waiter Service and Utensil &amp; Equipment
+                    rows belong to this one job and are not saved.
+                    <br/>
+                    The set starts private to you. A Sales Manager can publish
+                    it to the team.
+                </div>
+                <footer>
+                    <button name="action_save" type="object" string="Save Set"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

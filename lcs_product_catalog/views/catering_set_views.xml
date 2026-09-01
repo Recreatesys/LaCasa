@@ -7,7 +7,24 @@
         <field name="model">lcs.catering.set</field>
         <field name="arch" type="xml">
             <form string="Catering Set">
+                <!-- C21a: a set saved from a quotation is private to its owner
+                     until a Sales Manager publishes it to the team. -->
+                <header>
+                    <button name="action_publish_to_team" type="object"
+                            string="Publish to Team" class="btn-primary"
+                            groups="sales_team.group_sale_manager"
+                            invisible="is_shared or not user_id"
+                            confirm="Make this set available to the whole sales team?"/>
+                    <button name="action_unpublish" type="object"
+                            string="Make Private" class="btn-secondary"
+                            groups="sales_team.group_sale_manager"
+                            invisible="not is_shared or not user_id"/>
+                </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Shared" bg_color="text-bg-success"
+                            invisible="not is_shared or not user_id"/>
+                    <widget name="web_ribbon" title="Private" bg_color="text-bg-warning"
+                            invisible="is_shared or not user_id"/>
                     <div class="oe_title">
                         <h1><field name="name" placeholder="e.g. Mix &amp; Match"/></h1>
                     </div>
@@ -18,6 +35,11 @@
                             <field name="active"/>
                         </group>
                         <group>
+                            <field name="user_id" readonly="1"
+                                   invisible="not user_id"/>
+                            <field name="is_shared" readonly="1"
+                                   invisible="not user_id"/>
+                            <field name="is_user_template" invisible="1"/>
                             <field name="description"/>
                             <field name="recommendation"/>
                         </group>
@@ -118,6 +140,7 @@
             <list string="Pick a Catering Set" create="false" edit="false" delete="false">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="user_id" string="Saved by" optional="show"/>
                 <field name="product_id"/>
                 <field name="recommendation"/>
                 <button name="action_add_to_active_order"

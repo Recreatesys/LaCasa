@@ -1,12 +1,13 @@
 {
     'name': 'LCS Product Catalog',
-    'version': '19.0.2.24.0',
+    'version': '19.0.2.25.0',
     'category': 'Sales',
     'summary': 'Dish master data, set menus, and SO set expansion with dish selection',
     'author': 'Recreatesys',
     'depends': ['sale', 'lcs_crm_catering'],
     'data': [
         'security/ir.model.access.csv',
+        'security/catering_set_rules.xml',
         'data/lcs_set_category.xml',
         'data/delivery_zones.xml',
         'data/master_dishes.xml',
@@ -27,6 +28,7 @@
         'views/delivery_zone_views.xml',
         'views/res_config_settings_views.xml',
         'wizard/delivery_zone_wizard_views.xml',
+        'wizard/save_as_set_wizard_views.xml',
         'views/sale_order_views.xml',
     ],
     'installable': True,

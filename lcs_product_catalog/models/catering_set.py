@@ -35,6 +35,55 @@ class CateringSet(models.Model):
              'fewer guests but the set is sized for the minimum.',
     )
     description = fields.Text(string='Description')
+
+    # ── C21a: sets a salesperson saves from their own quotation ──
+    user_id = fields.Many2one(
+        'res.users', string='Owner', index=True,
+        help='Set by "Save as New Set" on a quotation. Empty on the sets that '
+             'ship with the system, which everyone can always see.',
+    )
+    is_shared = fields.Boolean(
+        string='Shared with the Team', default=False,
+        help='A saved set starts private to whoever created it. A Sales '
+             'Manager can publish it so the whole team can use it.',
+    )
+    is_user_template = fields.Boolean(
+        string='Saved from a Quotation', default=False,
+        help='Distinguishes a set someone saved from the curated LCS menus.',
+    )
+
+    @api.constrains('name')
+    def _check_name_unique(self):
+        for record in self:
+            if not record.name:
+                continue
+            clash = self.search([
+                ('id', '!=', record.id),
+                ('name', '=ilike', record.name),
+            ], limit=1)
+            if clash:
+                raise ValidationError(_(
+                    'A set called "%s" already exists. Set names must be '
+                    'unique — choose a different name.', record.name,
+                ))
+
+    def action_publish_to_team(self):
+        """Make a privately-saved set available to the whole sales team."""
+        if not self.env.user.has_group('sales_team.group_sale_manager'):
+            raise UserError(_(
+                'Only a Sales Manager can publish a set to the team.'
+            ))
+        self.write({'is_shared': True})
+        return True
+
+    def action_unpublish(self):
+        """Return a shared set to its owner only."""
+        if not self.env.user.has_group('sales_team.group_sale_manager'):
+            raise UserError(_(
+                'Only a Sales Manager can unpublish a set.'
+            ))
+        self.filtered('user_id').write({'is_shared': False})
+        return True
     recommendation = fields.Text(
         string='Recommended Selection',
         help='Internal remark shown to users, e.g. "2 appetizer + 2 snack + 3 main + 1 veg + 1-2 dessert"',
