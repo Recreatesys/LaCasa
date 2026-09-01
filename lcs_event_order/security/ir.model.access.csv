@@ -3,3 +3,5 @@ access_event_order_user,lcs.event.order user,model_lcs_event_order,base.group_us
 access_event_order_manager,lcs.event.order manager,model_lcs_event_order,base.group_system,1,1,1,1
 access_event_order_line_user,lcs.event.order.line user,model_lcs_event_order_line,base.group_user,1,1,1,0
 access_event_order_line_manager,lcs.event.order.line manager,model_lcs_event_order_line,base.group_system,1,1,1,1
+access_kitchen_user,lcs.kitchen user,model_lcs_kitchen,base.group_user,1,0,0,0
+access_kitchen_manager,lcs.kitchen manager,model_lcs_kitchen,sales_team.group_sale_manager,1,1,1,1

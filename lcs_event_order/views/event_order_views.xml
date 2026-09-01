@@ -74,6 +74,13 @@
                             <field name="delivery_type"/>
                             <field name="guest_count"/>
                             <field name="call_van"/>
+                            <field name="kitchen_id"
+                                   options="{'no_create_edit': True}"/>
+                            <field name="driver_status" widget="badge"
+                                   decoration-success="driver_status == 'delivered'"
+                                   decoration-info="driver_status in ('assigned', 'confirmed')"
+                                   decoration-warning="driver_status == 'out'"
+                                   decoration-danger="driver_status == 'to_assign'"/>
                         </group>
                     </group>
                     <group string="Delivery Address">

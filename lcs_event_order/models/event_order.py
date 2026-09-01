@@ -68,6 +68,36 @@ class EventOrder(models.Model):
         readonly=False,
     )
 
+    # ── C26a: worksheet fields (slide 26) ──
+    kitchen_id = fields.Many2one(
+        'lcs.kitchen', string='Kitchen Assigned', index=True,
+        help='Which production kitchen makes this order. Maintained under '
+             'Event Orders > Configuration > Kitchens.',
+    )
+    driver_status = fields.Selection(
+        [
+            ('to_assign', 'To Assign'),
+            ('assigned', 'Assigned'),
+            ('confirmed', 'Driver Confirmed'),
+            ('out', 'Out for Delivery'),
+            ('delivered', 'Delivered'),
+            ('not_required', 'Not Required'),
+        ],
+        string='Driver Status', default='to_assign', index=True,
+        help='Where the delivery has got to. The van itself is the Call Van '
+             'field; this tracks its progress.',
+    )
+    waiter_names = fields.Char(
+        string='Waiter Assigned', compute='_compute_waiter_names',
+        help='Who is on this event, from the Waiters tab.',
+    )
+
+    @api.depends('waiter_line_ids.employee_id')
+    def _compute_waiter_names(self):
+        for eo in self:
+            names = eo.waiter_line_ids.mapped('employee_id.name')
+            eo.waiter_names = ', '.join(n for n in names if n)
+
     # ── Waiters ──
     # C16 / C26d: "This part should be input by operation team, ie fill in EO
     # portal." These are RELATED to the Sales Order's own waiter rows, not

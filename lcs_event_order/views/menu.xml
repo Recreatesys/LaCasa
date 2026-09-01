@@ -19,10 +19,34 @@
               action="lcs_event_order_action"
               sequence="10"/>
 
+    <!-- C26a: the two worksheets -->
+    <menuitem id="menu_lcs_eo_dropoff"
+              name="Drop-off EO"
+              parent="menu_lcs_event_order_main"
+              action="lcs_eo_dropoff_action"
+              sequence="14"/>
+
+    <menuitem id="menu_lcs_eo_event"
+              name="Event EO"
+              parent="menu_lcs_event_order_main"
+              action="lcs_eo_event_action"
+              sequence="16"/>
+
     <menuitem id="menu_lcs_event_order_line_overview"
               name="Dish Overview"
               parent="menu_lcs_event_order_main"
               action="lcs_event_order_line_action"
               sequence="20"/>
+
+    <menuitem id="menu_lcs_eo_config"
+              name="Configuration"
+              parent="menu_lcs_event_order_root"
+              sequence="90"/>
+
+    <menuitem id="menu_lcs_kitchen"
+              name="Kitchens"
+              parent="menu_lcs_eo_config"
+              action="lcs_kitchen_action"
+              sequence="10"/>
 
 </odoo>

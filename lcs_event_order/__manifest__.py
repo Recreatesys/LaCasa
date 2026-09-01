@@ -1,6 +1,6 @@
 {
     'name': 'LCS Event Order',
-    'version': '19.0.1.25.0',
+    'version': '19.0.1.26.0',
     'category': 'Operations',
     'summary': 'Event Orders for kitchen — auto-created from confirmed Sales Orders',
     'author': 'Recreatesys',
@@ -8,7 +8,9 @@
     'data': [
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'views/kitchen_views.xml',
         'views/event_order_views.xml',
+        'views/event_order_worksheet_views.xml',
         'views/event_order_line_views.xml',
         'views/product_views.xml',
         'views/sale_order_views.xml',

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="lcs_kitchen_view_list" model="ir.ui.view">
+        <field name="name">lcs.kitchen.list</field>
+        <field name="model">lcs.kitchen</field>
+        <field name="arch" type="xml">
+            <list string="Kitchens" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="note"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="lcs_kitchen_action" model="ir.actions.act_window">
+        <field name="name">Kitchens</field>
+        <field name="res_model">lcs.kitchen</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Add your first kitchen</p>
+            <p>
+                The production kitchens an Event Order can be assigned to.
+                This list starts empty on purpose — add the real ones and they
+                become available in the Kitchen Assigned column on both
+                worksheets.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- C26a (client comment, slide 26): two worksheets              -->
+    <!--                                                              -->
+    <!-- Split on delivery_type, not service_format: only 7 active    -->
+    <!-- EOs lack a delivery type, against 5,505 that lack a service  -->
+    <!-- format, so delivery_type is the field that actually carries  -->
+    <!-- the distinction.                                             -->
+    <!-- ============================================================ -->
+
+    <!-- ── Drop-off worksheet ── -->
+    <record id="lcs_eo_dropoff_view_list" model="ir.ui.view">
+        <field name="name">lcs.event.order.dropoff.list</field>
+        <field name="model">lcs.event.order</field>
+        <field name="arch" type="xml">
+            <list string="Drop-off EO" default_order="event_date asc, name asc"
+                  decoration-muted="payment_status == 'cancelled'"
+                  decoration-warning="has_unacknowledged_change">
+                <field name="name" string="EO Ref"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="event_date" string="Delivery Date"/>
+                <field name="delivery_time" string="Delivery Time" widget="float_time"/>
+                <field name="kitchen_id" string="Kitchen Assigned"
+                       options="{'no_create_edit': True}"/>
+                <field name="driver_status" string="Driver Status" widget="badge"
+                       decoration-success="driver_status == 'delivered'"
+                       decoration-info="driver_status in ('assigned', 'confirmed')"
+                       decoration-warning="driver_status == 'out'"
+                       decoration-danger="driver_status == 'to_assign'"/>
+                <field name="payment_status" string="EO Status" widget="badge"
+                       decoration-success="payment_status == 'paid'"
+                       decoration-danger="payment_status == 'unpaid'"
+                       decoration-muted="payment_status == 'cancelled'"/>
+                <field name="call_van" string="Call Van" optional="hide"/>
+                <field name="delivery_type" optional="hide"/>
+                <field name="has_unacknowledged_change" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="lcs_eo_dropoff_action" model="ir.actions.act_window">
+        <field name="name">Drop-off EO</field>
+        <field name="res_model">lcs.event.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="lcs_eo_dropoff_view_list"/>
+        <field name="search_view_id" ref="lcs_event_order_view_search"/>
+        <field name="domain">[('delivery_type', 'in',
+            ['drop_off_door', 'drop_off_pickup', 'simple_setup_round',
+             'simple_setup_one', 'self_pickup'])]</field>
+        <field name="context">{'search_default_filter_this_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No drop-off orders this month</p>
+            <p>Every Event Order that is delivered or collected rather than staffed on site.</p>
+        </field>
+    </record>
+
+    <!-- ── Event worksheet ── -->
+    <record id="lcs_eo_event_view_list" model="ir.ui.view">
+        <field name="name">lcs.event.order.event.list</field>
+        <field name="model">lcs.event.order</field>
+        <field name="arch" type="xml">
+            <list string="Event EO" default_order="event_date asc, name asc"
+                  decoration-muted="payment_status == 'cancelled'"
+                  decoration-warning="has_unacknowledged_change">
+                <field name="name" string="EO Ref"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="event_date" string="Event Date"/>
+                <field name="delivery_time" string="Event Time" widget="float_time"/>
+                <field name="kitchen_id" string="Kitchen Assigned"
+                       options="{'no_create_edit': True}"/>
+                <field name="driver_status" string="Driver Status" widget="badge"
+                       decoration-success="driver_status == 'delivered'"
+                       decoration-info="driver_status in ('assigned', 'confirmed')"
+                       decoration-warning="driver_status == 'out'"
+                       decoration-danger="driver_status == 'to_assign'"/>
+                <field name="waiter_names" string="Waiter Assigned"/>
+                <field name="waiter_count" string="# Waiters" optional="show"/>
+                <field name="payment_status" string="EO Status" widget="badge"
+                       decoration-success="payment_status == 'paid'"
+                       decoration-danger="payment_status == 'unpaid'"
+                       decoration-muted="payment_status == 'cancelled'"/>
+                <field name="event_hour" string="Hours" optional="hide"/>
+                <field name="has_unacknowledged_change" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="lcs_eo_event_action" model="ir.actions.act_window">
+        <field name="name">Event EO</field>
+        <field name="res_model">lcs.event.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="lcs_eo_event_view_list"/>
+        <field name="search_view_id" ref="lcs_event_order_view_search"/>
+        <field name="domain">[('delivery_type', '=', 'event')]</field>
+        <field name="context">{'search_default_filter_this_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No events this month</p>
+            <p>Event Orders staffed on site, with waiters and set-up.</p>
+        </field>
+    </record>
+
+</odoo>
