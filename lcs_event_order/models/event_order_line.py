@@ -70,6 +70,19 @@ class EventOrderLine(models.Model):
              '(utensils, hardware), which the chef has no dish to prepare for.',
     )
 
+    @api.model
+    def _lcs_source_kitchen_unit(self, sale_line):
+        """The kitchen unit a Sales Order line implies.
+
+        Shared with lcs.event.order so the live sync and the back-fill
+        migration can never disagree about what a line should read.
+        """
+        if not sale_line:
+            return ''
+        return self.env['lcs.event.order']._lcs_fallback_kitchen_unit(
+            sale_line, sale_line.product_id,
+        )
+
     @api.depends('product_id', 'product_id.type', 'product_id.is_storable')
     def _compute_is_food_item(self):
         for line in self:

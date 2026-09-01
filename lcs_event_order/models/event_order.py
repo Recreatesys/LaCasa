@@ -324,6 +324,35 @@ class EventOrder(models.Model):
             'event_hour': so.event_hour,
         }
 
+    # C25 (client comment, slide 25): the kitchen needs "2 x 1/2 GN tray" and
+    # "90 pcs", not a bare number against a generic unit.
+    #
+    # Units the set expansion already resolved are reused verbatim; only the
+    # wording differs from what a chef would write.
+    KITCHEN_UNIT_ALIASES = {
+        'Per piece': 'pcs',
+    }
+
+    @api.model
+    def _lcs_fallback_kitchen_unit(self, sol, product):
+        """Kitchen unit for a line with no ratio tier behind it.
+
+        The old fallback went straight to product.uom_id.name, which is "Units"
+        for every dish — not one of the 579 products has kitchen_uom filled in,
+        so that branch produced "45 Units" for everything it touched.
+
+        The set expansion has already worked out a customer-facing unit for the
+        line ("Per piece", "M tray", "1/2 PN", "lb"), so use that; it is far
+        closer to what the kitchen means than the product's stock UoM. Only the
+        wording is adjusted, per the client's "90 pcs".
+        """
+        if product.kitchen_uom:
+            return product.kitchen_uom
+        set_unit = (getattr(sol, 'set_unit', '') or '').strip()
+        if set_unit:
+            return self.KITCHEN_UNIT_ALIASES.get(set_unit, set_unit)
+        return product.uom_id.name
+
     @api.model
     def _prepare_eo_lines_from_so(self, so, day_offset=0):
         """Prepare EO line values for all product lines on the SO.
@@ -346,7 +375,7 @@ class EventOrder(models.Model):
             else:
                 kitchen_ratio = product.kitchen_ratio or 1.0
                 kitchen_qty = sol.product_uom_qty / kitchen_ratio if kitchen_ratio else sol.product_uom_qty
-                kitchen_uom = product.kitchen_uom or product.uom_id.name
+                kitchen_uom = self._lcs_fallback_kitchen_unit(sol, product)
 
             lines.append({
                 'product_id': product.id,
