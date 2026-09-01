@@ -327,6 +327,57 @@ class SaleOrder(models.Model):
         if len(containers) == 1 and self.guest_count != effective_pax:
             self.with_context(lcs_skip_set_resize=True).guest_count = effective_pax
 
+    def _lcs_refresh_kitchen_units(self):
+        """Re-derive the EO-side qty/unit on existing set lines from the
+        current Kitchen Ratio Tiers.
+
+        Deliberately narrow: it writes eo_qty and eo_unit only. Quantity,
+        price and the invoice-facing set_unit are never touched, so nothing
+        that has been quoted or billed changes — this only corrects what the
+        kitchen is told to make.
+
+        Returns the number of lines changed.
+        """
+        updated = 0
+        for order in self:
+            for catering_set, container in order._lcs_get_set_containers():
+                pax = order._lcs_effective_pax(catering_set, container)
+                if not pax:
+                    continue
+                for sol in order.order_line.filtered(
+                    lambda l: l.is_set_line and not l.is_addon_piece
+                    and l.catering_set_id == catering_set
+                ):
+                    set_line = catering_set.line_ids.filtered(
+                        lambda sl: sl.product_id == sol.product_id
+                        and (sl.code or '') == (sol.set_line_code or '')
+                    )[:1]
+                    if not set_line:
+                        continue
+                    tier = catering_set.get_ratio_tier(
+                        pax, sol.product_id.categ_id.id
+                    )
+                    if not tier:
+                        continue
+                    eo_qty, eo_unit = set_line.eo_qty, set_line.eo_unit
+                    mode = tier.tier_mode or 'ratio'
+                    if mode == 'fixed' and (tier.kitchen_qty or tier.invoice_qty):
+                        eo_qty = tier.kitchen_qty or tier.invoice_qty
+                    elif mode == 'formula' and tier.per_pax_qty:
+                        eo_qty = math.ceil(pax * tier.per_pax_qty) + (
+                            tier.eo_extra_qty or 0)
+                    elif tier.conversion_factor:
+                        eo_qty = sol.product_uom_qty * tier.conversion_factor
+                    eo_unit = tier.kitchen_unit or eo_unit
+                    if not (eo_qty and eo_unit):
+                        continue
+                    if sol.eo_qty != eo_qty or sol.eo_unit != eo_unit:
+                        sol.with_context(lcs_skip_set_resize=True).write({
+                            'eo_qty': eo_qty, 'eo_unit': eo_unit,
+                        })
+                        updated += 1
+        return updated
+
     def _lcs_get_set_containers(self):
         """[(catering_set, container_line), …] for every set on this order.
 

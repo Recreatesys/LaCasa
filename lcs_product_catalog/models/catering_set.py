@@ -135,10 +135,22 @@ class CateringSet(models.Model):
         Returns the ratio tier record or False.
         """
         self.ensure_one()
-        for tier in self.ratio_tier_ids.filtered(lambda t: t.category_id.id == category_id):
-            max_g = tier.max_guests or 99999
-            if tier.min_guests <= guest_count <= max_g:
-                return tier
+        if not category_id:
+            return False
+        # Walk the dish's category upward, so a tier set on a parent covers
+        # its children — one tier on "Canapes" serves Cold, Hot and Sweet.
+        # Nearest ancestor first, so a specific tier always beats a general
+        # one. Exact-id matching alone meant a tier on a parent category
+        # silently never fired.
+        node = self.env['product.category'].browse(category_id)
+        while node:
+            for tier in self.ratio_tier_ids.filtered(
+                lambda t, n=node: t.category_id == n
+            ):
+                max_g = tier.max_guests or 99999
+                if tier.min_guests <= guest_count <= max_g:
+                    return tier
+            node = node.parent_id
         return False
 
     def get_auto_size(self, guest_count, size_group):

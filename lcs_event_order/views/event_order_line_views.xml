@@ -22,13 +22,20 @@
                 <field name="product_id"/>
                 <field name="description" optional="hide"/>
                 <field name="is_food_item" column_invisible="1"/>
-                <field name="kitchen_qty" sum="Total Qty"/>
+                <!-- No sum on kitchen_qty: the unit varies per row, so a
+                     group total of "82" for 2 XL tray + 80 pcs is nonsense.
+                     Group by Kitchen Unit as a third level to get totals that
+                     do mean something. -->
+                <field name="kitchen_qty"/>
                 <field name="kitchen_uom"/>
-                <field name="guest_count" sum="Total Guests" optional="show"/>
+                <!-- No sum on guest_count either: it is the order's guest
+                     count repeated on every one of its dish lines, so summing
+                     it multiplies by the number of dishes. -->
+                <field name="guest_count" optional="show"/>
                 <field name="service_format" optional="hide"/>
                 <field name="service_type" optional="hide"/>
                 <field name="delivery_type" optional="hide"/>
-                <field name="so_qty" optional="hide" sum="SO Qty"/>
+                <field name="so_qty" optional="hide"/>
                 <field name="note" optional="hide"/>
             </list>
         </field>
@@ -103,6 +110,8 @@
                         context="{'group_by': 'product_categ_id'}"/>
                 <filter name="groupby_product" string="Dish"
                         context="{'group_by': 'product_id'}"/>
+                <filter name="groupby_kitchen_uom" string="Kitchen Unit"
+                        context="{'group_by': 'kitchen_uom'}"/>
                 <filter name="groupby_event_date" string="Event Date"
                         context="{'group_by': 'event_date'}"/>
                 <filter name="groupby_partner" string="Customer"
