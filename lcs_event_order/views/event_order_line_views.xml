@@ -9,8 +9,8 @@
             <list string="Dish Overview" default_order="event_date asc, product_id asc"
                   create="0" delete="0" edit="0">
                 <field name="event_date"/>
-                <field name="order_id"/>
-                <field name="partner_id"/>
+                <field name="order_id" optional="show"/>
+                <field name="partner_id" optional="show"/>
                 <!-- Category is a fixed column, not optional: Odoo remembers
                      each user's optional-column choices, so an earlier saved
                      state could hide it again. -->
@@ -20,7 +20,7 @@
                 <field name="is_food_item" column_invisible="1"/>
                 <field name="kitchen_qty" sum="Total Qty"/>
                 <field name="kitchen_uom"/>
-                <field name="guest_count" sum="Total Guests"/>
+                <field name="guest_count" sum="Total Guests" optional="show"/>
                 <field name="service_format" optional="hide"/>
                 <field name="service_type" optional="hide"/>
                 <field name="delivery_type" optional="hide"/>
