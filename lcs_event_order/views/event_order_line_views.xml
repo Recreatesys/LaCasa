@@ -11,14 +11,16 @@
                 <field name="event_date"/>
                 <field name="order_id"/>
                 <field name="partner_id"/>
-                <field name="product_categ_id" optional="show"/>
+                <!-- Category is a fixed column, not optional: Odoo remembers
+                     each user's optional-column choices, so an earlier saved
+                     state could hide it again. -->
+                <field name="product_categ_id" string="Product Category"/>
                 <field name="product_id"/>
                 <field name="description" optional="hide"/>
                 <field name="is_food_item" column_invisible="1"/>
                 <field name="kitchen_qty" sum="Total Qty"/>
                 <field name="kitchen_uom"/>
                 <field name="guest_count" sum="Total Guests"/>
-                <field name="brand" optional="show"/>
                 <field name="service_format" optional="hide"/>
                 <field name="service_type" optional="hide"/>
                 <field name="delivery_type" optional="hide"/>
