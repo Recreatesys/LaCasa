@@ -215,6 +215,9 @@ def migrate(cr, version):
                  'across %s order(s)', changed, len(orders))
 
     # ── 3. push the corrected values onto the EO lines ──
+    # flush first: the writes above live in the ORM cache, and raw SQL does
+    # not see them. Without this the UPDATE below matches nothing.
+    env.flush_all()
     cr.execute(
         """
         UPDATE lcs_event_order_line l
