@@ -83,10 +83,41 @@ class EventOrder(models.Model):
             ('delivered', 'Delivered'),
             ('not_required', 'Not Required'),
         ],
-        string='Driver Status', default='to_assign', index=True,
-        help='Where the delivery has got to. The van itself is the Call Van '
-             'field; this tracks its progress.',
+        string='Driver Status', index=True,
+        compute='_compute_driver_status', store=True, readonly=False,
+        help='Follows Call Van: no van chosen yet leaves this "To Assign", '
+             'picking a van moves it to "Assigned", and an arrangement that '
+             'needs no LCS driver marks it "Not Required". CS then advances '
+             'it by hand as the delivery progresses.',
     )
+
+    # Call Van values that mean no LCS driver is involved at all.
+    NO_DRIVER_CALL_VANS = ('no_need', 'self_pickup', 'self_deliver',
+                           'event_team')
+
+    @api.depends('call_van')
+    def _compute_driver_status(self):
+        """Derive the driver status from the van that was chosen.
+
+        store=True with readonly=False on purpose: the value is filled in from
+        Call Van, but stays editable so CS can move it on to Confirmed, Out
+        for Delivery and Delivered.
+
+        The compute only ever fills in — it never rolls progress back. Once a
+        delivery is out or delivered, changing the van does not reset it,
+        because losing that record would be worse than a stale one.
+        """
+        for eo in self:
+            van = eo.call_van
+            current = eo.driver_status
+            if not van or van == 'preferred_driver':
+                eo.driver_status = 'to_assign'
+            elif van in eo.NO_DRIVER_CALL_VANS:
+                eo.driver_status = 'not_required'
+            elif current in (False, 'to_assign', 'not_required'):
+                eo.driver_status = 'assigned'
+            else:
+                eo.driver_status = current
     waiter_names = fields.Char(
         string='Waiter Assigned', compute='_compute_waiter_names',
         help='Who is on this event, from the Waiters tab.',
