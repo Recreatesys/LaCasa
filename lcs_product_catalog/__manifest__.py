@@ -1,10 +1,10 @@
 {
     'name': 'LCS Product Catalog',
-    'version': '19.0.2.26.0',
+    'version': '19.0.2.27.0',
     'category': 'Sales',
     'summary': 'Dish master data, set menus, and SO set expansion with dish selection',
     'author': 'Recreatesys',
-    'depends': ['sale', 'lcs_crm_catering'],
+    'depends': ['sale', 'sale_margin', 'lcs_crm_catering'],
     'data': [
         'security/ir.model.access.csv',
         'security/catering_set_rules.xml',

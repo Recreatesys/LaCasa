@@ -699,10 +699,82 @@ class SaleOrder(models.Model):
                     ))
         return breaches
 
+    # ──────────────────────────────────────────────────────────
+    # C21c — manager approval below a margin floor
+    # ──────────────────────────────────────────────────────────
+
+    lcs_margin_approved_by = fields.Many2one(
+        'res.users', string='Margin Approved By', readonly=True, copy=False,
+    )
+    lcs_margin_approved_on = fields.Datetime(
+        string='Margin Approved On', readonly=True, copy=False,
+    )
+    lcs_margin_warning = fields.Text(
+        string='Low Margin Warning',
+        compute='_compute_lcs_margin_warning',
+        help='Lists every priced line below the configured margin floor. '
+             'Empty when the order is fine or the check is switched off.',
+    )
+
+    @api.model
+    def _lcs_margin_floor(self):
+        """(active, threshold %) from Settings, or (False, 0)."""
+        params = self.env['ir.config_parameter'].sudo()
+        active = params.get_param(
+            'lcs_product_catalog.margin_approval_active'
+        ) in ('True', 'true', '1', True)
+        try:
+            threshold = float(params.get_param(
+                'lcs_product_catalog.margin_approval_threshold') or 0.0)
+        except (TypeError, ValueError):
+            threshold = 0.0
+        return active, threshold
+
+    def _lcs_low_margin_lines(self):
+        """Priced lines whose margin sits below the floor.
+
+        Only lines that actually carry revenue. sale_margin computes
+        margin_percent as margin / price_subtotal and short-circuits to 0 when
+        the subtotal is 0, so unpicked set dishes and zero-priced rows would
+        otherwise read as 0% margin and trip every buffet.
+        """
+        self.ensure_one()
+        active, threshold = self._lcs_margin_floor()
+        if not active:
+            return self.env['sale.order.line']
+        return self.order_line.filtered(
+            lambda l: not l.display_type
+            and (l.price_subtotal or 0.0) > 0
+            and (l.margin_percent or 0.0) * 100.0 < threshold
+        )
+
+    @api.depends('order_line.margin_percent', 'order_line.price_subtotal')
+    def _compute_lcs_margin_warning(self):
+        for order in self:
+            lines = order._lcs_low_margin_lines()
+            if not lines:
+                order.lcs_margin_warning = False
+                continue
+            _active, threshold = order._lcs_margin_floor()
+            order.lcs_margin_warning = _(
+                'These lines are below the %(floor).1f%% margin floor and need '
+                'a Sales Manager to confirm:', floor=threshold,
+            ) + '\n' + '\n'.join(
+                '  • %s — %.1f%% (%s cost vs %s)' % (
+                    (l.product_id.display_name or l.name or '').split('\n')[0],
+                    (l.margin_percent or 0.0) * 100.0,
+                    l.purchase_price, l.price_subtotal,
+                ) for l in lines
+            )
+
     def action_confirm(self):
         """C13 (client comment, slide 13): "Only 2 items chosen but the system
         doesn't remind me." Block confirmation while any set is short or over,
-        naming every offending section."""
+        naming every offending section.
+
+        C21c (slide 21): and block it when a priced line falls below the
+        margin floor, unless a Sales Manager is the one confirming.
+        """
         for order in self:
             breaches = order._lcs_selection_breaches()
             if breaches:
@@ -713,6 +785,35 @@ class SaleOrder(models.Model):
                     'confirming.',
                     details='\n'.join('  • %s' % b for b in breaches),
                 ))
+
+            low = order._lcs_low_margin_lines()
+            if not low:
+                continue
+            if not self.env.user.has_group('sales_team.group_sale_manager'):
+                _active, threshold = order._lcs_margin_floor()
+                raise UserError(_(
+                    'This quotation has %(count)s line(s) below the '
+                    '%(floor).1f%% margin floor, so a Sales Manager has to '
+                    'confirm it:\n\n%(details)s\n\n'
+                    'Raise the prices, or ask a manager to confirm.',
+                    count=len(low), floor=threshold,
+                    details='\n'.join(
+                        '  • %s — %.1f%%' % (
+                            (l.product_id.display_name or l.name or '').split('\n')[0],
+                            (l.margin_percent or 0.0) * 100.0,
+                        ) for l in low
+                    ),
+                ))
+            # A manager confirming IS the approval — record who and when.
+            order.write({
+                'lcs_margin_approved_by': self.env.user.id,
+                'lcs_margin_approved_on': fields.Datetime.now(),
+            })
+            order.message_post(body=_(
+                'Low-margin confirmation approved by <b>%(user)s</b> — '
+                '%(count)s line(s) below the margin floor.',
+                user=self.env.user.name, count=len(low),
+            ))
         return super().action_confirm()
 
     # ──────────────────────────────────────────────────────────

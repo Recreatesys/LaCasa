@@ -19,6 +19,20 @@
                     <strong>Set selection incomplete</strong>
                     <field name="set_selection_warning" nolabel="1" readonly="1"/>
                 </div>
+                <!-- C21c: low-margin lines, visible before anyone tries to
+                     confirm rather than only as an error afterwards. -->
+                <div class="alert alert-warning mb-2" role="alert"
+                     invisible="not lcs_margin_warning">
+                    <strong>Below the margin floor</strong>
+                    <field name="lcs_margin_warning" nolabel="1" readonly="1"/>
+                    <div invisible="not lcs_margin_approved_by" class="mt-1">
+                        Approved by <field name="lcs_margin_approved_by"
+                                           nolabel="1" readonly="1"
+                                           class="oe_inline"/>
+                        on <field name="lcs_margin_approved_on"
+                                  nolabel="1" readonly="1" class="oe_inline"/>
+                    </div>
+                </div>
                 <div class="mb-2">
                     <button name="action_open_set_picker"
                             string="Add a Set"

@@ -10,6 +10,22 @@
                  blocks; this one is addressed by @name. -->
             <xpath expr="//block[@name='quotation_order_setting_container']" position="after">
                 <block title="LCS Catering" name="lcs_catering_settings">
+                    <setting id="lcs_margin_approval_setting"
+                             string="Require Approval on Low Margin"
+                             help="Confirming a quotation that has any priced line below the margin floor needs a Sales Manager. Margin comes from Odoo's Margins feature, so product costs must be filled in for this to mean anything.">
+                        <field name="lcs_margin_approval_active"/>
+                        <div class="content-group mt-2"
+                             invisible="not lcs_margin_approval_active">
+                            <div class="row">
+                                <label for="lcs_margin_approval_threshold"
+                                       string="Minimum line margin"
+                                       class="col-lg-4 o_light_label"/>
+                                <field name="lcs_margin_approval_threshold"
+                                       class="oe_inline"/>
+                                <span class="ms-1">%</span>
+                            </div>
+                        </div>
+                    </setting>
                     <setting id="lcs_google_maps_setting"
                              string="Google Maps API Key"
                              help="Lets the delivery-zone lookup geocode an event address and read back its Hong Kong district. Needs the Geocoding API enabled on a billing-enabled Google Cloud project. Without a key the lookup still works, with the district chosen by hand.">
