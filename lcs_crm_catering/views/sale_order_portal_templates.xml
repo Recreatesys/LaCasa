@@ -30,6 +30,24 @@
                 <t t-set="lcs_logo_src"
                    t-value="'/web/image/res.company/%s/logo' % sale_order.company_id.id"/>
                 <t t-call="lcs_crm_catering.report_quotation_lcs_body"/>
+
+                <!-- sale_management's SaleUpdateLineButton interaction binds
+                     to .o_portal_sale_sidebar, which is still on the page,
+                     and its setup() then does an unguarded
+
+                         this.el.querySelector("table#sales_order_table").dataset
+
+                     Replacing Odoo's line table left that null and threw
+                     "Cannot read properties of null (reading 'dataset')" on
+                     every portal view. Keep the element the interaction
+                     expects, carrying the two data attributes it reads.
+                     Hidden and empty: LCS quotations have no editable
+                     quantities or optional products, so the interaction's own
+                     handlers (a.js_update_line_json, .js_quantity) match
+                     nothing and it stays inert. -->
+                <table id="sales_order_table" class="d-none"
+                       t-att-data-order-id="sale_order.id"
+                       t-att-data-token="sale_order.access_token"/>
             </section>
         </xpath>
 
